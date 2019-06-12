@@ -1,0 +1,3397 @@
+/*
+ * jQuery Form Plugin
+ * version: 3.51.0-2014.06.20
+ * Requires jQuery v1.5 or later
+ * Copyright (c) 2014 M. Alsup
+ * Examples and documentation at: http://malsup.com/jquery/form/
+ * Project repository: https://github.com/malsup/form
+ * Dual licensed under the MIT and GPL licenses.
+ * https://github.com/malsup/form#copyright-and-license
+ */
+!function (e) {
+    "use strict";
+    "function" == typeof define && define.amd ? define(["jquery"], e) : e("undefined" != typeof jQuery ? jQuery : window.Zepto)
+}(function (e) {
+    "use strict";
+
+    function t(t) {
+        var r = t.data;
+        t.isDefaultPrevented() || (t.preventDefault(), e(t.target).ajaxSubmit(r))
+    }
+
+    function r(t) {
+        var r = t.target, a = e(r);
+        if (!a.is("[type=submit],[type=image]")) {
+            var n = a.closest("[type=submit]");
+            if (0 === n.length) return;
+            r = n[0]
+        }
+        var i = this;
+        if (i.clk = r, "image" == r.type) if (void 0 !== t.offsetX) i.clk_x = t.offsetX, i.clk_y = t.offsetY; else if ("function" == typeof e.fn.offset) {
+            var o = a.offset();
+            i.clk_x = t.pageX - o.left, i.clk_y = t.pageY - o.top
+        } else i.clk_x = t.pageX - r.offsetLeft, i.clk_y = t.pageY - r.offsetTop;
+        setTimeout(function () {
+            i.clk = i.clk_x = i.clk_y = null
+        }, 100)
+    }
+
+    function a() {
+        if (e.fn.ajaxSubmit.debug) {
+            var t = "[jquery.form] " + Array.prototype.join.call(arguments, "");
+            window.console && window.console.log ? window.console.log(t) : window.opera && window.opera.postError && window.opera.postError(t)
+        }
+    }
+
+    var n = {};
+    n.fileapi = void 0 !== e("<input type='file'/>").get(0).files, n.formdata = void 0 !== window.FormData;
+    var i = !!e.fn.prop;
+    e.fn.attr2 = function () {
+        if (!i) return this.attr.apply(this, arguments);
+        var e = this.prop.apply(this, arguments);
+        return e && e.jquery || "string" == typeof e ? e : this.attr.apply(this, arguments)
+    }, e.fn.ajaxSubmit = function (t) {
+        function r(r) {
+            var a, n, i = e.param(r, t.traditional).split("&"), o = i.length, s = [];
+            for (a = 0; o > a; a++) i[a] = i[a].replace(/\+/g, " "), n = i[a].split("="), s.push([decodeURIComponent(n[0]), decodeURIComponent(n[1])]);
+            return s
+        }
+
+        function o(a) {
+            for (var n = new FormData, i = 0; i < a.length; i++) n.append(a[i].name, a[i].value);
+            if (t.extraData) {
+                var o = r(t.extraData);
+                for (i = 0; i < o.length; i++) o[i] && n.append(o[i][0], o[i][1])
+            }
+            t.data = null;
+            var s = e.extend(!0, {}, e.ajaxSettings, t, {
+                contentType: !1,
+                processData: !1,
+                cache: !1,
+                type: u || "POST"
+            });
+            t.uploadProgress && (s.xhr = function () {
+                var r = e.ajaxSettings.xhr();
+                return r.upload && r.upload.addEventListener("progress", function (e) {
+                    var r = 0, a = e.loaded || e.position, n = e.total;
+                    e.lengthComputable && (r = Math.ceil(a / n * 100)), t.uploadProgress(e, a, n, r)
+                }, !1), r
+            }), s.data = null;
+            var c = s.beforeSend;
+            return s.beforeSend = function (e, r) {
+                r.data = t.formData ? t.formData : n, c && c.call(this, e, r)
+            }, e.ajax(s)
+        }
+
+        function s(r) {
+            function n(e) {
+                var t = null;
+                try {
+                    e.contentWindow && (t = e.contentWindow.document)
+                } catch (r) {
+                    a("cannot get iframe.contentWindow document: " + r)
+                }
+                if (t) return t;
+                try {
+                    t = e.contentDocument ? e.contentDocument : e.document
+                } catch (r) {
+                    a("cannot get iframe.contentDocument: " + r), t = e.document
+                }
+                return t
+            }
+
+            function o() {
+                function t() {
+                    try {
+                        var e = n(g).readyState;
+                        a("state = " + e), e && "uninitialized" == e.toLowerCase() && setTimeout(t, 50)
+                    } catch (r) {
+                        a("Server abort: ", r, " (", r.name, ")"), s(k), j && clearTimeout(j), j = void 0
+                    }
+                }
+
+                var r = f.attr2("target"), i = f.attr2("action"), o = "multipart/form-data",
+                    c = f.attr("enctype") || f.attr("encoding") || o;
+                w.setAttribute("target", p), (!u || /post/i.test(u)) && w.setAttribute("method", "POST"), i != m.url && w.setAttribute("action", m.url), m.skipEncodingOverride || u && !/post/i.test(u) || f.attr({
+                    encoding: "multipart/form-data",
+                    enctype: "multipart/form-data"
+                }), m.timeout && (j = setTimeout(function () {
+                    T = !0, s(D)
+                }, m.timeout));
+                var l = [];
+                try {
+                    if (m.extraData) for (var d in m.extraData) m.extraData.hasOwnProperty(d) && l.push(e.isPlainObject(m.extraData[d]) && m.extraData[d].hasOwnProperty("name") && m.extraData[d].hasOwnProperty("value") ? e('<input type="hidden" name="' + m.extraData[d].name + '">').val(m.extraData[d].value).appendTo(w)[0] : e('<input type="hidden" name="' + d + '">').val(m.extraData[d]).appendTo(w)[0]);
+                    m.iframeTarget || v.appendTo("body"), g.attachEvent ? g.attachEvent("onload", s) : g.addEventListener("load", s, !1), setTimeout(t, 15);
+                    try {
+                        w.submit()
+                    } catch (h) {
+                        var x = document.createElement("form").submit;
+                        x.apply(w)
+                    }
+                } finally {
+                    w.setAttribute("action", i), w.setAttribute("enctype", c), r ? w.setAttribute("target", r) : f.removeAttr("target"), e(l).remove()
+                }
+            }
+
+            function s(t) {
+                if (!x.aborted && !F) {
+                    if (M = n(g), M || (a("cannot access response document"), t = k), t === D && x) return x.abort("timeout"), void S.reject(x, "timeout");
+                    if (t == k && x) return x.abort("server abort"), void S.reject(x, "error", "server abort");
+                    if (M && M.location.href != m.iframeSrc || T) {
+                        g.detachEvent ? g.detachEvent("onload", s) : g.removeEventListener("load", s, !1);
+                        var r, i = "success";
+                        try {
+                            if (T) throw"timeout";
+                            var o = "xml" == m.dataType || M.XMLDocument || e.isXMLDoc(M);
+                            if (a("isXml=" + o), !o && window.opera && (null === M.body || !M.body.innerHTML) && --O) return a("requeing onLoad callback, DOM not available"), void setTimeout(s, 250);
+                            var u = M.body ? M.body : M.documentElement;
+                            x.responseText = u ? u.innerHTML : null, x.responseXML = M.XMLDocument ? M.XMLDocument : M, o && (m.dataType = "xml"), x.getResponseHeader = function (e) {
+                                var t = {"content-type": m.dataType};
+                                return t[e.toLowerCase()]
+                            }, u && (x.status = Number(u.getAttribute("status")) || x.status, x.statusText = u.getAttribute("statusText") || x.statusText);
+                            var c = (m.dataType || "").toLowerCase(), l = /(json|script|text)/.test(c);
+                            if (l || m.textarea) {
+                                var f = M.getElementsByTagName("textarea")[0];
+                                if (f) x.responseText = f.value, x.status = Number(f.getAttribute("status")) || x.status, x.statusText = f.getAttribute("statusText") || x.statusText; else if (l) {
+                                    var p = M.getElementsByTagName("pre")[0], h = M.getElementsByTagName("body")[0];
+                                    p ? x.responseText = p.textContent ? p.textContent : p.innerText : h && (x.responseText = h.textContent ? h.textContent : h.innerText)
+                                }
+                            } else "xml" == c && !x.responseXML && x.responseText && (x.responseXML = X(x.responseText));
+                            try {
+                                E = _(x, c, m)
+                            } catch (y) {
+                                i = "parsererror", x.error = r = y || i
+                            }
+                        } catch (y) {
+                            a("error caught: ", y), i = "error", x.error = r = y || i
+                        }
+                        x.aborted && (a("upload aborted"), i = null), x.status && (i = x.status >= 200 && x.status < 300 || 304 === x.status ? "success" : "error"), "success" === i ? (m.success && m.success.call(m.context, E, "success", x), S.resolve(x.responseText, "success", x), d && e.event.trigger("ajaxSuccess", [x, m])) : i && (void 0 === r && (r = x.statusText), m.error && m.error.call(m.context, x, i, r), S.reject(x, "error", r), d && e.event.trigger("ajaxError", [x, m, r])), d && e.event.trigger("ajaxComplete", [x, m]), d && !--e.active && e.event.trigger("ajaxStop"), m.complete && m.complete.call(m.context, x, i), F = !0, m.timeout && clearTimeout(j), setTimeout(function () {
+                            m.iframeTarget ? v.attr("src", m.iframeSrc) : v.remove(), x.responseXML = null
+                        }, 100)
+                    }
+                }
+            }
+
+            var c, l, m, d, p, v, g, x, y, b, T, j, w = f[0], S = e.Deferred();
+            if (S.abort = function (e) {
+                    x.abort(e)
+                }, r) for (l = 0; l < h.length; l++) c = e(h[l]), i ? c.prop("disabled", !1) : c.removeAttr("disabled");
+            if (m = e.extend(!0, {}, e.ajaxSettings, t), m.context = m.context || m, p = "jqFormIO" + (new Date).getTime(), m.iframeTarget ? (v = e(m.iframeTarget), b = v.attr2("name"), b ? p = b : v.attr2("name", p)) : (v = e('<iframe name="' + p + '" src="' + m.iframeSrc + '" />'), v.css({
+                    position: "absolute",
+                    top: "-1000px",
+                    left: "-1000px"
+                })), g = v[0], x = {
+                    aborted: 0,
+                    responseText: null,
+                    responseXML: null,
+                    status: 0,
+                    statusText: "n/a",
+                    getAllResponseHeaders: function () {
+                    },
+                    getResponseHeader: function () {
+                    },
+                    setRequestHeader: function () {
+                    },
+                    abort: function (t) {
+                        var r = "timeout" === t ? "timeout" : "aborted";
+                        a("aborting upload... " + r), this.aborted = 1;
+                        try {
+                            g.contentWindow.document.execCommand && g.contentWindow.document.execCommand("Stop")
+                        } catch (n) {
+                        }
+                        v.attr("src", m.iframeSrc), x.error = r, m.error && m.error.call(m.context, x, r, t), d && e.event.trigger("ajaxError", [x, m, r]), m.complete && m.complete.call(m.context, x, r)
+                    }
+                }, d = m.global, d && 0 === e.active++ && e.event.trigger("ajaxStart"), d && e.event.trigger("ajaxSend", [x, m]), m.beforeSend && m.beforeSend.call(m.context, x, m) === !1) return m.global && e.active--, S.reject(), S;
+            if (x.aborted) return S.reject(), S;
+            y = w.clk, y && (b = y.name, b && !y.disabled && (m.extraData = m.extraData || {}, m.extraData[b] = y.value, "image" == y.type && (m.extraData[b + ".x"] = w.clk_x, m.extraData[b + ".y"] = w.clk_y)));
+            var D = 1, k = 2, A = e("meta[name=csrf-token]").attr("content"),
+                L = e("meta[name=csrf-param]").attr("content");
+            L && A && (m.extraData = m.extraData || {}, m.extraData[L] = A), m.forceSync ? o() : setTimeout(o, 10);
+            var E, M, F, O = 50, X = e.parseXML || function (e, t) {
+                return window.ActiveXObject ? (t = new ActiveXObject("Microsoft.XMLDOM"), t.async = "false", t.loadXML(e)) : t = (new DOMParser).parseFromString(e, "text/xml"), t && t.documentElement && "parsererror" != t.documentElement.nodeName ? t : null
+            }, C = e.parseJSON || function (e) {
+                return window.eval("(" + e + ")")
+            }, _ = function (t, r, a) {
+                var n = t.getResponseHeader("content-type") || "", i = "xml" === r || !r && n.indexOf("xml") >= 0,
+                    o = i ? t.responseXML : t.responseText;
+                return i && "parsererror" === o.documentElement.nodeName && e.error && e.error("parsererror"), a && a.dataFilter && (o = a.dataFilter(o, r)), "string" == typeof o && ("json" === r || !r && n.indexOf("json") >= 0 ? o = C(o) : ("script" === r || !r && n.indexOf("javascript") >= 0) && e.globalEval(o)), o
+            };
+            return S
+        }
+
+        if (!this.length) return a("ajaxSubmit: skipping submit process - no element selected"), this;
+        var u, c, l, f = this;
+        "function" == typeof t ? t = {success: t} : void 0 === t && (t = {}), u = t.type || this.attr2("method"), c = t.url || this.attr2("action"), l = "string" == typeof c ? e.trim(c) : "", l = l || window.location.href || "", l && (l = (l.match(/^([^#]+)/) || [])[1]), t = e.extend(!0, {
+            url: l,
+            success: e.ajaxSettings.success,
+            type: u || e.ajaxSettings.type,
+            iframeSrc: /^https/i.test(window.location.href || "") ? "javascript:false" : "about:blank"
+        }, t);
+        var m = {};
+        if (this.trigger("form-pre-serialize", [this, t, m]), m.veto) return a("ajaxSubmit: submit vetoed via form-pre-serialize trigger"), this;
+        if (t.beforeSerialize && t.beforeSerialize(this, t) === !1) return a("ajaxSubmit: submit aborted via beforeSerialize callback"), this;
+        var d = t.traditional;
+        void 0 === d && (d = e.ajaxSettings.traditional);
+        var p, h = [], v = this.formToArray(t.semantic, h);
+        if (t.data && (t.extraData = t.data, p = e.param(t.data, d)), t.beforeSubmit && t.beforeSubmit(v, this, t) === !1) return a("ajaxSubmit: submit aborted via beforeSubmit callback"), this;
+        if (this.trigger("form-submit-validate", [v, this, t, m]), m.veto) return a("ajaxSubmit: submit vetoed via form-submit-validate trigger"), this;
+        var g = e.param(v, d);
+        p && (g = g ? g + "&" + p : p), "GET" == t.type.toUpperCase() ? (t.url += (t.url.indexOf("?") >= 0 ? "&" : "?") + g, t.data = null) : t.data = g;
+        var x = [];
+        if (t.resetForm && x.push(function () {
+                f.resetForm()
+            }), t.clearForm && x.push(function () {
+                f.clearForm(t.includeHidden)
+            }), !t.dataType && t.target) {
+            var y = t.success || function () {
+            };
+            x.push(function (r) {
+                var a = t.replaceTarget ? "replaceWith" : "html";
+                e(t.target)[a](r).each(y, arguments)
+            })
+        } else t.success && x.push(t.success);
+        if (t.success = function (e, r, a) {
+                for (var n = t.context || this, i = 0, o = x.length; o > i; i++) x[i].apply(n, [e, r, a || f, f])
+            }, t.error) {
+            var b = t.error;
+            t.error = function (e, r, a) {
+                var n = t.context || this;
+                b.apply(n, [e, r, a, f])
+            }
+        }
+        if (t.complete) {
+            var T = t.complete;
+            t.complete = function (e, r) {
+                var a = t.context || this;
+                T.apply(a, [e, r, f])
+            }
+        }
+        var j = e("input[type=file]:enabled", this).filter(function () {
+                return "" !== e(this).val()
+            }), w = j.length > 0, S = "multipart/form-data", D = f.attr("enctype") == S || f.attr("encoding") == S,
+            k = n.fileapi && n.formdata;
+        a("fileAPI :" + k);
+        var A, L = (w || D) && !k;
+        t.iframe !== !1 && (t.iframe || L) ? t.closeKeepAlive ? e.get(t.closeKeepAlive, function () {
+            A = s(v)
+        }) : A = s(v) : A = (w || D) && k ? o(v) : e.ajax(t), f.removeData("jqxhr").data("jqxhr", A);
+        for (var E = 0; E < h.length; E++) h[E] = null;
+        return this.trigger("form-submit-notify", [this, t]), this
+    }, e.fn.ajaxForm = function (n) {
+        if (n = n || {}, n.delegation = n.delegation && e.isFunction(e.fn.on), !n.delegation && 0 === this.length) {
+            var i = {s: this.selector, c: this.context};
+            return !e.isReady && i.s ? (a("DOM not ready, queuing ajaxForm"), e(function () {
+                e(i.s, i.c).ajaxForm(n)
+            }), this) : (a("terminating; zero elements found by selector" + (e.isReady ? "" : " (DOM not ready)")), this)
+        }
+        return n.delegation ? (e(document).off("submit.form-plugin", this.selector, t).off("click.form-plugin", this.selector, r).on("submit.form-plugin", this.selector, n, t).on("click.form-plugin", this.selector, n, r), this) : this.ajaxFormUnbind().bind("submit.form-plugin", n, t).bind("click.form-plugin", n, r)
+    }, e.fn.ajaxFormUnbind = function () {
+        return this.unbind("submit.form-plugin click.form-plugin")
+    }, e.fn.formToArray = function (t, r) {
+        var a = [];
+        if (0 === this.length) return a;
+        var i, o = this[0], s = this.attr("id"), u = t ? o.getElementsByTagName("*") : o.elements;
+        if (u && !/MSIE [678]/.test(navigator.userAgent) && (u = e(u).get()), s && (i = e(':input[form="' + s + '"]').get(), i.length && (u = (u || []).concat(i))), !u || !u.length) return a;
+        var c, l, f, m, d, p, h;
+        for (c = 0, p = u.length; p > c; c++) if (d = u[c], f = d.name, f && !d.disabled) if (t && o.clk && "image" == d.type) o.clk == d && (a.push({
+            name: f,
+            value: e(d).val(),
+            type: d.type
+        }), a.push({name: f + ".x", value: o.clk_x}, {
+            name: f + ".y",
+            value: o.clk_y
+        })); else if (m = e.fieldValue(d, !0), m && m.constructor == Array) for (r && r.push(d), l = 0, h = m.length; h > l; l++) a.push({
+            name: f,
+            value: m[l]
+        }); else if (n.fileapi && "file" == d.type) {
+            r && r.push(d);
+            var v = d.files;
+            if (v.length) for (l = 0; l < v.length; l++) a.push({
+                name: f,
+                value: v[l],
+                type: d.type
+            }); else a.push({name: f, value: "", type: d.type})
+        } else null !== m && "undefined" != typeof m && (r && r.push(d), a.push({
+            name: f,
+            value: m,
+            type: d.type,
+            required: d.required
+        }));
+        if (!t && o.clk) {
+            var g = e(o.clk), x = g[0];
+            f = x.name, f && !x.disabled && "image" == x.type && (a.push({
+                name: f,
+                value: g.val()
+            }), a.push({name: f + ".x", value: o.clk_x}, {name: f + ".y", value: o.clk_y}))
+        }
+        return a
+    }, e.fn.formSerialize = function (t) {
+        return e.param(this.formToArray(t))
+    }, e.fn.fieldSerialize = function (t) {
+        var r = [];
+        return this.each(function () {
+            var a = this.name;
+            if (a) {
+                var n = e.fieldValue(this, t);
+                if (n && n.constructor == Array) for (var i = 0, o = n.length; o > i; i++) r.push({
+                    name: a,
+                    value: n[i]
+                }); else null !== n && "undefined" != typeof n && r.push({name: this.name, value: n})
+            }
+        }), e.param(r)
+    }, e.fn.fieldValue = function (t) {
+        for (var r = [], a = 0, n = this.length; n > a; a++) {
+            var i = this[a], o = e.fieldValue(i, t);
+            null === o || "undefined" == typeof o || o.constructor == Array && !o.length || (o.constructor == Array ? e.merge(r, o) : r.push(o))
+        }
+        return r
+    }, e.fieldValue = function (t, r) {
+        var a = t.name, n = t.type, i = t.tagName.toLowerCase();
+        if (void 0 === r && (r = !0), r && (!a || t.disabled || "reset" == n || "button" == n || ("checkbox" == n || "radio" == n) && !t.checked || ("submit" == n || "image" == n) && t.form && t.form.clk != t || "select" == i && -1 == t.selectedIndex)) return null;
+        if ("select" == i) {
+            var o = t.selectedIndex;
+            if (0 > o) return null;
+            for (var s = [], u = t.options, c = "select-one" == n, l = c ? o + 1 : u.length, f = c ? o : 0; l > f; f++) {
+                var m = u[f];
+                if (m.selected) {
+                    var d = m.value;
+                    if (d || (d = m.attributes && m.attributes.value && !m.attributes.value.specified ? m.text : m.value), c) return d;
+                    s.push(d)
+                }
+            }
+            return s
+        }
+        return e(t).val()
+    }, e.fn.clearForm = function (t) {
+        return this.each(function () {
+            e("input,select,textarea", this).clearFields(t)
+        })
+    }, e.fn.clearFields = e.fn.clearInputs = function (t) {
+        var r = /^(?:color|date|datetime|email|month|number|password|range|search|tel|text|time|url|week)$/i;
+        return this.each(function () {
+            var a = this.type, n = this.tagName.toLowerCase();
+            r.test(a) || "textarea" == n ? this.value = "" : "checkbox" == a || "radio" == a ? this.checked = !1 : "select" == n ? this.selectedIndex = -1 : "file" == a ? /MSIE/.test(navigator.userAgent) ? e(this).replaceWith(e(this).clone(!0)) : e(this).val("") : t && (t === !0 && /hidden/.test(a) || "string" == typeof t && e(this).is(t)) && (this.value = "")
+        })
+    }, e.fn.resetForm = function () {
+        return this.each(function () {
+            ("function" == typeof this.reset || "object" == typeof this.reset && !this.reset.nodeType) && this.reset()
+        })
+    }, e.fn.enable = function (e) {
+        return void 0 === e && (e = !0), this.each(function () {
+            this.disabled = !e
+        })
+    }, e.fn.selected = function (t) {
+        return void 0 === t && (t = !0), this.each(function () {
+            var r = this.type;
+            if ("checkbox" == r || "radio" == r) this.checked = t; else if ("option" == this.tagName.toLowerCase()) {
+                var a = e(this).parent("select");
+                t && a[0] && "select-one" == a[0].type && a.find("option").selected(!1), this.selected = t
+            }
+        })
+    }, e.fn.ajaxSubmit.debug = !1
+});
+/* Copyright (c) 2011 Piotr Rochala (http://rocha.la)
+ * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
+ * and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
+ *
+ * Version: 1.3.3
+ *
+ */
+(function (e) {
+    e.fn.extend({
+        slimScroll: function (g) {
+            var a = e.extend({
+                width: "auto",
+                height: "250px",
+                size: "7px",
+                color: "#ccc",
+                position: "right",
+                distance: "1px",
+                start: "top",
+                opacity: 1,
+                alwaysVisible: !1,
+                disableFadeOut: !1,
+                railVisible: !1,
+                railColor: "#EEE",
+                railOpacity: 1,
+                railDraggable: !0,
+                railClass: "slimScrollRail",
+                barClass: "slimScrollBar",
+                wrapperClass: "slimScrollDiv",
+                allowPageScroll: !1,
+                wheelStep: 20,
+                touchScrollStep: 200,
+                borderRadius: "7px",
+                railBorderRadius: "7px"
+            }, g);
+            this.each(function () {
+                function u(d) {
+                    if (r) {
+                        d = d || window.event;
+                        var c = 0;
+                        d.wheelDelta && (c = -d.wheelDelta / 120);
+                        d.detail && (c = d.detail / 3);
+                        e(d.target || d.srcTarget || d.srcElement).closest("." + a.wrapperClass).is(b.parent()) && m(c, !0);
+                        d.preventDefault && !k && d.preventDefault();
+                        k || (d.returnValue = !1)
+                    }
+                }
+
+                function m(d, e, g) {
+                    k = !1;
+                    var f = d, h = b.outerHeight() - c.outerHeight();
+                    e && (f = parseInt(c.css("top")) + d * parseInt(a.wheelStep) / 100 * c.outerHeight(), f = Math.min(Math.max(f, 0), h), f = 0 < d ? Math.ceil(f) : Math.floor(f), c.css({top: f + "px"}));
+                    l = parseInt(c.css("top")) / (b.outerHeight() - c.outerHeight());
+                    f = l * (b[0].scrollHeight - b.outerHeight());
+                    g && (f = d, d = f / b[0].scrollHeight * b.outerHeight(), d = Math.min(Math.max(d, 0), h), c.css({top: d + "px"}));
+                    b.scrollTop(f);
+                    b.trigger("slimscrolling", ~~f);
+                    v();
+                    p()
+                }
+
+                function C() {
+                    window.addEventListener ? (this.addEventListener("DOMMouseScroll", u, !1), this.addEventListener("mousewheel", u, !1)) : document.attachEvent("onmousewheel", u)
+                }
+
+                function w() {
+                    s = Math.max(b.outerHeight() / b[0].scrollHeight * b.outerHeight(), 30);
+                    c.css({height: s + "px"});
+                    var a = s == b.outerHeight() ? "none" : "block";
+                    c.css({display: a})
+                }
+
+                function v() {
+                    w();
+                    clearTimeout(A);
+                    l == ~~l ? (k = a.allowPageScroll, B != l && b.trigger("slimscroll", 0 == ~~l ? "top" : "bottom")) : k = !1;
+                    B = l;
+                    s >= b.outerHeight() ? k = !0 : (c.stop(!0, !0).fadeIn("fast"), a.railVisible && h.stop(!0, !0).fadeIn("fast"))
+                }
+
+                function p() {
+                    a.alwaysVisible || (A = setTimeout(function () {
+                        a.disableFadeOut && r || x || y || (c.fadeOut("slow"), h.fadeOut("slow"))
+                    }, 1E3))
+                }
+
+                var r, x, y, A, z, s, l, B, k = !1, b = e(this);
+                if (b.parent().hasClass(a.wrapperClass)) {
+                    var n = b.scrollTop(), c = b.parent().find("." + a.barClass),
+                        h = b.parent().find("." + a.railClass);
+                    w();
+                    if (e.isPlainObject(g)) {
+                        if ("height" in g && "auto" == g.height) {
+                            b.parent().css("height", "auto");
+                            b.css("height", "auto");
+                            var q = b.parent().parent().height();
+                            b.parent().css("height", q);
+                            b.css("height", q)
+                        }
+                        if ("scrollTo" in g) n = parseInt(a.scrollTo); else if ("scrollBy" in g) n += parseInt(a.scrollBy); else if ("destroy" in g) {
+                            c.remove();
+                            h.remove();
+                            b.unwrap();
+                            return
+                        }
+                        m(n, !1, !0)
+                    }
+                } else if (!(e.isPlainObject(g) && "destroy" in g)) {
+                    a.height = "auto" == a.height ? b.parent().height() : a.height;
+                    n = e("<div></div>").addClass(a.wrapperClass).css({
+                        position: "relative",
+                        overflow: "hidden",
+                        width: a.width,
+                        height: a.height
+                    });
+                    b.css({overflow: "hidden", width: a.width, height: a.height});
+                    var h = e("<div></div>").addClass(a.railClass).css({
+                        width: a.size,
+                        height: "100%",
+                        position: "absolute",
+                        top: 0,
+                        display: a.alwaysVisible && a.railVisible ? "block" : "none",
+                        "border-radius": a.railBorderRadius,
+                        background: a.railColor,
+                        opacity: a.railOpacity,
+                        zIndex: 90
+                    }), c = e("<div></div>").addClass(a.barClass).css({
+                        background: a.color,
+                        width: a.size,
+                        position: "absolute",
+                        top: 0,
+                        opacity: a.opacity,
+                        display: a.alwaysVisible ? "block" : "none",
+                        "border-radius": a.borderRadius,
+                        BorderRadius: a.borderRadius,
+                        MozBorderRadius: a.borderRadius,
+                        WebkitBorderRadius: a.borderRadius,
+                        zIndex: 99
+                    }), q = "right" == a.position ? {right: a.distance} : {left: a.distance};
+                    h.css(q);
+                    c.css(q);
+                    b.wrap(n);
+                    b.parent().append(c);
+                    b.parent().append(h);
+                    a.railDraggable && c.bind("mousedown", function (a) {
+                        var b = e(document);
+                        y = !0;
+                        t = parseFloat(c.css("top"));
+                        pageY = a.pageY;
+                        b.bind("mousemove.slimscroll", function (a) {
+                            currTop = t + a.pageY - pageY;
+                            c.css("top", currTop);
+                            m(0, c.position().top, !1)
+                        });
+                        b.bind("mouseup.slimscroll", function (a) {
+                            y = !1;
+                            p();
+                            b.unbind(".slimscroll")
+                        });
+                        return !1
+                    }).bind("selectstart.slimscroll", function (a) {
+                        a.stopPropagation();
+                        a.preventDefault();
+                        return !1
+                    });
+                    h.hover(function () {
+                        v()
+                    }, function () {
+                        p()
+                    });
+                    c.hover(function () {
+                        x = !0
+                    }, function () {
+                        x = !1
+                    });
+                    b.hover(function () {
+                        r = !0;
+                        v();
+                        p()
+                    }, function () {
+                        r = !1;
+                        p()
+                    });
+                    b.bind("touchstart", function (a, b) {
+                        a.originalEvent.touches.length && (z = a.originalEvent.touches[0].pageY)
+                    });
+                    b.bind("touchmove", function (b) {
+                        k || b.originalEvent.preventDefault();
+                        b.originalEvent.touches.length && (m((z - b.originalEvent.touches[0].pageY) / a.touchScrollStep, !0), z = b.originalEvent.touches[0].pageY)
+                    });
+                    w();
+                    "bottom" === a.start ? (c.css({top: b.outerHeight() - c.outerHeight()}), m(0, !0)) : "top" !== a.start && (m(e(a.start).position().top, null, !0), a.alwaysVisible || c.hide());
+                    C()
+                }
+            });
+            return this
+        }
+    });
+    e.fn.extend({slimscroll: e.fn.slimScroll})
+})(jQuery);
+;(function ($) {
+    var lang = {
+        en: {
+            days: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+            months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            sep: '-',
+            format: 'YYYY-MM-DD hh:mm',
+            prevMonth: 'Previous month',
+            nextMonth: 'Next month',
+            today: 'Today'
+        },
+        ro: {
+            days: ['Dum', 'Lun', 'Mar', 'Mie', 'Joi', 'Vin', 'Sâm'],
+            months: ['Ian', 'Feb', 'Mar', 'Apr', 'Mai', 'Iun', 'Iul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            sep: '.',
+            format: 'DD.MM.YYYY hh:mm',
+            prevMonth: 'Luna precedentă',
+            nextMonth: 'Luna următoare',
+            today: 'Azi'
+        },
+        ja: {
+            days: ['日', '月', '火', '水', '木', '金', '土'],
+            months: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"],
+            sep: '/',
+            format: 'YYYY/MM/DD hh:mm'
+        },
+        ru: {
+            days: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+            months: ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"],
+            format: 'DD.MM.YYYY hh:mm'
+        },
+        br: {
+            days: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+            months: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
+            format: 'DD/MM/YYYY hh:mm'
+        },
+        pt: {
+            days: ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'],
+            months: ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"]
+        },
+        cn: {
+            days: ['日', '一', '二', '三', '四', '五', '六'],
+            months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"]
+        },
+        de: {
+            days: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
+            months: ["Jan", "Feb", "März", "Apr", "Mai", "Juni", "Juli", "Aug", "Sept", "Okt", "Nov", "Dez"],
+            format: 'DD.MM.YYYY hh:mm'
+        },
+        sv: {
+            days: ['Sö', 'Må', 'Ti', 'On', 'To', 'Fr', 'Lö'],
+            months: ["Jan", "Feb", "Mar", "Apr", "Maj", "Juni", "Juli", "Aug", "Sept", "Okt", "Nov", "Dec"]
+        },
+        id: {
+            days: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
+            months: ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"]
+        },
+        it: {
+            days: ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab'],
+            months: ["Gen", "Feb", "Mar", "Apr", "Mag", "Giu", "Lug", "Ago", "Set", "Ott", "Nov", "Dic"],
+            format: 'DD/MM/YYYY hh:mm'
+        },
+        tr: {
+            days: ['Pz', 'Pzt', 'Sal', 'Çar', 'Per', 'Cu', 'Cts'],
+            months: ["Ock", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Agu", "Eyl", "Ekm", "Kas", "Arlk"]
+        },
+        es: {
+            days: ['dom', 'lun', 'mar', 'miér', 'jue', 'vié', 'sáb'],
+            months: ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"],
+            format: 'DD/MM/YYYY hh:mm'
+        },
+        ko: {
+            days: ['일', '월', '화', '수', '목', '금', '토'],
+            months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"]
+        },
+        nl: {
+            days: ['zo', 'ma', 'di', 'wo', 'do', 'vr', 'za'],
+            months: ["jan", "feb", "mrt", "apr", "mei", "jun", "jul", "aug", "sep", "okt", "nov", "dec"],
+            format: 'DD-MM-YYYY hh:mm'
+        },
+        cz: {
+            days: ['Ne', 'Po', 'Út', 'St', 'Čt', 'Pá', 'So'],
+            months: ["Led", "Úno", "Bře", "Dub", "Kvě", "Čer", "Čvc", "Srp", "Zář", "Říj", "Lis", "Pro"],
+            format: 'DD.MM.YYYY hh:mm'
+        },
+        fr: {
+            days: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
+            months: ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
+            format: 'DD-MM-YYYY hh:mm'
+        },
+        pl: {
+            days: ['N', 'Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'So'],
+            months: ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"],
+            sep: '-',
+            format: 'YYYY-MM-DD hh:mm',
+            prevMonth: 'Poprzedni miesiąc',
+            nextMonth: 'Następny miesiąc',
+            today: 'Dzisiaj'
+        }
+    };
+    var PickerHandler = function ($picker, $input) {
+        this.$pickerObject = $picker;
+        this.$inputObject = $input;
+    };
+    PickerHandler.prototype.getPicker = function () {
+        return this.$pickerObject;
+    };
+    PickerHandler.prototype.getInput = function () {
+        return this.$inputObject;
+    };
+    PickerHandler.prototype.isShow = function () {
+        var is_show = true;
+        if (this.$pickerObject.css('display') == 'none') {
+            is_show = false;
+        }
+        return is_show;
+    };
+    PickerHandler.prototype.show = function () {
+        var $picker = this.$pickerObject;
+        var $input = this.$inputObject;
+        $picker.show();
+        updateTimeListHeight($picker);
+        ActivePickerId = $input.data('pickerId');
+        if ($picker.data('isInline') == false) {
+            var _position = $input.parent().css('position');
+            if (_position === 'relative' || _position === 'absolute') {
+                $picker.parent().css("top", $input.outerHeight() + 2 + "px");
+            } else {
+                $picker.parent().css("top", $input.position().top + $input.outerHeight() + 2 + "px");
+                $picker.parent().css("left", $input.position().left + "px");
+            }
+        }
+    };
+    PickerHandler.prototype.hide = function () {
+        var $picker = this.$pickerObject;
+        var $input = this.$inputObject;
+        $picker.hide();
+    };
+    PickerHandler.prototype.destroy = function () {
+        var $picker = this.$pickerObject;
+        var picker_id = $picker.data('pickerId');
+        PickerObjects[picker_id] = null;
+        $picker.remove();
+    };
+    var PickerObjects = [];
+    var InputObjects = [];
+    var ActivePickerId = -1;
+    var updateTimeListHeight = function ($picker) {
+        var height = $picker.find('.datepicker_calendar').innerHeight();
+        if (height > 0) {
+            $picker.find('.datepicker_timelist').css("height", height - 10 + 'px');
+        }
+    };
+    var getParentPickerObject = function (obj) {
+        return $(obj).closest('.datepicker');
+    };
+    var getPickersInputObject = function ($obj) {
+        var $picker = getParentPickerObject($obj);
+        if ($picker.data("inputObjectId") != null) {
+            return $(InputObjects[$picker.data("inputObjectId")]);
+        }
+        return null;
+    }
+    var setToNow = function ($obj) {
+        var $picker = getParentPickerObject($obj);
+        var date = new Date();
+        draw($picker, {
+            "isAnim": true,
+            "isOutputToInputObject": true
+        }, date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes());
+    };
+    var beforeMonth = function ($obj) {
+        var $picker = getParentPickerObject($obj);
+        if ($picker.data('stateAllowBeforeMonth') == false) {
+            return;
+        }
+        var date = getPickedDate($picker);
+        var targetMonth_lastDay = new Date(date.getFullYear(), date.getMonth(), 0).getDate();
+        if (targetMonth_lastDay < date.getDate()) {
+            date.setDate(targetMonth_lastDay);
+        }
+        draw($picker, {
+            "isAnim": true,
+            "isOutputToInputObject": true
+        }, date.getFullYear(), date.getMonth() - 1, date.getDate(), date.getHours(), date.getMinutes());
+        var todayDate = new Date();
+        var isCurrentYear = todayDate.getFullYear() == date.getFullYear();
+        var isCurrentMonth = isCurrentYear && todayDate.getMonth() == date.getMonth();
+        if (!isCurrentMonth || !$picker.data("futureOnly")) {
+            if (targetMonth_lastDay < date.getDate()) {
+                date.setDate(targetMonth_lastDay);
+            }
+            draw($picker, {
+                "isAnim": true,
+                "isOutputToInputObject": true
+            }, date.getFullYear(), date.getMonth() - 1, date.getDate(), date.getHours(), date.getMinutes());
+        }
+    };
+    var nextMonth = function ($obj) {
+        var $picker = getParentPickerObject($obj);
+        var date = getPickedDate($picker);
+        var targetMonth_lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+        if (targetMonth_lastDay < date.getDate()) {
+            date.setDate(targetMonth_lastDay);
+        }
+        draw($picker, {
+            "isAnim": true,
+            "isOutputToInputObject": true
+        }, date.getFullYear(), date.getMonth() + 1, date.getDate(), date.getHours(), date.getMinutes());
+    };
+    var getDateFormat = function (format, locale, is_date_only) {
+        if (format == "default") {
+            format = translate(locale, 'format');
+            if (is_date_only) {
+                format = format.substring(0, format.search(' '));
+            }
+        }
+        return format;
+    };
+    var normalizeYear = function (year) {
+        if (year < 99) {
+            var date = new Date();
+            return parseInt(year) + parseInt(date.getFullYear().toString().substr(0, 2) + "00");
+        }
+        return year;
+    };
+    var parseDate = function (str, opt_date_format) {
+        if (opt_date_format != null) {
+            var df = opt_date_format.replace(/(-|\/)/g, '[-\/]').replace(/YYYY/gi, '(\\d{2,4})').replace(/(YY|MM|DD|hh|mm)/g, '(\\d{1,2})').replace(/(M|D|h|m)/g, '(\\d{1,2})');
+            var re = new RegExp(df);
+            var m = re.exec(str);
+            if (m != null) {
+                var formats = new Array();
+                var format_buf = '';
+                var format_before_c = '';
+                var df = opt_date_format;
+                while (df != null && 0 < df.length) {
+                    var format_c = df.substring(0, 1);
+                    df = df.substring(1, df.length);
+                    if (format_before_c != format_c) {
+                        if (/(YYYY|YY|MM|DD|mm|dd|M|D|h|m)/.test(format_buf)) {
+                            formats.push(format_buf);
+                            format_buf = '';
+                        } else {
+                            format_buf = '';
+                        }
+                    }
+                    format_buf += format_c;
+                    format_before_c = format_c;
+                }
+                if (format_buf != '' && /(YYYY|YY|MM|DD|mm|dd|M|D|h|m)/.test(format_buf)) {
+                    formats.push(format_buf);
+                }
+                var year, month, day, hour, min;
+                var is_successful = false;
+                for (var i = 0; i < formats.length; i++) {
+                    if (m.length < i) {
+                        break;
+                    }
+                    var f = formats[i];
+                    var d = m[i + 1];
+                    if (f == 'YYYY') {
+                        year = normalizeYear(d);
+                        is_successful = true;
+                    } else if (f == 'YY') {
+                        year = parseInt(d) + 2000;
+                        is_successful = true;
+                    } else if (f == 'MM' || f == 'M') {
+                        day = parseInt(d) - 1;
+                        is_successful = true;
+                    } else if (f == 'DD' || f == 'D') {
+                        day = d;
+                        is_successful = true;
+                    } else if (f == 'hh' || f == 'h') {
+                        hour = d;
+                        is_successful = true;
+                    } else if (f == 'mm' || f == 'm') {
+                        min = d;
+                        is_successful = true;
+                    }
+                }
+                var date = new Date(year, month, day, hour, min);
+                if (is_successful == true && isNaN(date) == false && isNaN(date.getDate()) == false) {
+                    return date;
+                }
+            }
+        }
+        var re = /^(\d{2,4})[-\/](\d{1,2})[-\/](\d{1,2}) (\d{1,2}):(\d{1,2})$/;
+        var m = re.exec(str);
+        if (m !== null) {
+            m[1] = normalizeYear(m[1]);
+            date = new Date(m[1], m[2] - 1, m[3], m[4], m[5]);
+        } else {
+            re = /^(\d{2,4})[-\/](\d{1,2})[-\/](\d{1,2})$/;
+            m = re.exec(str);
+            if (m !== null) {
+                m[1] = normalizeYear(m[1]);
+                date = new Date(m[1], m[2] - 1, m[3]);
+            }
+        }
+        if (isNaN(date) == false && isNaN(date.getDate()) == false) {
+            return date;
+        }
+        return false;
+    };
+    var getFormattedDate = function (date, date_format) {
+        if (date == null) {
+            date = new Date();
+        }
+        var y = date.getFullYear();
+        var m = date.getMonth() + 1;
+        var d = date.getDate();
+        var hou = date.getHours();
+        var min = date.getMinutes();
+        var formatedDate = date_format.replace(/YYYY/gi, y).replace(/YY/g, y - 2000).replace(/MM/g, zpadding(m)).replace(/M/g, m).replace(/DD/g, zpadding(d)).replace(/D/g, d).replace(/hh/g, zpadding(hou)).replace(/h/g, hou).replace(/mm/g, zpadding(min)).replace(/m/g, min);
+        return formatedDate;
+    };
+    var outputToInputObject = function ($picker) {
+        var $inp = getPickersInputObject($picker);
+        if ($inp == null) {
+            return;
+        }
+        var date = getPickedDate($picker);
+        var locale = $picker.data("locale");
+        var format = getDateFormat($picker.data("dateFormat"), locale, $picker.data('dateOnly'));
+        var old = $inp.val();
+        $inp.val(getFormattedDate(date, format));
+        if (old != $inp.val()) {
+            $inp.trigger("change");
+        }
+    };
+    var getPickedDate = function ($obj) {
+        var $picker = getParentPickerObject($obj);
+        return $picker.data("pickedDate");
+    };
+    var zpadding = function (num) {
+        num = ("0" + num).slice(-2);
+        return num;
+    };
+    var draw_date = function ($picker, option, date) {
+        draw($picker, option, date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes());
+    };
+    var translate = function (locale, s) {
+        if (typeof lang[locale][s] !== "undefined") {
+            return lang[locale][s];
+        }
+        return lang.en[s];
+    };
+    var draw = function ($picker, option, year, month, day, hour, min) {
+        var date = new Date();
+        if (hour != null) {
+            date = new Date(year, month, day, hour, min, 0);
+        } else if (year != null) {
+            date = new Date(year, month, day);
+        } else {
+            date = new Date();
+        }
+        var isTodayButton = $picker.data("todayButton");
+        var isScroll = option.isAnim;
+        if ($picker.data("timelistScroll") == false) {
+            isScroll = false;
+        }
+        var isAnim = option.isAnim;
+        if ($picker.data("animation") == false) {
+            isAnim = false;
+        }
+        var isFutureOnly = $picker.data("futureOnly");
+        var minDate = $picker.data("minDate");
+        var maxDate = $picker.data("maxDate");
+        var isOutputToInputObject = option.isOutputToInputObject;
+        var minuteInterval = $picker.data("minuteInterval");
+        var firstDayOfWeek = $picker.data("firstDayOfWeek");
+        var minTime = $picker.data("minTime");
+        var maxTime = $picker.data("maxTime");
+        var locale = $picker.data("locale");
+        if (!lang.hasOwnProperty(locale)) {
+            locale = 'en';
+        }
+        var todayDate = new Date();
+        var firstWday = new Date(date.getFullYear(), date.getMonth(), 1).getDay() - firstDayOfWeek;
+        var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+        var beforeMonthLastDay = new Date(date.getFullYear(), date.getMonth(), 0).getDate();
+        var dateBeforeMonth = new Date(date.getFullYear(), date.getMonth(), 0);
+        var dateNextMonth = new Date(date.getFullYear(), date.getMonth() + 2, 0);
+        var isCurrentYear = todayDate.getFullYear() == date.getFullYear();
+        var isCurrentMonth = isCurrentYear && todayDate.getMonth() == date.getMonth();
+        var isCurrentDay = isCurrentMonth && todayDate.getDate() == date.getDate();
+        var isPastMonth = false;
+        if (date.getFullYear() < todayDate.getFullYear() || (isCurrentYear && date.getMonth() < todayDate.getMonth())) {
+            isPastMonth = true;
+        }
+        var $header = $picker.children('.datepicker_header');
+        var $inner = $picker.children('.datepicker_inner_container');
+        var $calendar = $picker.children('.datepicker_inner_container').children('.datepicker_calendar');
+        var $table = $calendar.children('.datepicker_table');
+        var $timelist = $picker.children('.datepicker_inner_container').children('.datepicker_timelist');
+        var changePoint = "";
+        var oldDate = getPickedDate($picker);
+        if (oldDate != null) {
+            if (oldDate.getMonth() != date.getMonth() || oldDate.getDate() != date.getDate()) {
+                changePoint = "calendar";
+            } else if (oldDate.getHours() != date.getHours() || oldDate.getMinutes() != date.getMinutes()) {
+                if (date.getMinutes() == 0 || date.getMinutes() % minuteInterval == 0) {
+                    changePoint = "timelist";
+                }
+            }
+        }
+        $($picker).data("pickedDate", date);
+        if (isAnim == true) {
+            if (changePoint == "calendar") {
+                $calendar.stop().queue([]);
+                $calendar.fadeTo("fast", 0.8);
+            } else if (changePoint == "timelist") {
+                $timelist.stop().queue([]);
+                $timelist.fadeTo("fast", 0.8);
+            }
+        }
+        var drawBefore_timeList_scrollTop = $timelist.scrollTop();
+        var timelist_activeTimeCell_offsetTop = -1;
+        $header.children().remove();
+        var cDate = new Date(date.getTime());
+        cDate.setMinutes(59);
+        cDate.setHours(23);
+        cDate.setSeconds(59);
+        cDate.setDate(0);
+        if ((!isFutureOnly || !isCurrentMonth) && ((minDate == null) || (minDate < cDate.getTime()))) {
+            var $link_before_month = $('<a>');
+            $link_before_month.text('<');
+            $link_before_month.prop('alt', translate(locale, 'prevMonth'));
+            $link_before_month.prop('title', translate(locale, 'prevMonth'));
+            $link_before_month.click(function () {
+                beforeMonth($picker);
+            });
+            $picker.data('stateAllowBeforeMonth', true);
+        } else {
+            $picker.data('stateAllowBeforeMonth', false);
+        }
+        cDate.setMinutes(0);
+        cDate.setHours(0);
+        cDate.setSeconds(0);
+        cDate.setDate(1);
+        cDate.setMonth(date.getMonth() + 1);
+        var $now_month = $('<span>');
+        $now_month.text(date.getFullYear() + " " + translate(locale, 'sep') + " " + translate(locale, 'months')[date.getMonth()]);
+        if ((maxDate == null) || (maxDate > cDate.getTime())) {
+            var $link_next_month = $('<a>');
+            $link_next_month.text('>');
+            $link_next_month.prop('alt', translate(locale, 'nextMonth'));
+            $link_next_month.prop('title', translate(locale, 'nextMonth'));
+            $link_next_month.click(function () {
+                nextMonth($picker);
+            });
+        }
+        if (isTodayButton) {
+            var $link_today = $('<a/>');
+            $link_today.html(decodeURIComponent('%3c%3fxml%20version%3d%221%2e0%22%20encoding%3d%22UTF%2d8%22%20standalone%3d%22no%22%3f%3e%3csvg%20%20xmlns%3adc%3d%22http%3a%2f%2fpurl%2eorg%2fdc%2felements%2f1%2e1%2f%22%20%20xmlns%3acc%3d%22http%3a%2f%2fcreativecommons%2eorg%2fns%23%22%20xmlns%3ardf%3d%22http%3a%2f%2fwww%2ew3%2eorg%2f1999%2f02%2f22%2drdf%2dsyntax%2dns%23%22%20%20xmlns%3asvg%3d%22http%3a%2f%2fwww%2ew3%2eorg%2f2000%2fsvg%22%20xmlns%3d%22http%3a%2f%2fwww%2ew3%2eorg%2f2000%2fsvg%22%20%20version%3d%221%2e1%22%20%20width%3d%22100%25%22%20%20height%3d%22100%25%22%20viewBox%3d%220%200%2010%2010%22%3e%3cg%20transform%3d%22translate%28%2d5%2e5772299%2c%2d26%2e54581%29%22%3e%3cpath%20d%3d%22m%2014%2e149807%2c31%2e130932%20c%200%2c%2d0%2e01241%200%2c%2d0%2e02481%20%2d0%2e0062%2c%2d0%2e03721%20L%2010%2e57723%2c28%2e153784%207%2e0108528%2c31%2e093719%20c%200%2c0%2e01241%20%2d0%2e0062%2c0%2e02481%20%2d0%2e0062%2c0%2e03721%20l%200%2c2%2e97715%20c%200%2c0%2e217084%200%2e1798696%2c0%2e396953%200%2e3969534%2c0%2e396953%20l%202%2e3817196%2c0%200%2c%2d2%2e38172%201%2e5878132%2c0%200%2c2%2e38172%202%2e381719%2c0%20c%200%2e217084%2c0%200%2e396953%2c%2d0%2e179869%200%2e396953%2c%2d0%2e396953%20l%200%2c%2d2%2e97715%20m%201%2e383134%2c%2d0%2e427964%20c%200%2e06823%2c%2d0%2e08063%200%2e05582%2c%2d0%2e210882%20%2d0%2e02481%2c%2d0%2e279108%20l%20%2d1%2e358324%2c%2d1%2e128837%200%2c%2d2%2e530576%20c%200%2c%2d0%2e111643%20%2d0%2e08683%2c%2d0%2e198477%20%2d0%2e198477%2c%2d0%2e198477%20l%20%2d1%2e190859%2c0%20c%20%2d0%2e111643%2c0%20%2d0%2e198477%2c0%2e08683%20%2d0%2e198477%2c0%2e198477%20l%200%2c1%2e209467%20%2d1%2e513384%2c%2d1%2e265289%20c%20%2d0%2e2605%2c%2d0%2e217083%20%2d0%2e682264%2c%2d0%2e217083%20%2d0%2e942764%2c0%20L%205%2e6463253%2c30%2e42386%20c%20%2d0%2e080631%2c0%2e06823%20%2d0%2e093036%2c0%2e198476%20%2d0%2e024809%2c0%2e279108%20l%200%2e3845485%2c0%2e458976%20c%200%2e031012%2c0%2e03721%200%2e080631%2c0%2e06203%200%2e1302503%2c0%2e06823%200%2e055821%2c0%2e0062%200%2e1054407%2c%2d0%2e01241%200%2e1488574%2c%2d0%2e04342%20l%204%2e2920565%2c%2d3%2e578782%204%2e292058%2c3%2e578782%20c%200%2e03721%2c0%2e03101%200%2e08063%2c0%2e04342%200%2e13025%2c0%2e04342%200%2e0062%2c0%200%2e01241%2c0%200%2e01861%2c0%200%2e04962%2c%2d0%2e0062%200%2e09924%2c%2d0%2e03101%200%2e130251%2c%2d0%2e06823%20l%200%2e384549%2c%2d0%2e458976%22%20%2f%3e%3c%2fg%3e%3c%2fsvg%3e'));
+            $link_today.addClass('icon-home');
+            $link_today.prop('alt', translate(locale, 'today'));
+            $link_today.prop('title', translate(locale, 'today'));
+            $link_today.click(function () {
+                setToNow($picker);
+            });
+            $header.append($link_today);
+        }
+        $header.append($link_before_month);
+        $header.append($now_month);
+        $header.append($link_next_month);
+        $table.children().remove();
+        var $tr = $('<tr>');
+        $table.append($tr);
+        var firstDayDiff = 7 + firstDayOfWeek;
+        var daysOfWeek = translate(locale, 'days');
+        for (var i = 0; i < 7; i++) {
+            var $td = $('<th>');
+            $td.text(daysOfWeek[((i + firstDayDiff) % 7)]);
+            $tr.append($td);
+        }
+        var cellNum = Math.ceil((firstWday + lastDay) / 7) * 7;
+        var i = 0;
+        if (firstWday < 0) {
+            i = -7;
+        }
+        var realDayObj = new Date(date.getTime());
+        realDayObj.setHours(0);
+        realDayObj.setMinutes(0);
+        realDayObj.setSeconds(0);
+        for (var zz = 0; i < cellNum; i++) {
+            var realDay = i + 1 - firstWday;
+            var isPast = isPastMonth || (isCurrentMonth && realDay < todayDate.getDate());
+            if (i % 7 == 0) {
+                $tr = $('<tr>');
+                $table.append($tr);
+            }
+            var $td = $('<td>');
+            $td.data("day", realDay);
+            $tr.append($td);
+            if (firstWday > i) {
+                $td.text(beforeMonthLastDay + realDay);
+                $td.addClass('day_another_month');
+                $td.data("dateStr", dateBeforeMonth.getFullYear() + "/" + (dateBeforeMonth.getMonth() + 1) + "/" + (beforeMonthLastDay + realDay));
+                realDayObj.setDate(beforeMonthLastDay + realDay);
+                realDayObj.setMonth(dateBeforeMonth.getMonth());
+                realDayObj.setYear(dateBeforeMonth.getFullYear());
+            } else if (i < firstWday + lastDay) {
+                $td.text(realDay);
+                $td.data("dateStr", (date.getFullYear()) + "/" + (date.getMonth() + 1) + "/" + realDay);
+                realDayObj.setDate(realDay);
+                realDayObj.setMonth(date.getMonth());
+                realDayObj.setYear(date.getFullYear());
+            } else {
+                $td.text(realDay - lastDay);
+                $td.addClass('day_another_month');
+                $td.data("dateStr", dateNextMonth.getFullYear() + "/" + (dateNextMonth.getMonth() + 1) + "/" + (realDay - lastDay));
+                realDayObj.setDate(realDay - lastDay);
+                realDayObj.setMonth(dateNextMonth.getMonth());
+                realDayObj.setYear(dateNextMonth.getFullYear());
+            }
+            if (((i + firstDayDiff) % 7) == 0) {
+                $td.addClass('wday_sun');
+            } else if (((i + firstDayDiff) % 7) == 6) {
+                $td.addClass('wday_sat');
+            }
+            if (realDay == date.getDate()) {
+                $td.addClass('active');
+            }
+            if (isCurrentMonth && realDay == todayDate.getDate()) {
+                $td.addClass('today');
+            }
+            var realDayObjMN = new Date(realDayObj.getTime());
+            realDayObjMN.setHours(23);
+            realDayObjMN.setMinutes(59);
+            realDayObjMN.setSeconds(59);
+            if (((minDate != null) && (minDate > realDayObjMN.getTime())) || ((maxDate != null) && (maxDate < realDayObj.getTime()))) {
+                $td.addClass('out_of_range');
+            } else if (isFutureOnly && isPast) {
+                $td.addClass('day_in_past');
+            } else {
+                $td.click(function () {
+                    if ($(this).hasClass('hover')) {
+                        $(this).removeClass('hover');
+                    }
+                    $(this).addClass('active');
+                    var $picker = getParentPickerObject($(this));
+                    var targetDate = new Date($(this).data("dateStr"));
+                    var selectedDate = getPickedDate($picker);
+                    draw($picker, {
+                        "isAnim": false,
+                        "isOutputToInputObject": true
+                    }, targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate(), selectedDate.getHours(), selectedDate.getMinutes());
+                    if ($picker.data("dateOnly") == true && $picker.data("isInline") == false && $picker.data("closeOnSelected")) {
+                        ActivePickerId = -1;
+                        $picker.hide();
+                    }
+                });
+                $td.hover(function () {
+                    if (!$(this).hasClass('active')) {
+                        $(this).addClass('hover');
+                    }
+                }, function () {
+                    if ($(this).hasClass('hover')) {
+                        $(this).removeClass('hover');
+                    }
+                });
+            }
+        }
+        if ($picker.data("dateOnly") == true) {
+            $timelist.css("display", "none");
+        } else {
+            $timelist.children().remove();
+            updateTimeListHeight($picker);
+            realDayObj = new Date(date.getTime());
+            var hour = minTime[0];
+            var min = minTime[1];
+            while (hour * 100 + min < maxTime[0] * 100 + maxTime[1]) {
+                var $o = $('<div>');
+                var isPastTime = hour < todayDate.getHours() || (hour == todayDate.getHours() && min < todayDate.getMinutes());
+                var isPast = isCurrentDay && isPastTime;
+                $o.addClass('timelist_item');
+                $o.text(zpadding(hour) + ":" + zpadding(min));
+                $o.data("hour", hour);
+                $o.data("min", min);
+                $timelist.append($o);
+                realDayObj.setHours(hour);
+                realDayObj.setMinutes(min);
+                if (((minDate != null) && (minDate > realDayObj.getTime())) || ((maxDate != null) && (maxDate < realDayObj.getTime()))) {
+                    $o.addClass('out_of_range');
+                } else if (isFutureOnly && isPast) {
+                    $o.addClass('time_in_past');
+                } else {
+                    $o.click(function () {
+                        if ($(this).hasClass('hover')) {
+                            $(this).removeClass('hover');
+                        }
+                        $(this).addClass('active');
+                        var $picker = getParentPickerObject($(this));
+                        var date = getPickedDate($picker);
+                        var hour = $(this).data("hour");
+                        var min = $(this).data("min");
+                        draw($picker, {
+                            "isAnim": false,
+                            "isOutputToInputObject": true
+                        }, date.getFullYear(), date.getMonth(), date.getDate(), hour, min);
+                        if ($picker.data("isInline") == false && $picker.data("closeOnSelected")) {
+                            ActivePickerId = -1;
+                            $picker.hide();
+                        }
+                    });
+                    $o.hover(function () {
+                        if (!$(this).hasClass('active')) {
+                            $(this).addClass('hover');
+                        }
+                    }, function () {
+                        if ($(this).hasClass('hover')) {
+                            $(this).removeClass('hover');
+                        }
+                    });
+                }
+                if (hour == date.getHours() && min == date.getMinutes()) {
+                    $o.addClass('active');
+                    timelist_activeTimeCell_offsetTop = $o.offset().top;
+                }
+                if (isFutureOnly && isPast) {
+                    $o.addClass('time_in_past');
+                } else {
+                    $o.click(function () {
+                        if ($(this).hasClass('hover')) {
+                            $(this).removeClass('hover');
+                        }
+                        $(this).addClass('active');
+                        var $picker = getParentPickerObject($(this));
+                        var date = getPickedDate($picker);
+                        var hour = $(this).data("hour");
+                        var min = $(this).data("min");
+                        if (date) {
+                            draw($picker, {
+                                "isAnim": false,
+                                "isOutputToInputObject": true
+                            }, date.getFullYear(), date.getMonth(), date.getDate(), hour, min);
+                        }
+                        if ($picker.data("isInline") == false && $picker.data("closeOnSelected")) {
+                            ActivePickerId = -1;
+                            $picker.hide();
+                        }
+                    });
+                    $o.hover(function () {
+                        if (!$(this).hasClass('active')) {
+                            $(this).addClass('hover');
+                        }
+                    }, function () {
+                        if ($(this).hasClass('hover')) {
+                            $(this).removeClass('hover');
+                        }
+                    });
+                }
+                min += minuteInterval;
+                if (min >= 60) {
+                    min = min - 60;
+                    hour++;
+                }
+            }
+            if (isScroll == true) {
+                $timelist.scrollTop(timelist_activeTimeCell_offsetTop - $timelist.offset().top);
+            } else {
+                $timelist.scrollTop(drawBefore_timeList_scrollTop);
+            }
+        }
+        if (isAnim == true) {
+            if (changePoint == "calendar") {
+                $calendar.fadeTo("fast", 1.0);
+            } else if (changePoint == "timelist") {
+                $timelist.fadeTo("fast", 1.0);
+            }
+        }
+        if (isOutputToInputObject == true) {
+            outputToInputObject($picker);
+        }
+    };
+    var init = function ($obj, opt) {
+        var $picker = $('<div>');
+        $picker.destroy = function () {
+            window.alert('destroy!');
+        };
+        $picker.addClass('datepicker');
+        $obj.append($picker);
+        if (!opt.current) {
+            opt.current = new Date();
+        } else {
+            var format = getDateFormat(opt.dateFormat, opt.locale, opt.dateOnly);
+            var date = parseDate(opt.current, format);
+            if (date) {
+                opt.current = date;
+            } else {
+                opt.current = new Date();
+            }
+        }
+        if (opt.inputObjectId != null) {
+            $picker.data("inputObjectId", opt.inputObjectId);
+        }
+        $picker.data("dateOnly", opt.dateOnly);
+        $picker.data("pickerId", PickerObjects.length);
+        $picker.data("dateFormat", opt.dateFormat);
+        $picker.data("locale", opt.locale);
+        $picker.data("firstDayOfWeek", opt.firstDayOfWeek);
+        $picker.data("animation", opt.animation);
+        $picker.data("closeOnSelected", opt.closeOnSelected);
+        $picker.data("timelistScroll", opt.timelistScroll);
+        $picker.data("calendarMouseScroll", opt.calendarMouseScroll);
+        $picker.data("todayButton", opt.todayButton);
+        $picker.data('futureOnly', opt.futureOnly);
+        $picker.data('onShow', opt.onShow);
+        $picker.data('onHide', opt.onHide);
+        $picker.data('onInit', opt.onInit);
+        var minDate = Date.parse(opt.minDate);
+        if (isNaN(minDate)) {
+            $picker.data('minDate', null);
+        } else {
+            $picker.data('minDate', minDate);
+        }
+        var maxDate = Date.parse(opt.maxDate);
+        if (isNaN(maxDate)) {
+            $picker.data('maxDate', null);
+        } else {
+            $picker.data('maxDate', maxDate);
+        }
+        $picker.data("state", 0);
+        if (5 <= opt.minuteInterval && opt.minuteInterval <= 30) {
+            $picker.data("minuteInterval", opt.minuteInterval);
+        } else {
+            $picker.data("minuteInterval", 30);
+        }
+        opt.minTime = opt.minTime.split(':');
+        opt.maxTime = opt.maxTime.split(':');
+        if (!((opt.minTime[0] >= 0) && (opt.minTime[0] < 24))) {
+            opt.minTime[0] = "00";
+        }
+        if (!((opt.maxTime[0] >= 0) && (opt.maxTime[0] < 24))) {
+            opt.maxTime[0] = "23";
+        }
+        if (!((opt.minTime[1] >= 0) && (opt.minTime[1] < 60))) {
+            opt.minTime[1] = "00";
+        }
+        if (!((opt.maxTime[1] >= 0) && (opt.maxTime[1] < 24))) {
+            opt.maxTime[1] = "59";
+        }
+        opt.minTime[0] = parseInt(opt.minTime[0]);
+        opt.minTime[1] = parseInt(opt.minTime[1]);
+        opt.maxTime[0] = parseInt(opt.maxTime[0]);
+        opt.maxTime[1] = parseInt(opt.maxTime[1]);
+        $picker.data('minTime', opt.minTime);
+        $picker.data('maxTime', opt.maxTime);
+        var $header = $('<div>');
+        $header.addClass('datepicker_header');
+        $picker.append($header);
+        var $inner = $('<div>');
+        $inner.addClass('datepicker_inner_container');
+        $picker.append($inner);
+        var $calendar = $('<div>');
+        $calendar.addClass('datepicker_calendar');
+        var $table = $('<table>');
+        $table.addClass('datepicker_table');
+        $calendar.append($table);
+        $inner.append($calendar);
+        var $timelist = $('<div>');
+        $timelist.addClass('datepicker_timelist');
+        $inner.append($timelist);
+        $picker.hover(function () {
+            ActivePickerId = $(this).data("pickerId");
+        }, function () {
+            ActivePickerId = -1;
+        });
+        if (opt.calendarMouseScroll) {
+            if (window.sidebar) {
+                $calendar.bind('DOMMouseScroll', function (e) {
+                    var $picker = getParentPickerObject($(this));
+                    var delta = e.originalEvent.detail;
+                    if (delta > 0) {
+                        nextMonth($picker);
+                    } else {
+                        beforeMonth($picker);
+                    }
+                    return false;
+                });
+            } else {
+                $calendar.bind('mousewheel', function (e) {
+                    var $picker = getParentPickerObject($(this));
+                    if (e.originalEvent.wheelDelta / 120 > 0) {
+                        beforeMonth($picker);
+                    } else {
+                        nextMonth($picker);
+                    }
+                    return false;
+                });
+            }
+        }
+        PickerObjects.push($picker);
+        draw_date($picker, {"isAnim": true, "isOutputToInputObject": opt.autodateOnStart}, opt.current);
+    };
+    var getDefaults = function () {
+        return {
+            "current": null,
+            "dateFormat": "default",
+            "locale": "en",
+            "animation": true,
+            "minuteInterval": 30,
+            "firstDayOfWeek": 0,
+            "closeOnSelected": false,
+            "timelistScroll": true,
+            "calendarMouseScroll": true,
+            "todayButton": true,
+            "dateOnly": false,
+            "futureOnly": false,
+            "minDate": null,
+            "maxDate": null,
+            "autodateOnStart": true,
+            "minTime": "00:00",
+            "maxTime": "23:59",
+            "onShow": null,
+            "onHide": null
+        };
+    };
+    $.fn.dtpicker = function (config) {
+        var date = new Date();
+        var defaults = getDefaults();
+        defaults.inputObjectId = undefined;
+        var options = $.extend(defaults, config);
+        return this.each(function (i) {
+            init($(this), options);
+        });
+    };
+    $.fn.appendDtpicker = function (config) {
+        var date = new Date();
+        var defaults = getDefaults();
+        defaults.inline = false;
+        var options = $.extend(defaults, config);
+        return this.each(function (i) {
+            var input = this;
+            if (0 < $(PickerObjects[$(input).data('pickerId')]).length) {
+                window.console && console.log("dtpicker - Already exist appended picker");
+                return;
+            }
+            var inputObjectId = InputObjects.length;
+            InputObjects.push(input);
+            options.inputObjectId = inputObjectId;
+            var date, strDate, strTime;
+            if ($(input).val() != null && $(input).val() != "") {
+                options.current = $(input).val();
+            }
+            var $d = $('<div>');
+            if (options.inline == false) {
+                $d.css("position", "absolute");
+            }
+            $d.insertAfter(input);
+            var pickerId = PickerObjects.length;
+            var $picker_parent = $($d).dtpicker(options);
+            var $picker = $picker_parent.children('.datepicker');
+            $(input).data('pickerId', pickerId);
+            $(input).keyup(function () {
+                var $input = $(this);
+                var $picker = $(PickerObjects[$input.data('pickerId')]);
+                if ($input.val() != null && ($input.data('beforeVal') == null || ($input.data('beforeVal') != null && $input.data('beforeVal') != $input.val()))) {
+                    var format = getDateFormat($picker.data('dateFormat'), $picker.data('locale'), $picker.data('dateOnly'));
+                    var date = parseDate($input.val(), format);
+                    if (date) {
+                        draw_date($picker, {"isAnim": true, "isOutputToInputObject": false}, date);
+                    }
+                }
+                $input.data('beforeVal', $input.val())
+            });
+            $(input).change(function () {
+                $(this).trigger('keyup');
+            });
+            if (options.inline == true) {
+                $picker.data('isInline', true);
+            } else {
+                $picker.data('isInline', false);
+                $picker_parent.css({"zIndex": 100});
+                $picker.css("width", "auto");
+                $picker.hide();
+                $(input).on('click, focus', function () {
+                    var $input = $(this);
+                    var $picker = $(PickerObjects[$input.data('pickerId')]);
+                    var handler = new PickerHandler($picker, $input);
+                    var is_showed = handler.isShow();
+                    if (!is_showed) {
+                        handler.show();
+                        var func = $picker.data('onShow');
+                        if (func != null) {
+                            window.console && console.log("dtpicker- Call the onShow handler");
+                            func(handler);
+                        }
+                    }
+                });
+            }
+            var handler = new PickerHandler($picker, $(input));
+            var func = $picker.data('onInit');
+            if (func != null) {
+                window.console && console.log("dtpicker- Call the onInit handler");
+                func(handler);
+            }
+        });
+    };
+    var methods = {
+        show: function () {
+            var $input = $(this);
+            var $picker = $(PickerObjects[$input.data('pickerId')]);
+            if ($picker != null) {
+                var handler = new PickerHandler($picker, $input);
+                handler.show();
+            }
+        }, hide: function () {
+            var $input = $(this);
+            var $picker = $(PickerObjects[$input.data('pickerId')]);
+            if ($picker != null) {
+                var handler = new PickerHandler($picker, $input);
+                handler.hide();
+            }
+        }, destroy: function () {
+            var $input = $(this);
+            var $picker = $(PickerObjects[$input.data('pickerId')]);
+            if ($picker != null) {
+                var handler = new PickerHandler($picker, $input);
+                handler.destroy();
+            }
+        }
+    };
+    $.fn.handleDtpicker = function (method) {
+        if (methods[method]) {
+            return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
+        } else if (typeof method === 'object' || !method) {
+            return methods.init.apply(this, arguments);
+        } else {
+            $.error('Method ' + method + ' does not exist on jQuery.handleDtpicker');
+        }
+    };
+    $(function () {
+        $('body').click(function () {
+            for (var i = 0; i < PickerObjects.length; i++) {
+                var $picker = $(PickerObjects[i]);
+                if (ActivePickerId != i) {
+                    if ($picker.data("inputObjectId") != null && $picker.data("isInline") == false && $picker.css('display') != 'none') {
+                        var $input = InputObjects[$picker.data("inputObjectId")];
+                        var handler = new PickerHandler($picker, $input);
+                        handler.hide();
+                        var func = $picker.data('onHide');
+                        if (func != null) {
+                            window.console && console.log("dtpicker- Call the onHide handler");
+                            func(handler);
+                        }
+                    }
+                }
+            }
+        });
+    });
+})(jQuery);
+(function ($) {
+    $.fn.portamento = function (options) {
+        var thisWindow = $(window);
+        var thisDocument = $(document);
+        $.fn.viewportOffset = function () {
+            var win = $(window);
+            var offset = $(this).offset();
+            return {left: offset.left - win.scrollLeft(), top: offset.top - win.scrollTop()}
+        };
+
+        function positionFixedSupported() {
+            var container = document.body;
+            if (document.createElement && container && container.appendChild && container.removeChild) {
+                var el = document.createElement("div");
+                if (!el.getBoundingClientRect) {
+                    return null
+                }
+                el.innerHTML = "x";
+                el.style.cssText = "position:fixed;top:100px;";
+                container.appendChild(el);
+                var originalHeight = container.style.height, originalScrollTop = container.scrollTop;
+                container.style.height = "3000px";
+                container.scrollTop = 500;
+                var elementTop = el.getBoundingClientRect().top;
+                container.style.height = originalHeight;
+                var isSupported = elementTop === 100;
+                container.removeChild(el);
+                container.scrollTop = originalScrollTop;
+                return isSupported
+            }
+            return null
+        }
+
+        function getScrollerWidth() {
+            var scr = null;
+            var inn = null;
+            var wNoScroll = 0;
+            var wScroll = 0;
+            scr = document.createElement("div");
+            scr.style.position = "absolute";
+            scr.style.top = "-1000px";
+            scr.style.left = "-1000px";
+            scr.style.width = "100px";
+            scr.style.height = "50px";
+            scr.style.overflow = "hidden";
+            inn = document.createElement("div");
+            inn.style.width = "100%";
+            inn.style.height = "200px";
+            scr.appendChild(inn);
+            document.body.appendChild(scr);
+            wNoScroll = inn.offsetWidth;
+            scr.style.overflow = "auto";
+            wScroll = inn.offsetWidth;
+            document.body.removeChild(document.body.lastChild);
+            return (wNoScroll - wScroll)
+        }
+
+        var opts = $.extend({}, $.fn.portamento.defaults, options);
+        var panel = this;
+        var wrapper = opts.wrapper;
+        var gap = opts.gap;
+        var disableWorkaround = opts.disableWorkaround;
+        var fullyCapableBrowser = positionFixedSupported();
+        if (panel.length != 1) {
+            return this
+        }
+        if (!fullyCapableBrowser && disableWorkaround) {
+            return this
+        }
+        panel.wrap('<div id="portamento_container" />');
+        var float_container = $("#portamento_container");
+        float_container.css({"min-height": panel.outerHeight(), width: panel.outerWidth()});
+        var panelOffset = panel.offset().top;
+        var panelMargin = parseFloat(panel.css("marginTop").replace(/auto/, 0));
+        var realPanelOffset = panelOffset - panelMargin;
+        var topScrollBoundary = realPanelOffset - gap;
+        var wrapperPaddingFix = parseFloat(wrapper.css("paddingTop").replace(/auto/, 0));
+        var containerMarginFix = parseFloat(float_container.css("marginTop").replace(/auto/, 0));
+        var ieFix = 0;
+        var isMSIE = /*@cc_on!@*/0;
+        if (isMSIE) {
+            ieFix = getScrollerWidth() + 4
+        }
+        thisWindow.bind("scroll.portamento", function () {
+            if (thisWindow.height() > panel.outerHeight() && thisWindow.width() >= (thisDocument.width() - ieFix)) {
+                var y = thisDocument.scrollTop();
+                if (y >= (topScrollBoundary)) {
+                    if ((panel.innerHeight() - wrapper.viewportOffset().top) - wrapperPaddingFix + gap >= wrapper.height()) {
+                        if (panel.hasClass("fixed") || thisWindow.height() >= panel.outerHeight()) {
+                            panel.removeClass("fixed");
+                            panel.css("top", (wrapper.height() - panel.innerHeight()) + "px")
+                        }
+                    } else {
+                        panel.addClass("fixed");
+                        if (fullyCapableBrowser) {
+                            panel.css("top", gap + "px")
+                        } else {
+                            panel.clearQueue();
+                            panel.css("position", "absolute").animate({top: (0 - float_container.viewportOffset().top + gap)})
+                        }
+                    }
+                } else {
+                    panel.removeClass("fixed");
+                    panel.css("top", "0")
+                }
+            } else {
+                panel.removeClass("fixed")
+            }
+        });
+        thisWindow.bind("resize.portamento", function () {
+            if (thisWindow.height() <= panel.outerHeight() || thisWindow.width() < thisDocument.width()) {
+                if (panel.hasClass("fixed")) {
+                    panel.removeClass("fixed");
+                    panel.css("top", "0")
+                }
+            } else {
+                thisWindow.trigger("scroll.portamento")
+            }
+        });
+        thisWindow.bind("orientationchange.portamento", function () {
+            thisWindow.trigger("resize.portamento")
+        });
+        thisWindow.trigger("scroll.portamento");
+        return this
+    };
+    $.fn.portamento.defaults = {wrapper: $("body"), gap: 10, disableWorkaround: false}
+})(jQuery);
+(function ($) {
+    var _util = CS.util;
+    var _nodes = {}, _autoHideTime = 1000, _autoHideTimeout = null;
+    var _boxTpl = ['<div id="topTipBox" class="top-tipbox hidden">', '<p data-node="content"></p>', '</div>'].join('');
+
+    function show(content, closeCallback) {
+        if (!content) {
+            return;
+        }
+        if (_autoHideTimeout) {
+            clearTimeout(_autoHideTimeout);
+        }
+        _nodes.$box = $('#topTipBox');
+        if (!_nodes.$box || _nodes.$box.length === 0) {
+            $(document.body).append(_boxTpl);
+            $(window).on('resize', function () {
+                _util.throttle(setPosition);
+            });
+            _nodes.$box = $('#topTipBox');
+        }
+        _nodes.$content = _nodes.$box.find('[data-node="content"]');
+        _nodes.$content.text(content);
+        setPosition();
+        _nodes.$box.fadeIn('fast');
+        _autoHideTimeout = setTimeout(function () {
+            hide(closeCallback);
+        }, _autoHideTime);
+    }
+
+    function hide(closeCallback) {
+        if (_autoHideTimeout) {
+            clearTimeout(_autoHideTimeout);
+        }
+        _nodes.$box.fadeOut('slow', function () {
+            if (typeof closeCallback === 'function') {
+                closeCallback();
+            }
+        });
+    }
+
+    function setPosition() {
+        var left = ($(window).width() - _nodes.$box.width()) / 2;
+        _nodes.$box.css('left', left + 'px');
+    }
+
+    _util.initNameSpace("CS");
+    CS.topTip = {'show': show, 'hide': hide, 'setPosition': setPosition};
+})(jQuery);
+(function ($) {
+    var _util = CS.util, _mask = CS.mask, _dialog = CS.dialog, _topTip = CS.topTip;
+    var _params = {}, _isSubmitting = 0, _maskByCreateVolumePopup = null;
+    var _ajaxUrls = {'submitVolume': '/Contentv2/Booksubmit/volumeManageSubmit.html'};
+    var _createVolumePopupTpl = ['<div id="createVolumePopup" class="popupWrap w380 hidden">', '<a data-node="close" class="icon closePopup" href="javascript:" title="关闭"></a>', '<h3 data-node="volumeSort"></h3>', '<div class="popupBody p30">', '<div class="popupContent select">', '<p>分卷名称</p>', '<p class="mb20">', '<input data-node="volumeTitleInput" class="longInput" type="text" value="">', '</p>', '<p>分卷介绍</p>', '<textarea data-node="volumeDescInput"></textarea>', '</div>', '<div class="confirmBtn">', '<a data-node="confirm" class="button full" href="javascript:">确定</a>', '<div></div>', '</div>', '</div>', '</div>'].join('');
+
+    function init(bookId, isVipNovel, newVolumeName) {
+        _params.bookId = bookId || 0;
+        _params.isVipNovel = isVipNovel || -1;
+        _params.newVolumeName = newVolumeName || '新建分卷';
+    }
+
+    function _bindEventByCreateVolumePopup() {
+        var $popup = $('#createVolumePopup');
+        $popup.find('[data-node="close"]').on('click', function (event) {
+            event.preventDefault();
+            closeCreateVolumePopup();
+        });
+        $popup.find('[data-node="confirm"]').on('click', function (event) {
+            event.preventDefault();
+            submitVolume({
+                'bookId': _params.bookId,
+                'type': 'add',
+                'isVip': _params.isVipNovel,
+                'volumeName': $popup.find('[data-node="volumeTitleInput"]').val(),
+                'volumeDesc': $popup.find('[data-node="volumeDescInput"]').val(),
+                'alertType': 'alert',
+                'successCallback': _refreshCurrentPage
+            });
+        });
+    }
+
+    function openCreateVolumePopup() {
+        var $popup = $('#createVolumePopup');
+        if ($popup.length === 0) {
+            $(document.body).append(_createVolumePopupTpl);
+            $popup = $('#createVolumePopup');
+            _bindEventByCreateVolumePopup();
+            _maskByCreateVolumePopup = new _mask($popup);
+        }
+        if (_maskByCreateVolumePopup) {
+            $popup.find('[data-node="volumeSort"]').text(_params.newVolumeName);
+            $popup.find('[data-node="volumeTitleInput"]').val('');
+            $popup.find('[data-node="volumeDescInput"]').val('');
+            _maskByCreateVolumePopup.open();
+        }
+    }
+
+    function closeCreateVolumePopup() {
+        if (_maskByCreateVolumePopup) {
+            _maskByCreateVolumePopup.close();
+        }
+    }
+
+    function _refreshCurrentPage() {
+        location.href = location.href;
+    }
+
+    function _checkVolumeInfo(volumename, volumedesc) {
+        volumename = $.trim(volumename);
+        volumedesc = $.trim(volumedesc);
+        if (volumename.length > 20) {
+            _dialog.alert('请输入最多20字作为卷名称!');
+            return false;
+        }
+        if (volumedesc.length > 140) {
+            _dialog.alert('请输入最多140字介绍该分卷!');
+            return false;
+        }
+        return true;
+    }
+
+    function submitVolume(options) {
+        if (!options) {
+            return;
+        }
+        options = $.extend({
+            'bookId': _params.bookId || 0,
+            'type': 'update',
+            'isVip': _params.isVipNovel || -1,
+            'volumeName': '',
+            'volumeDesc': '',
+            'volumeId': 0,
+            'alertType': 'topTip',
+            'successCallback': function () {
+            }
+        }, options);
+        if (options.type !== 'delete') {
+            var isPass = _checkVolumeInfo(options.volumeName, options.volumeDesc);
+            if (!isPass) {
+                return;
+            }
+        }
+        if (_isSubmitting) {
+            return;
+        }
+        _isSubmitting = 1;
+        var alertTip = _topTip.show;
+        if (options.alertType === 'alert') {
+            alertTip = _dialog.alert;
+        }
+        _util.request({
+            url: _ajaxUrls.submitVolume,
+            data: {
+                'CBID': options.bookId,
+                'type': options.type,
+                'CVID': options.volumeId,
+                'isvip': options.isVip,
+                'volumename': options.volumeName,
+                'volumedesc': options.volumeDesc,
+                '__hash__': $('input[name="__hash__"]').val()
+            },
+            type: 'post',
+            dataType: "json",
+            success: function (json) {
+                if (!json) {
+                    return;
+                }
+                if (json.status) {
+                    closeCreateVolumePopup();
+                    alertTip(json.info || '操作成功', function () {
+                        if (typeof options.successCallback === 'function') {
+                            options.successCallback();
+                        }
+                    });
+                }
+            },
+            complete: function () {
+                _isSubmitting = 0;
+            }
+        });
+    }
+
+    _util.initNameSpace("CS.page.bookManage");
+    CS.page.bookManage.volume = {
+        'init': init,
+        'submitVolume': submitVolume,
+        'openCreateVolumePopup': openCreateVolumePopup
+    };
+})(jQuery);
+(function ($) {
+    var _util = CS.util, _dialog = CS.dialog;
+
+    function show($fileBtn, $previewImg, configs) {
+        if (!$fileBtn || $fileBtn.length === 0 || !$previewImg || $previewImg.length === 0) {
+            return false;
+        }
+        var defaults = {
+            'supportFileTypes': 'jpg',
+            'fileTypeErrorTips': '这个图片的格式一定要是JPG',
+            'imgMaxSize': 5120,
+            'imgMaxSizeTips': '您上传的图片大于5MB'
+        }, options = $.extend(true, {}, defaults, configs);
+        var fileBtn = $fileBtn.get(0), reg = new RegExp('\\.(' + options.supportFileTypes + ')$', 'i');
+        if (!reg.test($fileBtn.val())) {
+            _dialog.alert(options.fileTypeErrorTips);
+            $fileBtn.focus();
+            return false;
+        }
+        if (fileBtn.files && fileBtn.files.length > 0) {
+            var file = fileBtn.files[0];
+            if (file.size >= options.imgMaxSize * 1024) {
+                _dialog.alert(options.imgMaxSizeTips);
+                $fileBtn.focus();
+                return false;
+            }
+            var fileReader = new FileReader();
+            fileReader.onload = function (e) {
+                $previewImg.attr('src', e.target.result).show();
+            };
+            fileReader.readAsDataURL(file);
+        }
+        return true;
+    }
+
+    function showv2($fileBtn, $previewImg, configs) {
+        if (!$fileBtn || $fileBtn.length === 0 || !$previewImg || $previewImg.length === 0 || $fileBtn.val() == '') {
+            return false;
+        }
+        var defaults = {
+            'supportFileTypes': 'jpg',
+            'fileTypeErrorTips': '这个图片的格式一定要是JPG',
+            'imgMaxSize': 5120,
+            'imgMaxSizeTips': '您上传的图片大于5MB'
+        }, options = $.extend(true, {}, defaults, configs);
+        var fileBtn = $fileBtn.get(0), reg = new RegExp('\\.(' + options.supportFileTypes + ')$', 'i');
+        if (!reg.test($fileBtn.val())) {
+            _dialog.alert(options.fileTypeErrorTips);
+            $fileBtn.focus();
+            return false;
+        }
+        if (fileBtn.files && fileBtn.files.length > 0) {
+            var file = fileBtn.files[0];
+            if (file.size >= options.imgMaxSize * 1024) {
+                _dialog.alert(options.imgMaxSizeTips);
+                $fileBtn.focus();
+                return false;
+            }
+            var fileReader = new FileReader();
+            fileReader.onload = function (e) {
+                $previewImg.attr('src', e.target.result).show();
+            };
+            fileReader.readAsDataURL(file);
+        }
+        return true;
+    }
+
+    _util.initNameSpace("CS");
+    CS.localImg = {'show': show, 'showv2': showv2};
+})(jQuery);
+(function ($) {
+    var _util = CS.util, _uiBinder = CS.uiBinder, _mask = CS.mask, _topTip = CS.topTip, _dialog = CS.dialog,
+        _volume = null, _createChapter = null;
+    var _params = {}, _nodes = {}, _maskByPublishPopup = null, _isLoading = 0, _isLoadingWord = 0, _isSubmitting = 0,
+        _isJumpingPage = 0, _isTipByExitEdit = 0, _tipByExitEdit = '您编辑的章节内容尚未保存，确定要离开吗？', _blackColor = '#333',
+        _grayColor = '#BBB', _currentDraftData = {};
+    var _chapterType = {'public': '-1', 'vip': '1', 'speak': '2'};
+    var _ajaxUrls = {
+        'getDraftInfo': '/Contentv2/Booknovels/ajaxGetchapter.html',
+        'getWords': '/Contentv2/Booknovels/ajaxGetwords.html',
+        'addGuidedLog': '/Contentv2/Authors/addGuideBookLog.html',
+        'addGuideChapterLog': '/Contentv2/Authors/addGuideChapterLog.html',
+        'deleteDraft': '/Contentv2/Booksubmit/ajaxChapterDel.html',
+        'publishDraft': '/Contentv2/Booksubmit/ajaxChapterPub.html'
+    };
+    var _draftItemTpl = ['<li data-chapterid="<%=data.CCID%>" data-volumeid="<%=isPublishByTime ? data.CVID : 0%>">', '<div class="sectionBox">', '<p>', '<em><%=data.chaptertitle || ""%></em>', '</p>', '<p class="f12">', '<i>', '<%if isPublishByTime%>', '<span class="icon time"></span>', '<%/if%>', '<%if isPublishByTime%>', '<%=data.publishtime%>', '<%else%>', '<%=data.updatetime%>', '<%/if%>', '</i>', '共<%=data.actualwords || 0%>字', '</p>', '</div>', '</li>'].join('');
+    var _newDraftItemTpl = ['<li data-node="newDraftItem" class="act">', '<div class="sectionBox">', '<p>', '<em>无标题</em>', '</p>', '<p class="f12">', '<i>&nbsp;</i>', '</p>', '</div>', '</li>'].join('');
+
+    function init(bookId, isGuide, isGuideChapter, isCreateChapter, chapterTmpUrl, _tinymce, fineLayoutType) {
+        _params.bookId = bookId || 0;
+        _params.isGuide = isGuide || 0;
+        _params.isGuideChapter = isGuideChapter || '0';
+        _params.isCreateChapter = isCreateChapter || '0';
+        _params.chapterTmpUrl = chapterTmpUrl || '0';
+        _params._tinymce = _tinymce || '', _params.isfinelayout = fineLayoutType || '';
+        _volume = CS.page.bookManage.volume;
+        _nodes.$volumeBox = $('#volumeBox');
+        _nodes.$selectedVolume = $('#selectedVolume');
+        _nodes.$chapterTypeBox = $('#chapterTypeBox');
+        _nodes.$selectedChapterType = $('#selectedChapterType');
+        setFormContent();
+        _createChapter = CS.page.tinymce.create_chapter;
+        _bindEvent();
+        _bindEventByEditDraft();
+        _bindEventBySelect();
+        _bindEventByPublishPopup();
+        _bindEventBySlimScroll();
+        _bindEventByBubble();
+        _renderFirstDraft();
+        _setTipByRefreshPage();
+        setTimeout(_setGuide, 200);
+    }
+
+    function setFormContent() {
+        $("#showPublishPopupBtn,#saveDraftBtn,#checkContentWordsBtn").click(function () {
+            if (_params.isfinelayout == 1) {
+                $("#chapterContentInput").val(_params._tinymce.activeEditor.getContent());
+            }
+        });
+    }
+
+    function _renderFirstDraft() {
+        if (_params.isCreateChapter == '1') {
+            _editDraft();
+            return;
+        }
+        var $firstDraft = $('#draftList li').eq(0), chapterId = $firstDraft.attr('data-chapterid');
+        if (chapterId) {
+            $firstDraft.addClass('act');
+            _getSelectedDraftInfo(chapterId);
+        }
+    }
+
+    function _setGuide() {
+        if (_params.isGuide) {
+            var $mask = $('#mask');
+            $mask.appendTo(document.body).show();
+            $mask.on('click', _guideCallback);
+            $(window).joyride({'postRideCallback': _guideCallback});
+        }
+    }
+
+    function _guideCallback() {
+        $('#mask').hide();
+        $('.joyride-close-tip').parent().hide();
+        _util.request({url: _ajaxUrls.addGuidedLog, data: {}, type: 'post', isShowLoading: false, dataType: "json"});
+    }
+
+    function _bindEvent() {
+        $('select').comboSelect();
+        $('#draftList').on('click', 'li', function () {
+            var $el = $(this);
+            _confirmExitEdit(function () {
+                var CCID = $el.attr('data-chapterid');
+                $el.addClass('act').siblings().removeClass('act');
+                _getSelectedDraftInfo(CCID);
+            });
+            return false;
+        });
+        $('#createDraftBtn, #createDraftIconBtn').on('click', function () {
+            _confirmExitEdit(function () {
+                _currentDraftData = null;
+                _editDraft();
+            });
+            return false;
+        });
+    }
+
+    function _bindEventByBubble() {
+        $('#draftListWrap').append('<div id="sectionBubble" class="section-bubble"><p></p><span class="icon"></span></div>');
+        var $sectionList = $('#sectionList'), $sectionBubble = $('#sectionBubble'),
+            $bubbleText = $sectionBubble.find('p');
+        $sectionList.on('mouseover', '.sub-volume, .sectionBox p em', function () {
+            var $this = $(this), scrollWidth = $this.get(0).scrollWidth, offsetWidth = $this.width();
+            if (offsetWidth === scrollWidth) {
+                return;
+            }
+            var txtPos = $this.position(), bubbleTop = txtPos.top, bubbleLeft = txtPos.left;
+            $bubbleText.text($this.text());
+            $sectionBubble.css({top: bubbleTop + 115 + 'px', left: bubbleLeft + 'px'}).show();
+        });
+        $sectionList.on('mouseout', '.sub-volume, .sectionBox p em', function () {
+            $sectionBubble.hide();
+        });
+    }
+
+    function _bindEventBySlimScroll() {
+        $('#sectionList, #apply-List').slimScroll({
+            height: '740px',
+            disableFadeOut: true,
+            railVisible: true,
+            size: '10px',
+            wheelStep: 10,
+            borderRadius: 0,
+            railBorderRadius: 0,
+            allowPageScroll: true,
+            alwaysVisible: false,
+            distance: '-1px'
+        });
+        $('.say').slimScroll({height: '130px', disableFadeOut: true, railVisible: true, borderRadius: 0});
+    }
+
+    function _bindEventByEditDraft() {
+        var $chapterContentInput = $('#chapterContentInput');
+        $('#chapterTitleInput, #chapterContentInput, #authorSpeakInput').on('focus', function (event) {
+            event.preventDefault();
+            _focusIn($(this));
+        }).on('blur', function (event) {
+            event.preventDefault();
+            _focusOut($(this));
+        });
+        $('#checkContentWordsBtn').on('click', function () {
+            _getWords($chapterContentInput.val());
+            return false;
+        });
+        $('#saveDraftBtn').on('click', function () {
+            if (_checkDraftInfo()) {
+                if (!checkImgAndVideo()) {
+                    return false;
+                }
+                if (!checkImgSrc()) {
+                    return false;
+                }
+                _saveDraft();
+            }
+            return false;
+        });
+        $('#deleteDraftBtn').on('click', function () {
+            _deleteDraft(_currentDraftData.CCID);
+            return false;
+        });
+        $('#showPublishPopupBtn').on('click', function () {
+            if (_checkDraftInfo()) {
+                if (!checkImgAndVideo()) {
+                    return false;
+                }
+                if (!checkImgSrc()) {
+                    return false;
+                }
+                _getWordsFromPublish($('#chapterContentInput').val());
+                _openPublishPopup();
+            }
+            return false;
+        });
+    }
+
+    function checkImgSrc() {
+        if (_params.isfinelayout == 1 && !_createChapter.checkImgSrc()) {
+            return false;
+        }
+        return true;
+    }
+
+    function checkImgAndVideo() {
+        if (_params.isfinelayout == 1 && _createChapter.checkImgCount() > _createChapter.imgMaxNum) {
+            _topTip.show(_createChapter.imgError);
+            return false;
+        } else if (_params.isfinelayout == 1 && _createChapter.checkTXSPCount() > _createChapter.TXSPMaxNum) {
+            _topTip.show(_createChapter.videoError);
+            return false;
+        }
+        return true;
+    }
+
+    function _bindEventByPublishPopup() {
+        var $publishPopup = $('#publishPopup'), $publishDateBox = $('#publishDateBox'),
+            $publishTypeRadio = $publishPopup.find('[data-node="publishTypeRadio"]');
+        $publishTypeRadio.on('change', function () {
+            var publishType = $(this).val();
+            if (publishType === '2') {
+                $publishDateBox.hide();
+                $('#timing-tips-error').hide();
+            } else {
+                $publishDateBox.show();
+            }
+        });
+        $publishPopup.find('[data-node="close"]').click(function () {
+            _closePublishPopup();
+            return false;
+        });
+        $("#publishBtn").on("click", function () {
+            if (_util.checkBtnIsLoading($(this))) {
+                return false;
+            }
+            var timing = '';
+            if ($('#datePickerTrigger-set') && $('#timePickerTrigger')) {
+                timing = $('#datePickerTrigger-set').val() + '' + $('#timePickerTrigger').val();
+                timing = timing.replace(/(\d+)年(\d+)月(\d+)日(\d+)时(\d+)分/, "$1-$2-$3 $4:$5");
+            }
+            var options = {
+                'CBID': _params.bookId,
+                'CCID': $('#chapterIdHidden').val(),
+                'type': $('#typeHidden').val(),
+                'CVID': _nodes.$selectedVolume.attr('data-volumeid'),
+                'vipflag': _nodes.$selectedVolume.attr('data-vipflag'),
+                'chapterType': _nodes.$selectedChapterType.attr('data-chaptertype'),
+                'status': $publishTypeRadio.filter(':checked').val(),
+                'publishTime': timing,
+                'chapterTitle': $('#chapterTitleInput').val(),
+                'chapterContent': $('#chapterContentInput').val(),
+                'authorSpeak': $('#authorSpeakInput').val()
+            };
+            if (_checkDraftInfo()) {
+                if (!checkImgAndVideo()) {
+                    return false;
+                }
+                if (!checkImgSrc()) {
+                    return false;
+                }
+                _publishDraft($(this), options);
+            }
+            return false;
+        });
+    }
+
+    function _bindEventBySelect() {
+        var toggleListBox = function ($el, $listBox) {
+            if ($listBox.is(':hidden')) {
+                $el.addClass('combo-open');
+                $listBox.show();
+            } else {
+                $el.removeClass('combo-open');
+                $listBox.hide();
+            }
+        };
+        $('#openCreateVolumePopupBtn').on('click', function (event) {
+            event.preventDefault();
+            _volume.openCreateVolumePopup();
+        });
+        $.each([_nodes.$volumeBox, _nodes.$chapterTypeBox], function (index, $box) {
+            var $listBox = $box.find('[data-node="listBox"]'),
+                $selectedItemBox = $box.find('[data-node="selectedItemBox"]');
+            $selectedItemBox.on('click', function () {
+                toggleListBox($(this), $listBox);
+            });
+        });
+        var $volumeListBox = _nodes.$volumeBox.find('[data-node="listBox"]'),
+            $chapterTypeListBox = _nodes.$chapterTypeBox.find('[data-node="listBox"]');
+        $(document).on("click", function (e) {
+            if ($volumeListBox.is(':visible') || $chapterTypeListBox.is(':visible')) {
+                var $target = $(e.target);
+                if ($target.closest(_nodes.$volumeBox).length === 0) {
+                    $volumeListBox.hide();
+                }
+                if ($target.closest(_nodes.$chapterTypeBox).length === 0) {
+                    $chapterTypeListBox.hide();
+                }
+            }
+        });
+        var $selectedVolumeBox = _nodes.$volumeBox.find('[data-node="selectedItemBox"]');
+        $volumeListBox.on('click', 'li', function () {
+            var $item = $(this).find('a'), volumeId = $item.attr('data-volumeid');
+            if (!volumeId) {
+                return;
+            }
+            $selectedVolumeBox.removeClass('combo-open');
+            $volumeListBox.hide();
+            _setVolume(volumeId);
+        });
+        var $selectedChapterTypeBox = _nodes.$chapterTypeBox.find('[data-node="selectedItemBox"]');
+        $chapterTypeListBox.on('click', 'li', function () {
+            var $item = $(this).find('a');
+            $selectedChapterTypeBox.removeClass('combo-open');
+            $chapterTypeListBox.hide();
+            _setChapterType($item.attr('data-chaptertype'));
+        });
+        var firstChapterType = $chapterTypeListBox.find('a[data-chaptertype]').eq(0).attr('data-chaptertype');
+        _setChapterType(firstChapterType);
+        var firstVolumeId = $volumeListBox.find('a[data-volumeid]').eq(0).attr('data-volumeid');
+        _setVolume(firstVolumeId);
+    }
+
+    function _setVolume(volumeId) {
+        if (!volumeId) {
+            return;
+        }
+        var $item = _nodes.$volumeBox.find('[data-node="listBox"] a[data-volumeid="' + volumeId + '"]');
+        if (!$item || $item.length === 0) {
+            return;
+        }
+        var vipFlag = $item.attr('data-vipflag');
+        _nodes.$selectedVolume.text($item.text()).attr({'data-volumeid': volumeId, 'data-vipflag': vipFlag});
+        $('#volumeIdHidden').val(volumeId);
+        var $chapterTypeItemByPublic = _nodes.$chapterTypeBox.find('[data-node="listBox"] a[data-chaptertype="' + _chapterType.public + '"]').parent(),
+            $chapterTypeItemByVip = $chapterTypeItemByPublic.siblings('li');
+        if (vipFlag === '1') {
+            _setChapterType(_chapterType.vip);
+            $chapterTypeItemByPublic.hide();
+            $chapterTypeItemByVip.show();
+        } else {
+            _setChapterType(_chapterType.public);
+            $chapterTypeItemByPublic.show();
+            $chapterTypeItemByVip.hide();
+        }
+    }
+
+    function _setChapterType(chapterType) {
+        if (typeof chapterType === 'undefined') {
+            return;
+        }
+        var $item = _nodes.$chapterTypeBox.find('[data-node="listBox"] a[data-chaptertype="' + chapterType + '"]');
+        if ($item.length === 0) {
+            return;
+        }
+        _nodes.$selectedChapterType.text($item.text()).attr('data-chaptertype', chapterType);
+        $('#chapterTypeHidden').val(chapterType);
+    }
+
+    function _getWords(content) {
+        if (!content || content === '请输入正文') {
+            _dialog.alert('字数为：0');
+            return;
+        }
+        if (_isLoading) {
+            return;
+        }
+        _isLoading = 1;
+        _util.request({
+            url: _ajaxUrls.getWords,
+            data: {'content': content},
+            type: 'post',
+            dataType: "json",
+            success: function (json) {
+                if (!json) {
+                    _topTip.show('返回的数据格式异常，请稍候再试');
+                    return;
+                }
+                if (json.status) {
+                    if (json.data) {
+                        _dialog.alert('字数为：' + json.data);
+                    }
+                } 
+            },
+            complete: function () {
+                _isLoading = 0;
+            }
+        });
+    }
+
+    function _getWordsFromPublish(content) {
+        if (_isLoadingWord) {
+            return;
+        }
+        _isLoadingWord = 1;
+        var $popup = $('#publishPopup');
+        $popup.find('[data-node="publishwordsp"]').text('计算中...');
+        _util.request({
+            url: _ajaxUrls.getWords,
+            data: {'content': content},
+            type: 'post',
+            dataType: "json",
+            success: function (json) {
+                if (json.status) {
+                    if (json.data) {
+                        $popup.find('[data-node="publishwordsp"]').text(json.data);
+                        $popup.find('[data-node="publishwordsli"]').show();
+                    }
+                }
+            },
+            complete: function () {
+                _isLoadingWord = 0;
+            }
+        });
+    }
+
+    function _saveDraft() {
+        if (_isSubmitting || _isJumpingPage) {
+            return;
+        }
+        _isSubmitting = 1;
+        _util.ajaxSubmitForm($('#formDraft'), {
+            type: "POST", data: {'_token': $.cookie('pubtoken')}, dataType: "json", success: function (json) {
+                if (!json) {
+                    _topTip.show('返回的数据格式异常，请稍候再试');
+                    return;
+                }
+                if (json.status) {
+                    _isJumpingPage = 1;
+                    _topTip.show(json.info || '保存成功', function () {
+                        var type = _getEditDraftType();
+                        _cancelTipByExitEdit();
+                        if (type === 'add') {
+                            _jumpPage(_params.chapterTmpUrl);
+                        } else if (type === 'update') {
+                            if (json.data && json.data.CCID) {
+                                _getSelectedDraftInfo(json.data.CCID, _updateDraftItem);
+                            }
+                        }
+                    });
+                } 
+            }, complete: function () {
+                _isSubmitting = 0;
+            }
+        });
+    }
+
+    function _checkDraftInfo() {
+        var $chapterTitleInput = $('#chapterTitleInput'), $chapterContentInput = $('#chapterContentInput'),
+            $authorSpeakInput = $('#authorSpeakInput');
+        var chaptertitle = $.trim($chapterTitleInput.val()), content = $chapterContentInput.val(),
+            authorSpeak = $authorSpeakInput.val();
+        if (chaptertitle.length === 0 || chaptertitle === $chapterTitleInput.attr('data-default')) {
+            _dialog.alert('请输入章节名称');
+            return false;
+        }
+        if (chaptertitle.length > 35) {
+            _dialog.alert('请输入35字以内作为章节名称');
+            return false;
+        }
+        if (content.length === 0 || content === $chapterContentInput.attr('data-default')) {
+            _dialog.alert('请输入正文');
+            return false;
+        }
+        if (authorSpeak === $authorSpeakInput.attr('data-default')) {
+            authorSpeak = '';
+            $authorSpeakInput.val('');
+        }
+        if (authorSpeak.length > 500) {
+            _dialog.alert('作者的话不可超过500字');
+            return false;
+        }
+        return true;
+    }
+
+    function _getSelectedDraftInfo(CCID, successCallback) {
+        if (!CCID) {
+            return;
+        }
+        _isSubmitting = 0;
+        _isJumpingPage = 0;
+        if (_isLoading) {
+            return;
+        }
+        _isLoading = 1;
+        _util.request({
+            url: _ajaxUrls.getDraftInfo,
+            data: {'CBID': _params.bookId, 'CCID': CCID},
+            type: 'post',
+            dataType: "json",
+            success: function (json) {
+                if (!json) {
+                    return;
+                }
+                if (json.status && json.data) {
+                    _currentDraftData = json.data;
+                    _editDraft(_currentDraftData);
+                    if (typeof successCallback === 'function') {
+                        successCallback();
+                    }
+                }
+            },
+            complete: function () {
+                _isLoading = 0;
+            }
+        });
+    }
+
+    function _publishDraft($btn, options) {
+        var isconfirm = options.isconfirm ? options.isconfirm : 0;
+        var requestData = {
+            'CBID': options.CBID,
+            'CVID': options.CVID,
+            'CCID': options.CCID,
+            'type': options.type,
+            'vipflag': options.vipflag,
+            'chaptertype': options.chapterType,
+            'status': options.status,
+            'chaptertitle': options.chapterTitle,
+            'content': options.chapterContent,
+            'chapterextra': options.authorSpeak,
+            'isconfirm': isconfirm
+        };
+        if (options.status === '5') {
+            if (!options.publishTime) {
+                _dialog.alert('请填写定时发布的时间');
+                return;
+            }
+            var currentTimeNum = Date.parse(Date());
+            var publishtimeNum = Date.parse(options.publishTime);
+            if (currentTimeNum >= publishtimeNum) {
+                $('#timing-tips-error').show();
+                return;
+            }
+            else {
+                $('#timing-tips-error').hide();
+            }
+            requestData.publishtime = options.publishTime;
+        }
+        if (_isSubmitting || _isJumpingPage) {
+            return;
+        }
+        _isSubmitting = 1;
+        var $closePopupBtn = $('#publishPopup').find('[data-node="close"]');
+        _util.updateBtnText($btn, 'loading');
+        $closePopupBtn.hide();
+        _util.request({
+            url: _ajaxUrls.publishDraft, data: requestData, type: 'post', dataType: "json", success: function (json) {
+                if (!json) {
+                    _dialog.alert('返回的数据格式异常，请稍候再试');
+                    return;
+                }
+                if (json.status) {
+                    _isJumpingPage = 1;
+                    _closePublishPopup();
+                    if (requestData.status === '5') {
+                        json.info = "操作成功 该章节将于 " + requestData.publishtime + " 发布";
+                    }
+                    _topTip.show(json.info || '操作成功', function () {
+                        _cancelTipByExitEdit();
+                        if (requestData.status === '2') {
+                            if (json.data && json.data.jumpUrl) {
+                                _jumpPage(json.data.jumpUrl);
+                            }
+                        } else {
+                            _jumpPage(_params.chapterTmpUrl);
+                        }
+                    });
+                } else {
+                    if (json.code == 1001) {
+                        _dialog.confirm(json.info, function () {
+                            options.isconfirm = 1;
+                            _publishDraft($btn, options);
+                        });
+                    } 
+                }
+            },  complete: function () {
+                _isSubmitting = 0;
+                _util.updateBtnText($btn, 'default');
+                $closePopupBtn.show();
+            }
+        });
+    }
+
+    function _deleteDraft(chapterId) {
+        if (!chapterId) {
+            return;
+        }
+        if (_isSubmitting || _isJumpingPage) {
+            return;
+        }
+        _isSubmitting = 1;
+        _util.request({
+            url: _ajaxUrls.deleteDraft,
+            type: 'post',
+            dataType: 'json',
+            data: {'CBID': _params.bookId, 'CCID': chapterId},
+            success: function (json) {
+                if (!json) {
+                    _topTip.show('返回数据格式异常，请稍后再试');
+                    return;
+                }
+                if (json.status) {
+                    _isJumpingPage = 1;
+                    _topTip.show(json.info || '删除成功，回收站内可找回', function () {
+                        _cancelTipByExitEdit();
+                        _jumpPage(_params.chapterTmpUrl);
+                    });
+                } 
+            },
+            complete: function () {
+                _isSubmitting = 0;
+            }
+        });
+    }
+
+    function _setEditDraftType(type) {
+        if (!type) {
+            return;
+        }
+        $('#typeHidden').val(type);
+    }
+
+    function _getEditDraftType() {
+        return $('#typeHidden').val();
+    }
+
+    function _editDraft(data) {
+        _setTipByExitEdit();
+        _removeNewDraftItem();
+        var $chapterIdHidden = $('#chapterIdHidden'), $statusHidden = $('#statusHidden'),
+            $chapterVipFlagHidden = $('#chaptervipFlagHidden'), $chapterFineType;
+        var $titleInput = $('#chapterTitleInput'), $contentInput = $('#chapterContentInput'),
+            $speakInput = $('#authorSpeakInput'), $deleteDraftBtn = $('#deleteDraftBtn'), $tinyMCE = $('.tinyMCE-wrap');
+        var chaptertitle = $titleInput.attr('data-default'), content = $contentInput.attr('data-default'),
+            chapterextra = $speakInput.attr('data-default');
+        if (!data) {
+            _addNewDraftItem();
+            _setEditDraftType('add');
+            $deleteDraftBtn.hide();
+            $chapterIdHidden.val('');
+            $statusHidden.val('1');
+            $chapterFineType = _params.isfinelayout;
+        } else {
+            chaptertitle = data.chaptertitle;
+            content = data.content;
+            chapterextra = data.chapterextra;
+            _setEditDraftType('update');
+            $deleteDraftBtn.show();
+            $chapterIdHidden.val(data.CCID);
+            _setVolume(data.CVID);
+            _setChapterType(data.chaptertype);
+            $statusHidden.val(data.status);
+            $chapterVipFlagHidden.val(data.vipflag);
+            _params.isfinelayout = data.finelayouttype == 1 || data.finelayouttype == 2 ? 1 : -1;
+            $chapterFineType = data.finelayouttype;
+            if (_params.isfinelayout == 1) {
+                _createChapter.setCCID(data.CCID);
+            }
+        }
+        $titleInput.val(chaptertitle);
+        if ($chapterFineType == -1) {
+            $contentInput.show();
+            $tinyMCE.hide();
+            $contentInput.val(content);
+        } else {
+            $contentInput.hide();
+            $tinyMCE.show();
+            if ($chapterFineType == 1) {
+                $('#mceu_12').show();
+            } else {
+                $('#mceu_12').hide();
+            }
+            if (data) {
+                _params._tinymce.activeEditor.setContent(content);
+            }
+        }
+        $speakInput.val(chapterextra);
+        $.each([$titleInput, $contentInput, $speakInput], function (index, $el) {
+            if ($el.val() === $el.attr('data-default')) {
+                $el.css('color', _grayColor);
+            } else {
+                $el.css('color', _blackColor);
+            }
+        });
+        var $draftBox = $('#editDraftBox');
+        $draftBox.show();
+        var $btnBox = $('#draftBtnBox');
+        if ($btnBox.attr('data-slide') !== '1') {
+            $btnBox.attr('data-slide', '1');
+            $btnBox.portamento({'wrapper': $draftBox, 'disableWorkaround': true, 'gap': 0});
+        }
+    }
+
+    function _addNewDraftItem() {
+        var $draftListBox = $('#draftListBox'), $draftList = $('#draftList');
+        $draftList.find('li').removeClass('act');
+        $draftList.prepend(_newDraftItemTpl);
+    }
+
+    function _updateDraftItem() {
+        if (!_currentDraftData || !_currentDraftData.CCID) {
+            return;
+        }
+        var $draftList = $('#draftList'),
+            $chapterItem = $draftList.find('li[data-chapterid="' + _currentDraftData.CCID + '"]');
+        var tpl = _uiBinder.bindData(_draftItemTpl, {
+            'data': _currentDraftData,
+            'isPublishByTime': _currentDraftData.status == 5
+        });
+        if ($chapterItem && $chapterItem.length > 0) {
+            $chapterItem.replaceWith(tpl);
+        } else {
+            $draftList.prepend(tpl);
+        }
+        $chapterItem = $draftList.find('li[data-chapterid="' + _currentDraftData.CCID + '"]');
+        $chapterItem.addClass('act').siblings().removeClass('act');
+    }
+
+    function _removeNewDraftItem() {
+        $('#draftList').find('[data-node="newDraftItem"]').remove();
+    }
+
+    function _openPublishPopup() {
+        var $popup = $('#publishPopup');
+        if (!_maskByPublishPopup) {
+            _maskByPublishPopup = new _mask($popup);
+        }
+        if (_maskByPublishPopup) {
+            $popup.find('[data-node="chapterName"]').text($('#chapterTitleInput').val());
+            $popup.find('[data-node="chapterTypeName"]').text(_nodes.$selectedChapterType.text());
+            var $publishTypeRadio = $popup.find('[data-node="publishTypeRadio"]'),
+                $publishDateBox = $('#publishDateBox');
+            $publishTypeRadio.parent().removeClass('on');
+            if (_currentDraftData && _currentDraftData.status == 5) {
+                $publishTypeRadio.filter('[value="5"]').prop('checked', 'checked').parent().addClass('on');
+            } else {
+                $publishTypeRadio.filter('[value="2"]').prop('checked', 'checked').parent().addClass('on');
+            }
+            if (_currentDraftData && _currentDraftData.status == 5 && _currentDraftData.newPublishTime) {
+                $('#datePickerTrigger-set').val(getPublishDate(_currentDraftData.newPublishTime));
+                $('#timePickerTrigger').val(getPublishTime(_currentDraftData.newPublishTime));
+                $publishDateBox.show();
+            } else {
+                $publishDateBox.hide();
+            }
+            _maskByPublishPopup.open();
+        }
+    }
+
+    function _closePublishPopup() {
+        if (_maskByPublishPopup) {
+            _maskByPublishPopup.close();
+        }
+    }
+
+    function _focusIn($el) {
+        if ($el.val() === $el.attr('data-default')) {
+            $el.val('');
+        }
+        $el.css('color', _blackColor);
+    }
+
+    function _focusOut($el) {
+        if ($el.val() === '') {
+            $el.val($el.attr('data-default')).css('color', _grayColor);
+        }
+    }
+
+    function _checkChapterIsModified() {
+        var isModified = false;
+        var $chapterTitleInput = $('#chapterTitleInput'), $chapterContentInput = $('#chapterContentInput'),
+            $authorSpeakInput = $('#authorSpeakInput'), hasCurrentDraftData = !!_currentDraftData;
+        if (_params.isfinelayout == 1) {
+            $chapterContentInput.val(_params._tinymce.activeEditor.getContent());
+            if ($('#textMce_ifr').contents().find('#tinymce').text() == '') {
+                $chapterContentInput.val('请输入正文');
+            }
+        }
+        var list = [{
+            'userInput': $chapterTitleInput.val(),
+            'defaultInput': $chapterTitleInput.attr('data-default'),
+            'original': hasCurrentDraftData ? _currentDraftData.chaptertitle : ''
+        }, {
+            'userInput': $chapterContentInput.val(),
+            'defaultInput': $chapterContentInput.attr('data-default'),
+            'original': hasCurrentDraftData ? _currentDraftData.content : ''
+        }, {
+            'userInput': $authorSpeakInput.val(),
+            'defaultInput': $authorSpeakInput.attr('data-default'),
+            'original': hasCurrentDraftData ? _currentDraftData.chapterextra : ''
+        }];
+        $.each(list, function (index, item) {
+            if (item.userInput !== item.original && item.userInput !== item.defaultInput) {
+                isModified = true;
+                return false;
+            }
+        });
+        return isModified;
+    }
+
+    function _setTipByRefreshPage() {
+        window.onbeforeunload = function () {
+            if (!_isTipByExitEdit || !_checkChapterIsModified()) {
+                return;
+            }
+            var tips = _tipByExitEdit;
+            if (document.all) {
+                if (event.clientX > document.body.clientWidth || event.clientY < 0 || event.altKey || event.ctrlKey) {
+                    return tips;
+                } else {
+                    return tips;
+                }
+            } else {
+                return tips;
+            }
+        };
+    }
+
+    function _confirmExitEdit(exitFn) {
+        if (typeof exitFn !== 'function') {
+            exitFn = function () {
+            };
+        }
+        if (_isTipByExitEdit && _checkChapterIsModified()) {
+            _dialog.confirm(_tipByExitEdit, exitFn);
+        } else {
+            exitFn();
+        }
+    }
+
+    function _setTipByExitEdit() {
+        _isTipByExitEdit = 1;
+    }
+
+    function _cancelTipByExitEdit() {
+        _isTipByExitEdit = 0;
+    }
+
+    function _jumpPage(url) {
+        url = url || location.href;
+        location.href = url;
+    }
+
+    function getPublishDate(publishtime) {
+        var arrDate = publishtime.match(/\d+/g);
+        return arrDate[0] + '年' + arrDate[1] + '月' + arrDate[2] + '日';
+    }
+
+    function getPublishTime(publishtime) {
+        var arrDate = publishtime.match(/\d+/g);
+        return arrDate[3] + '时' + arrDate[4] + '分';
+    }
+
+    _util.initNameSpace("CS.page.bookManage");
+    CS.page.bookManage.chapterDraft = {'init': init};
+})(jQuery);
+LBF.use(['lib.jQuery', 'ui.widget.DatePicker.DatePicker', 'ui.widget.Dropdown.Dropdown', 'ui.widget.TimePicker.TimePicker', 'ui.Nodes.TextInput'], function ($, DatePicker, Dropdown, TimePicker, TextInput) {
+    var date = new DatePicker({
+        trigger: '#datePickerTrigger-set',
+        display: '#datePickerTrigger-set',
+        format: 'Y年m月d日',
+        monthFormat: 'Y年m',
+        yearFormat: 'Y',
+        date: new Date()
+    });
+    var initDate = new Date();
+    new TimePicker({
+        trigger: '#timePickerTrigger',
+        display: '#timePickerTrigger',
+        selectedHour: initDate.getHours(),
+        selectedMinute: initDate.getMinutes(),
+        format: 'G时i分',
+        events: {
+            selectTime: function (e, time) {
+                this.toggle();
+            }
+        }
+    });
+    new TextInput({selector: '#timePickerTrigger'});
+});
+$('.minTipBox .close').click(function () {
+    $(this).parent('.minTipBox').fadeOut();
+});
+$('.sectionList li').click(function () {
+    $(this).addClass('act').siblings().removeClass('act');
+})
+
+function topTip() {
+    var tipBoxCenter = ($(window).width() - $('.top-tipbox').width()) / 2;
+    $('.top-tipbox').css('left', tipBoxCenter);
+}
+
+topTip();
+$(window).resize(function () {
+    topTip();
+})
+$(function () {
+    $('.sideBar li').on('click', function () {
+        $(this).addClass('act').siblings().removeClass();
+    });
+    $('#create-sub').on('click', function () {
+        $('#sub-popup').show();
+        $('.mask').show();
+    })
+    $("#J-button1").click(function () {
+        $("#timePopupWrap").show();
+        $("#timePopupWrap").css({'position': 'fixed', 'z-index': 1000, 'top': '50px', 'left': '40%'})
+    });
+    $("#J-dialog1 .close-btn").click(function () {
+        up_layer.close_layer('#J-dialog1');
+    });
+});
+(function ($) {
+    var _util = CS.util, _uiBinder = CS.uiBinder, _mask = CS.mask, _topTip = CS.topTip, _dialog = CS.dialog,
+        _localImg = CS.localImg, _volume = null, _createChapter = null;
+    var _params = {}, _nodes = {}, _isSubmitting = 0, _maskCreateRolePopup = null, _maskRoleManagePopup = null,
+        _maskRoleDeletePopup = null, _countRoleDeletePopup = 0, _countRoleManagePopup = 0, _countCreateRolePopup = 0,
+        _countBirthday = 0;
+    var _ajaxUrls = {
+        'ajaxGetRoleNum': '/Contentv2/Rolemanage/ajaxGetRoleNum.html',
+        'ajaxAddRole': '/Contentv2/Rolemanage/ajaxAddRole.html',
+        'ajaxUpdateRole': '/Contentv2/Rolemanage/ajaxUpdateRole.html',
+        'ajaxDelRole': '/Contentv2/Rolemanage/ajaxDelRole.html',
+        'ajaxListRole': '/Contentv2/Rolemanage/ajaxListRole.html',
+        'ajaxGetRoleInfo': '/Contentv2/Rolemanage/ajaxGetRoleInfo.html',
+        'ajaxGetConstellation': '/Contentv2/Rolemanage/ajaxGetConstellation.html'
+    };
+    var _roleManageTpl = ['<li>', '<div class="content">', '<div class="avatar"><img src="<%=roleInfo.cfmportrait%>"></div>', '<div class="info">', '<div class="text">', '<h3><%=roleInfo.nickname%><span><%=roleInfo.nametype%></span></h3>', '<p><%=roleInfo.cfmremark%></p>', '</div>', '<i></i>', '</div>', '<div class="btn-box">', '<input type="hidden" value="<%=roleInfo.CRID%>">', '<a class="editRole" href="javascript:">编辑</a>', '<a class="delRole" href="javascript:">删除</a>', '</div>', '</div>', '</li>'].join('');
+
+    function init(CBID) {
+        _params.CBID = CBID;
+        _params.jmoreBtn_click_num = 0;
+        _nodes.$createRolePopup = $('#createRolePopup');
+        _nodes.$roleManagePopup = $('#roleManagePopup');
+        _nodes.$roleDeletePopup = $('#roleDeletePopup');
+        _nodes.$jcharacterList = $('#j-characterList');
+        _nodes.$jinsertStart = $('#j-insertStart');
+        _nodes.$insertEnd = $('#insertEnd');
+        _nodes.$roleId = $('#roleId');
+        _bindEventDialog();
+        _bindDialogLoad();
+        _allCharacterListShow();
+        _jcharacterListSroll()
+        _jAllCharacterList();
+        _changeMonth();
+        _changeDate();
+    }
+
+    function _bindEventDialog() {
+        _bindFileImg('acUpload', 'roleImg');
+        $("#createRole,.add-character").on('click', function () {
+            $("#createRolePopup .popup-title").find('h3').html("创建角色");
+            $("#createRolePopup").find('label[for="acUpload"]').html("上传头像");
+            $("#roleImg").attr("src", default_photo);
+            $("#zsjs").parent(".radio").addClass('on');
+            $("#zsjs").attr("checked", "checked");
+            $("#ycjs").removeAttr('checked');
+            $("#ycjs").parent(".radio").removeClass('on');
+            $(".create-character-wrap .combo-input").val('请选择角色类型');
+            $("#roletype").val(0)
+            _params.class_name = $(this).attr("class");
+            _showCreateRolePopup();
+            _setMonthDate(0, 0);
+        });
+        $("#bookrolemanage").on('click', function () {
+            _showRoleManagePopup();
+        });
+        $("#roleDeleteConfirm").on('click', function () {
+            _roleDeleteSubmit();
+        });
+        $("#roleCreateConfirm").on('click', function () {
+            _roleCreateSubmit();
+        });
+        _nodes.$createRolePopup.find('[data-node-do-role="close"]').click(function (event) {
+            event.preventDefault();
+            _closeCreateRolePopup();
+            return false;
+        })
+        _nodes.$roleDeletePopup.find('[data-node-del-role="close"]').click(function (event) {
+            event.preventDefault();
+            _closeRoleDelPopup();
+            return false;
+        })
+        _nodes.$roleManagePopup.find('[data-node-man-role="close"]').click(function (event) {
+            event.preventDefault();
+            _closeRoleManagePopup();
+            return false;
+        });
+    }
+
+    function _bindDialogLoad() {
+        $(document).on("click", '.editRole', function (event) {
+            event.preventDefault();
+            _params.class_name = $(this).attr("class");
+            _params.CRID = $(this).siblings("input").val();
+            _nodes.$roleContent = $(this).parent('.btn-box').parent('.content');
+            _showCreateRolePopup();
+        });
+        $(document).on("click", '.delRole', function (event) {
+            event.preventDefault();
+            _params.CRID = $(this).siblings("input").val();
+            _nodes.$deleteLi = $(this).parent('.btn-box').parent('.content').parent();
+            _showRoleDelPopup();
+        });
+    }
+
+    function _bindFileImg(fileid, imgid) {
+        if ($('#' + fileid).length !== 0) {
+            $('#' + fileid).on('change', function () {
+                var isSelectedImg = _localImg.showv2($(this), $('#' + imgid), {
+                    'imgMaxSize': 2048 * 5,
+                    'imgMaxSizeTips': '检测到上传照片超过2MB，请重新上传。',
+                    'supportFileTypes': 'jpg|png',
+                    'fileTypeErrorTips': '图片格式一定要是JPG，PNG中的一种'
+                });
+                if (!isSelectedImg) {
+                    $('#' + fileid).val('');
+                }
+            });
+        }
+    }
+
+    function _allCharacterListShow() {
+        var $moreBtn = $('#j-moreBtn'), $characterList = $('#j-AllCharacterList');
+        $moreBtn.on('click', function () {
+            $characterList.fadeIn(200);
+        });
+        $(document).on('click', function (e) {
+            var target = $(e.target);
+            if (target.attr('id') == 'j-moreBtn' || target.closest('#j-AllCharacterList').length > 0 || target.hasClass('more')) {
+                return;
+            } else {
+                $characterList.fadeOut(200);
+            }
+        })
+    }
+
+    function _showCreateRolePopup() {
+        var requestData = {'CBID': _params.CBID, 'CRID': _params.CRID || 0};
+        if (_isSubmitting == 1) {
+            return;
+        }
+        _isSubmitting = 1;
+        _util.request({
+            url: (_params.class_name == 'editRole') ? _ajaxUrls.ajaxGetRoleInfo : _ajaxUrls.ajaxGetRoleNum,
+            data: requestData,
+            type: 'post',
+            success: function (json) {
+                if (!json) {
+                    _dialog.alert('返回数据格式异常，请稍后再试');
+                    return;
+                }
+                if (json.status == false) {
+                    _dialog.alert(json.info);
+                    return;
+                } else {
+                    if (!_maskCreateRolePopup) {
+                        _maskCreateRolePopup = new _mask(_nodes.$createRolePopup);
+                    }
+                    if (!_maskCreateRolePopup) {
+                        return;
+                    }
+                    if (_params.class_name == 'editRole') {
+                        $("#createRolePopup .popup-title").find('h3').html("编辑角色");
+                        $("#createRolePopup").find('label[for="acUpload"]').html("修改头像");
+                        $("#roleName").val(json.nickname);
+                        $("#roleDesc").val(json.cfmremark);
+                        if (json.roleshow_status == -1) {
+                            $("#roleshowstatus").prop("checked", "checked");
+                        } else {
+                            $("#roleshowstatus").removeAttr("checked");
+                        }
+                        $("#roleImg").attr('src', json.cfmportrait);
+                        $("#roletype").val(json.role).change();
+                        $("#height").val(json.height);
+                        $("#weight").val(json.weight);
+                        $("#age").val(json.age);
+                        var md = json.birthday.split('/');
+                        if (md.length == 2) {
+                            month = md[0];
+                            date = md[1];
+                            $("#birMonth_em").text(month);
+                            $("#birDay_em").text(date);
+                            $("#constellation_i").text(json.constellation);
+                            $("#birthday_select").hide();
+                            $("#birthday_text").show();
+                        } else {
+                            _setMonthDate(0, 0);
+                            $("#birthday_select").show();
+                            $("#birthday_text").hide();
+                        }
+                        $(".create-character-wrap .combo-input").val(json.nametype);
+                    } else {
+                        $("#createRolePopup .popup-title").find('h3').html("创建角色");
+                    }
+                    _maskCreateRolePopup.open();
+                    _isSubmitting = 0;
+                }
+            },
+            complete: function () {
+                _isSubmitting = 0;
+            }
+        });
+    }
+
+    function _closeCreateRolePopup() {
+        if (_maskCreateRolePopup) {
+            _maskCreateRolePopup.close();
+            $("#acUpload").val('');
+            $("#roleName").val('');
+            $("#roleDesc").val('');
+            $("#roletype").val("0").change();
+            $("#height").val('');
+            $("#weight").val('');
+            $("#age").val('');
+            $("#roleshowstatus").removeAttr("checked");
+            $("#birMonth").val(0);
+            $("#birDay").val(0);
+            $("#birthday_select").show();
+            $("#birthday_text").hide();
+            _countBirthday = 0;
+        }
+    }
+
+    function _showRoleManagePopup() {
+        var requestData = {'CBID': _params.CBID};
+        if (_countRoleManagePopup > 0) {
+            return;
+        }
+        _countRoleManagePopup = 1;
+        _util.request({
+            url: _ajaxUrls.ajaxListRole, data: requestData, type: 'post', success: function (json) {
+                if (!json) {
+                    _dialog.alert('返回数据格式异常，请稍后再试');
+                    return;
+                }
+                if (json.length == 0) {
+                    _roleEmpty();
+                } else {
+                    _nodes.$jcharacterList.find("ul li").remove();
+                    for (i = 0; i < json.length; i++) {
+                        tpl = _uiBinder.bindData(_roleManageTpl, {'roleInfo': json[i]});
+                        _nodes.$jcharacterList.find("ul").append(tpl);
+                    }
+                    _bindDialogLoad();
+                    return false;
+                }
+            }, complete: function () {
+                _countRoleManagePopup = 0;
+            }
+        });
+        if (!_maskRoleManagePopup) {
+            _maskRoleManagePopup = new _mask(_nodes.$roleManagePopup);
+        }
+        if (!_maskRoleManagePopup) {
+            return;
+        }
+        _maskRoleManagePopup.open();
+        _countRoleManagePopup = 0;
+    }
+
+    function _closeRoleManagePopup() {
+        if (_maskRoleManagePopup) {
+            _maskRoleManagePopup.close();
+            _countRoleManagePopup = 0;
+        }
+    }
+
+    function _showRoleDelPopup() {
+        if (_countRoleDeletePopup > 0) {
+            return;
+        }
+        if (!_maskRoleDeletePopup) {
+            _maskRoleDeletePopup = new _mask(_nodes.$roleDeletePopup);
+        }
+        if (!_maskRoleDeletePopup) {
+            return;
+        }
+        _maskRoleDeletePopup.open();
+        _countRoleDeletePopup = 1;
+    }
+
+    function _closeRoleDelPopup() {
+        if (_maskRoleDeletePopup) {
+            _maskRoleDeletePopup.close();
+            _countRoleDeletePopup = 0;
+        }
+    }
+
+    function _roleDeleteSubmit() {
+        var requestData = {'CBID': _params.CBID, 'CRID': _params.CRID};
+        _util.request({
+            url: _ajaxUrls.ajaxDelRole, data: requestData, type: 'post', success: function (json) {
+                if (!json) {
+                    _dialog.alert('返回数据格式异常，请稍后再试');
+                    return;
+                }
+                if (json.status == false) {
+                    _dialog.alert(json.info);
+                    return;
+                } else {
+                    _topTip.show(json.info);
+                    _nodes.$deleteLi.remove();
+                    _delSelectCharacter(_params.CRID);
+                    _delAllCharacterList(_params.CRID);
+                    _closeRoleDelPopup();
+                }
+            }
+        });
+    }
+
+    function _roleCreateSubmit() {
+        if (_countBirthday == 1) {
+            _dialog.confirm("角色生日一旦填写则不允许修改，是否确认？", function () {
+                _roleCreateSubmitSon();
+            });
+        }
+        else {
+            _roleCreateSubmitSon();
+        }
+    }
+
+    function _roleCreateSubmitSon() {
+        var roleName = $("#roleName").val();
+        var roleDesc = $("#roleDesc").val();
+        var roletype = $("#roletype").val();
+        var height = $("#height").val();
+        var weight = $("#weight").val();
+        var age = $("#age").val();
+        var birthday = _getBirthday();
+        var roleshowStatus = $("#roleshowstatus:checked").val();
+        if (roleName.length < 1 || roleName.length > 10) {
+            alert('昵称至少一个字，最多不超过10个汉字');
+            return;
+        }
+        if (roleDesc.length > 50) {
+            alert('描述至多50个汉字');
+            return;
+        }
+        if (roletype < 1) {
+            alert('请选择角色类型');
+            return;
+        }
+        if (height.length > 10) {
+            alert('身高不超过10个字');
+            return;
+        }
+        if (weight.length > 10) {
+            alert('体重不超过10个字');
+            return;
+        }
+        if (age.length > 10) {
+            alert('年龄不超过10个字');
+            return;
+        }
+        if (!_isValidMonthDate()) {
+            alert('角色生日请填写完整的日期');
+            return;
+        }
+        var formData = new FormData();
+        formData.append("myfile", $("#acUpload")[0].files[0]);
+        formData.append("roleName", roleName);
+        formData.append("roleDesc", roleDesc);
+        formData.append("roletype", roletype);
+        formData.append("roleshowStatus", roleshowStatus);
+        formData.append("CBID", _params.CBID);
+        formData.append("height", height);
+        formData.append("weight", weight);
+        formData.append("age", age);
+        formData.append("birthday", birthday);
+        if (_params.class_name == 'editRole') {
+            formData.append("CRID", _params.CRID);
+        }
+        _util.request({
+            url: (_params.class_name == 'editRole') ? _ajaxUrls.ajaxUpdateRole : _ajaxUrls.ajaxAddRole,
+            data: formData,
+            type: 'post',
+            processData: false,
+            contentType: false,
+            cache: false,
+            success: function (json) {
+                if (!json) {
+                    _dialog.alert('返回数据格式异常，请稍后再试');
+                    return;
+                }
+                if (json.status == false) {
+                    _dialog.alert(json.info);
+                    return;
+                } else {
+                    _topTip.show(json.info);
+                    if (_params.class_name == 'editRole') {
+                        _nodes.$roleContent.find('.text h3').html(json.data.nickname + '<span>' + json.data.nametype + '</span>');
+                        _nodes.$roleContent.find('.text p').html(json.data.remark);
+                        _nodes.$roleContent.find('.avatar img').attr('src', json.data.cfmportrait);
+                        _updateAllCharacterList(json.data.CRID, json.data.nickname, json.data.cfmportrait);
+                    } else {
+                        tpl = _uiBinder.bindData(_roleManageTpl, {'roleInfo': json.data});
+                        $("#noData").hide();
+                        _nodes.$jcharacterList.find("ul").append(tpl);
+                    }
+                    _closeCreateRolePopup();
+                    return false;
+                }
+            }
+        });
+    }
+
+    function _delSelectCharacter(CRID) {
+        if (!CRID) {
+            return;
+        }
+        var currentInput = $('#j-selectCharacter input[value="' + CRID + '"]');
+        if (currentInput.length == 0) {
+            return;
+        }
+        currentInput.parent().remove();
+    }
+
+    function _delAllCharacterList(CRID) {
+        if (!CRID) {
+            return;
+        }
+        var currentLi = $('#j-AllCharacterList').find('ul li[crid="' + CRID + '"]');
+        if (currentLi.length == 0) {
+            return;
+        }
+        currentLi.remove();
+        _doInsertEnd();
+    }
+
+    function _updateAllCharacterList(CRID, nickname, cfmportrait) {
+        if (!CRID || !nickname || !cfmportrait) {
+            return;
+        }
+        var currentLi = $('#j-AllCharacterList').find('ul li[crid="' + CRID + '"]');
+        if (currentLi.length == 0) {
+            return;
+        }
+        currentLi.find('img').attr('src', cfmportrait);
+        currentLi.find('cite').html(nickname);
+    }
+
+    function _jcharacterListSroll() {
+        $('#j-characterList').slimScroll({
+            height: '528px',
+            railVisible: true,
+            size: '8px',
+            wheelStep: 8,
+            borderRadius: 0,
+            railBorderRadius: 0,
+            disableFadeOut: true,
+            allowPageScroll: false,
+            alwaysVisible: false,
+            distance: '-1px'
+        });
+    }
+
+    function _jAllCharacterList() {
+        $('#j-AllCharacterList ul').slimScroll({
+            height: '247px',
+            railVisible: true,
+            size: '6px',
+            wheelStep: 2,
+            borderRadius: 0,
+            railBorderRadius: 0,
+            disableFadeOut: true,
+            allowPageScroll: false,
+            alwaysVisible: true,
+            distance: '-1px'
+        });
+    }
+
+    function _roleEmpty() {
+        var emptytpl = '<div class="no-data" id="noData"> <div class="no-icon"></div> <p>暂无数据</p> </div>';
+        $("#j-characterList").append(emptytpl);
+    }
+
+    function _getDates(month) {
+        return new Date(2016, month, 0).getDate();
+    }
+
+    function _getDateOptions(month, date) {
+        var dates = _getDates(month);
+        var options = '<option value="0"></option>';
+        var selected = '';
+        for (var i = 1; i <= dates; i++) {
+            if (date == i) {
+                selected = "selected";
+            }
+            tmp = i;
+            if (tmp < 10) {
+                tmp = '0' + i;
+            }
+            options += " <option value='" + tmp + "' " + selected + ">" + tmp + "</option>";
+            selected = '';
+        }
+        return options;
+    }
+
+    function _getMonthOptions(month) {
+        var options = '<option value="0"></option>';
+        var selected = '';
+        var tmp = '';
+        for (var i = 1; i <= 12; i++) {
+            if (month == i) {
+                selected = "selected";
+            }
+            tmp = i;
+            if (tmp < 10) {
+                tmp = '0' + i;
+            }
+            options += " <option value='" + tmp + "' " + selected + ">" + tmp + "</option>";
+            selected = '';
+        }
+        return options;
+    }
+
+    function _setMonthDate(month, date) {
+        var monthOptions = _getMonthOptions(month);
+        var dateOptions = _getDateOptions(month, date);
+        $('#birMonth').html(monthOptions);
+        $('#birMonth').comboSelect();
+        $('#birDay').html(dateOptions);
+        $('#birDay').comboSelect();
+        $('#birDay').change();
+    }
+
+    function _changeMonth() {
+        $('#birMonth').on('change', function () {
+            var month = $('#birMonth').val();
+            var dateOptions = _getDateOptions(month, 0);
+            $('#birDay').html(dateOptions);
+            $('#birDay').comboSelect();
+            $('#birDay').change();
+        });
+    }
+
+    function _changeDate() {
+        $('#birDay').on('change', function () {
+            _getConstellation();
+        });
+    }
+
+    function _getConstellation() {
+        var birthday = _getBirthday();
+        if (birthday.length != 5) {
+            return;
+        }
+        _countBirthday = 1;
+        var requestData = {'CBID': _params.CBID, 'birthday': birthday};
+        _util.request({
+            url: _ajaxUrls.ajaxGetConstellation, data: requestData, type: 'post', success: function (json) {
+                if (!json) {
+                    _dialog.alert('返回数据格式异常，请稍后再试');
+                    return;
+                }
+                if (json.status == false) {
+                    _dialog.alert(json.info);
+                    return;
+                } else {
+                    $("#constellation").text(json.data);
+                }
+            }
+        });
+    }
+
+    function _getBirthday() {
+        var month = $('#birMonth').val();
+        var day = $('#birDay').val();
+        if (month == 0 || day == 0 || month == null || day == 0) {
+            return '';
+        }
+        return month + '/' + day;
+    }
+
+    function _isValidMonthDate() {
+        var month = $('#birMonth').val();
+        var day = $('#birDay').val();
+        if ((month != 0 && day == 0) || (month == 0 && day != 0)) {
+            return false;
+        }
+        return true;
+    }
+
+    _util.initNameSpace("CS.page.bookManage");
+    CS.page.bookManage.roleMange = {'init': init};
+})(jQuery);

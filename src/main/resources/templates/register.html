@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<!-- saved from url=(0162)https://passport.qidian.com/reg.html?appid=10&areaid=1&target=top&ticket=1&auto=1&autotime=30&ajaxdm=&returnUrl=https%3A%2F%2Fbook.qidian.com%2Fhonor%2F1013552688 -->
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+	<title>账号注册 | 起点书城</title>
+	<link rel="shortcut icon" type="image/x-icon" href="./images/jp_iocn.ico">
+	<link rel="Bookmark" type="image/x-icon" href="./images/jp_iocn.ico">
+
+	<link rel="stylesheet" type="text/css" href="./css/pact.css">
+    <link rel="stylesheet" type="text/css" href="./css/icon.css">
+
+    <script src="./js/jquery-3.3.1.js"></script>
+
+	
+<body>
+<div class="wrap">
+    <!-- start 头部 -->
+    <div class="header reg-header qidian">
+        <div class="box-center">
+            <div class="logo cf"><a href="http://www.qidian.com/"></a><em></em><span class="lang">用户注册</span></div>
+        </div>
+    </div>
+    <!-- end 头部 -->
+    <!-- start 整体居中 -->
+    <div class="box-center">
+        <!-- start 注册模块 -->
+        <div class="reg-wrap">
+            <!-- start 注册进度 -->
+            <div class="reg-step">
+                <!-- 步进到哪一步，就给当前span上class：act -->
+                <span class="lang act"><i>1</i>填写注册信息</span>
+                <span class="lang" id="su1"><em class="icon icon-duihao2"></em>注册成功</span>
+            </div>
+
+            <div class="reg-form-wrap" style="display:none;" id="su2">
+                <div class="reg-success">
+                    <h3>注册成功</h3>
+                    <div class="sprite ok"></div>
+                    <p>你的账号：</p>
+                    <h4 class="red" id="xian"></h4>
+                    <p></p><p></p>
+                    <p><span class="red" id="jumpTime"></span>秒后跳转</p>
+                </div>
+            </div>
+
+            <div class="reg-form-wrap" id="su3" >
+                <form action="https://passport.qidian.com/reg.html?appid=10&amp;areaid=1&amp;target=top&amp;ticket=1&amp;auto=1&amp;autotime=30&amp;ajaxdm=&amp;returnUrl=https%3A%2F%2Fbook.qidian.com%2Fhonor%2F1013552688">
+                    <div class="reg-form-list form-list">
+                        <dl>
+                            <dd class="top" id="phone"><em>手机号</em>
+                                <select id="txtphonearea" style="display: none;">
+                                    <option>中国大陆&nbsp;&nbsp;&nbsp;&nbsp;+86</option>
+                                </select>
+                                <div class=" ui-select" style="width: 160px;">
+                                    <a href="javascript:" class="ui-select-button">
+                                        <span class="ui-select-text">中国大陆&nbsp;&nbsp;&nbsp;&nbsp;+86</span>
+                                        <i class="ui-select-icon"></i></a>
+                                    <ul class="ui-select-datalist">
+                                        <li class="ui-select-datalist-li  selected" data-index="0">中国大陆&nbsp;&nbsp;&nbsp;                                       &nbsp;+86</li>
+                                    </ul></div>
+                                <input class="mid" type="text" placeholder="输入手机号码" id="txtphonenumber">
+
+                                <i class='sprite icon-error' id="sie" style="display: none"></i>
+                                <p class='error-tip' id="etip" style="display: none">请输入手机号</p>
+                            </dd>
+
+                            <dd id="phonecode"><em>短信验证</em>
+                                <input type="text" class="mid" placeholder="输入验证码" id="txtphonecode">
+                                <a class="get-code stat" href="javascript:" id="get_code" onclick="countdown(this)">获取验证码</a>
+                                <p class="error-tip" style="display: none" id="er">手机验证码不正确</p>
+                            </dd>
+
+                            <dd id="phonepwd"><em>密码</em><input type="password" id="txtphonepwd" placeholder="6-18位大小写字母、符号或数字">
+                           <div class="password-tip" style="display:none">
+                                <span><cite></cite></span>
+                                <p id="pwdrule1">长度为6-18个字符</p>
+                                <p id="pwdrule2">不能是8位以下的纯数字</p>
+                                <p id="pwdrule3">不能包含空格</p>
+                            </div>
+
+                            </dd>
+                                <dd id="password2"><em>确认密码</em><input type="password" id="txtphonepwd2" placeholder="再次输入密码">
+                                <p class='error-tip' id="pw2" style="display: none">您两次输入的密码不一致</p>
+                            </dd>
+
+                        </dl>
+                        <div class="deal">
+                            <input type="checkbox" id="deal" name="checkbox" checked="">
+                            <label for="deal" class="ui-checkbox"></label><label for="deal">我已阅读并同意</label><a href="https://passport.yuewen.com/pact.html?mobile=0" target="_blank">《用户服务协议》</a>
+                        </div>
+                        <a class="red-btn go-reg btn-qidian" href="javascript:" id="btnPhoneRegister">立即注册</a>
+                    </div>
+                </form>
+            </div>
+            <!-- end 注册进度 -->
+        </div>
+        <!-- end 注册模块 -->
+    </div>
+
+    
+    <div class="footer">
+    <div class="link">
+        <a href="https://www.qidian.com/about/intro" target="_blank">关于起点</a>
+        <a href="https://www.qidian.com/about/contact" target="_blank">联系我们</a>
+        <a href="http://join.book.qq.com/index.html" target="_blank">加入我们</a>
+        <a href="http://kf.qidian.com/Default.aspx" target="_blank">客服中心</a>
+        <a href="http://bbs.qidian.com/list/53" target="_blank">提交建议</a>
+        <a href="https://jubao.yuewen.com/" target="_blank">举报中心</a>
+    </div>
+    <p>Copyright (C) 2002-2019 www.qidian.com All Right Reserved版权所有 上海玄霆娱乐信息科技有限公司</p>
+    <p>上海玄霆娱乐信息科技有限公司 增值电信业务经营许可证沪B2-20080046 沪网文[2012]0068-008 新出网证（沪）字010 沪ICP备08017520号-1</p>
+    <p>请所有作者发布作品时务必遵守国家互联网信息管理办法规定，我们拒绝任何色情小说，一经发现，即作删除！客服电话：010-59357051</p>
+    <p>本站所收录作品、社区话题、书库评论及本站所做之广告均属个人行为，与本站立场无关</p>
+    <div class="safety-box">
+        <div class="safety-img dib-wrap">
+            <a class="site1" href="http://www.pdxa.cn/Welcome.Asp?Id=3101151112" target="_blank"></a><a class="site2" href="http://www.sgs.gov.cn/lz/licenseLink.do?method=licenceView&amp;entyId=20111011181417625" target="_blank"></a><a class="site3" href="http://www.cyberpolice.cn/wfjb" target="_blank"></a><a class="site4" href="https://ss.knet.cn/verifyseal.dll?sn=e12120411010037414000000&amp;pa=090993" target="_blank"></a><a class="site5" href="http://www.shjbzx.cn/" target="_blank"></a><a class="site6" href="http://www.12377.cn/node_548446.htm" target="_blank"></a><a class="site7" href="http://www.12377.cn/" target="_blank"></a>
+        </div>
+    </div>
+</div></div>
+<!-- <script src="static/sfh/js/report.js"></script>
+<script src="static/sfh/js/stat.js"></script> -->
+<script>
+
+    var ph = "";
+    $("#txtphonenumber").keyup(function () {
+        var txtphonenumber = $("#txtphonenumber").val();
+        $.ajax({
+            url: "reg/queryPhone",
+            data: {"phone":txtphonenumber},
+            type: "post",
+            dataType: "json",
+            success: function (data) {
+                ph = data;
+                if(data>0){
+                    $("#txtphonenumber").focus();
+                    $("#phone").prop("class","top error");
+                    $("#etip").html("该手机号已注册，请尝试直接 <a href='login.html' style=\'color: #00a5e0\'>登录</a>");
+                    $("#etip").show();
+                    return false;
+                }else {
+                    $("#phone").prop("class","");
+                    $("#etip").css("display","none");
+                }
+            }
+        });
+    });
+
+    $("#btnPhoneRegister").click(function(){
+        var txtphonenumber = $("#txtphonenumber").val();
+        var regPhone = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
+        if(ph>0){
+            $("#txtphonenumber").focus();
+            $("#phone").prop("class","top error");
+            $("#etip").html("该手机号已注册，请尝试直接 <a href='login.html' style=\'color: #00a5e0\'>登录</a>");
+            $("#etip").show();
+            return false;
+        }
+        if(txtphonenumber == ""){
+            $("#txtphonenumber").focus();
+            $("#phone").prop("class","top error");
+            $("#etip").text("请输入手机号码");
+            $("#etip").show();
+            return false;
+        } else if(!regPhone.test(txtphonenumber)){
+            $("#txtphonenumber").focus();
+            $("#phone").prop("class","top error");
+            $("#etip").text("请输入有效的手机号码");
+            $("#etip").show();
+            return false;
+        }else {
+            $("#phone").prop("class","");
+            $("#etip").hide();
+        }
+
+        if($("#txtphonecode").val() == ""){
+            $("#txtphonecode").focus();
+            $("#phonecode").prop("class","error");
+            $("#er").show();
+            return false;
+        }else {
+            $("#phonecode").prop("class","");
+            $("#er").hide();
+        }
+
+        var txtphonepwd = $("#txtphonepwd").val();
+        var reg = /^\d+$/;
+        if(reg.test(txtphonepwd)){
+            if(txtphonepwd.length > 7){
+                $("#phonepwd").prop("class","");
+                $(".password-tip").css("display",'none');
+            }else {
+                $("#phonepwd").focus();
+                $("#phonepwd").prop("class","error");
+                $(".password-tip").css("display",'block');
+                return false;
+            }
+        }
+        if (txtphonepwd.indexOf(" ") > 0 || txtphonepwd == "" || txtphonepwd.length < 6 || txtphonepwd.length > 18){
+            $("#phonepwd").focus();
+            $("#phonepwd").prop("class","error");
+            $(".password-tip").css("display",'block');
+            return false;
+        }
+        $("#phonepwd").prop("class","");
+        $(".password-tip").css("display",'none');
+
+        if ($("#txtphonepwd2").val() != txtphonepwd){
+            $("#password2").prop("class","error");
+            $("#pw2").css("display","block");
+            return false;
+        }
+
+        $.ajax({
+            url: "login/landing",
+            data: {"pwd":txtphonepwd,"phone":txtphonenumber,"yzm":$("#txtphonecode").val()},
+            type: "post",
+            dataType: "json",
+            success: function (data) {
+                if(data == 3){
+                    $("#su1").prop("class","lang act");
+                    $("#su3").hide();
+                    $("#su2").show();
+                    $("#xian").text(txtphonenumber);
+                    jumpBackUrl();
+                }
+                if (data == -1){
+                    $("#txtphonecode").focus();
+                    $("#phonecode").prop("class","error");
+                    $("#er").show();
+                    return false;
+                }else {
+                    $("#phonecode").prop("class","");
+                    $("#er").hide();
+                }
+            }
+        });
+
+    });
+
+    $("#txtphonepwd").focus(function () {
+        var txtphonepwd = $("#txtphonepwd").val();
+        var reg = /^\d+$/;
+        if(reg.test(txtphonepwd)){
+            if(txtphonepwd.length > 7){
+                $(".password-tip").css("display",'none');
+            }else {
+                $(".password-tip").css("display",'block');
+                return false;
+            }
+        }
+        if (txtphonepwd.indexOf(" ") > 0 || txtphonepwd == "" || txtphonepwd.length < 6 || txtphonepwd.length > 18){
+            $(".password-tip").css("display",'block');
+            return false;
+        }
+        $(".password-tip").css("display",'none');
+
+    });
+    $("#txtphonepwd").blur(function () {
+        var txtphonepwd = $("#txtphonepwd").val();
+        var reg = /^\d+$/;
+        if(reg.test(txtphonepwd)){
+            if(txtphonepwd.length > 7){
+                $(".password-tip").css("display",'none');
+            }else {
+                $(".password-tip").css("display",'block');
+                return false;
+            }
+        }
+        if (txtphonepwd.indexOf(" ") > 0 || txtphonepwd == "" || txtphonepwd.length < 6 || txtphonepwd.length > 18){
+            $(".password-tip").css("display",'block');
+            return false;
+        }
+        $(".password-tip").css("display",'none');
+    });
+
+    $("#txtphonepwd").keyup(function () {
+        var txtphonepwd = $("#txtphonepwd").val();
+        var reg = /^\d+$/;
+        if(reg.test(txtphonepwd)){
+            if(txtphonepwd.length > 7){
+                $(".password-tip").css("display",'none');
+            }else {
+                $(".password-tip").css("display",'block');
+                return false;
+            }
+        }
+       if (txtphonepwd.indexOf(" ") > 0 || txtphonepwd == "" || txtphonepwd.length < 6 || txtphonepwd.length > 18){
+            $(".password-tip").css("display",'block');
+            return false;
+        }
+        $(".password-tip").css("display",'none');
+    });
+
+    var time = 60;
+    function countdown(e) {
+        var txtphonenumber = $("#txtphonenumber").val();
+        var regPhone = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
+
+        if(txtphonenumber == ""){
+            $("#txtphonenumber").focus();
+            $("#phone").prop("class","top error");
+            $("#etip").text("请输入手机号码");
+            $("#etip").show();
+            return false;
+        } else if(!regPhone.test(txtphonenumber)){
+            $("#txtphonenumber").focus();
+            $("#phone").prop("class","top error");
+            $("#etip").text("请输入有效的手机号码");
+            $("#etip").show();
+            return false;
+        }else if(ph>0){
+            $("#txtphonenumber").focus();
+            $("#phone").prop("class","top error");
+            $("#etip").html("该手机号已注册，请尝试直接 <a href='login.html' style=\'color: #00a5e0\'>登录</a>");
+            $("#etip").show();
+            return false;
+        }else{
+            $("#phone").prop("class","");
+            $("#etip").hide();
+        }
+        if(time == 58){
+           $.ajax({
+                url: "reg/yzm",
+                data: {"phone":txtphonenumber},
+                type: "post",
+                    dataType: "json",
+                    success: function (data) {
+                    console.log(data);
+                }
+            });
+        }
+
+        if (time == 0) {
+            e.setAttribute("onclick", "countdown(this)");
+            $("#get_code").html("获取验证码");
+            time = 60;
+        } else {
+            e.removeAttribute("onclick");
+            $("#get_code").html("重新发送(" + time + ")");
+            time--;
+            setTimeout(function () {
+                countdown(e);
+            }, 1000);
+        }
+    }
+
+    function jumpBackUrl() {
+        var count = 7;
+        var interval = setInterval(function() {
+            count--;
+            if (count <= 0) {
+                clearInterval(interval);
+                window.location.href = 'booktype/queryAll';
+            }
+            else {
+                $("#jumpTime").html(count);
+            }
+        }, 1000);
+    }
+
+</script>
+
+    </body>
+</html>

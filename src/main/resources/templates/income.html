@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <!-- 360安全游览器使用webkit极速核 -->
+    <meta name="renderer" content="webkit">
+    <!-- IE使用它支持的最高模式 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="小说阅读,精彩小说尽在创世小说.创世小说提供玄幻小说,武侠小说,原创小说,网游小说,都市小说,言情小说,职场小说,历史小说,军事小说,网游小说,科幻小说,恐怖小说,首发小说最新章节免费小说阅读小说下载txt,精彩尽在创世小说!2013年热门小说:无敌唤灵,无红色权力,无限曙光,余罪,兵临天下,盛唐风月,武帝,大官人,勇闯天涯,机甲天王">
+    <meta name="keywords" content="小说,小说网,言情小说,职场小说,玄幻小说,武侠小说,都市小说,历史小说,网络小说,小说下载,小说txt,小说全文阅读,原创网络文学">
+    <link rel="shortcut icon" type="image/x-icon" href="https://img1.write.qq.com/writer/p1/contentv2/aa_ico.ico">
+    <title>总收入-阅文作家专区</title>
+    <link rel="stylesheet" type="text/css" href="./css/contentv2_base.css"><script src="./css/stats.js.下载" name="MTAH5" sid="500659219"></script><script type="text/javascript" src="./css/contentv2_base.js.下载"></script>    <!-- prevent dom xss -->
+    <script type="text/javascript" src="./css/aq_common.js.下载"></script>
+    <meta name="__hash__" content="a456e0e2d67950aa08444c630ef906e9_f48777b92183314fbbc574cc4a37ff19">
+
+    <link rel="stylesheet" href="./js/bootstrap/css/bootstrap.css">
+    <script src="./js/sweet-alert.js"></script>
+    <link rel="stylesheet" href="./css/sweet-alert.css">
+    <!--<script type="text/javascript">
+        function load() {
+            $.ajax({
+                url: "/jpbook/users/ckSession",
+                data: {"name": 'users'},
+                type: "post",
+                success: function (data) {
+                    if (data == 0) {
+                        window.location.href = "/jpbook/login";
+                    }
+                }
+            });
+        }
+    </script>-->
+</head>
+
+<body onload="load()">
+<div class="wrap">
+    <div class="header">
+        <div class="headBox pageCenter cf">
+            <a href="https://write.qq.com/index.html">
+                <img class="logo fl" src="./css/logo.png" width="225" height="28" alt="阅文·作家专区">
+            </a>
+            <div class="headUser fr">
+                <ul class="cf">
+                    <li class="line"></li>
+                    <li id="headPhotoBox" class="headPhoto">
+                        <p><em><img th:src="${session.users[0].getIcon()}" width="36" height="36" alt=""></em><a class="userName" href="javascript:" th:text="${session.users[0].getPen()}">爱色鬼</a></p>
+                        <dl class="userBox">
+                            <cite class="icon whiteSj"></cite>
+                            <dd class="userInfo hidden">
+                                <!-- 增加身份标识"ico-level",silver为白金作家，dashen为大神作家 -->
+                                <p class="name" th:title="${session.users[0].getPen()}" th:text="${session.users[0].getPen()}">爱色鬼
+
+                                </p>
+                                <p class="level">
+
+                                    <span><em style="width:70%">0/0</em></span></p>
+                            </dd>
+                            <dd class="link"><a href="writerdata.html">作家资料</a></dd>
+                            <dd class="link end"><a href="/jbook/login/emptySession">退出登录</a></dd>
+                        </dl>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- start banner -->
+
+    <!-- end banner -->
+    <!-- 黄条提示 -->
+    <div id="warnTipBox" class="warningWrap" style="display:none;">
+        <div class="pageCenter">
+            <p><span class="icon alert"></span><span id="warnTip"></span></p>
+            <a id="warnTipCloseBtn" class="icon close" href="javascript:" title="关闭"></a></div>
+    </div>
+    <!--更改VIP管理密码-->
+    <div id="modifyPwdPopup" class="popupWrap w380" style="display:none;">
+        <a data-node="closeBtn" class="icon closePopup" href="javascript:"></a>
+        <h3>更改VIP管理密码</h3>
+        <div class="popupBody p30">
+            <div class="popupContent">
+                <p>原密码</p>
+                <p class="mb20">
+                    <input data-node="originalPwdInput" class="longInput" type="password" value="">
+                </p>
+                <p>新密码</p>
+                <p class="mb20">
+                    <input data-node="newPwdInput" class="longInput" type="password" value="">
+                    <i class="f12 c999">6~16位英文、数字或特殊字符</i>
+                </p>
+
+                <p>再次输入新密码</p>
+                <p class="mb20">
+                    <input data-node="repeatNewPwdInput" class="longInput" type="password" value="">
+                </p>
+            </div>
+            <center class="confirmBtn">
+                <a data-node="submitBtn" class="button full" href="javascript:">提交</a>
+            </center>
+        </div>
+    </div>
+    <div class="mainWrap pageCenter cf">
+        <div id="leftNav" class="mainLeft fl" style="visibility: visible;">
+            <div class="sideBar" id="main-bar">
+                <ul>
+                    <li>
+                        <a href="authorWorks.html"><span class="works"></span>作品管理</a>
+                    </li>
+                    <li><a href="statistics.html"><span class="data-icon"></span>数据统计</a>
+                        <!-- start 工具栏提示 -->
+                    </li>
+
+                    <li class="act">
+                        <a href="income"><span class="income"></span>稿酬收入</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- start 小屏下的列表-->
+            <div class="sideBar min-bar" id="min-bar">
+                <ul>
+                    <li>
+                        <a class="min-link" href="authorWorks.html"><span class="icon works"></span></a>
+                        <a class="expand" href="authorWorks.html">作品管理</a>
+                    </li>
+
+                    <li>
+                        <a class="min-link" href="statistics.html"><span class="icon reserve"></span></a>
+                        <a class="expand" href="statistics.html">数据统计</a>
+                    </li>
+                    <li class="act">
+                        <a class="min-link" href="income.html"><span class="icon income"></span></a>
+                        <a class="expand" href="income.html">稿酬收入</a>
+                    </li>
+                    <!--微信管理-->
+                </ul>
+            </div>
+            <!-- end 小屏下的列表-->
+
+        </div>
+
+        <link rel="stylesheet" type="text/css" href="./css/contentv2_income.css"><div class="mainRight pb260 fl">
+        <div class="crumbsWrap"> <i><span>收入管理</span></i> </div>
+        <div class="tabSwitch cf" id="toptab">
+    <span class="act">
+        <a href="javascript:void(0)" onclick="toptab(this,'income')">总收入</a>
+    </span>
+            <span>
+        <a href="javascript:void(0)" onclick="toptab(this,'copyright')">版权收入</a>
+    </span>
+            <span>
+        <a href="javascript:void(0)" onclick="toptab(this,'reward')">打赏明细</a>
+    </span>
+        </div>
+        <script type="text/javascript">
+            function toptab(obj,id) {
+                $("#toptab").find("span").prop("class","");
+                $(obj).parent("span").prop("class","act");
+                $(".div").css("display","none");
+                $("#"+id+"div").css("display","block");
+            }
+        </script>
+        <form  class="layui-form">
+        <div class="incomeWrap">
+                <div class="layui-input-inline" style="float: left">
+                    <select name="year" id="year"  style="visibility: visible;">
+
+                </select>
+                    <script type="text/javascript">
+                        $(function () {
+                            var myDate = new Date();
+                            //获取当前年
+                            var year=myDate.getFullYear();
+                            var str="";
+                            for(var i=2013;i<=year;i++){
+                                if (i==year){
+                                    str+="<option value=\""+i+"\" selected>"+i+"</option>"
+                                }else {
+                                    str+="<option value=\""+i+"\">"+i+"</option>"
+                                }
+                            }
+                            $("#year").html(str);
+                        })
+                    </script>
+            </div>
+                <div class="layui-input-inline" style="float: left">
+              <select name="month" id="month"  style="visibility: visible;">
+
+                </select>
+                    <script type="text/javascript">
+                        $(function () {
+                            var myDate = new Date();
+                            //获取当前年
+                            var month=myDate.getMonth()+1;
+                            var str="";
+                            for(var i=1;i<=12;i++){
+                                if (i==month){
+                                    str+="<option value=\""+i+"\" selected>"+i+"</option>"
+                                }else {
+                                    str+="<option value=\""+i+"\">"+i+"</option>"
+                                }
+                            }
+                            $("#month").html(str);
+                        })
+                    </script>
+                </div>
+                <a class="button" href="javascript:look();" style="display:inline-block;line-height:30px;width: 50px;height: 30px;" id="searchBtn">查看</a>
+            </div>
+        </form>
+
+        <div id="incomediv" class="incomeWrap div"  style="display:block;margin-top: -50px;">
+            <h3 class="reserveTitle"> <em class="icon pie"></em>收入分布</h3>
+
+            <div class="chartWrap">
+
+                <div  style="margin-top: 50px;margin: auto;" class="chartWrap">
+            <table class="totalData" width="100%" border="0" cellspacing="0">
+                <tbody>
+                <tr>
+                    <td style="text-align: center"><h3>总收入(元)</h3>
+                        <p data-node="sum" id="incomesum">0</p>
+                        <h4>（元）</h4>
+                        <h3>已提现(元)</h3>
+                        <p data-node="sum" id="withdrawmoney" th:text="${session.users.get(0).getWithdrawmoney()}">0</p>
+                        <h4>（元）</h4>
+                        <input type="button" onclick="withdraw()" style="border-radius: 5px;width: 100px;height: 40px;background-color: #00ACF5 " th:value="提现">
+                    </td>
+                    <script type="text/javascript">
+                        $(function () {
+                            getSummoenyAndWithdrawmoney();
+                        });
+                        function getSummoenyAndWithdrawmoney() {
+                            $.ajax({
+                                url:"/jpbook/users/getSummoenyAndWithdrawmoney",
+                                success:function (data) {
+                                    $("#withdrawmoney").html(data.withdrawmoney);
+                                    $("#incomesum").html(data.summoney);
+                                }
+                            })
+                        }
+                        function withdraw() {
+                            var money=$("#incomesum").html();
+                            var money2=$("#withdrawmoney").html();
+                            if((parseFloat(money)-parseFloat(money2))<=0){
+                                swal("操作失败!", "无收入，无法提现！", "warning");
+                            }else{
+                                swal({
+                                    title: "确定操作吗？",
+                                    text: "你确定要把所有收入提现吗？",
+                                    type: "warning",
+                                    showCancelButton: true,
+                                    cancelButtonText:'取消',
+                                    confirmButtonColor: '#DD6B55',
+                                    confirmButtonText: '确定'
+                                },
+                                function(){
+                                    $.ajax({
+                                        url:"/jpbook/users/withdraw",
+                                        data:{"money":(parseFloat(money)-parseFloat(money2))},
+                                        success:function (data) {
+                                            $("#incomesum").html(0);
+                                            swal("提现成功!", "成功提现"+(parseFloat(money)-parseFloat(money2))+"元,请注意查收！", "success");
+                                            getSummoenyAndWithdrawmoney();
+                                        }
+                                    })
+                                });
+                            }
+                        }
+                    </script>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+            </div>
+        </div>
+            <div class="reserveChart mb30 div" id="copyrightdiv" style="display: none">
+                <h3 class="reserveTitle">
+                    <em class="icon reward"></em>版权收入明细
+                </h3>
+                <div class="chartWrap">
+                    <h2 id="bookTitle2">2019年2月版权收入<br></h2>
+                    <div id="incomeSumBox"  style="margin-top: 50px;margin-left: 50px;">
+
+                    </div>
+                    <div id="noDataBox" class="nodataBox" style="">
+                        <img src="./css/nodata.png" width="141" height="154">
+                        <p>暂无收入</p>
+
+                    </div>
+                    <div class="reserveGraph" id="chartBox" style="display: none;"></div>
+                </div>
+            </div>
+
+        <div class="reserveListWrap div" id="rewarddiv" style="display: none;">
+            <h3 class="reserveTitle">
+                <em class="icon reward"></em>打赏明细
+                <span class="fr exc-rewards" >合计打赏金额<i id="rewardCount"></i>元</span>
+            </h3>
+            <div class="detailWrap mb10">
+                <table class="detailTable" width="100%" border="0" cellspacing="0">
+                    <colgroup>
+                        <col width="33%">
+                        <col width="33%">
+                        <col width="33%">
+                    </colgroup>
+                    <thead style="background-color: #3A6590;">
+                    <tr>
+                        <th>打赏时间</th>
+                        <th>打赏金额(元)</th>
+                        <th>备注</th>
+                    </tr>
+                    </thead>
+                    <tbody id="incomeList" incometype="rewards">    <tr>
+                        <td colspan="3">暂无任何数据</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <div id="pager" class="pageBox pr0 fr"></div>
+        </div>
+        <script type="text/javascript">
+            var copyrightsum=0;
+            var rewardsum=0;
+            $(function () {
+                look();
+            });
+            function look() {
+                copyrightsum=0;
+                rewardsum=0;
+                getRemuneration();
+                getReward();
+            }
+            function getRemuneration() {
+                $("#bookTitle2").html($("#year").val()+"年"+$("#month").val()+"月版权收入");
+                $.ajax({
+                    url:"users/getRemuneration",
+                    data:{"year":$("#year").val(),"month":$("#month").val()},
+                    success:function (data) {
+                        if(data==""){
+                            $("#noDataBox").css("display",'block');
+                            $("#incomeSumBox").css("display",'none');
+
+                        }else{
+                            var str="";
+                            str+="<table style='border: 1px;width: 100%;text-align: center;'>\n" +
+                                "                                    <thead style='background-color: #3A6590;height: 50px;'>\n" +
+                                "                                    <tr>\n" +
+                                "                                    <td>书名</td>\n" +
+                                "                                    <td>卷名</td>\n" +
+                                "                                    <td>章名</td>\n" +
+                                "                                    <td>收入</td>\n" +
+                                "                                    </tr>\n" +
+                                "                                    </thead><tbody>";
+
+                            for (var i=0;i<data.length;i++){
+                                str+="<tr style='height: 50px;'>\n" +
+                                    "                                        <td>"+data[i].bookname+"</td>\n" +
+                                    "                                        <td>"+data[i].rollname+"</td>\n" +
+                                    "                                        <td>"+data[i].chapname+"</td>\n" +
+                                    "                                        <td>"+data[i].remuneration+"元</td>\n" +
+                                    "                                        </tr>"
+                                copyrightsum+=data[i].remuneration;
+                            }
+                            str+="</tbody></table>";
+                            $("#incomeSumBox").html(str);
+                            $("#noDataBox").css("display",'none');
+                            $("#incomeSumBox").css("display",'block');
+                        }
+                    }
+                })
+            }
+            function getReward() {
+                $.ajax({
+                    url: "reward/getReward",
+                    data: {"year": $("#year").val(), "month": $("#month").val()},
+                    success: function (data) {
+
+                        if(data==""){
+                            $("#incomeList").html("<tr>\n" +
+                                "                        <td colspan=\"3\">暂无任何数据</td>\n" +
+                                "                    </tr>")
+
+                        }else{
+                            var str="";
+                            for(var i=0;i<data.length;i++){
+                                str+="<tr>\n" +
+                                    "                        <td>"+jsonDateFormat(data[i].rewatime)+"</td><td>"+data[i].rewanum/200+"</td><td>"+data[i].uname+"打赏"+data[i].bookname+"</td>\n" +
+                                    "                    </tr>"
+                                rewardsum+=data[i].rewanum;
+                            }
+                            $("#rewardCount").html(rewardsum/200+"元");
+                            $("#incomeList").html(str);
+                        }
+                    }
+                })
+            }
+            function jsonDateFormat(date) {//json日期格式转换为正常格式
+                var dateee = new Date(date).toJSON();
+                return new Date(+new Date(dateee) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
+            }
+        </script>
+            <!--<div class="reserveListWrap">
+                <h3 class="reserveTitle"> <em class="icon reward"></em>收入明细
+                    &lt;!&ndash; <span class="fr">合计总收入（含稿酬及部分福利）<i id="total"></i>元</span> &ndash;&gt;
+                </h3>
+                <div class="detailWrap mb10">
+                    <table class="detailTable f12" width="100%" border="0" cellspacing="0">
+                        <colgroup>
+                            <col width="13%">
+                            <col width="9%">
+                            <col width="10%">
+                            <col width="7%">
+                            <col width="8%">
+                            <col width="8%">
+                            <col width="8%">
+                            <col width="8%">
+                            <col width="9%">
+                            <col width="9%">
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th rowspan="2" id="change">作品</th>
+                            <th colspan="3">签约平台</th>
+                            <th rowspan="2">集团渠道</th>
+                            <th colspan="2">第三方渠道</th>
+                            <th rowspan="2">版权收入</th>
+                            <th rowspan="2">支付状态</th>
+                            <th class="nobr" rowspan="2">合计</th>
+                        </tr>
+                        <tr>
+                            <th>单订/买断/单册</th>
+                            <th>包月（上月）</th>
+                            <th>奖励保障</th>
+                            <th>中移动阅读</th>
+                            <th>其他</th>
+                        </tr>
+                        </thead>
+                        <tbody id="incomeList" incometype="month">    <tr>
+                            <td colspan="13">暂无任何数据</td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+                &lt;!&ndash; 翻页容器 &ndash;&gt;
+                <div id="pager" class="pageBox fr cf"></div>
+            </div>-->
+            <div class="gTip cfboth">
+                <p>1.签约平台是指作品签约网站所拥有的平台，例如： </p>
+                <p>A.创世/云起：包含创世、云起PC站，QQ阅读安卓端、QQ书城触屏、QQ书城wap版等； </p>
+                <p>B.起点/起点女生：包含起点、起点女生PC站，起点安卓客户端，起点M站等； </p>
+                <p>C.小说阅读网：包含小说阅读网PC站，安卓客户端等。</p>
+                <p>2.奖励保障是指作品签约网站所拥有的福利以及道具销售等，包含全勤奖，勤奋写作奖，打赏等；</p>
+                <p>3.集团渠道是指阅文集团旗下系列PC网站、app移动端和各平台ios端等交叉合作平台，以及腾讯集团旗下独家合作平台（包括但不限于手机QQ的阅读中心，Qzone，QQ浏览器等）； </p>
+                <p>4.第三方渠道是指非阅文集团以及非腾讯系的外部渠道销售，包含中移动，其他（包括但不限于电信天翼阅读，联通，百度，小米多看，搜狗等）；</p>
+                <p>5.版权收入是指作品进行版权交易所产生的收入，包含简、繁体出版，游戏改编，影视剧改编，非简体汉字版授权等。</p>
+
+
+            </div>
+
+            <!--收入月报模板-->
+            <textarea id="incomeListTpl" style="display:none;">    &lt;%each list as item index%&gt;
+    &lt;tr&gt;
+        &lt;td&gt;&lt;a class="chapter titleft" href="javascript:"&gt;&lt;%= item.booktitle %&gt;&lt;/a&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;%= !item.showincome || parseFloat(item.showincome)&lt;=0?'0':parseFloat(item.showincome) %&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;%= !item.othercount || parseFloat(item.othercount)&lt;=0?'0':parseFloat(item.othercount) %&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;%= !item.welfarecount || parseFloat(item.welfarecount)&lt;=0?'0':parseFloat(item.welfarecount) %&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;%= !item.channeljituan || parseFloat(item.channeljituan)&lt;=0?'0':parseFloat(item.channeljituan) %&gt; &lt;/td&gt;
+        &lt;td&gt;&lt;%= !item.channelyido || parseFloat(item.channelyido)&lt;=0?'0':parseFloat(item.channelyido) %&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;%= !item.channelother || parseFloat(item.channelother)&lt;=0?'0':parseFloat(item.channelother) %&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;%= !item.copyrightPay || parseFloat(item.copyrightPay)&lt;=0?'0':parseFloat(item.copyrightPay) %&gt;&lt;/td&gt;
+        &lt;td&gt;
+            &lt;%if item.pincomecount === '3' %&gt;
+            信息不全&lt;a class="icon q_icon" href="&lt;%= item.tmp_url%&gt;"  title="信息不全，请点击此处填写银行账号，如无法正常填写，请联系您的签约编辑"&gt;&lt;/a&gt;
+            &lt;%else%&gt;
+            &lt;%= item.showtype %&gt;
+            &lt;%/if%&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+            &lt;%=!item.totalIncome || parseFloat(item.totalIncome)&lt;=0?'0':parseFloat(item.totalIncome)%&gt;
+        &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;%/each%&gt;
+</textarea>
+            <!--收入月报的无数据模板-->
+            <textarea id="incomeEmptyListTpl" style="display:none;">    &lt;tr&gt;
+        &lt;td&gt;$bookTitle$&lt;/td&gt;
+        &lt;td&gt;0&lt;/td&gt;
+        &lt;td&gt;0&lt;/td&gt;
+        &lt;td&gt;0&lt;/td&gt;
+        &lt;td&gt;0&lt;/td&gt;
+        &lt;td&gt;0&lt;/td&gt;
+        &lt;td&gt;0&lt;/td&gt;
+        &lt;td&gt;0&lt;/td&gt;
+        &lt;td&gt;--&lt;/td&gt;
+        &lt;td&gt;0.00&lt;/td&gt;
+    &lt;/tr&gt;
+</textarea>
+            <!--超当月月份收入的无数据模板-->
+            <textarea id="incomeEmptyListTplV2" style="display:none;">    &lt;tr&gt;
+        &lt;td colspan="13"&gt;暂无任何数据&lt;/td&gt;
+    &lt;/tr&gt;
+</textarea></div>
+        <img id="requestLoadingTip" class="loadImg" style="display: none;" src="./css/loading.gif"></div>
+        <script type="text/javascript" src="./css/contentv2_income.js.下载"></script>
+
+
+    </div>
+    <div class="footer">
+        <div class="pageCenter">
+            <a target="_blank" href="https://write.qq.com/about/help_center.html">帮助中心</a><span>|</span>
+            <a target="_blank" href="https://www.yuewen.com/service.html">联系客服</a><span>|</span><a target="_blank" href="http://join.book.qq.com/introduction.html">关于我们</a><span>|</span><a target="_blank" href="http://join.book.qq.com/social.html">诚聘英才</a><span>|</span><a target="_blank" href="https://write.qq.com/about/copyright.html">版权声明</a><span>|</span>Copyright
+            © 2019 All Rights Reserved 阅文集团 版权所有
+        </div>
+    </div>
+    <script type="text/javascript" src="./css/contentv2_help_connectkefu.js.下载"></script>
+</div>
+<!-- start 官方推荐-->
+
+<!-- end 官方推荐-->
+
+<!-- start 意见反馈-->
+
+<form name="myfrom" id="toucao_myform" method="post" action="https://support.qq.com/product/1924" target="_blank">
+    <input type="hidden" name="nickname" value="爱色鬼">
+    <input type="hidden" name="avatar" value="https://ccstatic-1252317822.file.myqcloud.com/writer/p1/contentv2/photo_default.png">
+    <input type="hidden" name="openid" value="13121036803414701">
+    <input type="hidden" name="__hash__" value="a456e0e2d67950aa08444c630ef906e9_f48777b92183314fbbc574cc4a37ff19"></form>
+
+<!--end 意见反馈-->
+<script type="text/javascript" src="./css/contentv2_rightBar.js.下载"></script><script type="text/javascript" src="./css/college_dialog.js.下载"></script><!--end 意见反馈-->
+<script type="text/javascript">
+    $(function(){
+        //右侧工具条
+        CS.rightBar.init();
+    });
+    function toucao(){
+        var cauthorid =  $("input[name='openid']").val();
+        if(cauthorid == null || cauthorid == ''){
+            location.href = '/public/login.html?artidx=-100';
+        }else{
+            var _browser = CS.browser;
+            // document.getElementById("toucao_myform").submit();
+            var data = {
+                "nickname":"爱色鬼",
+                "avatar": "https://ccstatic-1252317822.file.myqcloud.com/writer/p1/contentv2/photo_default.png",
+                "openid": "13121036803414701",
+                "os": _browser.detectOS(),
+                "clientInfo":_browser.browserType(),
+                "clientVersion": _browser.browserType(),
+                "customInfo":"爱色鬼"+"13121036803414701"
+            };
+            var productId = 1924;
+            Tucao.request(productId, data);
+
+        }
+
+    }
+</script>
+
+<script type="text/javascript" src="./css/contentv2_layout.js.下载"></script><script type="text/javascript">
+    $(function(){
+        var systemTip = "";
+        //模板页
+        CS.page.layout.main.init(systemTip);
+
+        //被其他站点以iframe方式嵌入后的处理
+        CS.embed.init();
+    });
+</script>
+<!-- 数据统计 -->
+
+<script type="text/javascript">
+    var _mtac = {};
+    (function() {
+        var mta = document.createElement("script");
+        mta.src = "//pingjs.qq.com/h5/stats.js?v2.0.4";
+        mta.setAttribute("name", "MTAH5");
+        mta.setAttribute("sid", "500659219");
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(mta, s);
+    })();
+    $(function(){
+        //public
+        $.getScript("https://tajs.qq.com/stats?sId=34321758");
+        //new write
+        $.getScript("https://tajs.qq.com/stats?sId=51056771");
+    });
+</script>
+
+</body></html>

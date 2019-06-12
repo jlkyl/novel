@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://book.qidian.com/subscribe/1013013477 -->
+<html class="loaded" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+    <title>江派中文网</title>
+    <meta name="keywords" content="我才不要恋爱游戏">
+    <meta name="description"
+          content="我才不要恋爱游戏，我才不要恋爱游戏小说阅读。二次元小说我才不要恋爱游戏由作家尺间萤火创作，起点小说提供我才不要恋爱游戏首发最新章节及章节列表，我才不要恋爱游戏最新更新尽在起点中文网">
+    <meta name="robots" content="all">
+    <meta name="googlebot" content="all">
+    <meta name="baiduspider" content="all">
+    <meta http-equiv="mobile-agent" content="format=wml; url=http://m.qidian.com">
+    <meta http-equiv="mobile-agent" content="format=xhtml; url=http://m.qidian.com">
+    <meta http-equiv="mobile-agent" content="format=html5; url=http://h5.qidian.com/bookstore.html">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <script src="../css/stats.js.下载" name="MTAH5" sid="500451537"></script>
+    <script src="../js/jquery-3.3.1.js" type="text/javascript"></script>
+    <script src="../js/sweet-alert.js"></script>
+    <link rel="stylesheet" href="../css/sweet-alert.css">
+    <script>
+        var speedTimer = [],
+            speedZero = new Date().getTime();
+    </script>
+
+    <script>
+        //遇到cookie tf=1的话留在本站，否则跳转移动站
+        if (getCookie('tf') != 1) {
+            //判断是以下设备后跳转到m站
+            if (navigator.userAgent.match(/(iPhone|iPod|Android)/i)) {
+                location.href = "//m.qidian.com"
+            }
+        } else {
+            // M站设置了一年，这里fixed
+            setCookie('tf', 1, 'qidian.com', '/', 0);
+        }
+        // start 防劫持
+        //设置cookie
+        function setCookie(name, value, domain, path, expires) {
+            if (expires) {
+                expires = new Date(+new Date() + expires);
+            }
+            var tempcookie = name + '=' + escape(value) +
+                ((expires) ? '; expires=' + expires.toGMTString() : '') +
+                ((path) ? '; path=' + path : '') +
+                ((domain) ? '; domain=' + domain : '');
+            //Ensure the cookie's size is under the limitation
+            if (tempcookie.length < 4096) {
+                document.cookie = tempcookie;
+            }
+        }
+
+        //获取cookie
+        function getCookie(name) {
+            var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+            if (arr = document.cookie.match(reg))
+                return (arr[2]);
+            else
+                return null;
+        }
+
+        //创建并发送请求
+        function createSender(url) {
+            var img = new Image();
+            img.onload = img.onerror = function () {
+                img = null;
+            };
+            img.src = url;
+        };
+    </script>
+
+    <link data-ignore="true" rel="shortcut icon" type="image/x-icon"
+          href="https://qidian.gtimg.com/qd/favicon/qd_icon.c443c.ico">
+    <link data-ignore="true" rel="Bookmark" type="image/x-icon"
+          href="https://qidian.gtimg.com/qd/favicon/qd_icon.c443c.ico">
+
+
+    <link rel="stylesheet" data-ignore="true" href="../css/vote_popup.3844d.css">
+
+
+    <link data-ignore="true" rel="stylesheet" href="../css/module.7c917.css">
+    <link data-ignore="true" rel="stylesheet" href="../css/layout.5de0f.css">
+    <link data-ignore="true" rel="stylesheet" href="../css/book_details.1baf2.css">
+
+    <link charset="utf-8" rel="stylesheet" href="../css/LightTip.css">
+    <link charset="utf-8" rel="stylesheet" href="../css/Popup.css">
+    <link charset="utf-8" rel="stylesheet" href="../css/Panel.css">
+    <link charset="utf-8" rel="stylesheet" href="../css/Drag.css">
+    <style name="lbf-overlay">.lbf-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+    }</style>
+</head>
+<body style="zoom: 1;">
+
+
+<div class="wrap">
+
+
+    <div id="pin-nav" class="pin-nav-wrap need-search" data-l1="40">
+        <div class="box-center cf">
+            <div class="nav-list site-nav fl">
+                <ul>
+                    <li class="site"><a class="pin-logo"
+                                        href="/jpbook/booktype/queryAll" style = "font-size: 18px;font-family: 'Courier New', Courier, monospace">江派中文网</a>
+                    </li>
+                    <li><a href="/jpbook/showAllBook.html?btid=1" target="">玄幻</a></li>
+                    <li><a href="/jpbook/showAllBook.html?btid=5" target="">都市</a></li>
+                    <li><a href="/jpbook/showAllBook.html?btid=4" target="">仙侠</a></li>
+                    <li><a href="/jpbook/showAllBook.html?btid=11" target="">科幻</a></li>
+                    <li><a href="/jpbook/showAllBook.html?btid=9" target="">游戏</a></li>
+                    <li><a href="/jpbook/showAllBook.html?btid=8" target="">历史</a></li>
+                    <li><a href="/jpbook/books/rank" target="_blank">排行</a></li>
+                    <li class="more">
+                        <a href="javascript:" id="top-nav-more" target="">
+                            更多<span></span>
+                        </a>
+                        <div class="dropdown">
+                            <a href="/jpbook/showAllBook.html" target="_blank">全部作品</a>
+                            <a href="/jpbook/showAllBook.html?btid=13" target="">二次元</a>
+                            <a href="/jpbook/showAllBook.html?btid=2" target="">奇幻</a>
+                            <a href="/jpbook/showAllBook.html?btid=3" target="">武侠</a>
+                            <a href="/jpbook/showAllBook.html?btid=12" target="">灵异</a>
+                            <a href="/jpbook/showAllBook.html?btid=7" target="">军事</a>
+                            <a href="/jpbook/showAllBook.html?btid=6" target="">现实</a>
+                            <a href="/jpbook/showAllBook.html?btid=10" target="">体育</a>
+                            <a href="/jpbook/showAllBook.html?btid=14" target="">短篇</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="nav-list min-user fr">
+                <ul>
+                    <li class="line"></li>
+                    <li th:class="${session.users} ? 'sign-out hidden' : 'sign-out'">
+                        <a id="pin-login" href="../login.html" target="_blank">登录</a>
+                        <a class="reg" href="../register.html" target="_blank">注册</a>
+                    </li>
+                    <th:block th:if="${session}">
+                        <th:block th:if="${session.users}">
+                            <li th:class="${session.users[0] } ? 'sign-in' : 'sign-in hidden'">
+                                <a href="../personal.html" target="_blank">
+                                    <span id = "uuid" style="display: none" th:text="${session.users[0].uuid}"></span>
+                                    <i id="nav-user-name" th:text="${session.users[0].uname}"></i>
+                                    <span></span>
+                                </a>
+                                <div class="dropdown">
+                                    <a href="/jpbook/topup" target="_blank">充值</a>
+                                    <a href="../personal.html" target="_blank">个人中心</a>
+                                    <a id="exit" href="javascript:void(0);" onclick="removeu()">退出</a>
+                                </div>
+                            </li>
+                        </th:block>
+                    </th:block>
+
+                    <li class="sign-in">
+                        <a href="https://me.qidian.com/Index.aspx" target="_blank" data-eid="qd_A65"><i
+                                id="nav-user-name">书友20180218153427385</i><span></span></a>
+                        <div class="dropdown">
+                            <a href="https://me.qidian.com/msg/lists.aspx?page=1" target="_blank"
+                               data-eid="qd_A66">消息(<i id="top-msg">0</i>)</a>
+                            <a href="https://www.qidian.com/charge/meRedirect" target="_blank" data-eid="qd_A67">充值</a>
+                            <a href="https://me.qidian.com/Index.aspx" target="_blank" data-eid="qd_A68">个人中心</a>
+                            <a href="https://www.qidian.com/help/kf" target="_blank" data-eid="qd_A69">客服中心</a>
+                            <a id="exit" href="javascript:" data-eid="qd_A70">退出</a>
+                        </div>
+                    </li>
+                    <li class="line"></li>
+                    <li class="book-shelf" id="top-book-shelf">
+                        <a href="https://me.qidian.com/bookCase/bookCase.aspx" target="_blank" data-eid="qd_A63"><em
+                                class="iconfont"></em><i>我的书架
+                        </i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="top-bg-box " id="j-topBgBox"
+         style="background-image:url(&#39;//qidian.qpic.cn/qidian_common/349573/7467bfe5fc36626290b3b18c8f0b86ce/0&#39;)"></div>
+
+    <div class="crumbs-nav center990  " data-l1="1">
+
+    <span>
+        <cite class="lt"></cite>
+
+    <a href="https://www.qidian.com/" data-eid="qd_G01">首页</a><em class="iconfont"></em>
+
+        <a href="https://www.qidian.com/2cy" target="_blank" data-eid="qd_G02" th:text="|${queryBookById[0].btname}频道|">二次元频道</a><em class="iconfont"></em>
+    <input type="text" th:value="${queryBookById[0].bookid}" id="bookid">
+    <a href="https://book.qidian.com/info/1013013477"  th:text="${queryBookById[0].bookname}">我才不要恋爱游戏</a>
+        <cite class="rt"></cite>
+    </span>
+    </div>
+    <div class="border-shadow ">
+        <span></span>
+        <span></span>
+    </div>
+
+    <div class="book-detail-wrap center990">
+
+        <div class="book-information cf" data-l1="2">
+
+
+            <div class="book-img">
+                <a class="J-getJumpUrl" id="bookImg" href="javascript:void(0)"
+                   data-eid="qd_G09" data-bid="1013013477" data-firstchapterjumpurl="">
+                    <th:block th:if="${queryBookById[0].icon} eq ''">
+                        <img src=".../images/0.jpg"/>
+                    </th:block>
+                    <th:block th:if="${queryBookById[0].icon} neq ''">
+                        <img th:src="@{/img/{filename}(filename=${queryBookById[0].icon})}"/>
+                    </th:block>
+                </a>
+            </div>
+
+            <div class="book-info differ">
+                <h1>
+
+                    <em th:text="${queryBookById[0].bookname}">我才不要恋爱游戏</em>
+                    <span><a class="writer" href="https://me.qidian.com/authorIndex.aspx?id=402393294" target="_blank"
+                             data-eid="qd_G08" th:text="${queryBookById[0].pen}">尺间萤火</a> 著</span>
+
+                </h1>
+                <p class="tag"><span class="blue" th:text="${queryBookById[0].bookstate}">连载</span>
+                    <a href="https://www.qidian.com/2cy" class="red" target="_blank" data-eid="qd_G10" th:text="${queryBookById[0].btname}">二次元</a>
+                </p>
+
+                <p><em>
+                    <span th:text="${queryBookById[0].chapcount}"></span>
+                </em><cite>字</cite><i>|</i>
+                    <em>
+                        <span th:text="${queryBookById[0].cnum}"></span>
+                    </em>
+                    <cite>阅文总点击</cite><i>|</i>
+                    <em>
+                        <span class="EpImtlYe"></span>
+                    </em>
+
+                    <em>
+                        <span th:text="${queryBookById[0].zvote}"></span>
+                    </em>
+                    <cite>总推荐</cite><i>|</i>
+                    <em>
+                        <span th:text="${queryBookById[0].mvote}"></span>
+                    </em><cite>月推荐</cite></p>
+
+            </div>
+
+            <div class="price-wrap">
+                <div class="price">
+                    <h6><em>5</em><cite>起点币</cite></h6>
+                    <b></b>
+                    <span>千字</span>
+                </div>
+                <div class="user-state">
+                    <p>普通用户</p>
+                   <!-- <p><a class="blue" href="https://vip.qidian.com/My.php" target="_blank">升级成VIP用户</a><i>·</i>享受更多折扣
+                    </p>-->
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="subscribe-block" data-l1="3">
+
+
+            <div class="chapter-select-wrap mb30 cf">
+                <div class="select-all fl">
+                    <input class="all" id="all" type="checkbox" t-price="3257" t-wordscnt="669567" t-chaptercnt="293"
+                           onchange="selAll(this)">
+                    <label class="ui-checkbox" for="all" data-eid="qd_G82"></label><label for="all">选择全部章节</label>
+                </div>
+            </div>
+            <div class="catalog-content-wrap subscribe-content" id="catalog-content-wrap">
+
+                <div class="chapter-wrap" id="chapterWrap" volume-max="1">
+                    <div class="chapter">
+                        <h3>
+                            <input class="chapter-checkbox" id="vol-1" type="checkbox" volume-num="1"
+                                   volume-wordscnt="669567" chapter-price="0" chapter-wordscnt="0"
+                                   volume-chaptercnt="293" num="0" volume-id="74526111" volume-price="3257"
+                                   onchange="selCheckbo(this)">
+                            <label class="ui-checkbox" for="vol-1" data-eid="qd_G84"></label><label
+                                for="vol-1">正文卷<i>·</i>共296章<span class="vip">VIP</span><em class="count">本卷共<cite>670237</cite>字</em></label>
+                        </h3>
+                    </div>
+                    <div class="chapter-list-wrap cf" id="chapterList1">
+                        <div class="cover"></div>
+
+                        <h3><span>章节名称</span><label>时间</label><em>字数</em><cite>价格(起点币)</cite>
+                        </h3>
+                        <ul class="cf j_vol1" chapter-max="296" volume-num="1">
+                            <li>
+                                <input class="chapter-checkbox" data-eid="qd_G84" id="vol1-chap183" type="checkbox"
+                                       chapter-id="448869537" chapter-price="10" chapter-wordscnt="2105" num="1"
+                                       chapter-uid="314"><label for="vol1-chap183" class="ui-checkbox"></label><label
+                                    for="vol1-chap183"><b>297. 是你孙女对我下手的！（2/3）</b><em class="update-time">2019-01-29
+                                12:27:48</em><em>2105</em><strong>10</strong></label>
+                            </li>
+
+                            <li>
+                                <input class="chapter-checkbox" data-eid="qd_G84" id="vol1-chap296" type="checkbox"
+                                       chapter-id="458413157" chapter-price="10" chapter-wordscnt="2157" num="1"
+                                       chapter-uid="440"><label for="vol1-chap296" class="ui-checkbox"></label><label
+                                    for="vol1-chap296"><b>408. 久违了，读档君</b><em class="update-time">2019-03-27
+                                22:42:52</em><em>2157</em><strong>10</strong></label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <script type="text/javascript">
+                    $.ajax({
+                        url: "/jpbook/roll/queryMoneyRoll",
+                        data: {"bookid": $("#bookid").val()},
+                        success: function (data) {
+                            var str = "";
+                            for (var i = 0; i < data.length; i++) {
+                                str += "<div class=\"chapter\">\n" +
+                                    "                        <h3>\n" +
+                                    "                            <input class=\"chapter-checkbox\" id=\"vol-" + data[i].rollid + "\" type=\"checkbox\" volume-num=\"" + data[i].rollid + "\" volume-wordscnt=\"669567\" chapter-price=\"0\" chapter-wordscnt=\"0\" volume-chaptercnt=\"293\" num=\"0\" volume-id=\"74526111\" volume-price=\"3257\" onchange=\"selCheckbo(this)\">\n" +
+                                    "                            <label class=\"ui-checkbox\" for=\"vol-" + data[i].rollid + "\" data-eid=\"qd_G84\"></label><label for=\"vol-" + data[i].rollid + "\">" + data[i].rollname + "<i>·</i>共" + data[i].count + "章<span class=\"vip\">VIP</span><em class=\"count\">本卷共<cite>" + data[i].sum + "</cite>字</em></label></h3>\n" +
+                                    "                    </div>\n" +
+                                    "                    <div class=\"chapter-list-wrap cf\" id=\"chapterList" + data[i].rollid + "\">\n" +
+                                    "                        <div class=\"cover\"></div>\n" +
+                                    "\n" +
+                                    "                        <h3><span>章节名称</span><label>时间</label><em>字数</em><cite>价格(起点币)</cite>\n" +
+                                    "                        </h3>\n" +
+                                    "                        <ul class=\"cf j_vol1\" chapter-max=\"296\" volume-num=\"" + data[i].rollid + "\">";
+                                for (var j = 0; j < data[i].chaps.length; j++) {
+                                    if (data[i].chaps[j].buyid == 0) {
+                                        str += "<li>\n" +
+                                            "                                <input class=\"chapter-checkbox\" onchange='checkboxTab(this)' data-eid=\"qd_G84\" name='chapid' value='" + data[i].chaps[j].chapid + "'  type=\"checkbox\" chapter-id=\"458413157\" chapter-price=\"" + data[i].chaps[j].money + "\" chapter-wordscnt=\"" + data[i].chaps[j].chapcount + "\" num=\"1\" chapter-uid=\"440\"><label for=\"vol1-chap296\" class=\"ui-checkbox\"></label><label for=\"vol1-chap296\"><b>" + data[i].chaps[j].chapname + "</b><em class=\"update-time\">" + jsonDateFormat(data[i].chaps[j].chaptime) + "</em><em>" + data[i].chaps[j].chapcount + "</em><strong>" + data[i].chaps[j].money + "</strong></label>\n" +
+                                            "                            </li>";
+                                    } else {
+                                        str += "<li class='disabled'>\n" +
+                                            "                                &nbsp;<label for=\"vol1-chap296\" class=\"ui-checkbox\"></label><label for=\"vol1-chap296\"><b>" + data[i].chaps[j].chapname + "</b><em class=\"update-time\">" + jsonDateFormat(data[i].chaps[j].chaptime) + "</em><em>" + data[i].chaps[j].chapcount + "</em><strong>已购买</strong></label>\n" +
+                                            "                            </li>";
+                                    }
+                                }
+                                str += "</ul>\n" +
+                                    "                    </div>";
+                            }
+                            $("#chapterWrap").html(str);
+                        }
+                    })
+                    function jsonDateFormat(date) {//json日期格式转换为正常格式
+                        var dateee = new Date(date).toJSON();
+                        return new Date(+new Date(dateee) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
+                    }
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="go-top" data-l1="3">
+    <div class="go-top-wrap">
+        <a href="https://book.qidian.com/subscribe/1013013477#" class="icon-go-top" data-eid="qd_G97"><em
+                class="iconfont"></em></a>
+    </div>
+</div>
+<div class="subscribe-wrap" data-l1="3">
+    <div class="center990 cf">
+        <div class="left-box fl">
+            <input class="all" id="bottom-all" type="checkbox" t-price="3257" t-wordscnt="669567" t-chaptercnt="293"
+                    onchange="selAll(this)">
+            <label class="ui-checkbox" for="bottom-all" data-eid="qd_G82"></label><label for="bottom-all">选择全部章节</label><em
+                class="cnt-sum">已选择<b data-cnt="0">0</b>章<i>·</i><cite totalwords="0">0</cite>字</em>
+        </div>
+        <div class="right-box fr">
+
+            <a class="confirm disabled" href="javascript:" data-eid="qd_G88">确认订阅</a>
+            <div class="box2">
+                <div class="box">
+                    <div class="table">
+                        <div class="table-cell">
+                            <p class="price-sum">账户余额<span class="j_balance">0</span><b>·</b>本次订阅<em
+                                    data-price="0">0</em>起点币</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="alipay-ifr"></div>
+<div class="lbf-panel" style="z-index: 19375; width: 520px; top: 558.5px; left: 413.5px;display: none;"><a href="javascript:closePanl();"
+                                                                                             class="lbf-panel-close lbf-icon lbf-icon-close"></a>
+    <div class="lbf-panel-head" style="display: none;">提示</div>
+    <div class="lbf-panel-body">
+        <div class="book-popup subscribe-popup" id="subscribePopup" data-l1="15">
+            <!-- start 标题 -->
+            <div class="popup-title">
+                <h3 class="lang">订阅</h3>
+            </div>
+            <div class="sub-content" data-l2="4">
+                <div class="tip">
+                    <h4>本次订阅将消耗<span class="current-price">1191</span>起点币</h4>
+                    <p>当前余额为<em class="current-balance">90</em>起点币<i>·</i>还需支付<span class="diff">1101</span>起点币</p>
+                    <div class="popup-btn">
+                        <!--<a class="red-btn j_quickpay" href="javascript:" data-eid="qd_G92">快捷支付</a>-->
+                        <a class="blue-btn j_charge" href="/jpbook/topup" data-eid="qd_G93" target="_blank">去充值</a>
+                    </div>
+                </div>
+            </div>
+            <!-- end 订阅提示信息 -->
+
+        </div>
+        <div class="book-popup subscribe-popup" id="enoughmoney" data-l1="15">
+            <div class="popup-title">
+                <h3 class="lang">订阅</h3>
+            </div>
+            <div class="sub-content" data-l2="4">
+                <div class="tip">
+                    <h4>本次订阅将消耗<span>10</span>起点币</h4>
+                    <p>当前余额为<em>90</em>起点币</p>
+                    <div class="popup-btn">
+                        <a class="red-btn j_paynow" href="javascript:buyrecordChap()" data-eid="qd_G90">立即支付</a>
+                    </div>
+                </div>
+            </div>
+            <!-- end 订阅提示信息 -->
+
+        </div>
+    </div>
+    <div class="lbf-panel-foot" style="display: none;">
+        <div class="lbf-panel-foot-l"></div>
+        <div class="lbf-panel-foot-r"><a href="javascript:;"
+                                         class="lbf-button lbf-button-primary lbf-button-default lbf-button-normal">确定</a><a
+                href="javascript:;" class="lbf-button lbf-button-default lbf-button-normal"
+                style="display: none;">否定</a><a href="javascript:;"
+                                                class="lbf-button lbf-button-default lbf-button-normal">取消</a></div>
+    </div>
+</div>
+<div class="lbf-overlay"
+     style="background-color: black; opacity: 0.3; z-index: 19374; width: 1366px; height: 20527px;display: none;"></div>
+<script type="text/javascript">
+    $.ajax({
+        url: "/jpbook/users/ckSession",
+        data: {"name": 'users'},
+        type: "post",
+        success: function (data) {
+            if (data == 0) {
+                window.location.href = "/jpbook/login";
+            } else {
+                $.ajax({
+                    url: "/jpbook/users/getNewMoney",
+                    success: function (data) {
+                        if (data > 0) {
+                            $("#enoughmoney").find(".sub-content").find(".tip").find("em").html(data);
+                            $(".current-balance").html(data);
+                            $(".box2").find(".table-cell").find("span").html(data);
+                        } else {
+                            $("#enoughmoney").find(".sub-content").find(".tip").find("em").html(0);
+                            $(".current-balance").html(0);
+                            $(".box2").find(".table-cell").find("span").html(0);
+                        }
+                    }
+                })
+            }
+        }
+    })
+
+    function selCheckbo(obj) {
+        $("#chapterList" + $(obj).attr("volume-num")).find("input[type='checkbox']").prop("checked", $(obj).prop("checked"));
+        adjust();
+    }
+
+    function selAll(obj) {
+        $("input[type='checkbox']").prop("checked", $(obj).prop("checked"));
+        adjust();
+    }
+
+    function checkboxTab(obj) {
+        var checkedList = new Array();
+        $(obj).parent("li").parent("ul").find("input[type='checkbox']:not(:checked)").each(function () {
+            checkedList.push($(obj).val());
+        });
+        if (checkedList.length > 0) {
+            $("input[volume-num=" + $(obj).parent("li").parent("ul").attr("volume-num") + "]").prop("checked", false);
+        } else {
+            $("input[volume-num=" + $(obj).parent("li").parent("ul").attr("volume-num") + "]").prop("checked", true);
+        }
+        adjust();
+    }
+
+    function adjust() {
+        var checkedList = new Array();
+        $("#catalog-content-wrap").find("input[type='checkbox']:not(:checked)").each(function () {
+            checkedList.push($(this).val());
+        });
+        if (checkedList.length > 0) {
+            $("#bottom-all").prop("checked", false);
+            $("#all").prop("checked", false);
+        } else {
+            $("#bottom-all").prop("checked", true);
+            $("#all").prop("checked", true);
+        }
+        var money = 0;
+        var count = 0;
+        var selcheckedList = 0;
+        $("#catalog-content-wrap").find("input[type='checkbox']:checked").each(function () {
+            money += parseInt($(this).attr("chapter-price"));
+            count += parseInt($(this).attr("chapter-wordscnt"));
+            selcheckedList += parseInt($(this).attr("num"));
+        });
+        $(".current-price").html(money);
+        $("#enoughmoney").find(".sub-content").find(".tip").find("span").html(money);
+        $(".box2").find(".table-cell").find("em").html(money);
+        $(".diff").html(parseInt(money)-parseInt($(".current-balance").html()));
+        $(".cnt-sum").find("b").html(selcheckedList);
+        $(".cnt-sum").find("cite").html(count);
+        if (parseInt(money) > 0) {
+            $(".right-box").find("a").removeClass("disabled");
+            $(".right-box").find("a").prop("href", "javascript:subbuyrecord()");
+        } else {
+            $(".right-box").find("a").addClass("disabled");
+            $(".right-box").find("a").prop("href", "javascript:void(0)");
+        }
+
+    }
+
+    function buyrecordChap() {
+        var checkID = [];
+        $("input[name='chapid']:checked").each(function (i) {
+            checkID[i] = $(this).val();
+        });
+        $.ajax({
+            url: "/jpbook/buyrecord/buyrecordChap",
+            data: {"chapid": checkID,"money":$(".current-price").html()},
+            success: function (data) {
+                swal("订阅成功", "共订阅了" + data + "章");
+                closePanl();
+                window.location.reload();
+            }, type: "post",
+            traditional: true
+        })
+    }
+    function subbuyrecord() {
+        $("#subscribePopup").css("display","none");
+        $("#enoughmoney").css("display","none");
+        $(".lbf-panel").css("display","block");
+        $(".lbf-overlay").css("display","block");
+        if(parseInt($(".current-price").html())-parseInt($(".current-balance").html())>0){
+            $("#subscribePopup").css("display","block");
+        }else {
+            $("#enoughmoney").css("display","block");
+        }
+    }
+    function closePanl() {
+        $("#subscribePopup").css("display","none");
+        $("#enoughmoney").css("display","none");
+        $(".lbf-panel").css("display","none");
+        $(".lbf-overlay").css("display","none");
+    }
+</script>
+<script>
+    // 全局的通用数据都放g_data变量里
+    var g_data = {};
+    // 环境变量，会按照环境选择性打log
+    g_data.envType = 'pro';
+    // 用作统计PV
+    g_data.pageId = 'qd_P_dingyue';
+    //环境域名
+    g_data.domainSearch = 'www.qidian.com/search';
+    g_data.staticPath = '//qidian.gtimg.com/qd';
+    g_data.isLogin = '';
+    g_data.pageJson = {
+        // 是否是VIP书籍，传入js，在弹窗时需要判断，如果不是VIP看不到月票Tab
+        isVip: 1,
+        // 是否签约作品，传入js，EJS后加载模板判断是否显示
+        isSign: 1,
+        // 获得bookId的json格式，传入js，EJS后加载模板中可以直接使用
+        bookId: 1013013477,
+        // 获得签约状态，传入js，EJS后加载弹窗下载使用
+        signStatus: 'Ａ级签约'
+    }
+    //判断男女生网状态 0和1
+    g_data.isWebSiteType = 1;
+    g_data.hasDirectData = 1;
+</script>
+<script data-ignore="true" src="../css/LBF.js.下载"></script>
+
+
+<script>
+    var _mtac = {};
+    (function () {
+        var mta = document.createElement("script");
+        mta.src = "//pingjs.qq.com/h5/stats.js?v2.0.2";
+        mta.setAttribute("name", "MTAH5");
+        mta.setAttribute("sid", "500451537");
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(mta, s);
+    })();
+</script>
+
+
+</body>
+</html>

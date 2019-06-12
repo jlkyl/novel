@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<!-- saved from url=(0049)https://write.qq.com/booknovelsvip/takeindex.html -->
+<html xmlns:th="http://www.thymeleaf.org"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <!-- 360安全游览器使用webkit极速核 -->
+    <meta name="renderer" content="webkit">
+    <!-- IE使用它支持的最高模式 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" type="image/x-icon" href="https://img1.write.qq.com/writer/p1/contentv2/aa_ico.ico">
+    <title>数据统计-江派作家专区</title>
+    <link rel="stylesheet" type="text/css" href="./css/contentv2_base.css"><script src="./css/stats.js.下载" name="MTAH5" sid="500659219"></script><script type="text/javascript" src="./css/contentv2_base.js.下载"></script>    <!-- prevent dom xss -->
+    <script type="text/javascript" src="./css/aq_common.js.下载"></script>
+    <meta name="__hash__" content="8059a4d934094f3b0445d577c309de4f_804f2b5277930d395c04dabd8b59fd0c">
+
+    <link rel="stylesheet" href="./js/bootstrap/css/bootstrap.css">
+    <script src="./js/layui/layui.js"></script>
+    <link rel="stylesheet" href="./js/layui/css/layui.css">
+
+</head>
+<body>
+<div class="wrap">
+    <div class="header">
+        <div class="headBox pageCenter cf">
+            <a href="https://write.qq.com/index.html">
+                <img class="logo fl" src="./css/logo.png" width="225" height="28" alt="阅文·作家专区">
+            </a>
+            <div class="headUser fr">
+                <ul class="cf">
+                    <li class="line"></li>
+                    <li id="headPhotoBox" class="headPhoto">
+                        <p><em><img th:src="${session.users[0].getIcon()}" width="36" height="36" alt=""></em><a class="userName" href="javascript:" th:text="${session.users[0].getPen()}">爱色鬼</a></p>
+                        <dl class="userBox">
+                            <cite class="icon whiteSj"></cite>
+                            <dd class="userInfo hidden">
+                                <!-- 增加身份标识"ico-level",silver为白金作家，dashen为大神作家 -->
+                                <p class="name" th:title="${session.users[0].getPen()}" th:text="${session.users[0].getPen()}">爱色鬼
+
+                                </p>
+                                <p class="level">
+
+                                    <span><em style="width:70%">0/0</em></span></p>
+                            </dd>
+                            <dd class="link"><a href="writerdata.html">作家资料</a></dd>
+                            <dd class="link end"><a href="/jbook/login/emptySession">退出登录</a></dd>
+                        </dl>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- start banner -->
+
+    <!-- end banner -->
+    <!-- 黄条提示 -->
+    <div id="warnTipBox" class="warningWrap" style="display:none;">
+        <div class="pageCenter">
+            <p><span class="icon alert"></span><span id="warnTip"></span></p>
+            <a id="warnTipCloseBtn" class="icon close" href="javascript:" title="关闭"></a></div>
+    </div>
+    <!--更改VIP管理密码-->
+    <div id="modifyPwdPopup" class="popupWrap w380" style="display:none;">
+        <a data-node="closeBtn" class="icon closePopup" href="javascript:"></a>
+        <h3>更改VIP管理密码</h3>
+        <div class="popupBody p30">
+            <div class="popupContent">
+                <p>原密码</p>
+                <p class="mb20">
+                    <input data-node="originalPwdInput" class="longInput" type="password" value="">
+                </p>
+                <p>新密码</p>
+                <p class="mb20">
+                    <input data-node="newPwdInput" class="longInput" type="password" value="">
+                    <i class="f12 c999">6~16位英文、数字或特殊字符</i>
+                </p>
+
+                <p>再次输入新密码</p>
+                <p class="mb20">
+                    <input data-node="repeatNewPwdInput" class="longInput" type="password" value="">
+                </p>
+            </div>
+            <center class="confirmBtn">
+                <a data-node="submitBtn" class="button full" href="javascript:">提交</a>
+            </center>
+        </div>
+    </div>
+    <div class="mainWrap pageCenter cf">
+        <div id="leftNav" class="mainLeft fl" style="visibility: visible;">
+            <div class="sideBar" id="main-bar">
+                <ul>
+                    <li>
+                        <a href="authorWorks"><span class="works"></span>作品管理</a>
+                    </li>
+                    <li class="act"><a href="statistics"><span class="data-icon"></span>数据统计</a>
+                        <!-- start 工具栏提示 -->
+                    </li>
+
+                    <li>
+                        <a href="income"><span class="income"></span>稿酬收入</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- start 小屏下的列表-->
+            <div class="sideBar min-bar" id="min-bar">
+                <ul>
+                    <li>
+                        <a class="min-link" href="authorWorks"><span class="icon works"></span></a>
+                        <a class="expand" href="authorWorks">作品管理</a>
+                    </li>
+
+                    <li class="act">
+                        <a class="min-link" href="statistics"><span class="icon reserve"></span></a>
+                        <a class="expand" href="statistics">数据统计</a>
+                    </li>
+
+
+                    <li>
+                        <a class="min-link" href="income"><span class="icon income"></span></a>
+                        <a class="expand" href="income">稿酬收入</a>
+                    </li>
+
+                    <!--微信管理-->
+                </ul>
+            </div>
+            <!-- end 小屏下的列表-->
+
+        </div>
+
+        <link rel="stylesheet" type="text/css" href="./css/contentv2_income.css"><div class="mainRight pb260 fl">
+        <div class="crumbsWrap"><b></b><i class="before"><span><a href="statistics">数据统计</a></span></i><em class="same"></em>
+            <i class="current"><span></span></i></div>
+        <div class="tabSwitch cf">
+            <span class="act"><a href="javascript:void(0)">订阅统计</a></span>   </div>
+        <div id="sehui">
+            <em>选择作品：</em>
+
+            <select name="CBID" id="CBID" class="form-control">
+                <option value="0">暂无可选作品</option>
+            </select>
+
+
+            <a id="searchTakeList" class="button" href="javascript:" style="width: 80px;height: 35px">查看</a>
+        </div>
+        <input type="hidden" id="bookid" name="bookid">
+        <div class="incomeWrap">
+
+
+            <script>
+                $.ajax({
+                    url:"books/queryByUuid",
+                    success:function(data){
+                        var str="";
+                        str+="<div><em style='float:left'>选择作品：</em>\n" +
+                            "" +
+                            "            <select name=\"CBID\" id=\"CBID\" style='visibility: visible;width: 500px;float: left' class=\"form-control\">";
+                        if (data.length!=0){
+                            for(var i=0;i<data.length;i++){
+
+                                if (i==0){
+                                    str+="<option value=\""+data[i].bookid+"\" selected>"+data[i].bookname+"</option>";
+                                    $("#bookid").val(data[i].bookid);
+                                }else{
+                                    str+="<option value=\""+data[i].bookid+"\">"+data[i].bookname+"</option>";
+                                }
+
+                            }
+                        }else{
+                            str+="<option value=\"0\">暂无可选作品</option>";
+                        }
+                        str+="</select>\n" +
+                            "            \n" +
+                            "\n" +
+                            "            <a class=\"button\" href=\"javascript:void(0)\" onclick='queryStatistics()' style=\"display:inline-block;line-height:30px;width: 50px;height: 30px;\">查看</a></div>";
+                        $("#sehui").html(str);
+                        queryStatistics();
+                    }
+                })
+                
+            </script>
+            <div class="reserveBox mb20 cf">
+                <!--其他订阅-->
+                <div class="totalBox fl">
+                    <p class="all"><em id="Totalsubscription">0</em><i>总订阅</i></p>
+
+                    <!--<p class="platform"><i><span>自有平台</span><em>0</em></i><b></b><i><span>集团平台</span><em>0                        ( iOS订阅：0 )</em></i></p>-->
+                </div>
+                <div class="record fl cf">
+                    <ul>
+                        <li>
+                            <p>昨日新增订阅</p>
+                            <span id="yesterdaysubscription">0</span></li>
+                        <li>
+                            <p>章节平均订阅</p>
+                            <span id="chaptersubscription">0</span></li>
+                        <li class="br0">
+                            <p>单章最高订阅</p>
+                            <span id="singlechaptersubscription">0</span></li>
+                    </ul>
+                </div>
+                <p class="tip">* 为更好的让作家了解iOS渠道情况，从2015年7月1日起正式分离统计，之前均包含在集团渠道内；因苹果账期影响，iOS的订阅稿酬，延迟三个月发放。 </p>
+            </div>
+            <script type="text/javascript">
+                function queryStatistics() {
+                    if($("#CBID").val()==""){return;}
+                    $.ajax({
+                        url:"buyrecord/queryStatistics",
+                        data:{"bookid":$("#CBID").val()},
+                        success:function (data) {
+                            if(data==""){
+                                $("#Totalsubscription").html(0);
+                                $("#yesterdaysubscription").html(0);
+                                $("#chaptersubscription").html(0);
+                                $("#singlechaptersubscription").html(0);
+                            }else {
+                                $("#Totalsubscription").html(data.sum);
+                                $("#yesterdaysubscription").html(data.yesterday);
+                                $("#chaptersubscription").html(data.avg);
+                                $("#singlechaptersubscription").html(data.num);
+                            }
+                        }
+                    })
+                }
+            </script>
+            <div class="reserveListWrap">
+                <div class="reserveTitle">
+                </div>
+
+
+                <div class="detailWrap mb10" id="subscriptionList">
+                    <table class="layui-table" lay-data="{url:'buyrecord/getStatistics', id:'test'}" lay-filter="test">
+                        <thead>
+                        <tr>
+                            <th lay-data="{field:'bookname'}">书名</th>
+                            <th lay-data="{field:'btname'}">类型</th>
+                            <th lay-data="{field:'sum', sort: true}">订阅次数</th>
+                            <th lay-data="{field:'createtime', sort: true,templet:function (d) { return jsonDateFormat(d.createtime)}}">创建时间</th>
+                        </tr>
+                        </thead>
+                    </table>
+
+                </div>
+                <div class="pageBox pr0 fr" id="pager"></div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            function jsonDateFormat(date) {//json日期格式转换为正常格式
+                var dateee = new Date(date).toJSON();
+                return new Date(+new Date(dateee) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
+            }
+            layui.use('table', function(){
+                var laydate = layui.laydate //日期
+                    ,laypage = layui.laypage //分页
+                    ,form = layui.form
+                    ,layer = layui.layer //弹层
+                    ,table = layui.table //表格
+                    ,carousel = layui.carousel //轮播
+                    ,upload = layui.upload //上传
+                    ,element = layui.element //元素操作
+                    ,slider = layui.slider;
+            });
+        </script>
+        <img id="requestLoadingTip" class="loadImg" style="display: none;" src="./css/loading.gif"></div>
+        <script type="text/javascript" src="./css/contentv2_novel_takelog.js.下载"></script><script type="text/javascript">
+        var CBID = "",
+            getSubscriptionListAjaxUrl = "/booknovelsvip/ajaxgetchapterstatlist.html";
+
+        $(function () {
+            CS.page.querySubscription.init(CBID, getSubscriptionListAjaxUrl);
+        });
+    </script>
+
+
+    </div>
+    <div class="footer">
+        <div class="pageCenter">
+            <a target="_blank" href="https://write.qq.com/about/help_center.html">帮助中心</a><span>|</span>
+            <a target="_blank" href="https://www.yuewen.com/service.html">联系客服</a><span>|</span><a target="_blank" href="http://join.book.qq.com/introduction.html">关于我们</a><span>|</span><a target="_blank" href="http://join.book.qq.com/social.html">诚聘英才</a><span>|</span><a target="_blank" href="https://write.qq.com/about/copyright.html">版权声明</a><span>|</span>Copyright
+            © 2019 All Rights Reserved 阅文集团 版权所有
+        </div>
+    </div>
+    <script type="text/javascript" src="./css/contentv2_help_connectkefu.js.下载"></script>
+</div>
+<!-- start 官方推荐-->
+
+<!-- end 官方推荐-->
+
+<!-- start 意见反馈-->
+
+<form name="myfrom" id="toucao_myform" method="post" action="https://support.qq.com/product/1924" target="_blank">
+    <input type="hidden" name="nickname" value="爱色鬼">
+    <input type="hidden" name="avatar" value="https://ccstatic-1252317822.file.myqcloud.com/writer/p1/contentv2/photo_default.png">
+    <input type="hidden" name="openid" value="13121036803414701">
+    <input type="hidden" name="__hash__" value="8059a4d934094f3b0445d577c309de4f_804f2b5277930d395c04dabd8b59fd0c"></form>
+
+<!--end 意见反馈-->
+<script type="text/javascript" src="./css/contentv2_rightBar.js.下载"></script><script type="text/javascript" src="./css/college_dialog.js.下载"></script><!--end 意见反馈-->
+<script type="text/javascript">
+    $(function(){
+        //右侧工具条
+        CS.rightBar.init();
+    });
+    function toucao(){
+        var cauthorid =  $("input[name='openid']").val();
+        if(cauthorid == null || cauthorid == ''){
+            location.href = '/public/login.html?artidx=-100';
+        }else{
+            var _browser = CS.browser;
+            // document.getElementById("toucao_myform").submit();
+            var data = {
+                "nickname":"爱色鬼",
+                "avatar": "https://ccstatic-1252317822.file.myqcloud.com/writer/p1/contentv2/photo_default.png",
+                "openid": "13121036803414701",
+                "os": _browser.detectOS(),
+                "clientInfo":_browser.browserType(),
+                "clientVersion": _browser.browserType(),
+                "customInfo":"爱色鬼"+"13121036803414701"
+            };
+            var productId = 1924;
+            Tucao.request(productId, data);
+
+        }
+
+    }
+</script>
+
+<script type="text/javascript" src="./css/contentv2_layout.js.下载"></script><script type="text/javascript">
+    $(function(){
+        var systemTip = "";
+        //模板页
+        CS.page.layout.main.init(systemTip);
+
+        //被其他站点以iframe方式嵌入后的处理
+        CS.embed.init();
+    });
+</script>
+<!-- 数据统计 -->
+
+<script type="text/javascript">
+    var _mtac = {};
+    (function() {
+        var mta = document.createElement("script");
+        mta.src = "//pingjs.qq.com/h5/stats.js?v2.0.4";
+        mta.setAttribute("name", "MTAH5");
+        mta.setAttribute("sid", "500659219");
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(mta, s);
+    })();
+    $(function(){
+        //public
+        $.getScript("https://tajs.qq.com/stats?sId=34321758");
+        //new write
+        $.getScript("https://tajs.qq.com/stats?sId=51056771");
+    });
+</script>
+
+
+</body></html>

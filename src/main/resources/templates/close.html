@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <script src="./js/jquery-3.3.1.js"></script>
+
+    <script>
+        jumpBackUrl();
+        function jumpBackUrl() {
+            var count = 5;
+            var interval = setInterval(function() {
+                count--;
+                if (count <= 0) {
+                    clearInterval(interval);
+                    window.location.href = 'about:blank ';
+                    window.close();
+                }
+                else {
+                    $("#jumpTime").text(count);
+                }
+            }, 1000);
+        }
+
+    </script>
+
+        <center>
+            <br><br>
+            <h1>支付成功</h1>
+            <br><br>
+            <span id="jumpTime" style="color: red;font-weight: bold"></span>&nbsp;秒关闭页面
+        </center>
+
+</body>
+</html>

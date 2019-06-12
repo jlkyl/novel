@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <title>阅文充值</title>
+    <meta name="robots" content="all">
+    <meta name="googlebot" content="all">
+    <meta name="baiduspider" content="all">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <link rel="shortcut icon" type="image/x-icon" href="https://qidian.gtimg.com/yuewen/v1/favicon.ico">
+    <link rel="Bookmark" type="image/x-icon" href="https://qidian.gtimg.com/yuewen/v1/favicon.ico">
+
+    <link rel="stylesheet" data-ignore="true" href="./css/popup.0.18.css">
+
+    <script data-ignore="true" src="./js/jquery-3.3.1.js"></script>
+
+</head>
+<body style="zoom: 1;">
+
+<!-- start 头部 -->
+<div class="header">
+    <div class="box-center cf">
+        <h1 class="logo">
+            <a href="https://www.yuewen.com/" title="阅文集团"></a>
+        </h1>
+        <h3 class="lang">阅文充值</h3>
+        <div class="right-box">
+
+        </div>
+    </div>
+</div>
+<!-- end 头部 -->
+
+<!-- start 主体 -->
+<div class="box-center">
+    <div class="main">
+        <!-- start 选择充值方式 -->
+        <div class="select-pay-method">
+            <!-- start 账号 -->
+            <div class="account-wrap">
+                <h6>账号</h6>
+                <p><img src="./images/user.0.5.png"><span th:text="${session.users.get(0).getUname()}">Joselyn</span></p>
+            </div>
+            <!-- end 账号 -->
+        </div>
+        <!-- end 选择充值方式 -->
+
+        <!-- start 选择充值方式列表 -->
+        <div class="pay-list select-list" id="j-pay-list">
+            <h6>充值方式</h6>
+            <ul class="cf">
+
+                <li class="normal-method act" data-method="1" data-cury-name="¥" data-hand-fee="0" data-rate="100">
+                    <span class="alipay" data-method="1"></span><em class="lang">支付宝</em>
+                    <cite></cite>
+
+                </li>
+
+            </ul>
+        </div>
+        <!-- end 选择充值方式列表 -->
+
+        <!-- start 选择充值金额 -->
+        <div class="money-list select-list j-normal-list">
+
+
+            <!-- start 选择Paypal 10 -->
+
+
+            <ul id="money-list-1" class="cf j_detail_panel ">
+                <h6>充值金额</h6>
+
+                <li class="custom act" data-amount="10">
+                    <p>¥10<span>(1000起点币)</span>
+
+                    </p>
+                    <cite></cite>
+                </li>
+
+                <li class="" data-amount="20">
+                    <p>¥20<span>(2000起点币)</span>
+
+                    </p>
+                    <cite></cite>
+                </li>
+
+                <li class="" data-amount="30">
+                    <p>¥30<span>(3000起点币)</span>
+
+                    </p>
+                    <cite></cite>
+                </li>
+
+                <li class="" data-amount="50">
+                    <p>¥50<span>(5000起点币)</span>
+
+                    </p>
+                    <cite></cite>
+                </li>
+
+                <li class="" data-amount="100">
+                    <p>¥100<span>(10000起点币)</span>
+
+                    </p>
+                    <cite></cite>
+                </li>
+
+                <li class="custom" id="qita" data-amount="">
+                    <p>其它金额 ¥<input class="item-box" type="tel" id="box" placeholder="输入金额" maxlength="5" onkeyup="value=value.replace(/[^\d]/g,'')">
+                        <span>(<i class="j_coins"><span id="bi">0</span>起点币</i>)</span>
+                    </p>
+                    <cite></cite>
+                    <!--<div class="tip">充值金额必须大于或等于1</div>-->
+                </li>
+                <input class="default-amount-1" type="hidden" value="10">
+            </ul>
+            <!-- end 选择Paypal 10 -->
+
+        </div>
+
+        <!-- start 按钮 -->
+
+        <div class="btn-wrap btn-pay pay-btn-area ">
+            <!-- blue-btn disabled -->
+            <label id="pay" class="blue-btn" href="javascript:" data-method="1">立即支付
+                <span class="j_deal_price"></span>
+            </label>
+
+        </div>
+        <!-- end 按钮 -->
+
+</div>
+<!-- end 主体 -->
+
+<div class="mask" style="display: none;"></div>
+
+
+<!-- start 页脚 -->
+<div class="footer">
+    <div class="box-center cf">
+        <div class="friend-link">
+            <em><a class="yuewen" href="http://www.yuewen.com/" target="_blank">阅文集团</a><cite>旗下网站：</cite></em>
+            <a href="https://www.qidian.com/">起点中文网</a>
+            <a href="https://www.qdmm.com/Default.aspx" target="_blank">起点女生网</a>
+            <a href="http://chuangshi.qq.com/" target="_blank">创世中文网</a>
+            <a href="http://yunqi.qq.com/" target="_blank">云起书院</a>
+            <a href="http://www.rongshuxia.com/" target="_blank">榕树下</a>
+            <a href="http://www.hongxiu.com/" target="_blank">红袖添香</a>
+            <a href="http://yanqing.readnovel.com/" target="_blank">小说阅读网</a>
+            <a href="http://www.xs8.cn/" target="_blank">言情小说吧</a>
+            <a href="http://www.xxsy.net/" target="_blank">潇湘书院</a>
+            <a href="http://www.tingbook.com/" target="_blank">天方听书网</a>
+            <a href="http://www.lrts.me/" target="_blank">懒人听书</a>
+            <a href="http://yuedu.yuewen.com/" target="_blank">阅文悦读</a>
+            <a href="http://www.yuewen.com/app.html#appqq" target="_blank">QQ阅读</a>
+            <a href="http://www.yuewen.com/app.html#appqd" target="_blank">起点读书</a>
+            <a href="http://www.yuewen.com/app.html#appzj" target="_blank">作家助手</a>
+        </div>
+        <div class="copy-right">
+            <p>Copyright <span>©</span> 2016 All Rights Reserved 阅文集团 版权所有</p>
+        </div>
+    </div>
+</div>
+
+
+    <script>
+        $("#money-list-1 li").click(function () {
+            $("#money-list-1 li").prop("class","");
+            $("#qita").prop("class","custom");
+            $(this).prop("class","custom act");
+
+            var css = $("#qita").prop("class");
+
+            if (css == "custom act"){
+                $("#pay").prop("class","blue-btn disabled");
+            }else {
+                $("#box").val("");
+                $("#bi").text("0");
+                $("#pay").prop("class","blue-btn");
+            }
+
+        })
+
+        $("#box").keyup(function () {
+            if($("#box").val() == ""){
+                $("#pay").prop("class","blue-btn disabled");
+            }else {
+                $("#pay").prop("class","blue-btn");
+            }
+
+            $("#qita").attr("data-amount",$("#box").val());
+
+            var price = $("#box").val();
+            $("#bi").text( price*100);
+
+        })
+
+        $("#pay").click(function () {
+            var money = $("#money-list-1").find(".act").attr("data-amount");
+            window.location.href = "pay?money="+money;
+        })
+
+    </script>
+
+
+    </body>
+</html>

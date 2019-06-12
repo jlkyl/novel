@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<!-- saved from url=(0055)https://www.qidian.com/search?kw=%E4%B8%8D&sort=&page=1 -->
+<html class="loaded" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <title>江派搜书_江派中文网</title>
+    <meta name="robots" content="all">
+    <meta name="googlebot" content="all">
+    <meta name="baiduspider" content="all">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <link data-ignore="true" rel="shortcut icon" type="image/x-icon" href="https://qidian.gtimg.com/qd/favicon/qd_icon.c443c.ico">
+    <link data-ignore="true" rel="Bookmark" type="image/x-icon" href="https://qidian.gtimg.com/qd/favicon/qd_icon.c443c.ico">
+    <link rel="stylesheet" data-ignore="true" href="../css/Button.e5a3e.css">
+    <link charset="utf-8" rel="stylesheet" href="../css/Autocomplete.css">
+    <link charset="utf-8" rel="stylesheet" href="../css/LightTip.css">
+    <link charset="utf-8" rel="stylesheet" href="../css/Dropdown.css">
+    <link charset="utf-8" rel="stylesheet" href="../css/Popup.css">
+    <link rel="stylesheet" href="../css/iconfont.css">
+    <style name="lbf-overlay">.lbf-overlay { position:fixed; top:0; left:0;} .bookname cite{color: red;}</style>
+    <script src="../js/jquery-3.3.1.js"></script>
+    <script type="text/javascript">
+        function removeu(){
+            $.ajax({
+                url:'/jpbook/login/quit',
+                success:function(data){
+                    $(".sign-in").addClass("sign-in hidden");
+                    $(".sign-out.hidden").addClass("sign-out");
+                    $(".sign-in").removeClass("sign-in");
+                    $(".sign-out.hidden").removeClass("sign-out hidden");
+                    window.location.reload()
+                }
+            });
+        }
+        $(document).ready(function () {
+            $(".sign-in").mouseover(function () {
+                $(this).addClass("sign-in act");
+            });
+            $(".sign-in").mouseout(function () {
+                $(this).removeClass("act");
+            });
+            $(".site").mouseover(function () {
+                $(this).addClass("site act");
+            });
+            $(".site").mouseout(function () {
+                $(this).removeClass("act");
+            });
+            $(".site").nextAll().mouseover(function(){
+                $(this).addClass("act");
+            });
+            $(".site").nextAll().mouseout(function () {
+                $(this).removeClass("act");
+            });
+            $(".lbf-pagination-jump a").click(function () {
+                if($(".lbf-pagination-jump input").val() > $(".lbf-pagination-jump input").attr('max')){
+                    $(".lbf-pagination-jump input").focus();
+                    $(".lbf-pagination-jump input").val('');
+                    return false;
+                }else{
+                    var page = $(".lbf-pagination-jump input").val();
+                    window.location.href = "./likeBooks?kw="+$("#s-box").val()+"&page="+page;
+                }
+            })
+
+            $("#recomm").click(function () {
+                if($("#recomm a").attr("class") == 'lbf-button lbf-combobox-label '){
+                    $("#recomm a").attr("class",'lbf-button lbf-combobox-label lbf-dropdown-on lbf-combobox-on')
+                    $(".lbf-popup.lbf-dropdown.recomm.lbf-combobox-panel").attr("style","width: 50px; min-width: 82px; height: auto; top: 155px; left: 531.4px; display: block; z-index: 73948;");
+                    $(".lbf-combobox-item").click(function () {
+                        $(".lbf-button.lbf-combobox-label.lbf-dropdown-on.lbf-combobox-on").attr("class","lbf-button lbf-combobox-label act");
+                        $(".lbf-popup.lbf-dropdown.recomm.lbf-combobox-panel").attr("style","width: 50px; min-width: 82px; height: auto; top: 155px; left: 531.4px; display: none; z-index: 73948;");
+                        /*重新查询*/
+                        window.location.href = '/jpbook/books/likeBooks?kw='+$("#s-box").val()+'&sort='+$(this).attr("id");
+                    })
+                }else{
+                    $("#recomm a").attr("class",'lbf-button lbf-combobox-label ')
+                    $(".lbf-popup.lbf-dropdown.recomm.lbf-combobox-panel").attr("style","width: 50px; min-width: 82px; height: auto; top: 155px; left: 531.4px; display: none; z-index: 73948;");
+                }
+
+            })
+
+            $(".s").click(function () {
+                if($(this).attr("class") == 's'){
+                    $(this).attr("class","act");
+                    window.location.href = '/jpbook/books/likeBooks?kw='+$("#s-box").val()+'&sort='+$(this).attr("id");
+                }else{
+                    $(this).attr("class","s");
+                }
+            })
+        });
+
+    </script>
+
+</head>
+<body style="zoom: 1;">
+
+<div class="wrap">
+    <div id="pin-nav" class="pin-nav-wrap need-search show" data-l1="40">
+        <div class="box-center cf">
+            <div class="nav-list site-nav fl">
+                <ul>
+                    <li class="site"><a class="pin-logo"
+                                        href="/jpbook/booktype/queryAll" style = "font-size: 18px;font-family: 'Courier New', Courier, monospace">江派中文网</a>
+                    </li>
+                    <li><a href="/jpbook/showAllBook.html?btid=1" target="">玄幻</a></li>
+                    <li><a href="/jpbook/showAllBook.html?btid=5" target="">都市</a></li>
+                    <li><a href="/jpbook/showAllBook.html?btid=4" target="">仙侠</a></li>
+                    <li><a href="/jpbook/showAllBook.html?btid=11" target="">科幻</a></li>
+                    <li><a href="/jpbook/showAllBook.html?btid=9" target="">游戏</a></li>
+                    <li><a href="/jpbook/showAllBook.html?btid=8" target="">历史</a></li>
+                    <li><a href="/jpbook/books/rank" target="_blank">排行</a></li>
+                    <li class="more">
+                        <a href="javascript:" id="top-nav-more" target="">
+                            更多<span></span>
+                        </a>
+                        <div class="dropdown">
+                            <a href="/jpbook/showAllBook.html" target="_blank">全部作品</a>
+                            <a href="/jpbook/showAllBook.html?btid=13" target="_blank">二次元</a>
+                            <a href="/jpbook/showAllBook.html?btid=2" target="_blank">奇幻</a>
+                            <a href="/jpbook/showAllBook.html?btid=3" target="_blank">武侠</a>
+                            <a href="/jpbook/showAllBook.html?btid=12" target="_blank">灵异</a>
+                            <a href="/jpbook/showAllBook.html?btid=7" target="_blank">军事</a>
+                            <a href="/jpbook/showAllBook.html?btid=6" target="_blank">现实</a>
+                            <a href="/jpbook/showAllBook.html?btid=10" target="_blank">体育</a>
+                            <a href="/jpbook/showAllBook.html?btid=14" target="_blank">短篇</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="nav-list min-user fr">
+                <ul>
+                    <li class="line"></li>
+                    <li th:class="${session.users} ? 'sign-out hidden' : 'sign-out'">
+                        <a id="pin-login" href="../login.html" target="_blank">登录</a>
+                        <a class="reg" href="../register.html" target="_blank">注册</a>
+                    </li>
+                    <th:block th:if="${session}">
+                        <th:block th:if="${session.users}">
+                            <li th:class="${session.users[0] } ? 'sign-in' : 'sign-in hidden'">
+                                <a href="../personal.html" target="_blank">
+                                    <span id = "uuid" style="display: none" th:text="${session.users[0].uuid}"></span>
+                                    <i id="nav-user-name" th:text="${session.users[0].uname}"></i>
+                                    <span></span>
+                                </a>
+                                <div class="dropdown">
+                                    <a href="/jpbook/topup" target="_blank">充值</a>
+                                    <a href="../personal.html" target="_blank">个人中心</a>
+                                    <a id="exit" href="javascript:void(0);" onclick="removeu()">退出</a>
+                                </div>
+                            </li>
+                        </th:block>
+                    </th:block>
+                    <li class="line"></li>
+                    <li class="book-shelf" id="top-book-shelf">
+                        <a href="../personal.html?key=i" target="_blank" data-eid="qd_A63">
+                            <em class="iconfont"></em><i>我的书架</i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="search-container" data-l1="2">
+        <div class="search-wrap cf">
+            <input type="text" id="s-box" th:value="${kw}" autocomplete="off">
+            <a class="search-btn" id="search-btn" href="javascript:" data-eid="qd_S01">搜索</a>
+        </div>
+    </div>
+    <div class="result-wrap box-center cf" style = "margin-left: 280px">
+        <div class="main-content-wrap fl">
+            <th:block th:if="${listBooks.size()} eq 0">
+                <div style="font-size: 24px;margin-left: 35%;margin-bottom: 100px">
+                    <div class="no-result-img">
+                        <span class="no-data-img"></span>
+                    </div>
+                    <h3>没有输入有效关键词</h3>
+                    <p>你也可以去<a class="blue" href="/jpbook/showAllBook" target="_blank">全部作品</a>找书</p>
+                </div>
+            </th:block>
+            <th:block th:if="${listBooks.size()} gt 0">
+                <div class="tool-bar cf" data-l1="6" style="margin-top:100px;width: 1000px;">
+                    <div class="count-info fr">
+                        <p>共<span th:text="${count}"></span>本相关作品</p>
+                    </div>
+                    <div class="select-wrap fl sort-switcher" data-sort="">
+                        <a th:class="${sort} eq 'chaptime' ? 'act' : 's'" href="javascript:" id = "chaptime">最近更新</a>
+
+                        <a th:class="${sort} eq 'chapcount' ? 'act' : 's'" href="javascript:" id = "chapcount">总字数</a>
+                        <a th:class="${sort} eq 'cnum' ? 'act' : 's'" href="javascript:" id = "cnum">点击量</a>
+                        <!--<div id="vipClicks" class="lbf-combobox vipClicks">
+                            <a href="javascript:;" class="lbf-button lbf-combobox-label " hidefocus="true">
+                                <span class="lbf-combobox-caption"></span>
+                                <span class="lbf-icon lbf-icon-down lbf-combobox-icon"></span>
+                            </a>
+                        </div>-->
+                        <div id="recomm" class="lbf-combobox recomm">
+                            <!--lbf-button lbf-combobox-label lbf-dropdown-on lbf-combobox-on-->
+                            <a href="javascript:;" th:class="${#strings.substring(sort,1)} eq 'vote' ? 'lbf-button lbf-combobox-label act' : 'lbf-button lbf-combobox-label'" hidefocus="true">
+                                <span class="lbf-combobox-caption">推荐票</span>
+                                <span class="lbf-icon lbf-icon-down lbf-combobox-icon"></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="result-list" data-l1="3">
+                    <div class="book-img-text" style = "width:1000px">
+                        <ul>
+                            <li class="res-book-item" th:each="lb : ${listBooks}">
+                                <div class="book-img-box">
+                                    <a th:href="@{../books/queryBookById(bookid=${lb.bookid})}" target="_blank">
+                                        <img src="./起点搜书_起点中文网_files/150">
+                                    </a>
+                                </div>
+                                <div class="book-mid-info">
+                                    <a class = "bookname" th:href="@{../books/queryBookById(bookid=${lb.bookid})}" target="_blank" th:utext="${#strings.replace(lb.bookname,kw,'<cite>'+kw+'</cite>')}">
+                                    </a>
+                                    </h4>
+                                    <p class="author">
+                                        <img src="./起点搜书_起点中文网_files/user.f22d3.png">
+                                        <a class="name" href="https://my.qidian.com/author/4609396" th:utext="${#strings.replace(lb.pen,kw,'<cite>'+kw+'</cite>')}">刀一耕</a>
+                                        <em>|</em>
+                                        <span target="_blank" th:text="${lb.btname}">都市</span>
+                                        <em>|</em>
+                                        <span th:text="${lb.bookstate}"></span>
+                                    </p>
+                                    <p class="intro" th:text="${lb.bookreferral}"></p>
+                                    <p class="update">
+                                            <a th:href="${lb.chapid} ne -1 ? 'https://vipreader.qidian.com/chapter/1013012550/457465956' : 'javascript:;'" target="_blank" th:utext="|最新更新 : ${lb.chapname}|"></a>
+                                            <em>·</em><span th:text="${lb.chaptime}"></span>
+
+                                    </p>
+                                </div>
+                                <div class="book-right-info">
+                                    <div class="total">
+                                        <p><span th:text="${lb.chapcount}"></span>总字数</p>
+                                        <p><span th:text="${lb.zvote}"></span>总推荐</p>
+                                        <p><span th:text="${lb.cnum}"> 999.93万</span>总点击</p>
+                                    </div>
+                                    <p class="btn">
+                                        <a class="red-btn" style="margin-left: 120px" th:href="@{../books/queryBookById(bookid=${lb.bookid})}" target="_blank">书籍详情</a>
+                                        <!--<a class="blue-btn add-book" href="javascript:">加入书架</a>-->
+                                    </p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="page-box cf">
+                    <div class="pagination fr" id="page-container">
+                        <div class="lbf-pagination">
+                            <ul class="lbf-pagination-item-list">
+                                <li class="lbf-pagination-item"><!--可用lbf-pagination-prev-->
+                                    <a th:href="${page} ne 1 ? './likeBooks?kw='+${kw}+'&page='+${page-1} : 'javascript:;'" th:class="${page} ne 1 ? 'lbf-pagination-prev' : 'lbf-pageination-next lbf-pagination-disabled'">上一页</a>
+                                </li>
+                                <li class="lbf-pagination-item">
+                                    <a th:href="${page  eq pagecount} ? 'javascript:;' : './likeBooks?kw='+${kw}+'&page='+${page+1}" th:class="${page eq pagecount} ? 'lbf-pagination-prev  lbf-pagination-disabled' : 'lbf-pageination-next'">下一页</a>
+                                </li>
+                                <li class="lbf-pagination-item">
+                                    <a href="javascript:;" id = "pagecount" class="lbf-pageination-next lbf-pagination-disabled" th:text="|第${page}页/共${pagecount}页|"></a>
+                                </li>
+                            </ul>
+                            <div class="lbf-pagination-jump">
+                                <input type="text" class="lbf-pagination-input" value="1" th:max="${pagecount}">
+                                <a href="javascript:;" class="lbf-pagination-go">GO</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </th:block>
+
+
+        </div>
+    </div>
+    <div class="footer">
+        <div class="box-center cf">
+            <div class="friend-link">
+                <em><a class="yuewen" href="https://www.yuewen.com/" target="_blank">阅文集团</a><cite>旗下网站：</cite></em>
+                <a href="https://www.qidian.com/">起点中文网</a>
+                <a href="https://www.qdmm.com/" target="_blank">起点女生网</a>
+                <a href="http://chuangshi.qq.com/" target="_blank">创世中文网</a>
+                <a href="http://yunqi.qq.com/" target="_blank">云起书院</a>
+                <!--<a href="http://www.rongshuxia.com" target="_blank">榕树下</a>-->
+                <a href="https://www.hongxiu.com/" target="_blank">红袖添香</a>
+                <a href="https://www.readnovel.com/" target="_blank">小说阅读网</a>
+                <a href="https://www.xs8.cn/" target="_blank">言情小说吧</a>
+                <a href="http://www.xxsy.net/" target="_blank">潇湘书院</a>
+                <a href="http://www.tingbook.com/" target="_blank">天方听书网</a>
+                <a href="http://www.lrts.me/" target="_blank">懒人听书</a>
+                <a href="http://yuedu.yuewen.com/" target="_blank">阅文悦读</a>
+                <a href="https://www.yuewen.com/app.html#appqq" target="_blank">QQ阅读</a>
+                <a href="https://www.yuewen.com/app.html#appqd" target="_blank">起点读书</a>
+                <a href="https://www.yuewen.com/app.html#appzj" target="_blank">作家助手</a>
+                <a href="https://www.webnovel.com/" target="_blank" title="Qidian International">起点国际版</a>
+            </div>
+            <div class="footer-menu dib-wrap">
+                <a href="https://www.qidian.com/about/intro" target="_blank">关于起点</a>
+                <a href="https://www.qidian.com/about/contact" target="_blank">联系我们</a>
+                <a href="https://join.yuewen.com/" target="_blank">加入我们</a>
+                <a href="https://www.qidian.com/help/index/2" target="_blank">帮助中心</a>
+                <a href="http://123.206.70.240/online/?cid=0&amp;uid=10&amp;code=/E8qeogH1Ux7ZMq/rbnkwA==" class="advice" target="_blank">提交建议</a>
+                <!--<a href="http://bbs.qidian.com" target="_blank">起点论坛</a>-->
+                <!--<a href="http://comic.qidian.com" target="_blank">动漫频道</a>-->
+                <a href="https://jubao.yuewen.com/" target="_blank">举报中心</a>
+            </div>
+            <div class="copy-right">
+                <p><span>Copyright © 2002-2019 www.qidian.com All Rights Reserved</span>版权所有 上海玄霆娱乐信息科技有限公司</p>
+                <p>上海玄霆娱乐信息科技有限公司
+                    <a href="http://www.miitbeian.gov.cn/" target="_blank" style="color:#666;margin-left: 5px">增值电信业务经营许可证沪B2-20080046</a>
+                    出版经营许可证 新出发沪批字第U3718号 沪网文[2015]0081-031 新出网证（沪）字010
+                    <a href="http://www.miitbeian.gov.cn/" target="_blank" style="color:#666;margin-left: 5px">沪ICP备08017520号-1</a>
+                </p>
+                <p>请所有作者发布作品时务必遵守国家互联网信息管理办法规定，我们拒绝任何色情小说，一经发现，即作删除！举报电话：010-59357051</p>
+                <p>本站所收录的作品、社区话题、用户评论、用户上传内容或图片等均属用户个人行为。如前述内容侵害您的权益，欢迎举报投诉，一经核实，立即删除，本站不承担任何责任</p>
+                <p>联系方式 总机 021-61870500 地址：中国（上海）自由贸易试验区碧波路690号6号楼101、201室</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="lbf-autocomplete-suggestions" style="position: absolute; display: none; max-height: 384px; z-index: 9999;"></div>
+<div class="lbf-popup lbf-dropdown vipClicks lbf-combobox-panel" style="width: 0px; min-width: 82px; height: auto;display:none">
+    <ul class="lbf-combobox-options">
+        <li><a class="lbf-combobox-item" href="javascript:;" data-value="2">点击量</a></li>
+        <li class="lbf-combobox-option"><a class="lbf-combobox-item" href="javascript:;">月点击</a></li>
+        <li class="lbf-combobox-option"><a class="lbf-combobox-item" href="javascript:;">总点击</a></li>
+    </ul>
+</div>
+<div class="lbf-popup lbf-dropdown recomm lbf-combobox-panel" style="width: 0px; min-width: 70px; height: auto;">
+    <ul class="lbf-combobox-options">
+        <li class="lbf-combobox-option">
+            <a class="lbf-combobox-item" href="javascript:;" id="dvote">日推荐票</a>
+        </li>
+        <li class="lbf-combobox-option">
+            <a class="lbf-combobox-item" href="javascript:;" id="mvote">周推荐票</a>
+        </li>
+        <li class="lbf-combobox-option">
+            <a class="lbf-combobox-item" href="javascript:;" id="zvote">总推荐票</a>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

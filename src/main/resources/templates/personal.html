@@ -1,0 +1,1858 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>首页_个人中心_起点书城</title>
+	
+	<link rel="icon" type="image/x-icon" href="./images/jp_iocn.ico">
+	<link rel="stylesheet" data-ignore="true" href="./css/index.0.11.css">
+	<link rel="stylesheet" data-ignore="true" href="./css/index.0.12.css">
+	<link rel="stylesheet" data-ignore="true" href="./css/index.0.13.css">
+	<link rel="stylesheet" data-ignore="true" href="./css/index.0.14.css">
+	<link rel="stylesheet" data-ignore="true" href="./css/index.0.15.css">
+	<link rel="stylesheet" data-ignore="true" href="./css/index.0.16.css">
+	<link rel="stylesheet" type="text/css" href="./css/icon.css">
+
+	<link rel="stylesheet" href="./layui/layui-v2.4.5/layui/css/layui.css" media="all">
+
+	<script src="./js/jquery-3.3.1.js"></script>
+
+	<script src="./layui/layui-v2.4.5/layui/layui.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="./css/sweet-alert.css" />
+	<script src="./js/sweet-alert.js"></script>
+
+</head>
+
+<body class="homepage" style="zoom: 1;">
+	<div class="personal-header" data-l1="1">
+		<div class="header-wrapper">
+			<div class="header-logo">
+				<a href="personal.html">个人中心</a>
+			</div>
+			<ul class="header-nav">
+				<li class="header-nav-li" id="h1">
+					<a href="javascript:;" class="header-nav-a active" style="color: white">
+					<i class="icon icon-shouye" ></i>&nbsp;&nbsp;我的首页</a>
+				</li>
+				<li class="header-nav-li" id="h2">
+					<a href="javascript:h2();" class="header-nav-a " style="color: white">
+					<i class="icon icon-book_icon"></i>&nbsp;&nbsp;我的书架</a>
+				</li>
+				<!--<li class="header-nav-li" id="h3">
+					<a href="javascript:;" class="header-nav-a " style="color: white">
+					<i class="iconfont icon-msg"></i>
+					<i class="qdp-unread elUnread dn" style="color: white">未读</i>消息中心</a>
+				</li>-->
+
+			</ul>
+			<a href="login/emptySession" id="elLoginOut" class="header-log" style="color: white">退出</a>
+			<a href="personal.html" id="headerLog" class="header-log"  style="color: white"></a>
+			<div class="header-goHome">
+				<a href="booktype/queryAll" target="_blank" style="color: white">起点首页</a>
+			</div>	
+		</div>
+	
+	</div>
+
+	<div class="qdp-wrapper" id="n1">
+		<div class="personal-sideBar" data-l1="2">
+			<ul class="sideBar-group">
+				<li class="active" id="u1">
+					<a href="javascript:init()" class="sideBar-list-a"><i class="icon icon-shouye"></i>首页</a>
+				</li>
+				<li class="" id="u2">
+					<a class="sideBar-list-a"><i class="icon icon-zhanghu"></i>好友</a>
+				</li>
+				<li id="u6" onclick="u6()">
+					<a class="sideBar-list-a" data-eid="qd_M12"><i class="icon icon-yemian"></i>账务中心</a>
+				</li>
+				<li id="u4" onclick="u4()">
+					<a  class="sideBar-list-a" data-eid="qd_M13"><i class="icon icon-qianbao"></i>我的票夹</a>
+				</li>
+				<li id="u3">
+					<a class="sideBar-list-a" data-eid="qd_M15"><i class="icon icon-xiaoxi"></i>我的书评</a>
+				</li>
+
+			</ul>
+			<ul class="sideBar-group">
+				<li id="u10" onclick="u10()">
+					<a class="sideBar-list-a" data-eid="qd_M16"><i class="icon icon-jingyan"></i>经验值等级</a>
+				</li>
+				<li id="u8" onclick="u8()">
+					<a class="sideBar-list-a" target="_blank" data-eid="qd_M20"><i class="icon icon-shezhi"></i>个人设置</a>
+				</li>
+				<li id="u5">
+					<a href="/jpbook/users/openwriter" class="sideBar-list-a" target="_blank" data-eid="qd_M21"><i class="icon icon-37"></i>作家专区</a>
+				</li >
+			</ul>
+
+		</div>
+
+		<!--首页-->
+		<div class="qdp-content home-content" data-l1="3" id="s1" >
+			<div class="home-user-wrapper qdp-border" data-l2="1">
+				<div class="home-user-avatar" data-l3="1">
+					<a href="javascript:u8()" class="user-avatar-a">
+						<img class="user-avatar-img" id="icon" src="/jpbook/images/default_user.0.2.png" alt="" data-eid="qd_M24">
+					</a>
+				</div>
+				<div class="home-user" data-l3="1">
+					<div class="qdp-button">
+						<a href="javascript:;" id="homeurl" class="qdp-button-a mlr4" target="_blank" data-eid="qd_M23">个人主页</a>
+						<a href="javascript:u8()" class="qdp-button-a qdp-button-icon ml12" data-eid="qd_M22">
+							<i class="icon icon-shezhi"></i>
+						</a>
+					</div>
+					<h3>
+						<a href="javascript:u8()" data-eid="qd_M25" id="uname" style="color: white"></a>
+						<a href="javascript:u10()" class="home-user-level" data-eid="qd_M26" id="grade">Lv0</a>
+					</h3>
+
+					<div class="home-user-data">
+						<span id="elFriendGuide" style="height:56px;display:inline-block;">
+							<a href="https://my.qidian.com/friend" class="mr12" data-eid="qd_M27">关注<b class="home-user-b" id="eye">0</b></a>
+							<a href="https://my.qidian.com/friend?targetTab=tabTarget3" class="mr12 ml12" data-eid="qd_M28">粉丝<b class="home-user-b" id="fans">0</b></a>
+						</span>
+					</div>
+				</div>
+			</div>
+			<ul class="qdp-border home-msg-wrapper" data-l2="1">
+				<li class="home-msg" data-l3="1">
+					<div class="home-msg-title">
+						<i class="icon icon-yue"></i><b>账户余额</b>
+					</div>
+					<div class="home-msg-data">
+						<a href="javascript:u6()" data-eid="qd_M30"><b class="home-msg-b" id="money">0</b>起点币</a>
+					</div> 
+					<a class="home-msg-more blue elPayBtn" href="topup.html" target="_blank" data-eid="qd_M30">充值</a>
+				</li>
+
+				<li class="home-msg" data-l3="2">
+					<div class="home-msg-title">
+						<i class="icon icon-book_icon blue"></i><b>我的书架</b>
+					</div>
+					<div class="home-msg-data">
+						<a href="javascript:h2()" data-eid="qd_M32"><b class="home-msg-b" id="shelves">0</b>本藏书</a>
+					</div> 
+					<a class="home-msg-more blue" href="javascript:h2()" data-eid="qd_M32">立即查看</a>
+				</li>
+
+				<li class="home-msg" data-l3="2">
+					<div class="home-msg-title">
+						<i class="icon icon-toupiao green"></i><b>我的月票</b>
+					</div>
+					<div class="home-msg-data">
+						<a href="javascript:u4()" data-eid="qd_M31"><b class="home-msg-b home-msg-num" id="w2">0</b>月票</a>
+					</div>
+					<a class="home-msg-more blue" href="javascript:u4()" data-eid="qd_M31">立即查看</a>
+				</li>
+				<li class="home-msg" data-l3="2">
+					<div class="home-msg-title">
+						<i class="icon icon-toupiao green"></i><b>我的推荐票</b>
+					</div>
+					<div class="home-msg-data">
+						<a href="javascript:u4()" data-eid="qd_M31"><b class="home-msg-b home-msg-num" id="w1">0</b>推荐票</a>
+					</div>
+					<a class="home-msg-more blue" href="javascript:u4()" data-eid="qd_M31">立即查看</a>
+				</li>
+
+			</ul>
+
+			<!-- 猜你喜欢 -->
+			<form id="addToShelfForm" action="https://my.qidian.com/" class="shelf-recmd qdp-border" method="post" data-l2="1">
+				<h2 class="shelf-title">猜你喜欢</h2>
+				<ul class="recmd-list ui-loading ui-loading-animation" id="elRecList" style="height: 189px; transition: height 200ms ease 0s;" data-l3="4">
+
+				</ul>
+			</form>
+		</div>
+
+		<!--好友-->
+		<div class="qdp-content" data-l1="3" style="display: none" id="s2" >
+			<h2 class="qdp-hometitle"><a href="/jpbook/queryAll">首页</a>&nbsp;&gt;&nbsp;好友</h2>
+			<div class="qdp-record friend-record" data-l2="11">
+				<div id="tabView" class="ui-tab-tabs">
+					<a href="javascript:qd_M157();" class="checked" data-rel="tabTarget1" id="qd_M157">互为关注(<span class="w_followeach">0</span>)</a>
+					<a href="javascript:qd_M158();" class="" data-rel="tabTarget2" id="qd_M158">我的关注(<span class="w_following">0</span>)</a>
+					<a href="javascript:qd_M159();" class="" data-rel="tabTarget3" id="qd_M159">我的粉丝(<span class="w_myfans">0</span>)</a>
+					<!--<a href="javascript:;" class="" data-rel="tabTarget4" id="qd_M160">黑名单(<span class="w_blacklist">0</span>)</a>-->
+				</div>
+				<div id="jsTabContents" class="ui-tab-contents">
+					<div id="tabTarget1" class="ui-tab-content checked" data-l3="25">
+						<div id="tableTarget1" class="table-x">
+								<table class="ui-table">
+									<tbody id="t1">
+
+									</tbody>
+								</table>
+								<div class="table-null-x dn" style="display: none;" id="tx1">暂无互相关注的好友</div>
+						</div>
+					</div>
+					<div id="tabTarget2" class="ui-tab-content" data-l3="26">
+						<div id="tableTarget2" class="table-x">
+								<table class="ui-table">
+									<tbody id="t2">
+
+									</tbody>
+								</table>
+								<div class="table-null-x dn" style="display: none;" id="tx2">暂无已关注的好友</div>
+						</div>
+					</div>
+					<div id="tabTarget3" class="ui-tab-content " data-l3="27">
+						<div id="tableTarget3" class="table-x">
+								<table class="ui-table">
+									<tbody id="t3">
+
+									</tbody>
+								</table>
+								<div class="table-null-x dn" style="display: none;" id="tx3">暂无关注我的粉丝</div>
+						</div>
+					</div>
+					<div id="tabTarget4" class="ui-tab-content " data-l3="28">
+						<div id="tableTarget4" class="table-x">
+								<table class="ui-table">
+									<tbody></tbody>
+								</table>
+								<div class="table-null-x dn">暂无黑名单记录</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<!--我的票夹-->
+		<div class="qdp-content" data-l1="3" style="display: none" id="s4">
+			<h2 class="qdp-title">我的票夹</h2>
+			<div class="piaojia-recom" data-l2="3">
+				<h3 class="recom-ticket">推荐票</h3>
+				<div class="recom-boy">
+					<div class="piaojia-title">推荐票</div>
+					<div>本日已获得推荐票<span class="piaojia-count font-archive" id="wtid1">0</span>已使用<span class="piaojia-count font-archive" id="wtid2">0</span>可用<span class="piaojia-aval font-archive" id="wtid3">0</span></div>
+				</div>
+				<h3 class="month-ticket">月票</h3>
+				<div class="recom-girl">
+					<div class="piaojia-title">月票</div>
+					<div>获得月票总数<span class="piaojia-count font-archive" id="wtid4">0</span>已使用<span class="piaojia-count font-archive" id="wtid5">0</span>可用<span class="piaojia-aval font-archive" id="wtid6">0</span></div>
+				</div>
+				<div class="piaojia-tips">
+					<p>推荐票是根据你的起点经验值等级，由系统每天赠送，月票可通过订阅或打赏获得，具体规则请查看<a href="//www.qidian.com/help/index/12" class="piaojia-rule blue" target="_blank">获票规则»</a></p></p>
+				</div>
+			</div>
+
+
+			<div class="qdp-record piaojia-record" data-l2="3">
+				<div id="tabView5" class="ui-tab-tabs">
+					<a href="javascript:jp_M61();" class="checked" data-rel="tabTarget1" id="jp_M61">投月票记录</a>
+					<a href="javascript:;" class="" data-rel="tabTarget2" id="jp_M62">投推荐票记录</a>
+				</div>
+				<div class="ui-tab-contents">
+					<div id="tabTarget15" class="ui-tab-content checked" data-l3="9">
+						<div class="table-msg">本月累计投出月票<b class="table-outstd" id="outstd1">0</b>次</div>
+						<div id="tableTarget15" class="table-x piaojia-month-table">
+							<table class="ui-table">
+								<thead>
+								<tr>
+									<th scope="col" width="200">投票时间</th>
+									<th scope="col" width="100">票数</th>
+									<th scope="col" width="200">投票小说</th>
+								</tr>
+								</thead>
+								<tbody id="tbody1">
+
+								</tbody>
+							</table>
+							<div class="table-null-x dn" style="display: none;" id="tnx1">目前暂无月票投票记录</div>
+						</div>
+					</div>
+					<div id="tabTarget25" class="ui-tab-content" data-l3="10">
+						<div class="table-msg">最近30天累计投出推荐票<b class="table-outstd" id="outstd2">0</b>次</div>
+						<div id="tableTarget25" class="table-x piaojia-rcm-table">
+							<table class="ui-table">
+								<thead>
+								<tr>
+									<th scope="col" width="200">投票时间</th>
+									<th scope="col" width="100">票数</th>
+									<th scope="col" width="200">投票小说</th>
+								</tr>
+								</thead>
+								<tbody id="tbody2">
+
+								</tbody>
+							</table>
+							<div class="table-null-x dn" style="display: none;" id="tnx2">目前暂无推荐票投票记录</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!--我的书评-->
+		<div class="qdp-content" data-l1="3" style="display: none;" id="s3">
+			<h2 class="qdp-title">我的书评</h2>
+			<div class="review-record qdp-record" data-l2="5">
+				<div id="tabView1" class="ui-tab-tabs">
+					<a href="javascript:jp_M71();" class="checked" data-rel="tabTarget1" id="jp_M71">发表的书评</a>
+					<a href="javascript:;" class="" data-rel="tabTarget2"  id="jp_M72">回复的书评</a>
+				</div>
+				<div class="ui-tab-contents">
+					<div id="tabTarget12" class="ui-tab-content checked" data-l3="13">
+						<div id="tableTarget12" class="table-x">
+							<table class="ui-table">
+								<thead>
+								<tr>
+									<th scope="col" width="250">书评</th>
+									<th scope="col" width="150">回复时间</th>
+									<th scope="col">所在书评区</th>
+								</tr>
+								</thead>
+								<tbody id="tbom1">
+
+								</tbody>
+							</table>
+							<div class="table-null-x dn" style="display: none;" id="tnullx1">目前暂无发表的书评</div>
+						</div>
+					</div>
+					<div id="tabTarget21" class="ui-tab-content" data-l3="14">
+						<div id="tableTarget21" class="table-x">
+							<table class="ui-table">
+								<thead>
+								<tr>
+									<th scope="col" width="230">书评</th>
+									<th scope="col" width="230">回复内容</th>
+									<th scope="col">所在书评区</th>
+								</tr>
+								</thead>
+								<tbody id="tbom2">
+
+								</tbody>
+							</table>
+							<div class="table-null-x dn" style="display: none;" id="tnullx2">目前暂无回复的书评</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<!--经验值等级-->
+		<div class="qdp-content" data-l1="3" style="display:none;" id="s10" >
+			<h2 class="qdp-title">经验值等级</h2>
+			<div class="qdp-border exp-level-bg" data-l2="6" >
+				<h3 class="exp-level-logo">经验值等级</h3>
+				<div class="exp-level exp-level-border" data-l3="17">
+					<div class="exp-level-title">当前等级&nbsp;·&nbsp;Lv<span id="grade2">1</span></div>
+					<div>
+						<span class="mr12">当前<strong class="dark mlr4" id="exp2">0</strong>经验值</span><span class="ml12" >升到下一级还需<span id="expnext">0</span>经验值</span>
+					</div>
+
+					<a href="javascript:;" class="exp-level-get blue" id="elTaskButton" data-eid="qd_M82">升级到三级(300经验)</a>
+
+				</div>
+				<div class="exp-level" data-l3="17">
+					<div class="exp-level-title">当前特权</div>
+					<div><span class="mr12" id="mr12">暂无</span></div>
+				</div>
+			</div>
+			<div class="qdp-border bg-white mt20" data-l2="6" >
+				<div class="exp-subtitle" data-l3="18">
+					<h3>在线经验值奖励</h3>
+				</div>
+				<div class="exp-award-task" data-l3="18">
+					<ul id="elTaskWrap">
+						<li class="award-task-item">
+							<div class="award-task-img active">
+								<div class="award-task-num"><span class="award-task-strong" style="margin-top:-5px;color: white">5</span></div>
+								<div class="award-task-title" style="margin-top: -8px">经验值</div>
+							</div>
+							<span href="javascript:;" class="award-task-status" data-num="1" data-timeLeft="60" data-vip="0" id="sdf0">1分钟</span>
+							<a href='javascript:addexp(0);' id="showa0" style="display: none" class='ui-button ui-button-small   elIsCurrent' data-num='4' data-timeLeft='5' data-vip='0'>领取</a>
+						</li>
+						<li class="award-task-item">
+							<div class="award-task-img active">
+								<div class="award-task-num"><span class="award-task-strong" style="margin-top:-5px;color: white">5</span></div>
+								<div class="award-task-title" style="margin-top: -8px">经验值</div>
+							</div>
+							<span href="javascript:;" class="award-task-status" data-num="2" data-timeLeft="300" data-vip="0" id="sdf1">5分钟</span>
+							<a href='javascript:addexp(1);' id="showa1" style="display: none" class='ui-button ui-button-small   elIsCurrent' data-num='4' data-timeLeft='5' data-vip='0'>领取</a>
+						</li>
+						<li class="award-task-item">
+							<div class="award-task-img active">
+								<div class="award-task-num"><span class="award-task-strong" style="margin-top:-5px;color: white">5</span></div>
+								<div class="award-task-title" style="margin-top: -8px">经验值</div>
+							</div>
+							<span href="javascript:;" class="award-task-status" data-num="3" data-timeLeft="600" data-vip="0" id="sdf2">10分钟</span>
+							<a href='javascript:addexp(2);' id="showa2" style="display: none" class='ui-button ui-button-small   elIsCurrent' data-num='4' data-timeLeft='5' data-vip='0'>领取</a>
+						</li>
+						<li class="award-task-item">
+							<div class="award-task-img active">
+								<div class="award-task-num"><span class="award-task-strong" style="margin-top:-5px;color: white">10</span></div>
+								<div class="award-task-title" style="margin-top: -8px">经验值</div>
+							</div>
+							<span href="javascript:;" class="award-task-status" data-num="5" data-timeLeft="1200" data-vip="0" id="sdf3">20分钟</span>
+							<a href='javascript:addexp(3);' id="showa3" style="display: none" class='ui-button ui-button-small   elIsCurrent' data-num='4' data-timeLeft='10' data-vip='0'>领取</a>
+						</li>
+						<li class="award-task-item">
+							<div class="award-task-img active">
+								<div class="award-task-num"><span class="award-task-strong" style="margin-top:-5px;color: white">15</span></div>
+								<div class="award-task-title" style="margin-top: -8px">经验值</div>
+							</div>
+							<span href="javascript:;" class="award-task-status" data-num="5" data-timeLeft="1800" data-vip="0" id="sdf4">30分钟</span>
+							<a href='javascript:addexp(4);' id="showa4" style="display: none" class='ui-button ui-button-small   elIsCurrent' data-num='4' data-timeLeft='15' data-vip='0'>领取</a>
+						</li>
+						<li class="award-task-item">
+							<div class="award-task-img active">
+								<div class="award-task-num"><span class="award-task-strong" style="margin-top:-5px;color: white">20</span></div>
+								<div class="award-task-title" style="margin-top: -8px">经验值</div>
+							</div>
+							<span href="javascript:;" class="award-task-status" data-num="6" data-timeLeft="3600" data-vip="0" id="sdf5">60分钟</span>
+							<a href='javascript:addexp(5);' id="showa5" style="display: none" class='ui-button ui-button-small   elIsCurrent' data-num='4' data-timeLeft='20' data-vip='0'>领取</a>
+						</li>
+						<li class="award-task-item">
+							<div class="award-task-img active">
+								<div class="award-task-num"><span class="award-task-strong" style="margin-top:-5px;color: white">20</span></div>
+								<div class="award-task-title" style="margin-top: -8px">经验值</div>
+							</div>
+							<span href="javascript:;" class="award-task-status" data-num="7" data-timeLeft="3600" data-vip="0" id="sdf6">60分钟</span>
+							<a href='javascript:addexp(6);' id="showa6" style="display: none" class='ui-button ui-button-small   elIsCurrent' data-num='4' data-timeLeft='20' data-vip='0'>领取</a>
+						</li>
+						<li class="award-task-item">
+							<div class="award-task-img active">
+								<div class="award-task-num"><span class="award-task-strong" style="margin-top:-5px;color: white">20</span></div>
+								<div class="award-task-title" style="margin-top: -8px">经验值</div>
+							</div>
+							<span href="javascript:;" class="award-task-status" data-num="8" data-timeLeft="3600" data-vip="0" id="sdf7">60分钟</span>
+							<a href='javascript:addexp(7);' id="showa7" style="display: none" class='ui-button ui-button-small   elIsCurrent' data-num='4' data-timeLeft='20' data-vip='0'>领取</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+		</div>
+
+		<!--财务中心-->
+		<div class="qdp-content" data-l1="3" style="display: none" id="s6">
+			<h2 class="qdp-title">我的资产</h2>
+
+			<div class="finance-asset" data-l2="2">
+				<h3 class="asset-title">账户余额（起点币）</h3>
+				<div class="asset-count">
+					<span id="balance">0</span>
+					<br><br>
+				</div>
+				<div class="asset-recharge-wrapper">
+					<a href="" class="asset-rebate blue" target="_blank" data-eid="qd_M43" data-l3="5"></a>
+					<a href="topup.html" class="recharge-button ui-button elPayBtn1" target="_blank" data-eid="qd_M44" data-l3="6">充值</a>
+				</div>
+			</div>
+
+			<h2 class="qdp-title">交易记录<span class="qdp-explain">交易记录可能存在延时，仅供参考，请以实际金额变化为准</span></h2>
+			<div class="finance-record qdp-record">
+				<div id="tabView6" class="ui-tab-tabs" data-l2="2">
+					<a href="javascript:record1();" class="checked" data-rel="tabTarget2" id="record1">充值记录</a>
+					<a href="javascript:;" class="" data-rel="tabTarget1" id="record2">打赏记录</a>
+					<a href="javascript:;" class="" data-rel="tabTarget3" id="record3">订阅记录</a>
+				</div>
+				<div class="ui-tab-contents" data-l2="2">
+
+					<div id="tabTarget16" class="ui-tab-content checked">
+						<div id="tableTarget26" class="table-x piaojia-rcm-table">
+							<div class="table-size">
+								<table class="ui-table">
+									<thead>
+									<tr>
+										<th scope="col" width="150">充值金额</th>
+										<th scope="col" width="150">充值时间</th>
+										<th scope="col" width="150">备注</th>
+									</tr>
+									</thead>
+									<tbody id="tab1">
+
+									</tbody>
+								</table>
+								<div class="table-null-x dn" style="display:none;" id="tnd1">目前暂无充值记录</div>
+							</div>
+						</div>
+					</div>
+
+					<div id="tabTarget26" class="ui-tab-content">
+						<div id="tableTarget16" class="table-x piaojia-month-table">
+							<div class="table-size">
+								<table class="ui-table" style="border-spacing: 0.0141561px;">
+									<thead>
+									<tr>
+										<th scope="col" width="150">打赏书币</th>
+										<th scope="col" width="150">打赏时间</th>
+										<th scope="col" width="150">书名</th>
+									</tr>
+									</thead>
+									<tbody id="tab2">
+
+									</tbody>
+								</table>
+								<div class="table-null-x dn" style="display: none;" id="tnd2">目前暂无打赏记录</div>
+							</div>
+						</div>
+					</div>
+
+					<div id="tabTarget36" class="ui-tab-content ">
+						<div id="tableTarget36" class="table-x piaojia-rcm-table">
+							<div class="table-size">
+								<table class="ui-table">
+									<thead>
+									<tr>
+										<th scope="col" width="150">订阅书籍</th>
+										<th scope="col" width="150">订阅总章数</th>
+										<th scope="col" width="150">订阅总书币</th>
+									</tr>
+									</thead>
+									<tbody id="tab3"></tbody>
+								</table>
+								<div class="table-null-x dn" style="display: none" id="tnd3">目前暂无订阅记录</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<!--个人信息设置-->
+		<div class="qdp-content" data-l1="3" style="display:none;" id="s8">
+			<h2 class="qdp-hometitle"><a href="/index.html">首页</a>&nbsp;&gt;&nbsp;个人信息设置</h2>
+			<div class="qdp-record setting-record" data-l2="9">
+				<div id="tabView9" class="ui-tab-tabs">
+					<a href="javascript:;" class="checked" data-rel="tabTarget1"  data-eid="qd_M134" id="jpbasic">基本设置</a>
+					<a href="javascript:;" class="" data-rel="tabTarget2" data-eid="qd_M135" id="jpicon">头像设置</a>
+
+				</div>
+				<div id="jsTabContents9" class="ui-tab-contents">
+					<div id="tabTarget11" class="ui-tab-content checked" data-l3="24">
+						<div class="qdp-form">
+							<form id="setBasicForm" method="post" novalidate="novalidate">
+								<input type="hidden" name="_csrfToken" value="U0tnpJm757WqRHaD7nolPCFcQzCVf5bHSkgQshrH" class="elCsrf">
+								<dl>
+									<dt>起点ID</dt>
+									<dd style="margin-left: -140px" id="uuid">328998246</dd>
+								</dl>
+								<dl>
+									<dt>昵称</dt>
+									<dd style="margin-left: -140px; margin-top: -8px">
+										<input type="text" id="uname2" name="uname" maxlength="12" disabled>
+										<a href="javascript:;" id="btnEditName" class="blue ml8 cur" role="button" data-eid="qd_M138">修改昵称</a>
+									</dd>
+								</dl>
+
+								<dl>
+									<dt>性别</dt>
+									<dd style="margin-left: -140px">
+										<input type="radio" id="radioSex1" name="gender" data-eid="qd_M139" required="" value="0" checked="">
+										<label for="radioSex1" class="ui-radio mr5"></label><label for="radioSex1" class="mr20">男</label>
+										<input type="radio" id="radioSex2" name="gender" value="1" data-eid="qd_M139" required="">
+										<label for="radioSex2" class="ui-radio ml5 mr5"></label><label for="radioSex2">女</label>
+									</dd>
+								</dl>
+								<dl class="qdp-form-higher">
+									<dt>生日</dt>
+									<dd style="margin-left: -140px">
+										<span class="ui-input ui-date-input">
+											<div class="layui-inline">
+												<input type="text" class="layui-input" name="birthday" id="iptBorth">
+											  	<label for="iptBorth" class="ui-date-arrow"></label>
+											</div>
+										</span>
+									</dd>
+								</dl>
+
+								<dl class="qdp-form-higher">
+									<dt>简介</dt>
+									<dd style="margin-left: -140px">
+										<div class="ui-textarea-x" style="width:324px;">
+											<textarea id="forIntroArea" name="description" maxlength="140" rows="2" placeholder="可以简单的描述自己" data-eid="qd_M140"></textarea>
+											<div class="ui-textarea"></div>
+											<label for="forIntroArea" class="ui-textarea-count"></label>
+										</div>
+									</dd>
+								</dl>
+								<dl class="qdp-form-higher">
+									<dt></dt>
+									<dd style="margin-left: -140px">
+										<div class="" >
+											<input id="dialogMsgSubmit" class="clip">
+											<label class="ui-button" for="dialogMsgSubmit">保存</label>
+										</div>
+									</dd>
+								</dl>
+							</form>
+						</div>
+					</div>
+
+					<div id="tabTarget9" class="ui-tab-content setting-avatar" data-l3="24">
+						<form id="frmpic" method="post" enctype="multipart/form-data" >
+							<input type="file" id="fileAvatar" name="photo" class="clip" onchange="checkicon(this)" accept="image/png, image/jpeg, image/gif, image/jpg">
+						</form>
+						<div id="avatarXChoose" class="avatar-x-choose">  <!--//facepic.qidian.com/qd_face/349573/6495553/100-->
+							<img id="usersicon" class="avatar-show" th:src="@{/images/{icon}(icon = ${session.users.get(0).getIcon()})}" alt="">
+							<div class="avatar-text">
+								<p class="gray">支持jpg、gif、png格式图片</p>
+							</div>
+							<div>
+								<label class="ui-button" for="fileAvatar" id="elLabelforup" role="button" tabindex="-1" data-eid="qd_M141">选择头像</label>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+
+
+	</div>
+
+
+	<!--我的书架-->
+	<div class="qdp-wrapper" style="display: none" id="n2">
+		<div class="personal-sideBar" data-l1="2">
+			<ul class="sideBar-group">
+				<li class="active" id="m1">
+					<a href="javascript:m1();" class="sideBar-list-a" data-eid="qd_M185" >最近阅读</a>
+				</li>
+			</ul>
+			<ul class="sideBar-group">
+				<li class="" id="m2">
+					<a href="javascript:m2();" class="sideBar-list-a" title="我的书架" data-eid="qd_M186" >我的书架</a>
+				</li>
+			</ul>
+			<!--<ul class="sideBar-group">
+				<li class="" id="m3">
+					<a href="javascript:;" class="sideBar-list-a" title="自动订阅" data-eid="qd_M188" >自动订阅</a>
+				</li>
+			</ul>-->
+		</div>
+
+		<!--最近阅读-->
+		<div class="qdp-content" style="display: none;" id="q1">
+			<br>
+			<div class="qdp-border table-x shelf-table shelf-recent" data-l3="3" style="background-color: white;" >
+				<div class="table-msg">
+					<h2 class="shelf-title">最近阅读</h2>最多显示最近阅读的<strong class="dark ml5 mr5">100</strong>本书
+				</div>
+				<div class="table-size ui-loading-animation" id="tsula" style=" transition: height 200ms ease 0s;">
+					<table id="shelfTable" class="ui-table">
+						<thead>
+						<tr>
+							<th scope="col" width="350">书名/最近更新章节</th>
+							<th scope="col" width="130">更新时间</th>
+							<th scope="col" width="100">作者</th>
+							<th scope="col" >操作</th>
+
+						</tr>
+						</thead>
+						<tbody id="tbo">
+							<!--最近阅读-->
+						</tbody>
+					</table>
+					<div class="table-null-x dn" id="tnxd1" style="display: none;">暂无最近阅读的书籍</div>
+					<div class="ui-loading" id="tnxd2" style="top: 0px; display: none;"><i class="ui-loading-icon"></i></div>
+				</div>
+
+			</div>
+		</div>
+
+		<!--我的书架-->
+		<div class="qdp-content" id="q2">
+			<br>
+			<input type="text" name="kw" id="kw" class="shelf-search-input" style="background-color: white; width: 300px;border: 1px solid lightgray; border-radius: 3px" placeholder="&nbsp;&nbsp;输入作品名或作家名">
+			<label class="shelf-search-submit ui-button" style="border-radius: 3px;margin-left: -6px;position: relative;top: -2px ;height: 23px" id="shelfSearch" onclick="m2()">搜书架</label>
+			<br><br>
+
+			<div class="qdp-border table-x shelf-default shelf-table" data-l2="3" style="background-color: white" >
+				<div class="table-msg" data-l3="2">
+					<span class="shelf-title" id="shelfTitle" data-gid="-100">我的书架</span>
+					&nbsp;&nbsp;共&nbsp;<span id="shelfAmount">0&nbsp;本书籍</span>
+				</div>
+
+				<div class="table-size" data-l3="2" id="ts">
+					<table id="shelfTable1" class="ui-table table-checkbox" data-count="2" >
+						<thead>
+						<tr>
+							<th scope="col"></th>
+							<th scope="col" width="300" >类型/书名</th>
+							<th scope="col" width="120">更新时间</th>
+							<th scope="col" width="110">作者</th>
+							<th scope="col" width="55">更新进度</th>
+
+						</tr>
+						</thead>
+
+						<tbody id="tbo2">
+							<!--我的书架-->
+						</tbody>
+					</table>
+					<div class="table-null-x" style="display: none;" id="rac1">书架内暂无相关书籍</div>
+
+					<div class="ui-loading" style="display:none;"><i class="ui-loading-icon"></i></div>
+					<div class="style" style="height:51px;">
+						<div id="tableFixedFoot" class="shelf-foot">
+							<div class="shelf-foot-wrapper">
+								<table class="ui-table table-checkbox">
+									<thead>
+									<tr>
+										<th scope="col" style="line-height:50px;">
+											<input type="checkbox" id="chkBookNameAll2" name="" onclick="checkAll()" >
+											<label class="ui-checkbox" for="chkBookNameAll2"></label>
+										</th>
+										<th scope="col" style="line-height:50px;">
+											<label for="chkBookNameAll2" class="mr12">全选</label>
+											<a href="javascript:del();" class="ml12 mr12" id="elDelete" role="button" data-eid="qd_M210">删除</a>
+										</th>
+									</tr>
+									</thead>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+
+
+	</div>
+
+	
+	<div class="personal-footer">
+		<div class="footer-menu">
+			<a href="https://www.qidian.com/about/intro" target="_blank">关于起点</a>
+			<a href="https://www.qidian.com/about/contact" target="_blank">联系我们</a>
+			<a href="https://join.book.qq.com/index.html" target="_blank">加入我们</a>
+			<a href="https://www.qidian.com/help/index/2" target="_blank">帮助中心</a>
+			<a href="" class="commitAdvice" target="_blank">提交建议</a>
+		</div>
+		<div class="footer-copyright">
+			<p>Copyright (C) 2002-2019 www.qidian.com All Rights Reserved 版权所有</p>
+			<p>上海玄霆娱乐信息科技有限公司 上海玄霆娱乐信息科技有限公司 增值电信业务经营许可证沪B2-20080046 沪网文[2017]0081-031 新出网证(沪)字010 沪ICP备08017520号-1</p>
+			<p>请所有作者发布作品时务必遵守国家互联网信息管理办法规定，我们拒绝任何色情小说，一经发现，即作删除！</p>
+			<p>本站所收录作品、社区话题、书库评论及本站所做之广告均属其个人行为，与本站立场无关</p>
+		</div>
+	</div>
+</body>
+
+<!--<script src="./js/easing.js"></script>
+<script src="./js/move-top.js"></script>-->
+<script src="./js/jquery.form.js"></script>
+
+<script>
+
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#iptBorth' //指定元素
+        });
+    });
+
+    $("#h1").click(function () {
+        $(".header-nav-a").prop("class","");
+        $("#h1 a").prop("class","header-nav-a active");
+        $("#n1").show();
+        $("#n2").hide();
+        $("#n3").hide();
+
+    })
+    function h2() {
+        $(".header-nav-a").prop("class","");
+        $("#h2 a").prop("class","header-nav-a active");
+        $("#n1").hide();
+        $("#n2").show();
+        $("#n3").hide();
+        m2();
+    }
+    $("#h3").click(function () {
+        $(".header-nav-a").prop("class","");
+        $("#h3 a").prop("class","header-nav-a active");
+        $("#n1").hide();
+        $("#n2").hide();
+        $("#n3").show();
+    })
+
+    init();
+	function init() {
+        for (var i=1; i<=10 ;i++){
+            $("#u"+i).prop("class","");
+        }
+		$("#u1").prop("class","active");
+		for (var i=1; i<=10 ;i++){
+            $("#s"+i).hide();
+		}
+        $("#s1").show();
+
+        $.ajax({
+            url: "per/fansByeye",
+            data: {},
+            success: function (data) {
+                $("#homeurl").prop("href","pc/home?uuid="+data[0].uuid);
+
+				$("#icon").prop("src","/jpbook/images/"+data[0].icon);
+
+				$("#headerLog").text(data[0].uname);
+                $("#uname").text(data[0].uname);
+                $("#grade").text("Lv"+data[0].grade);
+                $("#eye").text(data[0].fans);
+                $("#fans").text(data[0].eye);
+                if(data[0].money > 10000){
+                    $("#money").text((data[0].money/10000)+"w");
+				}else{
+                    $("#money").text(data[0].money);
+				}
+                $("#shelves").text(data[0].shelves);
+                $("#w1").text(data[0].w1);
+                $("#w2").text(data[0].w2);
+            }
+        });
+
+        $.ajax({
+            url: "per/guess",
+            data: {},
+            success: function (data) {
+                var yemian = "";
+                if (data.length > 0){
+                    for (var i=0; i<data.length; i++){
+                        yemian+="<li class='recmd-list-item' style='margin-left: 15px'>"+
+                            "<a href='/jpbook/books/queryBookById?bookid="+data[i].bookid+"' target='_blank' class='recmd-list-a' data-eid='qd_M42' data-bid='1004895204'>" +
+                            "<div class='recmd-commet'>"+data[i].bookreferral.substring(0,30)+"</div>" +
+                            "<img src='/jpbook/img/"+data[i].icon+"' alt='' class='recmd-list-img'>" +
+                            "<div class='recmd-list-title' data-eid='qd_M42' data-bid='1004895204'>"+data[i].bookname+"</div>" +
+                            "</a><div class='recmd-list-data' title='猜你喜欢'>猜你喜欢</div></li>";
+                    }
+				}
+				$("#elRecList").html(yemian);
+            }
+        });
+    }
+    //获取地址栏传来的值
+    function GetQueryString(name){
+    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if(r!=null)return unescape(r[2]); return null;
+    };
+    var myurl=GetQueryString("key");
+    if (myurl == "i"){
+        h2();
+	}
+
+    $("#u2").click(function () {
+        for (var i=1; i<=10 ;i++){
+            $("#u"+i).prop("class","");
+        }
+        $("#u2").prop("class","active");
+        for (var i=1; i<=10 ;i++){
+            $("#s"+i).hide();
+        }
+        $("#s2").show();
+        qd_M159();
+        qd_M158();
+        qd_M157();
+    })
+
+	function qd_M157() {
+        $("#qd_M158").prop("class","");
+        $("#qd_M159").prop("class","");
+        $("#qd_M157").prop("class","checked");
+        $("#tabTarget2").prop("class","ui-tab-content");
+        $("#tabTarget3").prop("class","ui-tab-content");
+        $("#tabTarget1").prop("class","ui-tab-content checked");
+
+        $.ajax({
+            url: "per/mutualquery",
+            success: function (data) {
+				var t1 = "";
+               if (data.length > 0){
+                   $(".w_followeach").text(data.length);
+                   for (var i=0; i<data.length; i++){
+					   t1+="<tr class='qdp-operate-wrapper'>"+
+                       "<td width='300'>"+
+                       "<a href='pc/home?uuid="+data[i].uuid+"' class='friend-avatar' target='_blank' data-eid='qd_M162'>"+
+                       "<img src='/jpbook/images/"+data[i].icon+"'>"+
+                       "</a>"+
+                       "<div class='friend-wrapper'>"+
+                       "<div class='friend-name'><a href='pc/home?uuid="+data[i].uuid+"' target='_blank'>"+data[i].uname+"</a>"+
+                       "<i class='icon icon-boy'></i>"+
+                       "</div>"+
+                       "</div>"+
+                       "</td>"+
+                       "<td width='80' class='friend-add'></td>"+
+                       "<td>"+
+                       /*"<a href='javascript:;' class='ui-button jsSendMsg' role='button' data-image='images/ico/default_user.0.2.png' data-name='书友20180218153427385'>发私信</a>"+*/
+                       "<a href='javascript:canceleye("+data[i].uuid+",1);' class='qdp-operate ui-button ui-button-default jsUnfollow' data-id='313853460' role='button'>取消关注</a>"+
+                       "</td></tr>"	;
+                   }
+                   $("#t1").html(t1);
+                   $("#tx1").hide();
+			   }else {
+                   $(".w_followeach").text(0);
+                   $("#t1").html("");
+				   $("#tx1").show();
+			   }
+            }
+        });
+    }
+    function qd_M158() {
+        $("#qd_M157").prop("class","");
+        $("#qd_M159").prop("class","");
+        $("#qd_M158").prop("class","checked");
+        $("#tabTarget1").prop("class","ui-tab-content");
+        $("#tabTarget3").prop("class","ui-tab-content");
+        $("#tabTarget2").prop("class","ui-tab-content checked");
+
+        $.ajax({
+            url: "per/eyequery",
+            success: function (data) {
+                var t2 = "";
+                if (data.length > 0){
+                    $(".w_following").text(data.length);
+                    for (var i=0; i<data.length; i++){
+                        t2+="<tr class='qdp-operate-wrapper'>"+
+                            "<td width='300'>"+
+                            "<a href='pc/home?uuid="+data[i].uuid+"' class='friend-avatar' target='_blank' data-eid='qd_M162'>"+
+                            "<img src='/jpbook/images/"+data[i].icon+"'>"+
+                            "</a>"+
+                            "<div class='friend-wrapper'>"+
+                            "<div class='friend-name'><a href='pc/home?uuid="+data[i].uuid+"' target='_blank'>"+data[i].uname+"</a>"+
+                            "<i class='icon icon-boy'></i>"+
+                            "</div>"+
+                            "</div>"+
+                            "</td>"+
+                            "<td width='80' class='friend-add'></td>"+
+                            "<td>"+
+                            /*"<a href='javascript:;' class='ui-button jsSendMsg' role='button' data-image='images/ico/default_user.0.2.png' data-name='书友20180218153427385'>发私信</a>"+*/
+                            "<a href='javascript:canceleye("+data[i].uuid+",2);' class='qdp-operate ui-button ui-button-default jsUnfollow' data-id='313853460' role='button'>取消关注</a>"+
+                            "</td></tr>"	;
+                    }
+                    $("#t2").html(t2);
+                    $("#tx2").hide();
+                }else {
+                    $(".w_following").text(0);
+                    $("#t2").html("");
+                    $("#tx2").show();
+                }
+            }
+        });
+
+    }
+    function qd_M159() {
+        $("#qd_M157").prop("class","");
+        $("#qd_M158").prop("class","");
+        $("#qd_M159").prop("class","checked");
+        $("#tabTarget1").prop("class","ui-tab-content");
+        $("#tabTarget2").prop("class","ui-tab-content");
+        $("#tabTarget3").prop("class","ui-tab-content checked");
+        $.ajax({
+            url: "per/fansquery",
+            success: function (data) {
+                var t3 = "";
+                if (data.length > 0){
+                    $(".w_myfans").text(data.length);
+                    for (var i=0; i<data.length; i++){
+                        t3+="<tr class='qdp-operate-wrapper'>"+
+                            "<td width='300'>"+
+                            "<a href='pc/home?uuid="+data[i].uuid+"' class='friend-avatar' target='_blank' data-eid='qd_M162'>"+
+                            "<img src='/jpbook/images/"+data[i].icon+"'>"+
+                            "</a>"+
+                            "<div class='friend-wrapper'>"+
+                            "<div class='friend-name'><a href='pc/home?uuid="+data[i].uuid+"' target='_blank'>"+data[i].uname+"</a>"+
+                            "<i class='icon icon-boy'></i>"+
+                            "</div>"+
+                            "</div>"+
+                            "</td>"+
+                            "<td width='80' class='friend-add'></td>"+
+                            "<td>";
+                            /*"<a href='javascript:;' class='ui-button jsSendMsg' role='button' data-image='images/ico/default_user.0.2.png' data-name='书友20180218153427385'>发私信</a>";*/
+                        	if(data[i].sta == -1){
+								t3+="<a href='javascript:fansadd("+data[i].uuid+");' class='ui-button ui-button-default jsFollow' role='button' data-eid='qd_M165'>关注</a>";
+							}else {
+                                t3+= "<a href='javascript:canceleye("+data[i].uuid+",3);' class='qdp-operate ui-button ui-button-default jsUnfollow' data-id='313853460' role='button'>取消关注</a>";
+							}
+                            "</td></tr>"	;
+                    }
+                    $("#t3").html(t3);
+                    $("#tx3").hide();
+                }else {
+                    $(".w_myfans").text(0);
+                    $("#t3").html("");
+                    $("#tx3").show();
+                }
+            }
+        });
+    }
+    
+    function canceleye(buuid,state) {
+        $.ajax({
+            url: "pc/delFans",
+			data:{"buuid":buuid},
+            success: function (data) {
+                swal("取消关注成功", "", "success");
+                if (state == 1){
+                    qd_M159();
+                    qd_M158();
+                    qd_M157();
+				}else if(state == 2){
+                    qd_M157();
+                    qd_M159();
+                    qd_M158();
+				}else if(state == 3){
+                    qd_M157();
+                    qd_M158();
+                    qd_M159();
+				}
+            }
+        });
+    }
+	function fansadd(buuid) {
+		$.ajax({
+			url: "pc/fansAdd",
+			data: {"buuid":buuid},
+			success: function (data) {
+				swal("关注成功", "", "success");
+                qd_M157();
+                qd_M158();
+				qd_M159();
+			}
+		});
+    }
+
+    $("#u3").click(function () {
+        for (var i=1; i<=10 ;i++){
+            $("#u"+i).prop("class","");
+        }
+        $("#u3").prop("class","active");
+        for (var i=1; i<=10 ;i++){
+            $("#s"+i).hide();
+        }
+        $("#s3").show();
+        jp_M71();
+    })
+
+    function jp_M71(){
+        $("#jp_M72").prop("class","");
+        $("#jp_M71").prop("class","checked");
+        $("#tabTarget21").prop("class","ui-tab-content");
+        $("#tabTarget12").prop("class","ui-tab-content checked");
+        $.ajax({
+            url: "per/reviewquery",
+            success: function (data) {
+                var tbom1="";
+                if(data.length>0){
+                    for (var i=0; i<data.length; i++){
+                        tbom1 += "<tr>"+
+                        "<td class='col1 wbba'><a href='/jpbook/reviewbook/queryAll?bookid="+data[i].bookid+"' class='blue' target='_blank' data-eid='qd_M76'>"+data[i].revvlue.substring(0,10)+"</a></td>"+
+                        "<td class='col4'>"+renderTime(data[i].commenttime).substring(0,10)+"</td>"+
+                        "<td class='col5 wbba'><a href='/jpbook/reviewbook/queryAll?bookid="+data[i].bookid+"' class='blue' target='_blank' data-eid='qd_M77'>"+data[i].bookname+"</a></td>"+
+                        "</tr>";
+					}
+					$("#tbom1").html(tbom1);
+				}else {
+                    $("#tnullx1").show();
+				}
+            }
+        });
+	}
+	$("#jp_M72").click(function () {
+        $("#jp_M71").prop("class","");
+        $("#jp_M72").prop("class","checked");
+        $("#tabTarget12").prop("class","ui-tab-content");
+        $("#tabTarget21").prop("class","ui-tab-content checked");
+        $.ajax({
+            url: "per/replyquery",
+            success: function (data) {
+                var tbom2="";
+                if(data.length>0){
+                    for (var i=0; i<data.length; i++){
+                        tbom2 += "<tr>"+
+                            "<td class='col1 wbba'><a href='/jpbook/reviewbook/queryAll?bookid="+data[i].bookid+"' class='blue' target='_blank' data-eid='qd_M76'>"+data[i].revvlue.substring(0,10)+"</a></td>"+
+                            "<td class='col2 wbba'>"+data[i].repcontent.substring(0,10)+"</td>"+
+                            "<td class='col3 wbba'><a href='/jpbook/reviewbook/queryAll?bookid="+data[i].bookid+"' class='blue' target='_blank' data-eid='qd_M77'>"+data[i].bookname+"</a></td>"+
+                            "</tr>";
+                    }
+                    $("#tbom2").html(tbom2);
+                }else {
+                    $("#tnullx2").show();
+                }
+            }
+        });
+    })
+
+    function u4() {
+        for (var i=1; i<=10 ;i++){
+            $("#u"+i).prop("class","");
+        }
+        $("#u4").prop("class","active");
+        for (var i=1; i<=10 ;i++){
+            $("#s"+i).hide();
+        }
+        $("#s4").show();
+
+        var grade = 1;
+        $.ajax({
+            url: "per/queryusers",
+            success: function (data) {
+                grade = data[0].grade;
+            }
+        });
+
+        $.ajax({
+            url:"per/wtid1",
+            success:function (data) {
+                if (grade >= 3 && grade < 13){
+					$("#wtid1").text(1);
+					if(data == 0){
+                        $("#wtid2").text(1);
+					}else {
+                        $("#wtid3").text(1);
+					}
+                }else if(grade >= 13 && grade < 23) {
+                    $("#wtid1").text(2);
+                    if(data == 0){
+                        $("#wtid2").text(2);
+                    }else if (data == 1){
+                        $("#wtid2").text(1);
+                        $("#wtid3").text(1);
+                    }else if(data == 2){
+                        $("#wtid3").text(2);
+					}
+                }else if(grade >=23) {
+                    $("#wtid1").text(3);
+                    if(data == 0){
+                        $("#wtid2").text(3);
+                    }else if (data == 1){
+                        $("#wtid2").text(2);
+                        $("#wtid3").text(1);
+                    }else if(data == 2){
+                        $("#wtid2").text(1);
+                        $("#wtid3").text(2);
+                    } else if(data == 3){
+                        $("#wtid3").text(3);
+                    }
+                }else {
+
+				}
+
+            }
+        });
+
+        $.ajax({
+            url: "per/wtid2",
+            success: function (data) {
+				if (data.employ == null || data.employ == undefined){
+                    $("#wtid4").text(data.walnum);
+				}else {
+                    $("#wtid4").text(data.walnum+data.employ);
+				}
+                $("#wtid5").text(data.employ);
+                $("#wtid6").text(data.walnum);
+            }
+        });
+        jp_M61();
+    }
+
+    function jp_M61(){
+        $("#jp_M62").prop("class","");
+	    $("#jp_M61").prop("class","checked");
+        $("#tabTarget25").prop("class","ui-tab-content");
+        $("#tabTarget15").prop("class","ui-tab-content checked");
+        $.ajax({
+            url:"per/monthlyquery",
+            success:function (data) {
+                var tbody1 = "";
+                if (data.length>0){
+                    $("#outstd1").text(data[0].num);
+                    for (var i=0; i<data.length; i++){
+                        tbody1 += "<tr><td class='col1'>"+renderTime(data[i].votetime).substring(0,10)+"</td><td class='col2'>"+data[i].votenum+"</td>"+
+                            "<td class='col3 wbba'><a href='books/queryBookById?bookid="+data[i].bookid+"' class='blue' target='_blank'>"+data[i].bookname+"</a></td>"+
+                            "</tr>";
+                    }
+                    $("#tbody1").html(tbody1);
+                }else {
+                    $("#tnx1").show();
+                }
+            }
+        });
+	}
+	$("#jp_M62").click(function () {
+        $("#jp_M61").prop("class","");
+        $("#jp_M62").prop("class","checked");
+        $("#tabTarget15").prop("class","ui-tab-content");
+        $("#tabTarget25").prop("class","ui-tab-content checked");
+
+        $.ajax({
+           url:"per/recquery",
+           success:function (data) {
+               var tbody2 = "";
+               if (data.length>0){
+					$("#outstd2").text(data[0].num);
+					for (var i=0; i<data.length; i++){
+                    	tbody2 += "<tr><td class='col1'>"+renderTime(data[i].votetime).substring(0,10)+"</td><td class='col2'>"+data[i].votenum+"</td>"+
+                        "<td class='col3 wbba'><a href='books/queryBookById?bookid="+data[i].bookid+"' class='blue' target='_blank'>"+data[i].bookname+"</a></td>"+
+                        "</tr>";
+					}
+                   $("#tbody2").html(tbody2);
+			   }else {
+					$("#tnx2").show();
+			   }
+           }
+       });
+
+    })
+    
+    function u6() {
+        for (var i = 1; i <= 10; i++) {
+            $("#u" + i).prop("class", "");
+        }
+        $("#u6").prop("class", "active");
+        for (var i = 1; i <= 10; i++) {
+            $("#s" + i).hide();
+        }
+        $("#s6").show();
+
+        $.ajax({
+            url: "per/queryusers",
+            success: function (data) {
+				$("#balance").text(data[0].money);
+            }
+        });
+        record1();
+    }
+
+    function record1() {
+        $("#tabTarget26").prop("class","ui-tab-content");
+        $("#record2").prop("class","");
+        $("#tabTarget36").prop("class","ui-tab-content");
+        $("#record3").prop("class","");
+        $("#tabTarget16").prop("class","ui-tab-content checked");
+        $("#record1").prop("class","checked");
+
+        $.ajax({
+            url: "per/record1",
+            success: function (data) {
+               var record1=""
+               if (data.length>0){
+                   for (var i = 0; i<data.length; i++){
+                       record1 += "<tr class='qdp-operate-wrapper'><td class='col1'>"+
+                           "<span class='shelf-table-author font12'>"+data[i].money+"元</span> </td>"+
+                           "<td class='col1'><span class='shelf-table-author font12'>"+renderTime(data[i].topuptime).substring(0,10)+"</span></td>"+
+                           "<td class='col1'><span class='shelf-table-author font12'>书币充值</span></td></tr>";
+				   }
+                  $("#tab1").html(record1);
+			   }else {
+                   $("#tnd1").show();
+			   }
+			   
+            }
+        });
+    }
+    
+    $("#record2").click(function () {
+        $("#tabTarget16").prop("class","ui-tab-content");
+        $("#record1").prop("class","");
+        $("#tabTarget36").prop("class","ui-tab-content");
+        $("#record3").prop("class","");
+        $("#tabTarget26").prop("class","ui-tab-content checked");
+        $("#record2").prop("class","checked");
+
+        $.ajax({
+            url: "per/record2",
+            success: function (data) {
+                var record2=""
+                if (data.length>0){
+                    for (var i = 0; i<data.length; i++){
+                        record2 += "<tr class='qdp-operate-wrapper'><td class='col1'>"+
+                            "<span class='shelf-table-author font12'>"+data[i].rewanum+"书币</span> </td>"+
+                            "<td class='col1'><span class='shelf-table-author font12'>"+renderTime(data[i].rewatime).substring(0,10)+"</span></td>"+
+                            "<td class='col1'><span class='shelf-table-author font12'>"+data[i].bookname+"</span></td></tr>";
+                    }
+                    $("#tab2").html(record2);
+                }else {
+                    $("#tnd2").show();
+                }
+
+            }
+        });
+		
+    })
+
+    $("#record3").click(function () {
+        $("#tabTarget16").prop("class","ui-tab-content");
+        $("#record1").prop("class","");
+        $("#tabTarget26").prop("class","ui-tab-content");
+        $("#record2").prop("class","");
+        $("#tabTarget36").prop("class","ui-tab-content checked");
+        $("#record3").prop("class","checked");
+
+        $.ajax({
+            url: "per/record3",
+            success: function (data) {
+                var record3=""
+                if (data.length>0){
+                    for (var i = 0; i<data.length; i++){
+                        record3 += "<tr class='qdp-operate-wrapper'><td class='col1'>"+
+                            "<span class='shelf-table-author font12'>"+data[i].bookname+"</span> </td>"+
+                            "<td class='col1'><span class='shelf-table-author font12'>"+data[i].count+"</span></td>"+
+                            "<td class='col1'><span class='shelf-table-author font12'>"+data[i].sum+"书币</span></td></tr>";
+                    }
+                    $("#tab3").html(record3);
+                }else {
+                    $("#tnd3").show();
+                }
+
+            }
+        });
+    })
+
+    function u8() {
+        for (var i = 1; i <= 10; i++) {
+            $("#u" + i).prop("class", "");
+        }
+        $("#u8").prop("class", "active");
+        for (var i = 1; i <= 10; i++) {
+            $("#s" + i).hide();
+        }
+        $("#s8").show();
+
+        $.ajax({
+            url: "per/queryusers",
+            success: function (data) {
+                $("#uuid").text(data[0].uuid);
+                $("#uname2").val(data[0].uname);
+                $("#iptBorth").val(renderTime(data[0].birthday).substring(0,10));
+
+                $("#forIntroArea").val(data[0].self);
+                var sex = data[0].sex;
+                if (sex == 0){
+                    $("#radioSex2").prop("");
+                    $("#radioSex1").prop("checked",true);
+
+				}else {
+                    $("#radioSex1").prop("");
+                    $("#radioSex2").prop("checked",true);
+				}
+
+            }
+        });
+    }
+
+    $("#dialogMsgSubmit").click(function () {
+        var uname = $("#uname2").val()
+        var birthday = $("#iptBorth").val();
+        var self = $("#forIntroArea").val();
+        var sex = 0;
+        if($("#radioSex1").prop("checked")){
+            sex = 0;
+        }else {
+            sex = 1;
+        }
+
+        if ($("#uname2").val() == ""){
+            $("#uname2").focus();
+            $("#uname2").css("border","1px solid red");
+            return false;
+        }
+        $.ajax({
+            url:'per/getuname',
+            data:{"uname":$("#uname2").val()},
+            success:function (data) {
+                if (data > 0){
+                    swal("用户名已存在", "", "error");
+                    return false;
+                }
+                if(birthday > getNowFormatDate()){
+                    swal("生日选择有误", "", "error");
+                    return false;
+                }
+                $.ajax({
+                    url:'per/editusers',
+                    data:{"uname":uname,"birthday":birthday,"self":self,"sex":sex},
+                    success:function (data) {
+                        $("#btnEditName").text("修改昵称");
+                        $("#uname2").css("border","");
+                        $("#uname2").prop("disabled","disabled");
+
+                        u8();
+                        swal("保存信息成功", "", "success");
+                    }
+                })
+
+            }
+        })
+
+    })
+
+    $("#btnEditName").click(function () {
+		if ($("#uname2").val() == ""){
+            $("#uname2").focus();
+            $("#uname2").css("border","1px solid red");
+            return false;
+		}
+
+		if ($("#btnEditName").text() == "修改昵称"){
+            $("#btnEditName").text("保存");
+            $("#uname2").css("border","1px solid lightgray");
+            $("#uname2").prop("disabled","");
+		}else {
+            $.ajax({
+                url:'per/getuname',
+                data:{"uname":$("#uname2").val()},
+                success:function (data) {
+                    if (data > 0){
+                        swal("用户名已存在", "", "error");
+                        return false;
+					}else {
+                        $("#btnEditName").text("修改昵称");
+                        $("#uname2").css("border","");
+                        $("#uname2").prop("disabled","disabled");
+					}
+                }
+            })
+		}
+    })
+
+    $("#jpbasic").click(function () {
+        $("#jpicon").prop("class","");
+        $("#jpbasic").prop("class","checked");
+        $("#tabTarget9").prop("class","ui-tab-content setting-avatar");
+        $("#tabTarget11").prop("class","ui-tab-content checked");
+
+        u8();
+    })
+
+    $("#jpicon").click(function () {
+        $("#jpbasic").prop("class","");
+        $("#jpicon").prop("class","checked");
+        $("#tabTarget11").prop("class","ui-tab-content");
+        $("#tabTarget9").prop("class","ui-tab-content setting-avatar checked");
+
+    })
+
+    function checkicon(file) {
+        var pic = document.getElementById("usersicon");
+        var ext = file.value.substring(file.value.lastIndexOf(".") + 1).toLowerCase();
+        // gif在IE浏览器暂时无法显示
+        if (ext != 'png' && ext != 'jpg' && ext != 'jpeg') {
+            alert("图片的格式必须为png或者jpg或者jpeg格式！");
+            return;
+        }
+        var isIE = navigator.userAgent.match(/MSIE/) != null,
+            isIE6 = navigator.userAgent.match(/MSIE 6.0/) != null;
+
+        if (isIE) {
+            file.select();
+            var reallocalpath = document.selection.createRange().text;
+
+            // IE6浏览器设置img的src为本地路径可以直接显示图片
+            if (isIE6) {
+                pic.src = reallocalpath;
+            } else {
+                // 非IE6版本的IE由于安全问题直接设置img的src无法显示本地图片，但是可以通过滤镜来实现
+                pic.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='image',src=\"" + reallocalpath + "\")";
+                // 设置img的src为base64编码的透明图片 取消显示浏览器默认图片
+                pic.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
+            }
+        } else {
+            html5Readericon(file);
+        }
+    }
+    function html5Readericon(file) {
+        var file = file.files[0];
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function (e) {
+            var pic = document.getElementById("usersicon");
+            pic.src = this.result;
+        };
+
+		if($("#fileAvatar").val() == ""){
+
+		}else{
+			var form = $("#frmpic");
+			var options = {
+				url:'per/editicon', //上传文件的路径
+				type:'post',
+				async :true,
+				success:function(data){
+					console.log(data);
+                    swal("头像设置成功", "", "success");
+				}
+			};
+			form.ajaxSubmit(options);
+		}
+
+    }
+
+
+	var indexSecond;
+	var shownum;
+    function u10() {
+        for (var i = 1; i <= 10; i++) {
+            $("#u" + i).prop("class", "");
+        }
+        $("#u10").prop("class", "active");
+        for (var i = 1; i <= 10; i++) {
+            $("#s" + i).hide();
+        }
+        $("#s10").show();
+
+        $.ajax({
+            url: "per/queryusers",
+            success: function (data) {
+				$("#grade2").text(data[0].grade);
+				$("#exp2").text(data[0].exp);
+				$("#expnext").text(100 - data[0].exp%100 == 100 ? 100:100 - data[0].exp%100);
+				if (data[0].grade >= 3 && data[0].grade < 13){
+                    $("#mr12").text("每日赠送推荐票 1张(每天清除不积累)");
+				}else if(data[0].grade >= 13 && data[0].grade < 23) {
+                    $("#mr12").text("每日赠送推荐票 2张(每天清除不积累)");
+				}else if(data[0].grade >=23) {
+                    $("#mr12").text("每日赠送推荐票 3张(每天清除不积累)");
+                }else {
+                    $("#mr12").text("暂无");
+				}
+
+            }
+        })
+
+        $.ajax({
+            url: "per/signexp",
+            success: function (data) {
+
+                //秒长
+                indexSecond = $("#sdf" + data.num).attr("data-timeLeft") - data.signlong;
+                shownum = data.num;
+
+                //在线时长
+                var onlinetime = data.signlong;
+
+                var num = data.num
+
+                if (num == 0) {
+                    for (var i = 0; i <= 7; i++) {
+                        $("#showa" + i).hide();
+                        $("#showa0").show();
+                    }
+                    $("#sdf0").hide();
+
+                } else if (num == 1) {
+                    for (var j = 0; j < num; j++) {
+                        $("#sdf" + j).text("已领取");
+                        $("#sdf" + j).show();
+                    }
+                    for (var i = 0; i <= 7; i++) {
+                        $("#showa" + i).hide();
+                        $("#showa1").show();
+                    }
+                    $("#sdf1").hide();
+
+                } else if (num == 2) {
+                    for (var j = 0; j < num; j++) {
+                        $("#sdf" + j).text("已领取");
+                        $("#sdf" + j).show();
+                    }
+                    for (var i = 0; i <= 7; i++) {
+                        $("#showa" + i).hide();
+                        $("#showa2").show();
+                    }
+                    $("#sdf2").hide();
+                } else if (num == 3) {
+                    for (var j = 0; j < num; j++) {
+                        $("#sdf" + j).text("已领取");
+                        $("#sdf" + j).show();
+                    }
+                    for (var i = 0; i <= 7; i++) {
+                        $("#showa" + i).hide();
+                        $("#showa3").show();
+                    }
+                    $("#sdf3").hide();
+                }else if (num == 4) {
+                    for (var j = 0; j < num; j++) {
+                        $("#sdf" + j).text("已领取");
+                        $("#sdf" + j).show();
+                    }
+                    for (var i = 0; i <= 7; i++) {
+                        $("#showa" + i).hide();
+                        $("#showa4").show();
+                    }
+                    $("#sdf4").hide();
+                }else if (num == 5) {
+                    for (var j = 0; j < num; j++) {
+                        $("#sdf" + j).text("已领取");
+                        $("#sdf" + j).show();
+                    }
+                    for (var i = 0; i <= 7; i++) {
+                        $("#showa" + i).hide();
+                        $("#showa5").show();
+                    }
+                    $("#sdf5").hide();
+                }else if (num == 6) {
+                    for (var j = 0; j < num; j++) {
+                        $("#sdf" + j).text("已领取");
+                        $("#sdf" + j).show();
+                    }
+                    for (var i = 0; i <= 7; i++) {
+                        $("#showa" + i).hide();
+                        $("#showa6").show();
+                    }
+                    $("#sdf6").hide();
+                }else if (num == 7) {
+                    for (var j = 0; j < num; j++) {
+                        $("#sdf" + j).text("已领取");
+                        $("#sdf" + j).show();
+                    }
+                    for (var i = 0; i <= 7; i++) {
+                        $("#showa" + i).hide();
+                        $("#showa7").show();
+                    }
+                    $("#sdf7").hide();
+                }
+
+            }
+        });
+
+    }
+
+    function addexp(id) {
+		var exp = $("#showa"+id).attr("data-timeLeft");
+        $.ajax({
+            url:"per/addexp",
+			data:{"exp":exp},
+            success:function (data) {
+                u10();
+                if (data == 1){
+                    swal("领取成功", "", "success");
+                }
+                if (data == 2){
+                    swal("恭喜你升级啦", "", "success");
+                }
+            }
+		});
+    }
+
+    $("#elTaskButton").click(function () {
+        $.ajax({
+            url:"per/exp",
+            data:{"exp":300},
+            success:function (data) {
+                u10();
+				swal("恭喜你升级啦", "", "success");
+            }
+        });
+    })
+
+    //var maxtime = indexSecond; //60 * 60; //一个小时，按秒计算!
+    function CountDown() {
+        if (indexSecond >= 0) {
+            minutes = Math.floor(indexSecond / 60);
+            seconds = Math.floor(indexSecond % 60);
+            $("#showa"+shownum).text(minutes+":"+seconds);
+            --indexSecond;
+            $("#showa"+shownum).removeAttr("href");
+        } else{
+			$("#showa"+shownum).prop("href","javascript:addexp("+shownum+")");
+			$("#showa"+shownum).text("领取");
+        }
+    }
+    setInterval("CountDown()", 1000);
+
+
+	//最近阅读
+    function m1(){
+        for (var i=1; i<=3; i++){
+            $("#m"+i).prop("class","");
+        }
+        $("#m1").prop("class","active");
+        $("#q1").show();
+        $("#q2").hide();
+
+        $.ajax({
+            url: "bookrack/read",
+            success: function (data) {
+				var r1 = "";
+				if (data.length == 0){
+                    $("#tsula").css("height","359");
+                    $("#tnxd1").show();
+                    $("#tnxd2").show();
+				}else {
+					for (var j=0; j<data.length; j++){
+						r1 += "<tr class='qdp-operate-wrapper'>"+
+							"<td class='col1'>"+
+							"<span class='shelf-table-name'><b>"+
+							"<a href='/jpbook/showAllBook.html?btid="+data[j].btid+"' target='_blank' class='fen-category' style='color: grey'>「"+data[j].btname+"」</a>"+
+							"<a href='/jpbook/books/queryBookById?bookid="+data[j].bookid+"' target='_blank' title=''>"+data[j].bookname+"</a>"+
+							"</b>&nbsp;&nbsp;"+
+							"<a href='/jpbook/chapter/getInformationByChapid?chapid="+data[j].chapid+"' class='shelf-table-chapter blue' target='_blank' title=''>"+data[j].chapname+"</a>"+
+							"</span></td>"+
+							"<td class='col2 font12'>"+renderTime(data[j].chaptime).substring(0,16)+"</td>"+
+							"<td class='col3'>"+
+							"<a href='/jpbook/pc/authorData?bid="+data[j].uuid+"' target='_blank' title='' class='shelf-table-author font12'>"+data[j].pen+"</a>"+
+							"</td>";
+							if(data[j].brid != -1){
+                            	r1 += "<td class='col5 shlef-menu'><a href='javascript:' class='gray icon icon-book_icon jsTips font12 disabled' title='已在书架'></a></td>"+"</tr>";
+							}else{
+                                r1 += "<td class='col5 shlef-menu'><a href='javascript:addBookrack("+data[j].bookid+")' class='blue icon icon-book_icon jsTips elInBookShelf font12' title='加入书架'></a></td>"+"</tr>";
+							}
+					}
+					$("#tbo").html(r1);
+				}
+
+            }
+        });
+	}
+
+	//最近阅读加入书架
+    function addBookrack(bookid) {
+        $.ajax({
+            url: "/jpbook/pc/add",
+            data: {"bookid": bookid},
+            success: function (data) {
+                swal("已加入书架", "", "success");
+                m1();
+			}
+        })
+    }
+
+	//我的书架
+	function m2() {
+	    for (var i=1; i<=3; i++){
+            $("#m"+i).prop("class","");
+		}
+        $("#m2").prop("class","active");
+	    $("#q1").hide();
+		$("#q2").show();
+
+        $.ajax({
+            url: "bookrack/rack",
+			data: {"par":$("#kw").val()},
+            success: function (data) {
+                var tbo2 = "";
+				if (data.length == 0){
+				    $("ts").css("height","392");
+                    $("#tbo2").hide();
+					$("#rac1").show();
+				}else {
+					$("#shelfAmount").html(data[0].num+"&nbsp;本书籍");
+                    for (var i=0; i<data.length; i++){
+                        tbo2 += "<tr>"+
+                            "<td class='col1'><input type='checkbox' class='elWcheckbox' id='chkBookName"+i+"' name='bookname' value='"+data[i].brid+"' onclick='uncheckAll()' >" +
+							"<label class='ui-checkbox' for='chkBookName"+i+"'></label></td>"+
+                            "<td class='col2'>"+
+                            "<span class='shelf-table-name'>"+
+                            "<b>"+
+                            "<a href='/jpbook/showAllBook.html?btid="+data[i].btid+"' target='_blank' class='fen-category' style='color: grey'>「"+data[i].btname+"」</a>"+
+                            "<a href='/jpbook/books/queryBookById?bookid="+data[i].bookid+"' target='_blank' title='' data-bid='1013406185' data-eid='qd_M198'>"+data[i].bookname+"</a>"+
+                            "</b></span></td>"+
+                            "<td class='col3 font12' >"+renderTime(data[i].chaptime).substring(0,16)+"</td>"+
+                            "<td class='col4'>"+
+                            "<a href='/jpbook/pc/authorData?bid="+data[i].uuid+"' target='_blank' title='' class='shelf-table-author font12' data-eid='qd_M200' >"+data[i].pen+"</a>"+
+                            "</td>";
+								if(data[i].bookstate == 0 ){
+                                    tbo2 += "<td class='col5'><a href='/jpbook/books/queryBookById?bookid="+data[i].bookid+"' class='spTips font12 yesReadStatus' target='_blank' title=''>连载中</a></td>";
+								}else {
+                                    tbo2 += "<td class='col5'><a href='/jpbook/books/queryBookById?bookid="+data[i].bookid+"' class='spTips font12 yesReadStatus' target='_blank' title=''>已完本</a></td>";
+								}
+							tbo2 += "<td class='col6 shlef-menu'></td>"+
+                            "</tr>";
+                    }
+                    $("#tbo2").html(tbo2);
+                    $("#rac1").hide();
+                    $("#tbo2").show();
+				}
+
+            }
+        });
+
+    }
+
+    function  del() {
+        var str = "";
+        var i = 0;
+        $.each($("input[name=bookname]"), function() {
+            if ($(this).prop("checked") == true) {
+				str += $("#chkBookName"+i).val()+",";
+				i++;
+            }
+        });
+	   $.ajax({
+			url: "bookrack/del",
+			data: {"brid":str.substring(0,str.length-1)},
+			success: function (data) {
+			    m2();
+                swal("删除成功", "", "success");
+			}
+		});
+
+    }
+
+    function renderTime(date) {
+        var dateee = new Date(date).toJSON();
+        return new Date(+new Date(dateee) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
+    }
+
+    function checkAll() {
+	    if ($("#chkBookNameAll2").prop("checked") == true){
+            $.each($("input[name=bookname]"), function() {
+                if ($(this).prop("checked") == false) {
+                    $(this).prop("checked", "true");
+                }
+            });
+		}else {
+            $.each($("input[name=bookname]"), function() {
+                if ($(this).prop("checked") == true) {
+					$(this).prop("checked", false);
+                }
+            });
+		}
+    }
+
+    function uncheckAll() {
+        $.each($("input[name=bookname]"), function() {
+            if($(this).prop("checked") == false){
+                $("#chkBookNameAll2").prop("checked",false);
+                return false;
+            }
+            if ($(this).prop("checked") == true) {
+                $("#chkBookNameAll2").prop("checked",true);
+            }
+        });
+    }
+
+    function formatDate(NewDtime){
+		var dt = new Date(parseInt(NewDtime.slice(6, 19)));
+		var year = dt.getFullYear();
+		var month = dt.getMonth() + 1;
+		var date = dt.getDate();
+		var hour = dt.getHours();
+		var minute = dt.getMinutes();
+		var second = dt.getSeconds();
+		return year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second;
+    }
+
+	//当前时间 YYYY-MM-DD
+    function getNowFormatDate() {
+        var date = new Date();
+        var seperator1 = "-";
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var strDate = date.getDate();
+        if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+        }
+        var currentdate = year + seperator1 + month + seperator1 + strDate;
+        return currentdate;
+    }
+
+</script>
+</html>

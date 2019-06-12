@@ -1,0 +1,276 @@
+@charset 'UTF-8';
+.main-header {
+  height: 72px;
+  background: #f7f6f2
+}
+.main-header h1 {
+  font-size: 24px;
+  line-height: 72px;
+  width: 990px;
+  margin: 0 auto
+}
+textarea {
+  overflow: auto
+}
+.main-wrap {
+  width: 990px;
+  min-height: 450px;
+  min-height: calc(100vh - 310px);
+  margin: 0 auto;
+  padding-top: 20px
+}
+@media (max-width:1200px) {
+  .main-wrap {
+    min-height: calc(100vh - 337px)
+  }
+}
+.main-body {
+  width: 700px
+}
+.main-nav {
+  line-height: 16px;
+  margin-bottom: 20px;
+  padding: 12px 24px;
+  background: #f7f6f2
+}
+.nav-tab {
+  font-size: 14px;
+  color: #9b9b9b
+}
+.nav-tab.act {
+  font-weight: 700;
+  color: #ed4259
+}
+span.nav-tab {
+  cursor: default
+}
+.sendPost {
+  font-size: 14px;
+  font-weight: 700;
+  position: relative;
+  display: inline-block;
+  vertical-align: top
+}
+.sendPost:before {
+  position: absolute;
+  top: 0;
+  left: -24px;
+  display: inline-block;
+  height: 16px;
+  content: '';
+  border-left: 1px solid #e6e6e6
+}
+.sendPost .icon-send {
+  font-weight: lighter;
+  margin-right: 6px;
+  vertical-align: -1px
+}
+.post-wrap {
+  padding: 16px 0 19px;
+  border-bottom: 1px solid #e6e6e6
+}
+.post {
+  margin: 4px 0 0 60px
+}
+.post-auther {
+  font-size: 12px
+}
+.post-auther a[href='javascript:;'] {
+  cursor: default
+}
+.post-title {
+  line-height: 16px;
+  margin-top: 11px;
+  margin-right: 16px
+}
+.post-title .pink:hover {
+  text-decoration: underline
+}
+.post-title .icon {
+  vertical-align: -3px
+}
+.post-body {
+  line-height: 22px;
+  margin-top: 8px;
+  margin-bottom: -4px
+}
+.post-body .icon {
+  vertical-align: -3px
+}
+.read-now {
+  font-weight: 700;
+  margin-top: 12px
+}
+.read-now .iconfont {
+  font-size: 14px;
+  vertical-align: top
+}
+.post-info {
+  margin-top: 19px;
+  color: #a6a6a6
+}
+.post-info a,
+.post-info span {
+  display: inline
+}
+.post-info span {
+  font-size: 14px;
+  vertical-align: baseline
+}
+.info-tab {
+  color: #a6a6a6
+}
+.info-tab.act {
+  color: #ed4259
+}
+.chapter-wrap {
+  padding: 32px 40px;
+  text-align: center
+}
+.chapter-wrap .qrc {
+  width: 120px;
+  height: 120px;
+  margin-top: 32px;
+  vertical-align: top;
+  -webkit-box-shadow: 0 0 8px rgba(0,0,0,.2);
+  box-shadow: 0 0 8px rgba(0,0,0,.2)
+}
+.more-post {
+  padding: 25px 0;
+  text-align: center;
+  border-bottom: 1px solid #e6e6e6
+}
+.icon-d-arr {
+  font-size: 14px;
+  vertical-align: middle
+}
+.page-container {
+  margin: 20px 0 40px;
+  text-align: right
+}
+.side-wrap {
+  width: 250px
+}
+.forum-info {
+  padding: 20px 12px;
+  background: #f7f6f2
+}
+.forum-info h3 {
+  font-size: 18px
+}
+.forum-info .lang {
+  margin-bottom: 10px
+}
+.forum-book {
+  width: 84px;
+  height: 112px;
+  margin-bottom: 12px
+}
+.forum-collect {
+  line-height: 30px;
+  display: block;
+  width: 130px;
+  height: 30px;
+  margin: 12px auto 0;
+  border-radius: 15px
+}
+.forum-collect .iconfont {
+  vertical-align: -3px
+}
+.forum-sign {
+  line-height: 28px;
+  display: block;
+  width: 128px;
+  height: 28px;
+  margin: 12px auto 0;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 15px
+}
+.signed {
+  cursor: default;
+  color: #a6a6a6;
+  border-color: #a6a6a6
+}
+.signed:hover {
+  color: #a6a6a6;
+  border-color: #a6a6a6;
+  background: 0 0
+}
+.icon-collect {
+  font-size: 20px;
+  font-weight: 700;
+  margin-left: -5px;
+  vertical-align: middle
+}
+.forum-people {
+  padding: 10px 0;
+  border-top: 1px solid #e6e6e6
+}
+.forum-people:last-of-type {
+  padding-bottom: 0
+}
+.forum-people h4 {
+  margin: 5px 56px 0 0;
+  padding-bottom: 7px
+}
+.forum-people span {
+  font-size: 12px
+}
+.icon-rybz {
+  padding: 2px 4px;
+  color: #fff;
+  background: #ed4259
+}
+.icon-bz {
+  padding: 2px 4px;
+  color: #fff;
+  background: #4a90e2
+}
+.right-op-wrap {
+  position: relative;
+  height: 174px
+}
+.right-op-wrap a {
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  left: 0;
+  display: none;
+  width: 250px;
+  height: 174px
+}
+.right-op-wrap a img {
+  width: 250px;
+  height: 174px
+}
+.right-op-wrap embed.embed-fix.fix {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 174px
+}
+.right-op-wrap .la-ball-pulse {
+  padding-top: 80px
+}
+.term {
+  line-height: 20px;
+  margin: 36px 0 16px;
+  text-align: center;
+  color: #4a4a4a
+}
+.term a {
+  color: #4a4a4a
+}
+.term a:hover {
+  color: #ed4259
+}
+.p-text textarea {
+  height: 81px
+}
+.lbf-checkbox {
+  margin-right: 6px;
+  vertical-align: -1px
+}

@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	<title>账号登录 | 千秋小说网</title>
+
+	<link rel="shortcut icon" type="image/x-icon" href="./images/jp_iocn.ico">
+	<link rel="Bookmark" type="image/x-icon" href="./images/jp_iocn.ico">
+
+	<link rel="stylesheet" type="text/css" href="./css/pact.css">
+	<link rel="stylesheet" type="text/css" href="./css/icon.css">
+
+	<script src="./js/jquery-3.3.1.js"></script>
+	<script src="./js/load.min.js"></script>
+
+</head>
+<body>
+	<div class="wrap">
+		<!-- start 头部 -->
+		<div class="header ">
+			<div class="box-center">
+				<div class="logo">
+					<a href="/jpbook/booktype/queryAll" target="_blank"></a>
+				</div>
+			</div>
+		</div>
+		<!-- end 头部 -->
+
+		<!-- start 整体居中 -->
+		<div class="box-center">
+			<!-- start 登录区块 -->
+			<div class="login-area-wrap cf">
+				<!-- start 运营图 -->
+				<div class="login-op-img fl">
+					<img src="./images/loginBg.jpg" alt="登录">
+				</div>
+				<!-- end 运营图 -->
+
+				<!-- start 登录区 -->
+				<div class="login-wrap type-10 fl">
+					<!-- start 登录切换 -->
+					<div class="login-tab cf" id="j_loginTab">
+						<ul>
+							<li class="lang act" tab="qidian">账号登录</li>
+							<li class="lang act" tab="qq"></li>
+							<li class="lang act" tab="weixin"></li>
+						</ul>
+					</div>
+					<!-- end 登录切换 -->
+
+
+					<!-- start 登录切换容器 -->
+					<div class="login-switch-wrap">
+						<div class="login-tab-wrap" id="j_loginSwitchWrap">
+							<!-- start 阅文通行证 -->
+							<div class="login-box qd-login yw-login qidian-login " style="display: block;">
+								<!-- start webPC登录容器 -->
+								<div class="web-login-wrap">
+									<!-- start 两种输入模式容器 -->
+									<div class="login-input-mode" id="j-loginInputMode">
+										<!-- start 输入登录模式 -->
+										<div class="login-mode input-mode show" id="j-inputMode">
+											<div class="error-tip hidden" id="error-tip"></div>
+											<dl>
+												<dd id="dd1">
+													<em class="icon icon-zhanghu"></em><input type="text" tabindex="1"
+														placeholder="手机/邮箱/用户名" id="username">
+												</dd>
+												<dd id="dd2">
+													<em class="icon icon-mima"></em><input type="password"
+														tabindex="2" placeholder="密码" id="password">
+												</dd>
+												<dd class="code-input" style="display:none;" id="dvCode">
+													<em class="iconfont"> </em><input type="text" id="txtCode"
+														placeholder="请输入验证码"> <img
+														src="https://passport.qidian.com/?appid=10&amp;areaid=1&amp;auto=1&amp;autotime=30&amp;version=1.0&amp;ticket=1&amp;target=top&amp;popup=0&amp;source=pc&amp;returnurl=https%3A%2F%2Fbook.qidian.com%2Fhonor%2F1013552688"
+														id="imgCode" alt="验证码">
+													<div class="code-tip">
+														<cite></cite>
+														<p>点击图片刷新</p>
+													</div>
+												</dd>
+											</dl>
+
+											<!--滑动验证码-->
+											<div id="captcha"></div>
+											<input id="sessionId" name="sessionId" type="hidden" value="">
+											<input id="successToken" name="successToken" type="hidden">
+
+											<!-- start 登录操作 -->
+											<div class="login-common-wrap">
+												<div class="auto-login-box cf">
+													<br>
+													<!--<div class="link fr">
+														<a href="https://aq.yuewen.com/welcome/validateuser"
+															target="_blank" id="forgetPsw">忘记密码</a>
+													</div>
+													<input type="checkbox" id="autologin" tabindex="3"
+														name="checkbox" checked="checked">
+													<label
+														for="autologin" class="ui-checkbox"
+														data-stat="qd_L04|勾选自动登录|2"
+														data-off-stat="qd_L05|取消自动登录|2">
+													</label>
+													<label for="autologin">自动登录</label>-->
+												</div>
+												<a class="red-btn go-login btnLogin login-button" href="javascript:" id="submitBtn">登 录</a>
+											</div>
+											<!-- end 登录操作 -->
+										</div>
+										<!-- end 输入登录模式 -->
+
+										<!-- start 手机登录模式 -->
+										<div class="login-mode phone-mode" id="j-phoneMode" style="display: none;">
+											<div class="error-tip hidden" id="et"></div>
+											<dl>
+												<dd class="phone-input" id="dd3">
+
+													<div class=" ui-select" style="width: 84px;">
+														<a href="javascript:" class="ui-select-button"><span
+															class="ui-select-text">+86</span><i
+															class="ui-select-icon"></i>
+														</a>
+													</div>
+													<cite></cite>
+													<input id="mobilephone" type="text" placeholder="手机">
+												</dd>
+												<dd class="code-input hidden" id="phoneCodeInput">
+													<input type="text" placeholder="请输入右侧验证码">
+													<img src="" class="ImgCodeCommon hidden" alt="验证码">
+													<div class="code-tip">
+														<cite></cite>
+														<p>点击图片刷新</p>
+													</div>
+												</dd>
+												<dd class="repeat-pw">
+													<input type="text" placeholder="动态密码" id="rp">
+													<a id="sendPhoneMsg" class="blue repeat send-dpw" href="javascript:">发送动态密码</a>
+												</dd>
+											</dl>
+											<div class="slide-checks hidden" id="j-slideChecks-phone">
+												<div id="cap_iframe_phone"
+													style="width:324px; padding-top: 8px; position: absolute; z-index:10; background: #FFF;left:38px;top:16px;box-shadow: 0 2px 10px #999; border-radius: 5px"></div>
+											</div>
+											<!-- start 登录操作 -->
+											<div class="login-common-wrap">
+												<a class="red-btn go-login phoneBtnLogin login-button" href="javascript:" id="submitBtn2">登 录</a>
+											</div>
+											<!-- end 登录操作 -->
+										</div>
+										<!-- end 手机登录模式 -->
+
+										<!-- start 通用结构 -->
+										<div class="common-html-wrap">
+											<!-- start 注册 -->
+											<div class="reg-wrap">
+												<p>
+													<a class="input" href="javascript:" id="j-switchToggle">手机验证码登录</a>
+													<em id="emRegQd">|</em>
+													<a href="register.html" target="_blank" id="regQd"> 免费注册 </a>
+												</p>
+											</div>
+											<!-- end 注册 -->
+
+										</div>
+										<!-- end 两种模式通用结构 -->
+									</div>
+									<!-- end 两种输入模式容器 -->
+
+									<!-- login-mode-switch 后加 class切换   input：输入模式 scan：扫码模式 -->
+									<!-- start 右下角扫码和输入模式登录切换 -->
+									<div class="login-mode-switch scan" id="j-switchLoginMode">
+										<a href="javascript:"></a>
+									</div>
+									<!-- end 右下角扫码和输入模式登录切换 -->
+									<!-- start 扫码登录容器 -->
+									<div class="scan-mode hidden" id="j-scanMode">
+										<h3>扫码登录</h3>
+										<div class="qr-code">
+											<div class="state hidden qrcodeNotice">
+												<!-- html片段：二维码过期 需要刷新-->
+												<div class="info reload hidden">
+													<em class="iconfont" id="iconImgQrCodeReload"></em>
+													<p>二维码已过期</p>
+													<p>
+														<a id="imgQrCodeReload" href="javascript:">请点击刷新</a>
+													</p>
+												</div>
+
+												<!-- html片段：二维码扫码成功-->
+												<div class="info success scanSuccess hidden">
+													<em class="iconfont"></em>
+													<p>扫码成功</p>
+												</div>
+											</div>
+
+											<img id="imgQrCode" alt="二维码"
+												src="https://passport.qidian.com/?appid=10&amp;areaid=1&amp;auto=1&amp;autotime=30&amp;version=1.0&amp;ticket=1&amp;target=top&amp;popup=0&amp;source=pc&amp;returnurl=https%3A%2F%2Fbook.qidian.com%2Fhonor%2F1013552688">
+											<p>
+												打开<a href="https://www.yuewen.com/app.html#appqd"
+													class="blue" target="_blank">起点读书客户端</a>扫一扫登录
+											</p>
+										</div>
+										<div class="icon-wrap">
+											<span><em class="iconfont"></em>免输入</span> <span><em
+												class="iconfont"></em>更安全</span> <span><em class="iconfont"></em>更快捷</span>
+										</div>
+									</div>
+									<!-- end 扫码登录容器 -->
+								</div>
+
+								<!-- end webPC登录容器 -->
+
+							</div>
+							<!-- end 阅文通行证 -->
+
+
+							<!-- start 快速注册  -->
+							<!-- end 快速注册 -->
+
+						</div>
+					</div>
+					<!-- end 登录切换容器 -->
+
+				</div>
+				<!-- end 登录区 -->
+				
+				<script th:inline="javascript">
+                    $("#j-switchToggle").click(function () {
+						if($("#j-switchToggle").text() == "手机验证码登录"){
+                           	$("#j-inputMode").hide();
+							$("#j-phoneMode").show();
+                            $("#j-switchToggle").text("账号密码登录");
+						}else{
+                            $("#j-inputMode").show();
+                            $("#j-phoneMode").hide();
+                            $("#j-switchToggle").text("手机验证码登录");
+						}
+                    });
+
+                    $("#submitBtn2").click(function () {
+                        var mobilephone = $("#mobilephone").val();
+                        var regPhone = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
+
+                        if(mobilephone == ""){
+                            $("#mobilephone").focus();
+                            $("#dd3").attr("class","error");
+                            return false;
+                        }else {
+                            $("#dd3").attr("class","");
+                        }
+                        if($("#rp").val() == ""){
+                            $("#rp").focus();
+                            $(".repeat-pw").attr("class","repeat-pw error");
+                            return false;
+                        } else if (!regPhone.test(mobilephone)){
+                            $("#et").attr("class","error-tip");
+                            $("#et").text("传递参数错误");
+                            return false;
+                        }
+
+                        $.ajax({
+                            url: "login/landing",
+                            data: {"phone":mobilephone,"yzm":$("#rp").val()},
+                            success: function (data) {
+                                if (data == 2) {
+                                    var f = document.referrer;
+                                    var fs = window.location.href.substr(0,window.location.href.lastIndexOf("#")) ;
+                                    if(f === fs){
+                                        window.location.href='./booktype/queryAll';
+                                    }else{
+                                        window.location.href = f;
+                                        window.opener.location.reload();
+                                        window.close()
+                                    }
+
+                                }
+                                if(data == -1){
+                                    $("#et").attr("class","error-tip");
+                                    $("#et").text("验证码输入错误");
+                                    return false;
+								}
+                            }
+                        });
+
+                    });
+
+                    var time = 60;
+                    function countdown(e) {
+                        if (time == 0) {
+                            //e.setAttribute("onclick", "sendsms(this)");
+                            $("#sendPhoneMsg").prop("href","javascript:");
+                            $("#sendPhoneMsg").html("发送动态密码");
+                            time = 60;
+                        } else {
+                           // e.removeAttribute("onclick");
+                            $("#sendPhoneMsg").removeAttr("href");
+                            $("#sendPhoneMsg").html("重新发送(" + time + ")");
+                            time--;
+                            setTimeout(function () {
+                                countdown(e);
+                            }, 1000);
+                        }
+                    }
+
+				</script>
+
+				<script>
+                    $(function () {
+                        //禁止后退按钮
+                        if (window.history && window.history.pushState) {
+                            $(window).on('popstate', function () {
+                                window.history.pushState('forward', null, '#');
+                                window.history.forward(1);
+                            });
+                        }
+                        window.history.pushState('forward', null, '#');
+                        window.history.forward(1);
+                        var captchaIns = "";
+                        initNECaptcha({
+                                // config对象，参数配置
+                                captchaId: "e11978dc94fe431eb2ec9c510ddf97b9",
+                                element: "#captcha",
+                                mode: "popup",
+                                width: "380px",
+
+                                onVerify: function (err, data) {
+
+                                    if(err == null){
+                                        $.ajax({
+                                            url: "login/phoneLogin",
+                                            data: {"phone":$("#mobilephone").val()},
+                                            type: "post",
+                                            dataType: "json",
+                                            success: function (data) {
+												console.log(data);
+                                            }
+                                        });
+                                        countdown(this);
+                                    }
+
+                                }
+                            },
+
+                            function onload(instance) {
+                                // 初始化成功后得到验证实例instance，可以调用实例的方法
+                                console.log(instance);
+                                captchaIns = instance;
+                            },
+                            function onerror(err) {
+                                console.log("error", err);
+                                // 初始化失败后触发该函数，err对象描述当前错误信息
+                            }
+                        );
+
+						$("#sendPhoneMsg").click(function () {
+
+							var mobilephone = $("#mobilephone").val();
+							var regPhone = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
+
+							if (mobilephone == "") {
+								$("#mobilephone").focus();
+								$("#dd3").attr("class", "error");
+								return false;
+							} else if (!regPhone.test(mobilephone)) {
+								$("#et").attr("class", "error-tip");
+								$("#et").text("账号不存在");
+								return false;
+							}
+                            if($("#sendPhoneMsg").html() == "发送动态密码") {
+                                captchaIns && captchaIns.refresh();
+                                captchaIns && captchaIns.popUp();
+                            }
+
+						});
+
+                        $("#kaptcha").on('click', function () {
+                            $("#kaptcha").attr('src', '/kaptcha?' + Math.floor(Math.random() * 100)).fadeIn();
+                        });
+
+                    });
+
+				</script>
+
+				<script>
+                    var falg=false;
+                    $(function () {
+                        //禁止后退按钮
+                        if (window.history && window.history.pushState) {
+                            $(window).on('popstate', function () {
+                                window.history.pushState('forward', null, '#');
+                                window.history.forward(1);
+                            });
+                        }
+                        window.history.pushState('forward', null, '#');
+                        window.history.forward(1);
+                        var captchaIns = "";
+                        initNECaptcha({
+                                // config对象，参数配置
+                                captchaId: "e11978dc94fe431eb2ec9c510ddf97b9",
+                                element: "#captcha",
+                                mode: "popup",
+                                width: "380px",
+
+                                onVerify: function (err, data) {
+                                    if(null == err){
+                                        $.ajax({
+                                            url: "login/landing",
+                                            data: {"username":$("#username").val(),"password":$("#password").val()},
+                                            type: "post",
+                                            dataType: "json",
+                                            success: function (d) {
+                                                if(d == 1){
+                                                    falg = true;
+                                                }
+                                                if (data && falg ) {
+                                                    $("#successToken").val(data.validate);
+                                                    var f = document.referrer;
+                                                    var fs = window.location.href.substr(0,window.location.href.lastIndexOf("#")) ;
+                                                    if(f === fs){
+                                                        window.location.href='./booktype/queryAll';
+                                                    }else{
+                                                        window.location.href = f;
+                                                        window.opener.location.reload();
+                                                        window.close()
+                                                    }
+                                                }else if(falg == false && data){
+                                                    $("#error-tip").attr("class","error-tip");
+                                                    $("#error-tip").text("您输入的账号或密码不正确，请重新输入");
+                                                }else{
+                                                    return false;
+                                                }
+                                            }
+                                        });
+
+									}
+									//***
+                                }
+                            },
+
+                            function onload(instance) {
+                                // 初始化成功后得到验证实例instance，可以调用实例的方法
+                                console.log(instance);
+                                captchaIns = instance;
+                            },
+                            function onerror(err) {
+                                console.log("error", err);
+                                // 初始化失败后触发该函数，err对象描述当前错误信息
+                            }
+                        );
+
+                        $("#submitBtn").click(function () {
+
+                            var username = $("#username").val();
+                            var password = $("#password").val();
+
+                            if(username == ""){
+                                $("#username").focus();
+                                $("#dd1").attr("class","error");
+                                return false;
+                            }else{
+                                $("#dd1").attr("class","");
+                            }
+                            if(password == ""){
+                                $("#password").focus();
+                                $("#dd2").attr("class","error");
+                                return false;
+                            }else{
+                                $("#dd2").attr("class","");
+                            }
+
+                            captchaIns && captchaIns.refresh();
+                            captchaIns && captchaIns.popUp();
+                        });
+
+                        $("#kaptcha").on('click', function () {
+                            $("#kaptcha").attr('src', '/kaptcha?' + Math.floor(Math.random() * 100)).fadeIn();
+                        });
+                    });
+
+				</script>
+
+			</div>
+			<!-- end 登录区块 -->
+		</div>
+		<!-- end 整体居中 -->
+
+		<!-- start 页脚 -->
+		<div class="footer">
+			<div class="link">
+				<a href="https://www.qidian.com/about/intro" target="_blank">关于起点</a>
+				<a href="https://www.qidian.com/about/contact" target="_blank">联系我们</a>
+				<a href="http://join.book.qq.com/index.html" target="_blank">加入我们</a>
+				<a href="http://kf.qidian.com/Default.aspx" target="_blank">客服中心</a>
+				<a href="http://bbs.qidian.com/list/53" target="_blank">提交建议</a> <a
+					href="https://jubao.yuewen.com/" target="_blank">举报中心</a>
+			</div>
+			<p>Copyright (C) 2002-2019 www.qidian.com All Right Reserved版权所有
+				上海玄霆娱乐信息科技有限公司</p>
+			<p>上海玄霆娱乐信息科技有限公司 增值电信业务经营许可证沪B2-20080046 沪网文[2012]0068-008
+				新出网证（沪）字010 沪ICP备08017520号-1</p>
+			<p>请所有作者发布作品时务必遵守国家互联网信息管理办法规定，我们拒绝任何色情小说，一经发现，即作删除！客服电话：010-59357051</p>
+			<p>本站所收录作品、社区话题、书库评论及本站所做之广告均属个人行为，与本站立场无关</p>
+			<div class="safety-box">
+				<div class="safety-img dib-wrap">
+					<a class="site1"
+						href="http://www.pdxa.cn/Welcome.Asp?Id=3101151112"
+						target="_blank"></a><a class="site2"
+						href="http://www.sgs.gov.cn/lz/licenseLink.do?method=licenceView&amp;entyId=20111011181417625"
+						target="_blank"></a><a class="site3"
+						href="http://www.cyberpolice.cn/wfjb" target="_blank"></a><a
+						class="site4"
+						href="https://ss.knet.cn/verifyseal.dll?sn=e12120411010037414000000&amp;pa=090993"
+						target="_blank"></a><a class="site5" href="http://www.shjbzx.cn/"
+						target="_blank"></a><a class="site6"
+						href="http://www.12377.cn/node_548446.htm" target="_blank"></a><a
+						class="site7" href="http://www.12377.cn/" target="_blank"></a>
+				</div>
+			</div>
+		</div>
+		<!-- end 页脚 -->
+	</div>
+	
+</body>
+</html>

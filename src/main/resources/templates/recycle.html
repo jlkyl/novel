@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<!-- saved from url=(0067)https://write.qq.com/booknovels/recycle/CBID/13173713005719804.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <!-- 360安全游览器使用webkit极速核 -->
+    <meta name="renderer" content="webkit">
+    <!-- IE使用它支持的最高模式 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="小说阅读,精彩小说尽在创世小说.创世小说提供玄幻小说,武侠小说,原创小说,网游小说,都市小说,言情小说,职场小说,历史小说,军事小说,网游小说,科幻小说,恐怖小说,首发小说最新章节免费小说阅读小说下载txt,精彩尽在创世小说!2013年热门小说:无敌唤灵,无红色权力,无限曙光,余罪,兵临天下,盛唐风月,武帝,大官人,勇闯天涯,机甲天王">
+    <meta name="keywords" content="小说,小说网,言情小说,职场小说,玄幻小说,武侠小说,都市小说,历史小说,网络小说,小说下载,小说txt,小说全文阅读,原创网络文学">
+    <link rel="shortcut icon" type="image/x-icon" href="https://img1.write.qq.com/writer/p1/contentv2/aa_ico.ico">
+    <title>回收站-阅文作家专区</title>
+    <link rel="stylesheet" type="text/css" href="./css/contentv2_base.css"><script src="./css/stats.js.下载" name="MTAH5" sid="500659219"></script><script type="text/javascript" src="./css/contentv2_base.js.下载"></script>    <!-- prevent dom xss -->
+    <script type="text/javascript" src="./css/aq_common.js.下载"></script>
+    <meta name="__hash__" content="726acbf2203ebbeca78a83c514adcaae_4637a1f152dc90b0dcef8b265da1b39d">
+    <script src="./js/sweet-alert.js"></script>
+    <link rel="stylesheet" href="./css/sweet-alert.css">
+</head>
+<body style="">
+<div class="wrap">
+    <div class="header">
+        <div class="headBox pageCenter cf">
+            <a href="https://write.qq.com/index.html">
+                <img class="logo fl" src="./css/logo.png" width="225" height="28" alt="阅文·作家专区">
+            </a>
+            <div class="headUser fr">
+                <ul class="cf">
+                    <li class="line"></li>
+                    <li id="headPhotoBox" class="headPhoto">
+                        <p><em><img th:src="${session.users[0].getIcon()}" width="36" height="36" alt=""></em><a class="userName" href="javascript:" th:text="${session.users[0].getPen()}">爱色鬼</a></p>
+                        <dl class="userBox">
+                            <cite class="icon whiteSj"></cite>
+                            <dd class="userInfo hidden">
+                                <!-- 增加身份标识"ico-level",silver为白金作家，dashen为大神作家 -->
+                                <p class="name" th:title="${session.users[0].getPen()}" th:text="${session.users[0].getPen()}">爱色鬼
+
+                                </p>
+                                <p class="level">
+
+                                    <span><em style="width:70%">0/0</em></span></p>
+                            </dd>
+                            <dd class="link"><a href="writerdata.html">作家资料</a></dd>
+                            <dd class="link end"><a href="/jbook/login/emptySession">退出登录</a></dd>
+                        </dl>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- start banner -->
+
+    <!-- end banner -->
+    <!-- 黄条提示 -->
+    <div id="warnTipBox" class="warningWrap" style="display:none;">
+        <div class="pageCenter">
+            <p><span class="icon alert"></span><span id="warnTip"></span></p>
+            <a id="warnTipCloseBtn" class="icon close" href="javascript:" title="关闭"></a></div>
+    </div>
+    <!--更改VIP管理密码-->
+    <div id="modifyPwdPopup" class="popupWrap w380" style="display:none;">
+        <a data-node="closeBtn" class="icon closePopup" href="javascript:"></a>
+        <h3>更改VIP管理密码</h3>
+        <div class="popupBody p30">
+            <div class="popupContent">
+                <p>原密码</p>
+                <p class="mb20">
+                    <input data-node="originalPwdInput" class="longInput" type="password" value="">
+                </p>
+                <p>新密码</p>
+                <p class="mb20">
+                    <input data-node="newPwdInput" class="longInput" type="password" value="">
+                    <i class="f12 c999">6~16位英文、数字或特殊字符</i>
+                </p>
+
+                <p>再次输入新密码</p>
+                <p class="mb20">
+                    <input data-node="repeatNewPwdInput" class="longInput" type="password" value="">
+                </p>
+            </div>
+            <center class="confirmBtn">
+                <a data-node="submitBtn" class="button full" href="javascript:">提交</a>
+            </center>
+        </div>
+    </div>
+    <div class="mainWrap pageCenter cf">
+        <div id="leftNav" class="mainLeft fl" style="visibility: visible;">
+            <div class="sideBar" id="main-bar">
+                <ul>
+                    <li class="act">
+                        <a href="authorWorks"><span class="works"></span>作品管理</a>
+                    </li>
+                    <li><a href="statistics"><span class="data-icon"></span>数据统计</a>
+                        <!-- start 工具栏提示 -->
+                    </li>
+
+                    <li>
+                        <a href="income"><span class="income"></span>稿酬收入</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- start 小屏下的列表-->
+            <div class="sideBar min-bar" id="min-bar">
+                <ul>
+                    <li class="act">
+                        <a class="min-link" href="authorWorks"><span class="icon works"></span></a>
+                        <a class="expand" href="authorWorks">作品管理</a>
+                    </li>
+
+                    <li>
+                        <a class="min-link" href="statistics"><span class="icon reserve"></span></a>
+                        <a class="expand" href="statistics">数据统计</a>
+                    </li>
+
+
+                    <li>
+                        <a class="min-link" href="income"><span class="icon income"></span></a>
+                        <a class="expand" href="income">稿酬收入</a>
+                    </li>
+                    <!--微信管理-->
+                </ul>
+            </div>
+            <!-- end 小屏下的列表-->
+
+        </div>
+
+        <link rel="stylesheet" type="text/css" href="./css/contentv2_book_manage.css"><div class="mainRight pb0 fl">
+        <div class="crumbsWrap">
+            <b></b>
+            <i class="before"><a href="authorWorks"><span>作品管理</span></a></i>
+            <em class="diff"></em>
+            <i class="current"><span>少年杨帅波</span></i>
+        </div>
+
+        <div class="msgBoxTitle">
+            <a class="create button" href="chapteradd"><em class="icon"></em>新建章节</a>
+
+            <div class="tabSwitch cf">
+                <span class="[bookmodify]"><a href="worksSet">作品设置</a></span>
+                <span class="[chaptertmp]"><a href="drafts">草稿箱</a></span>
+                <span class="[chaptermanage]" id="numero2"><a href="chapterSent">已发布章节</a></span>
+                <span class="act"><a href="recycle">回收站</a></span>
+            </div>
+        </div>
+
+        <div class="managerWrap cf">
+            <div class="mLeftList fl">
+                <div id="draftListWrap" class="leftListWrap">
+                    <div class="titleBox" id="sum">
+                    </div>
+                    <div class="sectionManage">
+                        <div class="sectionList" id="sectionList">
+                            <!-- 回收站列表 -->
+                            <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 740px;">
+                                <ul id="draftList" style="overflow: hidden; width: auto; height: 740px;">
+
+                            </ul>
+                                <div class="slimScrollBar" style="background: rgb(204, 204, 204); width: 10px; position: absolute; top: 0px; opacity: 1; display: none; border-radius: 0px; z-index: 99; right: -1px; height: 750px;"></div><div class="slimScrollRail" style="width: 10px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; background: rgb(238, 238, 238); opacity: 1; z-index: 90; right: -1px;"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script type="text/javascript">
+                $.ajax({
+                    url:"chapter/getByBookidRecycle",
+                    success:function (data) {
+                        var str="";
+                        for(var i=0;i<data.length;i++){
+                            if(i==0){
+                                str+="<li data-chapterid=\"35384036628575823\" onclick='tabread("+data[i].chapid+",\""+data[i].chapname+"\",this)' data-volumeid=\"35362916621017310\" class=\"act\">";
+
+                                $("#chapid").val(data[i].chapid);
+                                $("#chapterTitle").html(data[i].chapname);
+                            }else{
+                                str+="<li data-chapterid=\"35384036628575823\" data-volumeid=\"35362916621017310\">";
+                            }
+                            str+="<div class=\"sectionBox\">";
+                            str+="   <p>";
+                            str+="   <em>"+data[i].chapname+"</em>";
+                            str+="   </p>";
+                            str+="   <p class=\"f12\">";
+                            str+="<i>";
+                            str+="   "+jsonDateFormat(data[i].updatetime)+"                                            </i>";
+                            str+="共"+data[i].chapcount+"字";
+                            str+="</p>";
+                            str+="</div>";
+                            str+="</li>";
+                        }
+                        $("#sum").html("<p>共 "+data.length+" 章</p>");
+                        $("#draftList").html(str);
+                    }
+                })
+                function jsonDateFormat(date) {//json日期格式转换为正常格式
+                    var dateee = new Date(date).toJSON();
+                    return new Date(+new Date(dateee) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
+                }
+                $(function () {
+                    read();
+                })
+                function tabread(chapid,chapname,obj) {
+                    $("#chapid").val(chapid);
+                    $("#chapterTitleInput").val(chapname);
+                    $("#draftList").find("li").prop("class","");
+                    $(obj).prop("class","act");
+                    read();
+                }
+                function read() {
+                    if($("#chapid").val()==""){return;}
+                    $.ajax({
+                        url:"chapter/read",
+                        data:{"chapid":$("#chapid").val()},
+                        success:function (data) {
+                            $("#chapterContentInput").val(data);
+                        }
+                    })
+                }
+            </script>
+            <div id="chapterContainer" class="mRightContent fl">
+                <!--查看章节-->
+                <div id="viewChapterBox" class="midWrap viewWrap hidden" style="display: block;">
+                    <div class="sectionViewWrap section-pre-view">
+                        <div id="portamento_container" style="min-height: 48px; width: 809px;"><div id="viewChapterBtnBox" class="sectionBtnBox cf" data-slide="1" style="top: 0px;">
+                            <div class="titleBtn fr">
+                                <a class="button white" href="javascript:void(0)" onclick="del()">彻底删除</a>
+                                <a class="button modify" href="javascript:void(0)" onclick="updrafts()">恢复为草稿</a>
+                            </div>
+                            <em class="c999">章节类型：</em>
+                            <b data-node="chapterTypeName">公众章节</b>
+                        </div></div>
+                        <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 640px;">
+                            <div id="sectionText" class="zwText" style="overflow: hidden; width: auto; height: 640px;">
+                                <input type="hidden" id="chapid" name="chapid">
+                                <h3 id="chapterTitle"></h3>
+                                <textarea name="content" id="chapterContentInput" readonly data-default="请输入正文。" style="color: rgb(51, 51, 51);"></textarea>
+                            </div>
+                            <div class="slimScrollBar" style="background: rgb(204, 204, 204); width: 7px; position: absolute; top: 0px; opacity: 1; display: none; border-radius: 0px; z-index: 99; right: 1px; height: 650px;"></div>
+                            <div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(238, 238, 238); opacity: 1; z-index: 90; right: 1px;"></div>
+                        </div>
+                        <div class="authorSay">
+                            <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 81px;"><div id="authorSpeak" style="overflow: hidden; width: auto; height: 81px;"></div><div class="slimScrollBar" style="background: rgb(204, 204, 204); width: 7px; position: absolute; top: 0px; opacity: 1; display: block; border-radius: 0px; z-index: 99; right: 1px;"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(238, 238, 238); opacity: 1; z-index: 90; right: 1px;"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <img id="requestLoadingTip" class="loadImg" style="display: none;" src="./css/loading.gif"></div>
+    </div>
+    <div class="footer">
+        <div class="pageCenter">
+            <a target="_blank" href="https://write.qq.com/about/help_center.html">帮助中心</a><span>|</span>
+            <a target="_blank" href="https://www.yuewen.com/service.html">联系客服</a><span>|</span><a target="_blank" href="http://join.book.qq.com/introduction.html">关于我们</a><span>|</span><a target="_blank" href="http://join.book.qq.com/social.html">诚聘英才</a><span>|</span><a target="_blank" href="https://write.qq.com/about/copyright.html">版权声明</a><span>|</span>Copyright
+            © 2019 All Rights Reserved 阅文集团 版权所有
+        </div>
+    </div>
+    <script type="text/javascript" src="./css/contentv2_help_connectkefu.js.下载"></script>
+</div>
+<script type="text/javascript" src="./css/contentv2_rightBar.js.下载"></script><script type="text/javascript" src="./css/college_dialog.js.下载"></script><!--end 意见反馈-->
+<script type="text/javascript">
+    $(function(){
+        //右侧工具条
+        CS.rightBar.init();
+    });
+    function toucao(){
+        var cauthorid =  $("input[name='openid']").val();
+        if(cauthorid == null || cauthorid == ''){
+            location.href = '/public/login.html?artidx=-100';
+        }else{
+            var _browser = CS.browser;
+            // document.getElementById("toucao_myform").submit();
+            var data = {
+                "nickname":"爱色鬼",
+                "avatar": "https://ccstatic-1252317822.file.myqcloud.com/writer/p1/contentv2/photo_default.png",
+                "openid": "13121036803414701",
+                "os": _browser.detectOS(),
+                "clientInfo":_browser.browserType(),
+                "clientVersion": _browser.browserType(),
+                "customInfo":"爱色鬼"+"13121036803414701"
+            };
+            var productId = 1924;
+            Tucao.request(productId, data);
+
+        }
+
+    }
+</script>
+
+<script type="text/javascript" src="./css/contentv2_layout.js.下载"></script><script type="text/javascript">
+    $(function(){
+        var systemTip = "";
+        //模板页
+        CS.page.layout.main.init(systemTip);
+
+        //被其他站点以iframe方式嵌入后的处理
+        CS.embed.init();
+    });
+</script>
+<!-- 数据统计 -->
+
+<script type="text/javascript">
+    function updrafts() {
+        $.ajax({
+            url:"chapter/updrafts",
+            data:{"chapid":$("#chapid").val()},
+            success:function (data) {
+                swal("恢复成功", "请到草稿箱查看", "success");
+                $("#chapterContentInput").val("");
+                window.location.reload();
+            }
+        })
+    }
+    function del() {
+        var message=confirm("你确定要彻底删除吗？");
+        if (message==true){
+            $.ajax({
+                url:"chapter/del",
+                data:{"chapid":$("#chapid").val()},
+                success:function (data) {
+                    swal("删除成功!", "此章节已彻底删除", "success");
+                    $("#chapterContentInput").val("");
+                    window.location.reload();
+                }
+            })
+        }
+    }
+</script>
+
+
+</body></html>

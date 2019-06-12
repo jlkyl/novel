@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<!-- saved from url=(0026)https://www.qidian.com/all -->
+<html class="loaded" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <title>全部作品_起点中文网</title>
+    <meta name="robots" content="all">
+    <meta name="googlebot" content="all">
+    <meta name="baiduspider" content="all">
+    <meta http-equiv="mobile-agent" content="format=wml; url=https://m.qidian.com">
+    <meta http-equiv="mobile-agent" content="format=xhtml; url=https://m.qidian.com">
+    <meta http-equiv="mobile-agent" content="format=html5; url=http://h5.qidian.com/bookstore.html">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <link charset="utf-8" rel="stylesheet" href="./css/iconfont.css">
+    <script src="./css/stats.js.下载" name="MTAH5" sid="500451537"></script>
+    <script>
+        var speedTimer = [],
+            speedZero = new Date().getTime();
+    </script>
+
+    <script>
+        //遇到cookie tf=1的话留在本站，否则跳转移动站
+        if (getCookie('tf') != 1) {
+            //判断是以下设备后跳转到m站
+            if (navigator.userAgent.match(/(iPhone|iPod|Android)/i)) {
+                location.href = "//m.qidian.com"
+            }
+        } else {
+            // M站设置了一年，这里fixed
+            setCookie('tf', 1, 'qidian.com', '/', 0);
+        }
+        // start 防劫持
+        //设置cookie
+        function setCookie(name, value, domain, path, expires) {
+            if (expires) {
+                expires = new Date(+new Date() + expires);
+            }
+            var tempcookie = name + '=' + escape(value) +
+                ((expires) ? '; expires=' + expires.toGMTString() : '') +
+                ((path) ? '; path=' + path : '') +
+                ((domain) ? '; domain=' + domain : '');
+            //Ensure the cookie's size is under the limitation
+            if (tempcookie.length < 4096) {
+                document.cookie = tempcookie;
+            }
+        }
+
+        //获取cookie
+        function getCookie(name) {
+            var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+            if (arr = document.cookie.match(reg))
+                return (arr[2]);
+            else
+                return null;
+        }
+
+        //创建并发送请求
+        function createSender(url) {
+            var img = new Image();
+            img.onload = img.onerror = function () {
+                img = null;
+            };
+            img.src = url;
+        };
+    </script>
+
+    <link data-ignore="true" rel="shortcut icon" type="image/x-icon"
+          href="https://qidian.gtimg.com/qd/favicon/qd_icon.c443c.ico">
+    <link data-ignore="true" rel="Bookmark" type="image/x-icon"
+          href="https://qidian.gtimg.com/qd/favicon/qd_icon.c443c.ico">
+    <link  rel="stylesheet" href="./css/icon.css">
+
+    <link rel="stylesheet" data-ignore="true" href="./css/Button.e5a3e.css">
+
+
+    <link charset="utf-8" rel="stylesheet" href="./css/Autocomplete.css">
+    <link charset="utf-8" rel="stylesheet" href="./css/Dropdown.css">
+    <link charset="utf-8" rel="stylesheet" href="./css/Popup.css">
+    <script src="./js/jquery-3.3.1.js"></script>
+</head>
+<body style="zoom: 1;">
+
+<div class="wrap">
+    <div class="lbf-autocomplete-suggestions" style="position: absolute; max-height: 384px; z-index: 9999; width: 346px; top: 96px; left: 560.6px; display: none;">
+    </div>
+    <div class="top-nav" data-l1="1">
+        <div class="box-center cf">
+            <div class="login-box fr">
+                <th:block th:if="${session}">
+                    <th:block th:if="${session.users}">
+                        <div th:class="${session.users[0] } ? 'sign-in' : 'sign-in hidden'">
+                            <span>你好，</span>
+                            <a class="black" id="user-name"  href="../personal.html" target="_blank" th:text="${session.users[0].uname}"></a>
+                            <em>|</em>
+                            <a id="exit-btn" href="javascript:void(0);" onclick="removeu()">退出</a>
+                        </div>
+                    </th:block>
+                </th:block>
+                <div th:class="${session.users} ? 'sign-out hidden' : 'sign-out'">
+                    <a id="login-btn" class="black" href="./login.html">登录</a><em>|</em>
+                    <a id="reg-btn" href="./register.html" target="_blank">注册</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="logo-wrap box-center" data-l1="2">
+        <div class="box-center cf">
+            <div class="book-shelf fr">
+                <a th:href="${session.users} ? './personal.html?key=i' : './login.html'" target="_blank"><em
+                        class="icon icon-book_icon"></em><i>我的书架</i>
+                </a>
+            </div>
+            <div class="logo fl">
+                <a href="/jpbook/booktype/queryAll" data-eid="qd_A11"></a>
+            </div>
+            <div class="search-wrap fl">
+                <form id="formUrl" action="/jpbook/books/likeBooks" method="get" target="_blank">
+                    <p>
+                        <input class="search-box" id="s-box" name="kw" type="text" placeholder="请输入作家名或书名">
+                    </p>
+                    <input class="submit-input" type="submit" id="searchSubmit">
+                    <label id="search-btn" class="search-btn" for="searchSubmit" style="width:100px">
+                        <em class="iconfont">&#xe7fc;</em></label>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="main-nav-wrap" data-l1="3">
+        <div class="main-nav box-center cf" id="type-hover">
+            <div class="classify-list fl so-awesome" id="classify-list" onmouseover="$(this).attr('style','display:block')" onmouseout="$(this).attr('style','display:none')" style="display:none">
+                <dl class="cf">
+                    <dd class="even">
+                        <a href="/jpbook/showAllBook.html?btid=1" target="_blank">
+                            <cite>
+                                <em class="iconfont"></em>
+                                <span class="info"><i>玄幻</i>
+                                <b>1</b>
+                            </span>
+                            </cite>
+                        </a>
+                    </dd>
+                </dl>
+                <dl class="cf">
+                    <dd class="left" style="margin-left:106.5px;margin-top:-60px;">
+                        <a href="/jpbook/showAllBook.html?btid=2" target="_blank">
+                            <cite>
+                                <em class="iconfont"></em>
+                                <span class="info"><i>奇幻</i>
+                                <b>1</b>
+                            </span>
+                            </cite>
+                        </a>
+                    </dd>
+                </dl>
+                <dl class="cf">
+                    <dd class="even">
+                        <a href="/jpbook/showAllBook.html?btid=3" target="_blank">
+                            <cite>
+                                <em class="iconfont"></em>
+                                <span class="info"><i>武侠</i>
+                                <b>1</b>
+                            </span>
+                            </cite>
+                        </a>
+                    </dd>
+                </dl>
+                <dl class="cf">
+                    <dd class="left" style="margin-left:106.5px;margin-top:-60px;">
+                        <a href="/jpbook/showAllBook.html?btid=4" target="_blank">
+                            <cite>
+                                <em class="iconfont"></em>
+                                <span class="info"><i>仙侠</i>
+                                <b>1</b>
+                            </span>
+                            </cite>
+                        </a>
+                    </dd>
+                </dl>
+                <dl class="cf">
+                    <dd class="even">
+                        <a href="/jpbook/showAllBook.html?btid=5" target="_blank">
+                            <cite>
+                                <em class="iconfont"></em>
+                                <span class="info"><i>都市</i>
+                                <b>0</b>
+                            </span>
+                            </cite>
+                        </a>
+                    </dd>
+                </dl>
+                <dl class="cf">
+                    <dd class="left" style="margin-left:106.5px;margin-top:-60px;">
+                        <a href="/jpbook/showAllBook.html?btid=6" target="_blank">
+                            <cite>
+                                <em class="iconfont"></em>
+                                <span class="info"><i>现实</i>
+                                <b>1</b>
+                            </span>
+                            </cite>
+                        </a>
+                    </dd>
+                </dl>
+                <dl class="cf">
+                    <dd class="even">
+                        <a href="/jpbook/showAllBook.html?btid=7" target="_blank">
+                            <cite>
+                                <em class="iconfont"></em>
+                                <span class="info"><i>军事</i>
+                                <b>0</b>
+                            </span>
+                            </cite>
+                        </a>
+                    </dd>
+                </dl>
+                <dl class="cf">
+                    <dd class="left" style="margin-left:106.5px;margin-top:-60px;">
+                        <a href="/jpbook/showAllBook.html?btid=8" target="_blank">
+                            <cite>
+                                <em class="iconfont"></em>
+                                <span class="info"><i>历史</i>
+                                <b>1</b>
+                            </span>
+                            </cite>
+                        </a>
+                    </dd>
+                </dl>
+                <dl class="cf">
+                    <dd class="even">
+                        <a href="/jpbook/showAllBook.html?btid=9" target="_blank">
+                            <cite>
+                                <em class="iconfont"></em>
+                                <span class="info"><i>游戏</i>
+                                <b>1</b>
+                            </span>
+                            </cite>
+                        </a>
+                    </dd>
+                </dl>
+                <dl class="cf">
+                    <dd class="left" style="margin-left:106.5px;margin-top:-60px;">
+                        <a href="/jpbook/showAllBook.html?btid=10" target="_blank">
+                            <cite>
+                                <em class="iconfont"></em>
+                                <span class="info"><i>体育</i>
+                                <b>0</b>
+                            </span>
+                            </cite>
+                        </a>
+                    </dd>
+                </dl>
+                <dl class="cf">
+                    <dd class="even">
+                        <a href="/jpbook/showAllBook.html?btid=11" target="_blank">
+                            <cite>
+                                <em class="iconfont"></em>
+                                <span class="info"><i>科幻</i>
+                                <b>0</b>
+                            </span>
+                            </cite>
+                        </a>
+                    </dd>
+                </dl>
+                <dl class="cf">
+                    <dd class="left" style="margin-left:106.5px;margin-top:-60px;">
+                        <a href="/jpbook/showAllBook.html?btid=12" target="_blank">
+                            <cite>
+                                <em class="iconfont"></em>
+                                <span class="info"><i>灵异</i>
+                                <b>0</b>
+                            </span>
+                            </cite>
+                        </a>
+                    </dd>
+                </dl>
+                <dl class="cf">
+                    <dd class="even">
+                        <a href="/jpbook/showAllBook.html?btid=13" target="_blank">
+                            <cite>
+                                <em class="iconfont">
+                                </em>
+                                <span class="info"><i>二次元</i>
+                                <b>0</b>
+                            </span>
+                            </cite>
+                        </a>
+                    </dd>
+                </dl>
+                <dl class="cf">
+                    <dd class="left" style="margin-left:106.5px;margin-top:-60px;">
+                        <a href="/jpbook/showAllBook.html?btid=14" target="_blank">
+                            <cite>
+                                <em class="iconfont">
+                                </em>
+                                <span class="info"><i>短篇</i>
+                                <b>0</b>
+                            </span>
+                            </cite>
+                        </a>
+                    </dd>
+                </dl>
+            </div>
+            <ul>
+                <li class="first"   onmouseover="$('#classify-list').attr('style','display:block')"><b><strong></strong></b><span><em>
+                <i></i>
+                <i></i>
+                <i></i>
+            </em>作品分类</span>
+                </li>
+                <li class="nav-li"><a href="showAllBook.html" data-eid="qd_A15" class="act">全部作品</a></li>
+                <li class="nav-li"><a href="/jpbook/books/rank" data-eid="qd_A16">排行</a></li>
+                <li class="nav-li"><a href="showEndBook.html" data-eid="qd_A17">完本</a></li>
+                <li class="nav-li"><a href="showFreeBook.html" data-eid="qd_A18">免费</a></li>
+                <li class="nav-li"><a href="/jpbook/users/openwriter" data-eid="qd_A19">作家专区</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="all-pro-wrap box-center cf">
+        <div class="range-sidebar fl" data-l1="4">
+            <div class="selected" data-l2="2">
+                <p><span>已选</span>
+                    <div id="selectxuanze">
+                        <a class="all" href="javascript:" type="all">全部</a>
+                    </div>
+                </p></div><br>
+            <div class="select-list">
+                <div class="work-filter type-filter" id="btdiv" data-l2="3">
+                    <h3>分类</h3>
+                    <ul class="row-1" type="category">
+                        <input type="hidden" id="btid" th:value="${param.btid}">
+                        <li data-id="-1" class="act arrow"><a
+                                href="javascript:closesel('btid','booktype','btdiv')"
+                                data-eid="qd_B17">全部</a></li>
+
+                        <li data-id="21" class=""><a
+                                href="javascript:btck(1,'玄幻',21)"
+                                data-eid="qd_B18">玄幻<cite><i></i></cite></a></li>
+
+                        <li data-id="1" class=""><a
+                                href="javascript:btck(2,'奇幻',1)"
+                                data-eid="qd_B19">奇幻<cite><i></i></cite></a></li>
+
+                        <li data-id="2" class=""><a
+                                href="javascript:btck(3,'武侠',2)"
+                                data-eid="qd_B20">武侠<cite><i></i></cite></a></li>
+
+                        <li data-id="22" class=""><a
+                                href="javascript:btck(4,'仙侠',22)"
+                                data-eid="qd_B21">仙侠<cite><i></i></cite></a></li>
+
+                    </ul>
+
+                    <ul class="row-2" type="category">
+
+                        <li data-id="4" class=""><a
+                                href="javascript:btck(5,'都市',4)"
+                                data-eid="qd_B22">都市<cite><i></i></cite></a></li>
+
+                        <li data-id="15" class=""><a
+                                href="javascript:btck(6,'现实',15)"
+                                data-eid="qd_B23">现实<cite><i></i></cite></a></li>
+
+                        <li data-id="6" class=""><a
+                                href="javascript:btck(7,'军事',6)"
+                                data-eid="qd_B24">军事<cite><i></i></cite></a></li>
+
+                        <li data-id="5" class=""><a
+                                href="javascript:btck(8,'历史',5)"
+                                data-eid="qd_B25">历史<cite><i></i></cite></a></li>
+
+                        <li data-id="7" class=""><a
+                                href="javascript:btck(9,'游戏',7)"
+                                data-eid="qd_B26">游戏<cite><i></i></cite></a></li>
+
+                    </ul>
+
+                    <ul class="row-3" type="category">
+
+                        <li data-id="8" class=""><a
+                                href="javascript:btck(10,'体育',8)"
+                                data-eid="qd_B27">体育<cite><i></i></cite></a></li>
+
+                        <li data-id="9" class=""><a
+                                href="javascript:btck(11,'科幻',9)"
+                                data-eid="qd_B28">科幻<cite><i></i></cite></a></li>
+
+                        <li data-id="10" class=""><a
+                                href="javascript:btck(12,'灵异',10)"
+                                data-eid="qd_B29">灵异<cite><i></i></cite></a></li>
+
+                        <li data-id="12" class=""><a
+                                href="javascript:btck(13,'二次元',12)"
+                                data-eid="qd_B30">二次元<cite><i></i></cite></a></li>
+
+                        <li data-id="20076" class=""><a
+                                href="javascript:btck(14,'短篇',20076)"
+                                data-eid="qd_B70">短篇<cite><i></i></cite></a></li>
+
+                    </ul>
+                <script type="text/javascript" >
+                    $(function () {
+                        var btid=$("#btid").val();
+                        switch (parseInt(btid)){
+                            case 1:btck(1,'玄幻',21);break;
+                            case 2:btck(2,'奇幻',1);break;
+                            case 3:btck(3,'武侠',2);break;
+                            case 4:btck(4,'仙侠',22);break;
+                            case 5:btck(5,'都市',4);break;
+                            case 6:btck(6,'现实',15);break;
+                            case 7:btck(7,'军事',6);break;
+                            case 8:btck(8,'历史',5);break;
+                            case 9:btck(9,'游戏',7);break;
+                            case 10:btck(11,'科幻',9);break;
+                            case 11:btck(12,'灵异',10);break;
+                            case 12:btck(8,'历史',5);break;
+                            case 13:btck(13,'二次元',12);break;
+                            case 14:btck(14,'短篇',20076);break;
+                            default:break;
+                        }
+                    })
+
+                    function btck(btid,btname,dataid) {
+                        $("#btdiv").find("li").prop("class","");
+                        $("#btdiv").find("li[data-id="+dataid+"]").prop("class","act arrow");
+                        $("#btid").val(btid);
+                        $("#selectxuanze").find(".all").remove();
+                        $("#selectxuanze").find(".booktype").remove();
+                        $("#selectxuanze").html($("#selectxuanze").html()+"<a class=\"booktype\" href=\"javascript:closesel('btid','booktype','btdiv')\" type=\"chanId\">"+btname+"×</a>");
+                        read();
+                    }
+                    function closesel(id,name,divname) {
+                        $("#"+id).val("");
+                        $("#selectxuanze").find("."+name).remove();
+                        if (!$("#selectxuanze").is(":has(a)")){
+                            $("#selectxuanze").html("<a class=\"all\" href=\"javascript:\" type=\"all\">全部</a>");
+                        }
+                        $("#"+divname).find("li").prop("class","");
+                        $("#"+divname).find("li[data-id='-1']").prop("class","act arrow");
+                        read();
+                    }
+                </script>
+                </div>
+
+                <div class="work-filter action-filter" data-l2="4" id="bsdiv">
+
+                    <h3>状态</h3>
+                    <ul type="action">
+                        <input type="hidden" id="bookstate" value="">
+                        <li data-id="-1" class="act"><a
+                                href="javascript:closesel('bookstate','bookstate','bsdiv')"
+                                data-eid="qd_B31">全部</a></li>
+
+                        <li data-id="0" class=""><a
+                                href="javascript:bsck(0,'连载',0)"
+                                data-eid="qd_B32">连载</a></li>
+
+                        <li data-id="1" class=""><a
+                                href="javascript:bsck(1,'完本',1)"
+                                data-eid="qd_B33">完本</a></li>
+
+                    </ul>
+                    <script type="text/javascript" >
+                        function bsck(bookstate,bsname,dataid) {
+                            $("#bsdiv").find("li").prop("class","");
+                            $("#bsdiv").find("li[data-id="+dataid+"]").prop("class","act arrow");
+                            $("#bookstate").val(bookstate);
+                            $("#selectxuanze").find(".all").remove();
+                            $("#selectxuanze").find(".bookstate").remove();
+                            $("#selectxuanze").html($("#selectxuanze").html()+"<a class=\"bookstate\" href=\"javascript:closesel('bookstate','bookstate','bsdiv')\" type=\"chanId\">"+bsname+"×</a>");
+                            read();
+                        }
+                    </script>
+                </div>
+
+
+                <div class="work-filter vip-filter" data-l2="5" id="rmdiv">
+                    <h3>属性</h3>
+                    <ul type="vip">
+                        <input type="hidden" id="rollmoney" value="">
+                        <li data-id="-1" class="act"><a
+                                href="javascript:closesel('rollmoney','rollmoney','rmdiv')"
+                                data-eid="qd_B34">全部</a></li>
+
+                        <li data-id="0" class=""><a
+                                href="javascript:rmck(1,'免费',0)"
+                                data-eid="qd_B35">免费</a></li>
+
+                        <li data-id="1" class=""><a
+                                href="javascript:rmck(2,'收费',1)"
+                                data-eid="qd_B36">收费</a></li>
+
+                    </ul>
+                    <script type="text/javascript" >
+
+                        function rmck(rollmoney,rmname,dataid) {
+                            $("#rmdiv").find("li").prop("class","");
+                            $("#rmdiv").find("li[data-id="+dataid+"]").prop("class","act arrow");
+                            $("#rollmoney").val(rollmoney);
+                            $("#selectxuanze").find(".all").remove();
+                            $("#selectxuanze").find(".rollmoney").remove();
+                            $("#selectxuanze").html($("#selectxuanze").html()+"<a class=\"rollmoney\" href=\"javascript:closesel('rollmoney','rollmoney','rmdiv')\" type=\"chanId\">"+rmname+"×</a>");
+                            read();
+                        }
+                    </script>
+                </div>
+
+                <div class="work-filter" data-l2="6" id="sumdiv">
+
+                    <h3>字数</h3>
+                    <ul type="size">
+                        <input type="hidden" id="startSum" value="">
+                        <input type="hidden" id="endSum" value="">
+                        <li data-id="-1" class="act"><a
+                                href="javascript:sumchosesel()"
+                                data-eid="qd_B37">全部</a></li>
+
+                        <li data-id="1" class=""><a
+                                href="javascript:sumck('',300000,'30万字以下',1)"
+                                data-eid="qd_B38">30万字以下</a></li>
+
+                        <li data-id="2" class=""><a
+                                href="javascript:sumck(300000,500000,'30-50万字',2)"
+                                data-eid="qd_B39">30-50万字</a></li>
+
+                        <li data-id="3" class=""><a
+                                href="javascript:sumck(500000,1000000,'50-100万字',3)"
+                                data-eid="qd_B40">50-100万字</a></li>
+
+                        <li data-id="4" class=""><a
+                                href="javascript:sumck(1000000,2000000,'100-200万字',4)"
+                                data-eid="qd_B41">100-200万字</a></li>
+
+                        <li data-id="5" class=""><a
+                                href="javascript:sumck(2000000,'','200万字以上',5)"
+                                data-eid="qd_B42">200万字以上</a></li>
+
+                    </ul>
+                    <script type="text/javascript" >
+                        function sumck(startSum,endSum,sumname,dataid) {
+                            $("#sumdiv").find("li").prop("class","");
+                            $("#sumdiv").find("li[data-id="+dataid+"]").prop("class","act arrow");
+                            $("#startSum").val(startSum);
+                            $("#endSum").val(endSum);
+                            $("#selectxuanze").find(".all").remove();
+                            $("#selectxuanze").find(".sumname").remove();
+                            $("#selectxuanze").html($("#selectxuanze").html()+"<a class=\"sumname\" href=\"javascript:sumchosesel()\" type=\"chanId\">"+sumname+"×</a>");
+                            read();
+                        }
+                        function sumchosesel() {
+                            $("#startSum").val("");
+                            $("#endSum").val("");
+                            $("#selectxuanze").find(".sumname").remove();
+                            if (!$("#selectxuanze").is(":has(a)")){
+                                $("#selectxuanze").html("<a class=\"all\" href=\"javascript:\" type=\"all\">全部</a>");
+                            }
+                            $("#sumdiv").find("li").prop("class","");
+                            $("#sumdiv").find("li[data-id='-1']").prop("class","act arrow");
+                            read();
+                        }
+                    </script>
+                </div>
+                <div class="work-filter" data-l2="9" id="updiv">
+
+                    <h3>更新时间</h3>
+                    <ul type="update">
+                        <input type="hidden" id="updatetime" value="">
+                        <li data-id="-1" class="act"><a
+                                href="javascript:closesel('updatetime','upname','updiv')"
+                                data-eid="qd_B71">全部</a></li>
+
+                        <li data-id="1" class=""><a
+                                href="javascript:upck(3,'三日内',1)"
+                                data-eid="qd_B72">三日内</a></li>
+
+                        <li data-id="2" class=""><a
+                                href="javascript:upck(7,'七日内',2)"
+                                data-eid="qd_B73">七日内</a></li>
+
+                        <li data-id="3" class=""><a
+                                href="javascript:upck(15,'半月内',3)"
+                                data-eid="qd_B74">半月内</a></li>
+
+                        <li data-id="4" class=""><a
+                                href="javascript:upck(30,'一月内',4)"
+                                data-eid="qd_B75">一月内</a></li>
+
+                    </ul>
+                    <script type="text/javascript" >
+                        function upck(updatetime,upname,dataid) {
+                            $("#updiv").find("li").prop("class","");
+                            $("#updiv").find("li[data-id="+dataid+"]").prop("class","act arrow");
+                            $("#updatetime").val(updatetime);
+                            $("#selectxuanze").find(".all").remove();
+                            $("#selectxuanze").find(".upname").remove();
+                            $("#selectxuanze").html($("#selectxuanze").html()+"<a class=\"upname\" href=\"javascript:closesel('updatetime','upname','updiv')\" type=\"chanId\">"+upname+"×</a>");
+                            read();
+                        }
+                    </script>
+                </div>
+            </div>
+        </div>
+        <div class="main-content-wrap fl" data-l1="5">
+
+            <div class="tool-bar cf">
+                <div class="select-wrap">
+                    <input type="hidden" id="order" name="order" value="updatetime">
+                    <a data-id="5" class="act"
+                       href="javascript:ordertab('更新时间',5,'updatetime')"
+                       data-eid="qd_B49">更新时间</a>
+                    <a data-id="3"
+                       href="javascript:ordertab('总字数',3,'sum')"
+                       data-eid="qd_B52">总字数</a>
+                    <script type="text/javascript">
+                        function ordertab(name,obj,order) {
+                            $(".select-wrap").find("cite").remove();
+                            $(".select-wrap").find("a").prop("class","");
+                            $(".select-wrap").find("a[data-id="+obj+"]").prop("class","act");
+                            $("#order").val(order);
+                            read();
+                        }
+                    </script>
+                    <div class="sort-count count-info" id="sort-count">
+                        <div class="count-text">共<span id="bookcount">1144714</span>本相关作品
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="all-book-list">
+
+                <div class="book-img-text">
+                    <ul class="all-img-list cf" id="showbooks">
+                    </ul>
+                </div>
+
+
+            </div>
+            <div class="page-box cf">
+                <div class="pagination fr" data-eid="qd_C44" id="page-container" data-pagemax="57236" data-page="1">
+                    <div class="lbf-pagination">
+                        <ul class="lbf-pagination-item-list">
+                            <li class="lbf-pagination-item"><a
+                                    href="javascript:paging(1)"
+                                    class="lbf-pagination-next ">首页</a></li>
+                            <li class="lbf-pagination-item"><a
+                                    href="javascript:paging(1)" id="prepage"
+                                    class="lbf-pagination-next ">上一页</a></li>
+                            <li class="lbf-pagination-item"><a
+                                    href="javascript:paging(1)" id="nextpage"
+                                    class="lbf-pagination-next ">下一页</a></li>
+                            <li class="lbf-pagination-item"><a
+                                    href="javascript:paging(1)" id="lastpage"
+                                    class="lbf-pagination-next ">末页</a></li>
+
+                        </ul>
+                        
+                        <script>
+                            function paging(Index) {
+                                $("#Index").val(Index);
+                                read();
+                            }
+                            function go() {
+                                if($("#Index").val()>$("#lastpage").attr("page")){
+                                    $("#Index").val($("#lastpage").attr("page"))
+                                }
+                                read();
+                            }
+                        </script>
+
+                        <div class="lbf-pagination-jump"><input id="Index" type="text"
+                                                                class="lbf-pagination-input" value="1"><a
+                                href="javascript:go();" id="PAGINATION-BUTTON"
+                                class="lbf-pagination-go">GO</a></div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="footer">
+        <div class="box-center cf">
+            <div class="footer-text">
+                <p>上海网警提示：网络刷单是违法 切莫轻信有返利，网上交友套路多 卖惨要钱需当心，电子红包莫轻点 个人信息勿填写，仿冒客服来行骗 官方核实最重要，招工诈骗有套路 预交费用需谨慎，低价充值莫轻信
+                    莫因游戏陷套路，连接WIFI要规范 确认安全再连接，抢购车票有章法 确认订单再付款，白条赊购慎使用 提升额度莫轻信，网购预付有风险 正规渠道很重要</p>
+            </div>
+            <div class="friend-link">
+                <em><a class="yuewen" href="https://www.yuewen.com/" target="_blank">阅文集团</a><cite>旗下网站：</cite></em>
+                <a href="https://www.qidian.com/">起点中文网</a>
+                <a href="https://www.qdmm.com/" target="_blank">起点女生网</a>
+                <a href="http://chuangshi.qq.com/" target="_blank">创世中文网</a>
+                <a href="http://yunqi.qq.com/" target="_blank">云起书院</a>
+                <!--<a href="http://www.rongshuxia.com" target="_blank">榕树下</a>-->
+                <a href="https://www.hongxiu.com/" target="_blank">红袖添香</a>
+                <a href="https://www.readnovel.com/" target="_blank">小说阅读网</a>
+                <a href="https://www.xs8.cn/" target="_blank">言情小说吧</a>
+                <a href="http://www.xxsy.net/" target="_blank">潇湘书院</a>
+                <a href="http://www.tingbook.com/" target="_blank">天方听书网</a>
+                <a href="http://www.lrts.me/" target="_blank">懒人听书</a>
+                <a href="http://yuedu.yuewen.com/" target="_blank">阅文悦读</a>
+                <a href="https://www.yuewen.com/app.html#appqq" target="_blank">QQ阅读</a>
+                <a href="https://www.yuewen.com/app.html#appqd" target="_blank">起点读书</a>
+                <a href="https://www.yuewen.com/app.html#appzj" target="_blank">作家助手</a>
+                <a href="https://www.webnovel.com/" target="_blank" title="Qidian International">起点国际版</a>
+            </div>
+            <div class="footer-menu dib-wrap">
+                <a href="https://www.qidian.com/about/intro" target="_blank">关于起点</a>
+                <a href="https://www.qidian.com/about/contact" target="_blank">联系我们</a>
+                <a href="https://join.yuewen.com/" target="_blank">加入我们</a>
+                <a href="https://www.qidian.com/help/index/2" target="_blank">帮助中心</a>
+                <a href="http://123.206.70.240/online/?cid=0&amp;uid=10&amp;code=RGpnwhE7ZtUlqqgV0JHkaw=="
+                   class="advice" target="_blank">提交建议</a>
+                <!--<a href="http://bbs.qidian.com" target="_blank">起点论坛</a>-->
+                <!--<a href="http://comic.qidian.com" target="_blank">动漫频道</a>-->
+                <a href="https://jubao.yuewen.com/" target="_blank">举报中心</a>
+            </div>
+            <div class="copy-right">
+                <p><span>Copyright © 2002-2019 www.qidian.com All Rights Reserved</span>版权所有 上海玄霆娱乐信息科技有限公司</p>
+                <p>上海玄霆娱乐信息科技有限公司
+                    <a href="http://www.miitbeian.gov.cn/" target="_blank" style="color:#666;margin-left: 5px">增值电信业务经营许可证沪B2-20080046</a>
+                    出版经营许可证 新出发沪批字第U3718号 沪网文[2015]0081-031 新出网证（沪）字010
+                    <a href="http://www.miitbeian.gov.cn/" target="_blank" style="color:#666;margin-left: 5px">沪ICP备08017520号-1</a>
+                </p>
+                <p>请所有作者发布作品时务必遵守国家互联网信息管理办法规定，我们拒绝任何色情小说，一经发现，即作删除！举报电话：010-59357051</p>
+                <p>本站所收录的作品、社区话题、用户评论、用户上传内容或图片等均属用户个人行为。如前述内容侵害您的权益，欢迎举报投诉，一经核实，立即删除，本站不承担任何责任</p>
+                <p>联系方式 总机 021-61870500 地址：中国（上海）自由贸易试验区碧波路690号6号楼101、201室</p>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<script>
+    // 全局的通用数据都放g_data变量里
+    var g_data = {};
+    g_data.adBanner = {
+        adTop: {
+            "title": "",
+            "adImgUrl": "//qidian.qpic.cn/qidian_common/349573/4aeb351d28d4de5c8b1f34c7dbbb18fc/0",
+            "adCategoryName": "广告",
+            "colorType": 0,
+            "type": 1,
+            "isAdv": 1,
+            "adJumpUrl": "http://cpgame.qd.game.qidian.com/Home/Index/directLogin/name/tmld3d/way/1?qd_game_key=tmld1200x60&qd_dd_p1=553",
+            "hasAd": 1
+        },
+    };
+    if (g_data.adBanner.adTop) {
+        g_data.adBanner.adTop.eid = 'qd_B83'
+    }
+    // 环境变量，会按照环境选择性打log
+    g_data.envType = 'pro';
+    // 用作统计PV
+    g_data.pageId = 'qd_P_all';
+    //当前查询的参数
+    var params = {};
+    params.typeId = '-1';
+    params.subTypeId = '-1';
+    params.actionId = '-1';
+    params.vipId = '-1';
+    params.sizeId = '-1';
+    params.signId = '-1';
+    params.tagName = '-1';
+    params.orderId = '&#34;&#34;';
+    params.newIn3Month = '-1';
+    params.showId = '1';
+    params.updateId = '-1';
+    g_data.params = params;
+    //当前页面路由
+    g_data.url = '//www.qidian.com/all';
+    // 域名环境变量
+    g_data.domainSearch = 'www.qidian.com/search';
+    //环境域名
+    g_data.domainPreFix = '';
+</script>
+
+<script>
+    var _mtac = {};
+    (function () {
+        var mta = document.createElement("script");
+        mta.src = "//pingjs.qq.com/h5/stats.js?v2.0.2";
+        mta.setAttribute("name", "MTAH5");
+        mta.setAttribute("sid", "500451537");
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(mta, s);
+    })();
+</script>
+
+
+<div class="lbf-autocomplete-suggestions"
+     style="position: absolute; max-height: 384px; z-index: 9999; top: 157px; left: 475.5px; width: 346px; display: none;">
+    <div class="lbf-autocomplete-group lbf-autocomplete-group-穹顶之上的风景"><strong>书名</strong></div>
+    <div class="lbf-autocomplete-suggestion" data-index="0" data-rid="1"><a target="_blank"
+                                                                            href="https://www.qidian.com/search?kw=%E7%A9%B9%E9%A1%B6%E4%B9%8B%E4%B8%8A%E7%9A%84%E9%A3%8E%E6%99%AF"
+        data-eid="qd_A13"><strong>穹顶之上的风景</strong></a></div>
+    <div class="lbf-autocomplete-suggestion" data-index="1" data-rid="2">
+        <a target="_blank" href="https://www.qidian.com/search?kw=%E5%8E%9F%E7%BD%AA%EF%BC%9A%E7%A9%B9%E9%A1%B6%E4%B9%8B%E4%B8%8A"
+        data-eid="qd_A13">原罪：穹顶之上</a></div>
+</div>
+<div class="lbf-popup lbf-dropdown vipClicks lbf-combobox-panel" style="width: 0px; min-width: 82px; height: auto;">
+    <ul class="lbf-combobox-options">
+        <li class="lbf-combobox-option"><a class="lbf-combobox-item" href="javascript:;" data-value="1">会员周点击</a></li>
+        <li class="lbf-combobox-option"><a class="lbf-combobox-item" href="javascript:;" data-value="7">会员月点击</a></li>
+        <li class="lbf-combobox-option"><a class="lbf-combobox-item" href="javascript:;" data-value="8">会员总点击</a></li>
+    </ul>
+</div>
+<div class="lbf-popup lbf-dropdown recomm lbf-combobox-panel" style="width: 0px; min-width: 70px; height: auto;">
+    <ul class="lbf-combobox-options">
+        <li class="lbf-combobox-option"><a class="lbf-combobox-item" href="javascript:;" data-value="9">周推荐票</a></li>
+        <li class="lbf-combobox-option"><a class="lbf-combobox-item" href="javascript:;" data-value="10">月推荐票</a></li>
+        <li class="lbf-combobox-option"><a class="lbf-combobox-item" href="javascript:;" data-value="2">总推荐票</a></li>
+    </ul>
+</div>
+</body>
+
+<script type="text/javascript">
+    jQuery("#s-box").keyup(function () {
+        jQuery(".lbf-autocomplete-suggestions").attr("style", "position: absolute; max-height: 384px; z-index: 9999; width: 346px; top: 96px; left: 560.6px; display:block");
+        if (jQuery("#s-box").val() != '') {
+            jQuery.ajax({
+                url: '/jpbook/books/likeQuery',
+                data: {"kw": jQuery("#s-box").val()},
+                type: 'post',
+                datatype: "text",
+                success: function (data) {
+                    var ra = '';
+                    if (data[0] == null && data[1] != null) {
+                        ra += "<div class=\"lbf-autocomplete-group lbf-autocomplete-group-a\">" +
+                            "<strong>书名</strong>" +
+                            "</div>";
+                        for (var i = 1; i < data.length; i++) {
+                            ra += "<div class=\"lbf-autocomplete-suggestion\">" +
+                                "<a target=\"_blank\" href=\"/jpbook/books/queryBookById?bookid=" + data[i].bookid + "\">" +
+                                "<strong>" + jQuery("#s-box").val() + "</strong>" + data[i].bookname.substr(jQuery("#s-box").val().length, data[i].bookname.length) +
+                                "</a>" +
+                                "</div>";
+                        }
+                    } else if (data[0] != null && data[1] == null) {
+                        /*查询作者创作的所有书籍*/
+                        ra += "<div class=\"lbf-autocomplete-group lbf-autocomplete-group-a\">" +
+                            "<strong>作家</strong>" +
+                            "</div>" +
+                            "<div class=\"lbf-autocomplete-suggestion\">" +
+                            "<a target=\"_blank\" href=\"/jpbook/books/queryBookByUuid?uuid=" + data[0].uuid + "\">" +
+                            "<strong>" + jQuery("#s-box").val() + "</strong>" + data[0].pen.substr(jQuery("#s-box").val().length, data[0].pen.length) +
+                            "</a>" +
+                            "</div>"
+                    } else if (data[0] != null && data[1] != null) {
+                        ra += "<div class=\"lbf-autocomplete-group lbf-autocomplete-group-a\">" +
+                            "<strong>作家</strong>" +
+                            "</div>" +
+                            "<div class=\"lbf-autocomplete-suggestion\">" +
+                            "<a target=\"_blank\" href=\"/jpbook/books/queryBookByUuid?uuid=" + data[0].uuid + "\">" +
+                            "<strong>" + jQuery("#s-box").val() + "</strong>" + data[0].pen.substr(jQuery("#s-box").val().length, data[0].pen.length) +
+                            "</a>" +
+                            "</div>" +
+                            "<div class=\"lbf-autocomplete-group lbf-autocomplete-group-a\">" +
+                            "<strong>书名</strong>" +
+                            "</div>";
+                        for (var i = 1; i < data.length; i++) {
+                            ra += "<div class=\"lbf-autocomplete-suggestion\">" +
+                                "<a target=\"_blank\" href=\"/jpbook/books/queryBookById?bookid=" + data[i].bookid + "\">" +
+                                "<strong>" + jQuery("#s-box").val() + "</strong>" + data[i].bookname.substr(jQuery("#s-box").val().length, data[i].bookname.length) +
+                                "</a>" +
+                                "</div>";
+                        }
+                    }
+                    jQuery(".lbf-autocomplete-suggestions").html(ra);
+                    /**
+                     * 点击时和#s-box失去焦点是都隐藏
+                     */
+                    jQuery(".lbf-autocomplete-suggestion").click(function () {
+                        jQuery("#s-box").val('');
+                        jQuery(".lbf-autocomplete-suggestions").attr("style", "position: absolute; max-height: 384px; z-index: 9999; width: 346px; top: 96px; left: 560.6px; display:none");
+                    })
+                    jQuery("#s-box").blur(function () {
+                        setTimeout(function () {  //进行延时处理，时间单位为千分之一秒
+                            jQuery("#s-box").val('');
+                            jQuery(".lbf-autocomplete-suggestions").attr("style", "position: absolute; max-height: 384px; z-index: 9999; width: 346px; top: 96px; left: 560.6px; display:none");
+                        }, 100)
+                    });
+                }
+            });
+        } else {
+            jQuery(".lbf-autocomplete-suggestions").html('');
+            jQuery(".lbf-autocomplete-suggestions").attr("style", "position: absolute; max-height: 384px; z-index: 9999; width: 346px; top: 96px; left: 560.6px; display:none");
+        }
+    })
+    $(function () {
+        read();
+    })
+
+    function read() {
+        if($("#Index").val()==""||$("#Index").val()==0){
+            $("#Index").val(1);
+        }
+        $.ajax({
+            url: "/jpbook/books/queryBookByState",
+            data: {
+                "Index": $("#Index").val(),
+                "btid": $("#btid").val(),
+                "bookstate": $("#bookstate").val(),
+                "rollmoney": $("#rollmoney").val(),
+                "updatetime": $("#updatetime").val(),
+                "startSum": $("#startSum").val(),
+                "endSum": $("#endSum").val(),
+                "order":$("#order").val()
+            },
+            type: "post",
+            success: function (data) {
+
+                var str = "";
+                for (var i = 0; i < data.length; i++) {
+                    str += "<li data-rid=\"1\">\n" +
+                        "<div class=\"book-img-box\">\n" +
+                        "<a href=\"/jpbook/books/queryBookById?bookid=" + data[i].bookid + "\" data-bid=\"1010734492\" " +
+                        "data-eid=\"qd_B57\" target=\"_blank\"><img src=\"/jpbook/img/" + data[i].icon + "\"></a>" +
+                        "</div>" +
+                        "<div class=\"book-mid-info\">" +
+                        "<h4><a href=\"/jpbook/books/queryBookById?bookid="+data[i].bookid+"\" target=\"_blank\" data-eid=\"qd_B58\"" +
+                        "data-bid=\"1010734492\">" + data[i].bookname + "</a></h4>" +
+                        "<p class=\"author\">" +
+                        "<img src=\"./css/user.f22d3.png\"><a class=\"name\"" +
+                        "href=\"/jpbook/pc/authorData?bid="+data[i].uuid+"\"" +
+                        "data-eid=\"qd_B59\"" +
+                        "target=\"_blank\">" + data[i].pen + "</a><em>|</em><a " +
+                        "href=\"/jpbook/showAllBook.html?btid="+data[i].btid+"\" target=\"_blank\"" +
+                        "data-eid=\"qd_B60\">" + data[i].btname + "</a><em>|</em><span>" + data[i].bookstatename + "</span>" +
+                        "</p>" +
+                        "<p class=\"intro\">" + (data[i].bookreferral) +
+                        "</p>" +
+                        "<p class=\"update\"><span><span class=\"wDcilLiv\">" + data[i].sum + "</span>字</span>" +
+                        "</p>" +
+                        "</div>" +
+                        "</li>";
+                }
+                $("#showbooks").html(str);
+                $("#bookcount").html(data.length);
+                var i=data.length/8;
+                if(i.toString().indexOf(".")!=-1){
+                    i=i.toString().substring(0,(i.toString().indexOf(".")));
+                }
+                var page=data.length%8==0?i:i-1+2;
+                $("#lastpage").prop("href","javascript:paging("+page+")");
+                $("#lastpage").attr("page",page);
+                if($("#Index").val()<page){
+                    $("#nextpage").prop("href","javascript:paging("+($("#Index").val()-1+2)+")");
+                }else{
+                    $("#nextpage").prop("href","javascript:void(0)");
+                }
+                if($("#Index").val()>1){
+                    $("#prepage").prop("href","javascript:paging("+($("#Index").val()-1)+")");
+                }else{
+                    $("#prepage").prop("href","javascript:void(0)");
+                }
+            }
+        })
+    }
+</script>
+</html>

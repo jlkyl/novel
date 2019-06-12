@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<!-- saved from url=(0058)https://forum.qidian.com/post/12991448603371803/1249679363 -->
+<html  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>评论详情</title>
+    <meta name="robots" content="all">
+    <meta name="googlebot" content="all">
+    <meta name="baiduspider" content="all">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit">
+
+<link data-ignore="true" rel="shortcut icon" type="image/x-icon" href="https://qidian.gtimg.com/qd/favicon/qd_icon.c443c.ico">
+<link data-ignore="true" rel="Bookmark" type="image/x-icon" href="https://qidian.gtimg.com/qd/favicon/qd_icon.c443c.ico">
+<link rel="stylesheet" data-ignore="true" href="../css/common.62506.css">
+<link data-ignore="true" rel="stylesheet" href="../css/notposta.64aca.css">
+<link charset="utf-8" rel="stylesheet" href="../css/Panel.css">
+    <link charset="utf-8" rel="stylesheet" href="../css/LightTip.css">
+    <link charset="utf-8" rel="stylesheet" href="../css/Popup.css">
+    <link charset="utf-8" rel="stylesheet" href="../css/Drag.css">
+    <link charset="utf-8" rel="stylesheet" href="../css/iconfont.css">
+    <link charset="utf-8" rel="stylesheet" href="../css/iconfont.css">
+    <link rel="stylesheet" href="../js/layui/css/modules/layer/default/layer.css">
+    <style name="lbf-overlay">.lbf-overlay { position:fixed; top:0; left:0;}</style>
+    <script src="../js/jquery-3.3.1.js"></script>
+    <script src="../js/layui/layui.js"></script>
+    <script type="text/javascript">
+        function removeu(){
+            jQuery.ajax({
+                url:'/jpbook/login/quit',
+                success:function(data){
+                    jQuery(".sign-in").addClass("sign-in hidden");
+                    jQuery(".sign-out.hidden").addClass("sign-out");
+                    jQuery(".sign-in").removeClass("sign-in");
+                    jQuery(".sign-out.hidden").removeClass("sign-out hidden");
+                    window.location.reload()
+                }
+            });
+        }
+        function showChapter(obj){
+            $(obj).prop("class","j_catalog_block act");
+            $(obj).prev().prop("class","");
+            $("#catalogWrap").show();
+            $("#xinxi").hide();
+        }
+        function showxinxi(obj){
+            $(obj).prop("class","act");
+            $(obj).next().prop("class","j_catalog_block");
+            $("#catalogWrap").hide();
+            $("#xinxi").show();
+        }
+        function dianzan(obj,revid){
+            var z = parseInt($(obj).children('span').html());
+            $.ajax({
+                url:'/jpbook/books/userExist',
+                type:'post',
+                datatype:'text',
+                success:function(data){
+                    if(data == 0){
+                        window.location.href = '../login.html';
+                    }else{
+                        $.ajax({
+                            url:'/jpbook/books/zanExist',
+                            data:{'revid':revid,'ztype':2},
+                            datatype:'text',
+                            success:function(data){
+                                if(data == 0){
+                                    /*没有点过赞 新增赞*/
+                                    $.ajax({
+                                        url:'/jpbook/books/addZan',
+                                        data:{'revid':revid,'ztype':2},
+                                        datatype:'text',
+                                        success:function(data){
+                                            /*改变样式 点赞总数*/
+                                            if(data == 1){
+                                                $(obj).attr("class",'info-tab like-btn act');
+                                                $(obj).children('span').html(z+1+'赞');
+                                            }
+                                        }
+                                    });
+                                }else if(data == 1){
+                                    /*点过赞但是状态为0 修改查询的信息*/
+                                    /*alert($(obj).attr("class"));*/
+                                    $.ajax({
+                                        url:'/jpbook/books/editZan',
+                                        data:{'revid':revid,'zstate':1},
+                                        datatype:'text',
+                                        success:function(data){
+                                            $(obj).attr("class",'info-tab like-btn act');
+                                            $(obj).children('span').html(z+1+'赞')
+                                        }
+                                    });
+                                }else if(data == 2){
+                                    /*点过赞 再次点赞就是取消赞*/
+                                    $.ajax({
+                                        url:'/jpbook/books/editZan',
+                                        data:{'revid':revid,'zstate':0},
+                                        datatype:'text',
+                                        success:function(data){
+                                            $(obj).attr("class",'info-tab like-btn');
+                                            $(obj).children('span').html(z-1+'赞')
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        }
+
+        function faties(bookid){
+            jQuery.ajax({
+                url:'/jpbook/books/userExist',
+                success:function(data){
+                    if(0 == data){
+                        window.location.href = "../login.html";
+                    }else{
+                        $("#comment").focus();
+                        /*window.close();
+                        window.open("/jpbook/books/queryBookByFatie?retype=2"+"&bookid="+bookid);*/
+                    }
+                }
+            });
+        }
+        function getNow(s) {
+            return s < 10 ? '0' + s: s;
+        }
+        function fabiao(bookid){
+            $.ajax({
+                url:'/jpbook/rbreply/add',
+                data:$("#ff").serialize(),
+                type:'post',
+                success:function(data){
+                    console.log(data);
+                    $.ajax({
+                        url:'/jpbook/rbreply/queryNewRbreply',
+                        data:{'replytype':data.rp.replytype,'from_uuid':data.rp.from_uuid},
+                        success:function(data){
+                            var myDate = new Date();
+                            var year=myDate.getFullYear();
+                            var month=myDate.getMonth()+1;
+                            var date=myDate.getDate();
+                            var now=year+'-'+getNow(month)+"-"+getNow(date);
+                            /*var len = $(".comment-list li").length+1;*/
+                            var s = "<li class=\"comment-wrap cf\">" +
+                                "                        <div class=\"card-wrap fl\">" +
+                                "                            <a target=\"_blank\" href=\"/jpbook/pc/home?uuid="+data[0].to_uuid+"\">" +
+                                "                                <img class=\"head-img\" src=\"../images/default_user.0.2.png\">" +
+                                "                            </a>" +
+                                "                        </div>" +
+                                "                        <div class=\"post\">" +
+                                "                            <div class=\"post-hover\">" +
+                                "                                <p class=\"auther\">" +
+                                "                                    <a target=\"_blank\" href=\"https://my.qidian.com/user/229632611\" class=\"blue b\">"+data[0].from_uname+"</a>" +
+                                "                                </p>" +
+                                "                                <p class=\"post-body\">"+data[0].repcontent+"</p>" +
+                                "                                <div class=\"post-info dib-wrap cf\">" +
+                                "                                    <span class=\"mr20\">"+now+"</span>" +
+                                "<a href=\"javascript:;\" onclick=\"show(this)\" class=\"info-tab mr20\" id="+data[0].repid+">" +
+                                "<i class=\"iconfont icon-xiaoxi\"></i>" +
+                                " <span>0条回复</span>" +
+                                "</a>" +
+                                "<a href=\"javascript:;\" onclick=\"dianzan(this,"+data[0].repid+")\"" +
+                                "class=\"info-tab like-btn\">" +
+                                "<i class=\"iconfont icon-dianzan\"></i>" +
+                                "<span >0赞</span>" +
+                                "</a>" +
+                                " </div>" +
+                                "<form class=\"reply-form\" onsubmit=\"return huifu(this,"+data[0].repid+","+bookid+")\" style = \"display: none\">" +
+                                "<input type =\"hidden\" name = \"replytype\" value=\"2\">" +
+                                "<input type =\"hidden\" name = \"revid\" value=\""+data[0].repid+"\">" +
+                                "<input type =\"hidden\" name = \"to_uuid\" value=\""+data[0].from_uuid+"\">" +
+                                "<input type = \"hidden\" name = \"bookid\" value=\""+bookid+"\">" +
+                                "<input type=\"text\" id = \"content\" onfocus=\"$(this).parent().addClass('focus')\" onblur=\"$(this).parent().removeClass('focus')\" name=\"repcontent\">" +
+                                "<a href=\"javascript:;\" onclick=\"$(this).parent().attr('style','display:none')\" class=\"blue mr20 cancle\">取消</a>" +
+                                "<input value=\"回复\" type=\"submit\">" +
+                                "</form>"+
+                                "</div>" +
+                                "  </div>" +
+                                "  </li>";
+                            $(".comment-list").append(s);
+                            $("#comment").val('');
+                            $(".textNum").html(0);
+                            $("#sub").addClass("cant");
+                            $("#sub").attr("disabled",true);
+                            $("#comment").blur();
+                        }
+                    });
+                }
+            });
+            return false;
+        }
+
+        function huifu(obj,revid,bookid){
+            var len = $(obj).children("[name='repcontent']").val().length;
+            if(0 < len && len <= 350){
+                //判断是否有登录的用户
+                $.ajax({
+                    url:'/jpbook/books/userExist',
+                    success:function(data){
+                        if(0 == data){
+                            window.location.href = "../login.html";
+                        }else{
+                            $.ajax({
+                                url:'/jpbook/rbreply/add',
+                                data:$(obj).serialize(),
+                                success:function(data){
+                                    window.location.reload();
+                                    chaxun($(obj).parent().children("#sh"),revid,bookid);
+                                }
+                            })
+                        }
+                    }
+                });
+            }else{
+                layui.use('layer', function(){
+                    var layer = layui.layer;
+                    layer.alert('评论字数应为1-350之间，当前为'+len, {time: 2000,title: false,closeBtn: false,btn:false});
+                });
+            }
+            return false;
+        }
+
+        function show(obj){
+            $(".reply-form").hide();
+
+            $(".reply-form").children("#content").val('');
+            //form表单打开
+            $(obj).parent().parent().children("form").show();
+            $(obj).parent().parent().children("form").find("[name='repcontent']").focus();
+        }
+
+        function chaxun(obj,repid,bookid){
+            //关闭其他的提交表单 并清空其中的值
+            $(".reply-form").hide();
+            $(".reply-form").children("#content").val('');
+            $.ajax({
+                url:'/jpbook/rbreply/queryRbRbreply',
+                data:{"revid":repid},
+                success:function(data){
+                    console.log(data);
+                    var s = "<ul class=\"comment-reply bg\">";
+                    for(var i = 0;i<data.length;i++){
+                        s +="<li class=\"reply-wrap cf\">" +
+                            "<div class=\"card-wrap fl\">" +
+                            "<a target=\"_blank\" href=\"/jpbook/pc/home?uuid="+data[0].to_uuid+"\">" +
+                            "<img class=\"head-img\" src=\"../images/default_user.0.2.png\" alt=\"+data[i].from_uname+\">" +
+                            "</a>" +
+                            "</div>" +
+                            "<div class=\"reply\">" +
+                            "<p class=\"auther\">" +
+                            "<a target=\"_blank\" href=\"/jpbook/pc/home?uuid="+data[0].from_uuid+"\" class=\"blue b\">"+data[i].from_uname+"</a>" +
+                            "</p>" +
+                            "<p class=\"post-body\"><span>回复<a target='_blank' class='blue b'>"+data[i].to_uname+"</a>：</span>"+data[i].repcontent+"</p>" +
+                            "<p class=\"post-info dib-wrap cf\">" +
+                            "<span class=\"mr20\">"+renderTime(data[i].reptime).substring(0,10)+"</span>" +
+                            "<a href=\"javascript:\" onclick='show(this)'  class=\"reply-btn info-tab\">" +
+                            "<i class=\"iconfont icon-xiaoxi\"></i>" +
+                            "<span>回复</span>" +
+                            "</a>" +
+                            "</p>" +
+                            "<form class=\"reply-form\" onsubmit=\"return huifu(this,"+repid+","+bookid+")\" style='display: none'>" +
+                            "<input type =\"hidden\" name = \"replytype\" value=\"2\">"+
+                            "<input type =\"hidden\" name = \"revid\" value='"+repid+"'>" +
+                            "<input type =\"hidden\" name = \"to_uuid\" value='"+data[i].from_uuid+"'>" +
+                            "<input type = \"hidden\" name = \"bookid\" value='"+bookid+"'>"+
+                            "<input type=\"text\" placeholder='回复@"+data[i].from_uname+"' onfocus='$(this).parent().addClass(\"focus\")' onblur='$(this).parent().removeClass(\"focus\")' name=\"repcontent\">" +
+                            "<a href=\"javascript:;\" onclick='$(this).parent().hide()' class=\"blue mr20 cancle\">取消</a>" +
+                            "<input value=\"回复\" type=\"submit\">" +
+                            "</form>"+
+                            "</div>" +
+                            "</li>" ;
+                    }
+                        s += "</ul>";
+                    $(obj).parent().append(s);
+                    $(obj).parent().children("#sh").hide();
+                    $(obj).parent().children("#cl").show();
+                }
+            });
+        }
+        function renderTime(date) {
+            var dateee = new Date(date).toJSON();
+            return new Date(+new Date(dateee) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
+        }
+        $(document).ready(function () {
+            $(".sign-in").mouseover(function () {
+                $(this).addClass("sign-in act");
+            });
+            $(".sign-in").mouseout(function () {
+                $(this).removeClass("act");
+            });
+            $(".site").mouseover(function () {
+                $(this).addClass("site act");
+            });
+            $(".site").mouseout(function () {
+                $(this).removeClass("act");
+            });
+            $(".site").nextAll().mouseover(function(){
+                $(this).addClass("act");
+            });
+            $(".site").nextAll().mouseout(function () {
+                $(this).removeClass("act");
+            });
+
+            $('textarea').bind('input propertychange', function() {
+                $(".textNum").html($(this).val().length);
+                if($(this).val().length < 5){
+                    $("#sub").addClass("cant");
+                    $("#sub").attr("disabled",true);
+                }else{
+                    $("#sub").removeClass("cant");
+                    $("#sub").attr("disabled",false);
+                }
+
+            });
+            $(".lbf-pagination-jump a").click(function () {
+                if($(".lbf-pagination-jump input").val() > $(".lbf-pagination-jump input").attr('max')){
+                    $(".lbf-pagination-jump input").focus();
+                    $(".lbf-pagination-jump input").val('');
+                    return false;
+                }else{
+                    var page = $(".lbf-pagination-jump input").val();
+                    window.location.href = "./queryById?bookid="+$(".card-wrap.fl").attr("id")+"&page="+page+"&revid="+$(".info-tab.mr20").attr("id");
+                }
+            })
+            $(".reply-btn.info-tab.mr20").click(function () {
+                $(this).parent().parent().children("#content").focus();
+                $(".reply-form").hide();
+                $(".reply-form").children("#content").focus();
+                $(".reply-form").children("#content").val('');
+                var s = $(this).parent().parent().children("form");
+                jQuery.ajax({
+                    url:'/jpbook/books/userExist',
+                    success:function(data){
+                        if(0 == data){
+                            window.location.href = "../login.html";
+                        }else{
+                            s.attr("style","display:block");
+                            s.find("[name='repcontent']").focus()
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+
+
+</head>
+<body data-dynamic="false" style="zoom: 1;">
+
+
+    
+<div id="pin-nav" class="pin-nav-wrap need-search" data-l1="40">
+    <div class="box-center cf">
+        <div class="nav-list site-nav fl">
+            <ul>
+                <li class="site"><a class="pin-logo"
+                                    href="/jpbook/booktype/queryAll" style = "font-size: 18px;font-family: 'Courier New', Courier, monospace">江派中文网</a>
+                </li>
+                <li><a href="/jpbook/showAllBook.html?btid=1" target="">玄幻</a></li>
+                <li><a href="/jpbook/showAllBook.html?btid=5" target="">都市</a></li>
+                <li><a href="/jpbook/showAllBook.html?btid=4" target="">仙侠</a></li>
+                <li><a href="/jpbook/showAllBook.html?btid=11" target="">科幻</a></li>
+                <li><a href="/jpbook/showAllBook.html?btid=9" target="">游戏</a></li>
+                <li><a href="/jpbook/showAllBook.html?btid=8" target="">历史</a></li>
+                <li><a href="/jpbook/books/rank" target="_blank">排行</a></li>
+                <li class="more">
+                    <a href="javascript:" id="top-nav-more" target="">
+                        更多<span></span>
+                    </a>
+                    <div class="dropdown">
+                        <a href="/jpbook/showAllBook.html" target="_blank">全部作品</a>
+                        <a href="/jpbook/showAllBook.html?btid=13" target="">二次元</a>
+                        <a href="/jpbook/showAllBook.html?btid=2" target="">奇幻</a>
+                        <a href="/jpbook/showAllBook.html?btid=3" target="">武侠</a>
+                        <a href="/jpbook/showAllBook.html?btid=12" target="">灵异</a>
+                        <a href="/jpbook/showAllBook.html?btid=7" target="">军事</a>
+                        <a href="/jpbook/showAllBook.html?btid=6" target="">现实</a>
+                        <a href="/jpbook/showAllBook.html?btid=10" target="">体育</a>
+                        <a href="/jpbook/showAllBook.html?btid=14" target="">短篇</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="nav-list min-user fr">
+            <ul>
+                <li class="line"></li>
+                <li th:class="${session.users} ? 'sign-out hidden' : 'sign-out'">
+                    <a id="pin-login" href="../login.html" target="_blank">登录</a>
+                    <a class="reg" href="../register.html" target="_blank">注册</a>
+                </li>
+                <th:block th:if="${session}">
+                    <th:block th:if="${session.users}">
+                        <li th:class="${session.users[0] } ? 'sign-in' : 'sign-in hidden'">
+                            <a href="../personal.html" target="_blank">
+                                <span id = "uuid" style="display: none" th:text="${session.users[0].uuid}"></span>
+                                <i id="nav-user-name" th:text="${session.users[0].uname}"></i>
+                                <span></span>
+                            </a>
+                            <div class="dropdown">
+                                <a href="/jpbook/topup" target="_blank">充值</a>
+                                <a href="../personal.html" target="_blank">个人中心</a>
+                                <a id="exit" href="javascript:void(0);" onclick="removeu()">退出</a>
+                            </div>
+                        </li>
+                    </th:block>
+                </th:block>
+                <li class="line"></li>
+                <li class="book-shelf" id="top-book-shelf">
+                    <a th:href="${session.users} ? '../personal.html?key=i' : '../login.html'" target="_blank">
+                        <em class="iconfont"></em><i>我的书架
+                    </i></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+    <div class="main">
+    <div class="bg">
+        <div class="main-wrap">
+            <p class="breadcrumb">
+                <a href="javascript:void(0)" th:utext="|${queryByRevid[0].uname}的讨论区|">寻唐的讨论区</a>
+                <span class="iconfont icon-xiayige"></span>帖子详情
+            </p>
+        </div>
+    </div>
+    <div class="main-wrap cf">
+        <div class="main-body fl">
+            
+            <div class="post-wrap cf">
+                <div class="card-wrap fl" th:id="${books[0].bookid}">
+                    <a target="_blank" th:href="|/jpbook/pc/home?uuid=${queryByRevid[0].uuid}|" >
+                        <img class="head-img" th:src="|../images/${queryByRevid[0].icon}|"th:alt="${queryByRevid[0].uname}"></a>
+                </div>
+                <div class="post">
+                <div class="post-hover">
+                    <p class="auther">
+                        <a target="_blank" th:href="|/jpbook/pc/home?uuid=${queryByRevid[0].uuid}|" class="blue b" th:text="${queryByRevid[0].uname}">高依弟粉丝</a>
+                    </p>
+                    <p class="post-body" th:text="${queryByRevid[0].revvlue}">
+                    </p>
+                    <div class="post-info dib-wrap cf" data-id="1249679363" data-t="topic">
+                        <span class="mr20" th:text="${queryByRevid[0].commenttime}"></span>
+                            <a href="javascript:;" th:onclick="|faties(${books[0].bookid})|" class="info-tab mr20" th:id="${queryByRevid[0].revid}">
+                                <i class="iconfont icon-xiaoxi"></i>
+                                <span th:text="|${queryByRevid[0].rqcount}条回复|"></span>
+                            </a>
+                            <a href="javascript:;" th:onclick="'javascript:dianzan(this,'+${queryByRevid[0].revid}+')'"
+                               th:class="${queryByRevid[0].z} eq -1 ? 'info-tab like-btn' : 'info-tab like-btn act'">
+                                <i class="iconfont icon-dianzan"></i>
+                                <span th:text="|${queryByRevid[0].zan}赞|"></span>
+                            </a>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <ul class="comment-list">
+            <th:block th:if="${queryById[0].repid} ne -1">
+                <!--循环遍历回复该评论的回复-->
+                    <li class="comment-wrap cf" th:each="q,status : ${queryById}">
+                        <div class="card-wrap fl">
+                            <a target="_blank"  th:href="|/jpbook/pc/home?uuid=${q.uuid}|">
+                                <img class="head-img" th:src="|../images/${q.icon}|" th:alt="${q.from_uname}">
+                            </a>
+                        </div>
+                        <div class="post">
+                            <div class="post-hover">
+                                <p class="auther">
+                                    <a target="_blank" th:href="|/jpbook/pc/home?uuid=${q.uuid}|" class="blue b" th:text="${q.from_uname}">高依弟粉丝</a>
+                                </p>
+                                <p class="post-body" th:text="${q.repcontent}"></p>
+                                <div class="post-info dib-wrap cf">
+                                    <span class="mr20" th:text="|${status.index+1+(page-1) * 5}楼|"></span>
+                                    <span class="mr20" th:text="${q.reptime}">2019-03-18</span>
+                                    <a href="javascript:;" onclick="$(this).parent().parent().children('.comment-reply.bg').hide();$(this).parent().parent().children('#cl').hide();$(this).parent().parent().children('#sh').show();" class="reply-btn info-tab mr20">
+                                        <i class="iconfont icon-xiaoxi"></i>
+                                        <span th:text="|${q.rpcount}条回复|"></span>
+                                    </a>
+                                    <a href="javascript:;" th:onclick="'javascript:dianzan(this,'+${q.repid}+')'"
+                                       th:class="${q.z} eq -1 ? 'info-tab like-btn' : 'info-tab like-btn act'">
+                                        <i class="iconfont icon-dianzan"></i>
+                                        <span th:text="|${q.zan}赞|">0赞</span>
+                                    </a>
+                                </div>
+                                <th:block th:if="${q.rpcount} gt 0">
+                                    <a class="blue more-reply" th:onclick="|chaxun(this,${q.repid},${books[0].bookid})|" id = "sh" href="javascript:;" th:text="|查看全部${q.rpcount}条回复|"></a>
+                                    <a class="blue more-reply" id = "cl" onclick="$(this).parent().children('.comment-reply.bg').hide();$(this).parent().children('#sh').show();$(this).hide()" href="javascript:;" style="display: none;">关闭回复</a>
+                                </th:block>
+                                <th:block th:if="${session}">
+                                    <th:block th:if="${session.users}">
+                                        <form class="reply-form" th:onsubmit="|return huifu(this,${q.repid},${books[0].bookid})|" style = "display: none">
+                                            <input type ="hidden" name = "replytype" value="2">
+                                            <input type ="hidden" name = "revid" th:value="${q.repid}">
+                                            <input type ="hidden" name = "from_uuid" th:value="${session.users[0].uuid}">
+                                            <input type ="hidden" name = "to_uuid" th:value="${q.from_uuid}">
+                                            <input type = "hidden" name = "bookid" th:value="${books[0].bookid}">
+                                            <input type="text" id = "content" onfocus="$(this).parent().addClass('focus')" onblur="$(this).parent().removeClass('focus')" name="repcontent">
+                                            <a href="javascript:;" onclick="$(this).parent().attr('style','display:none')" class="blue mr20 cancle">取消</a>
+                                            <input value="回复" type="submit">
+                                        </form>
+                                    </th:block>
+                                </th:block>
+                            </div>
+                        </div>
+                    </li>
+            </th:block>
+            </ul>
+            <th:block th:if="${pagecount} ne 0">
+                <div class="page-container">
+                    <div class="lbf-pagination" >
+                        <ul class="lbf-pagination-item-list">
+                            <li class="lbf-pagination-item"><!--可用lbf-pagination-prev-->
+                                <a th:href="${page} ne 1 ? './queryById?bookid='+${books[0].bookid}+'&page='+${page-1}+'&revid='+${queryByRevid[0].revid} : 'javascript:;'" th:class="${page} ne 1 ? 'lbf-pagination-prev' : 'lbf-pageination-next lbf-pagination-disabled'">上一页</a>
+                            </li>
+                            <li class="lbf-pagination-item">
+                                <a th:href="${page eq pagecount} ? 'javascript:;' : './queryById?bookid='+${books[0].bookid}+'&page='+${page+1}+'&revid='+${queryByRevid[0].revid}" th:class="${page eq pagecount} ? 'lbf-pagination-prev  lbf-pagination-disabled' : 'lbf-pageination-next'">下一页</a>
+                            </li>
+                            <li class="lbf-pagination-item">
+                                <a href="javascript:;" id = "pagecount" class="lbf-pageination-next lbf-pagination-disabled" th:text="|第${page}页/共${pagecount}页|"></a>
+                            </li>
+                        </ul>
+                        <div class="lbf-pagination-jump">
+                            <input type="text" style="border: 1px solid gray;width:25px;text-align: center;" class="lbf-pagination-input" value="1" th:max="${pagecount}">
+                            <a href="javascript:;" class="lbf-pagination-go">GO</a>
+                        </div>
+                    </div>
+                </div>
+            </th:block>
+
+            <th:block th:if="${session}">
+                <th:block th:if="${session.users}">
+                    <div class="comment-input-box">
+                        <div class="user-info cf bg">
+                            <img th:src="@{/images/{filename}(filename=${session.users[0].icon})}" class="head-img" alt="书友20190303160502500">
+                            <b th:text="${session.users[0].uname}"></b>
+                        </div><!-- th:action="@{/rbreply/add(bookid=${books[0].bookid})}"-->
+                        <form id = "ff" class="send-commont" th:onsubmit="|return fabiao(${books[0].bookid})|" target="_blank">
+                            <textarea name="repcontent" id="comment" placeholder="发表回复"></textarea>
+                            <input type ="hidden" name = "replytype" value="1">
+                            <input type ="hidden" name = "revid" th:value="${queryByRevid[0].revid}">
+                            <input type ="hidden" name = "from_uuid" th:value="${session.users[0].uuid}">
+                            <input type ="hidden" name = "to_uuid" th:value="${queryByRevid[0].uuid}">
+                            <input type = "hidden" name = "bookid" th:value="${books[0].bookid}">
+                            <div class="bar cf">
+                                <span class="textNum">0</span>/350
+                                <input value="发表" id = "sub" disabled="disabled" class="cant" type="submit">
+                            </div>
+                        </form>
+                    </div>
+                </th:block>
+            </th:block>
+
+            
+        </div>
+    </div>
+    </div>
+    <div class="footer">
+    <div class="box-center cf">
+        <div class="footer-text">
+            <p>上海网警提示：网络刷单是违法 切莫轻信有返利，网上交友套路多 卖惨要钱需当心，电子红包莫轻点 个人信息勿填写，仿冒客服来行骗 官方核实最重要，招工诈骗有套路 预交费用需谨慎，低价充值莫轻信 莫因游戏陷套路，连接WIFI要规范 确认安全再连接，抢购车票有章法 确认订单再付款，白条赊购慎使用 提升额度莫轻信，网购预付有风险 正规渠道很重要</p>
+        </div>
+        <div class="friend-link">
+            <em><a class="yuewen" href="https://www.yuewen.com/" target="_blank">阅文集团</a><cite>旗下网站：</cite></em>
+                <a href="https://www.qidian.com/">起点中文网</a>
+                <a href="https://www.qdmm.com/" target="_blank">起点女生网</a>
+                <a href="http://chuangshi.qq.com/" target="_blank">创世中文网</a>
+                <a href="http://yunqi.qq.com/" target="_blank">云起书院</a>
+                <!--<a href="http://www.rongshuxia.com" target="_blank">榕树下</a>-->
+                <a href="https://www.hongxiu.com/" target="_blank">红袖添香</a>
+                <a href="https://www.readnovel.com/" target="_blank">小说阅读网</a>
+                <a href="https://www.xs8.cn/" target="_blank">言情小说吧</a>
+                <a href="http://www.xxsy.net/" target="_blank">潇湘书院</a>
+                <a href="http://www.tingbook.com/" target="_blank">天方听书网</a>
+                <a href="http://www.lrts.me/" target="_blank">懒人听书</a>
+                <a href="http://yuedu.yuewen.com/" target="_blank">阅文悦读</a>
+                <a href="https://www.yuewen.com/app.html#appqq" target="_blank">QQ阅读</a>
+                <a href="https://www.yuewen.com/app.html#appqd" target="_blank">起点读书</a>
+                <a href="https://www.yuewen.com/app.html#appzj" target="_blank">作家助手</a>
+                <a href="https://www.webnovel.com/" target="_blank" title="Qidian International">起点国际版</a>
+        </div>
+        <div class="footer-menu dib-wrap">
+            <a href="https://www.qidian.com/about/intro" target="_blank">关于起点</a>
+            <a href="https://www.qidian.com/about/contact" target="_blank">联系我们</a>
+            <a href="https://join.yuewen.com/" target="_blank">加入我们</a>
+            <a href="https://www.qidian.com/help/index/2" target="_blank">帮助中心</a>
+            <a href="https://forum.qidian.com/post/12991448603371803/1249679363#" class="advice" target="_blank">提交建议</a>
+            <!--<a href="http://bbs.qidian.com" target="_blank">起点论坛</a>-->
+            <!--<a href="http://comic.qidian.com" target="_blank">动漫频道</a>-->
+            <a href="https://jubao.yuewen.com/" target="_blank">举报中心</a>
+        </div>
+        <div class="copy-right">
+            <p><span>Copyright © 2002-2019 www.qidian.com All Rights Reserved</span>版权所有 上海玄霆娱乐信息科技有限公司</p>
+            <p>上海玄霆娱乐信息科技有限公司
+                <a href="http://www.miitbeian.gov.cn/" target="_blank" style="color:#666;margin-left: 5px">增值电信业务经营许可证沪B2-20080046</a>
+                出版经营许可证 新出发沪批字第U3718号 沪网文[2015]0081-031 新出网证（沪）字010
+                <a href="http://www.miitbeian.gov.cn/" target="_blank" style="color:#666;margin-left: 5px">沪ICP备08017520号-1</a>
+            </p>
+            <p>请所有作者发布作品时务必遵守国家互联网信息管理办法规定，我们拒绝任何色情小说，一经发现，即作删除！举报电话：010-59357051</p>
+            <p>本站所收录的作品、社区话题、用户评论、用户上传内容或图片等均属用户个人行为。如前述内容侵害您的权益，欢迎举报投诉，一经核实，立即删除，本站不承担任何责任</p>
+            <p>联系方式 总机 021-61870500 地址：中国（上海）自由贸易试验区碧波路690号6号楼101、201室</p>
+        </div>
+        
+    </div>
+</div>
+</body></html>

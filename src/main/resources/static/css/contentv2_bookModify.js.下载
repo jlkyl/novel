@@ -1,0 +1,2925 @@
+/*
+ * jQuery Form Plugin
+ * version: 3.51.0-2014.06.20
+ * Requires jQuery v1.5 or later
+ * Copyright (c) 2014 M. Alsup
+ * Examples and documentation at: http://malsup.com/jquery/form/
+ * Project repository: https://github.com/malsup/form
+ * Dual licensed under the MIT and GPL licenses.
+ * https://github.com/malsup/form#copyright-and-license
+ */
+!function (e) {
+    "use strict";
+    "function" == typeof define && define.amd ? define(["jquery"], e) : e("undefined" != typeof jQuery ? jQuery : window.Zepto)
+}(function (e) {
+    "use strict";
+
+    function t(t) {
+        var r = t.data;
+        t.isDefaultPrevented() || (t.preventDefault(), e(t.target).ajaxSubmit(r))
+    }
+
+    function r(t) {
+        var r = t.target, a = e(r);
+        if (!a.is("[type=submit],[type=image]")) {
+            var n = a.closest("[type=submit]");
+            if (0 === n.length) return;
+            r = n[0]
+        }
+        var i = this;
+        if (i.clk = r, "image" == r.type) if (void 0 !== t.offsetX) i.clk_x = t.offsetX, i.clk_y = t.offsetY; else if ("function" == typeof e.fn.offset) {
+            var o = a.offset();
+            i.clk_x = t.pageX - o.left, i.clk_y = t.pageY - o.top
+        } else i.clk_x = t.pageX - r.offsetLeft, i.clk_y = t.pageY - r.offsetTop;
+        setTimeout(function () {
+            i.clk = i.clk_x = i.clk_y = null
+        }, 100)
+    }
+
+    function a() {
+        if (e.fn.ajaxSubmit.debug) {
+            var t = "[jquery.form] " + Array.prototype.join.call(arguments, "");
+            window.console && window.console.log ? window.console.log(t) : window.opera && window.opera.postError && window.opera.postError(t)
+        }
+    }
+
+    var n = {};
+    n.fileapi = void 0 !== e("<input type='file'/>").get(0).files, n.formdata = void 0 !== window.FormData;
+    var i = !!e.fn.prop;
+    e.fn.attr2 = function () {
+        if (!i) return this.attr.apply(this, arguments);
+        var e = this.prop.apply(this, arguments);
+        return e && e.jquery || "string" == typeof e ? e : this.attr.apply(this, arguments)
+    }, e.fn.ajaxSubmit = function (t) {
+        function r(r) {
+            var a, n, i = e.param(r, t.traditional).split("&"), o = i.length, s = [];
+            for (a = 0; o > a; a++) i[a] = i[a].replace(/\+/g, " "), n = i[a].split("="), s.push([decodeURIComponent(n[0]), decodeURIComponent(n[1])]);
+            return s
+        }
+
+        function o(a) {
+            for (var n = new FormData, i = 0; i < a.length; i++) n.append(a[i].name, a[i].value);
+            if (t.extraData) {
+                var o = r(t.extraData);
+                for (i = 0; i < o.length; i++) o[i] && n.append(o[i][0], o[i][1])
+            }
+            t.data = null;
+            var s = e.extend(!0, {}, e.ajaxSettings, t, {
+                contentType: !1,
+                processData: !1,
+                cache: !1,
+                type: u || "POST"
+            });
+            t.uploadProgress && (s.xhr = function () {
+                var r = e.ajaxSettings.xhr();
+                return r.upload && r.upload.addEventListener("progress", function (e) {
+                    var r = 0, a = e.loaded || e.position, n = e.total;
+                    e.lengthComputable && (r = Math.ceil(a / n * 100)), t.uploadProgress(e, a, n, r)
+                }, !1), r
+            }), s.data = null;
+            var c = s.beforeSend;
+            return s.beforeSend = function (e, r) {
+                r.data = t.formData ? t.formData : n, c && c.call(this, e, r)
+            }, e.ajax(s)
+        }
+
+        function s(r) {
+            function n(e) {
+                var t = null;
+                try {
+                    e.contentWindow && (t = e.contentWindow.document)
+                } catch (r) {
+                    a("cannot get iframe.contentWindow document: " + r)
+                }
+                if (t) return t;
+                try {
+                    t = e.contentDocument ? e.contentDocument : e.document
+                } catch (r) {
+                    a("cannot get iframe.contentDocument: " + r), t = e.document
+                }
+                return t
+            }
+
+            function o() {
+                function t() {
+                    try {
+                        var e = n(g).readyState;
+                        a("state = " + e), e && "uninitialized" == e.toLowerCase() && setTimeout(t, 50)
+                    } catch (r) {
+                        a("Server abort: ", r, " (", r.name, ")"), s(k), j && clearTimeout(j), j = void 0
+                    }
+                }
+
+                var r = f.attr2("target"), i = f.attr2("action"), o = "multipart/form-data",
+                    c = f.attr("enctype") || f.attr("encoding") || o;
+                w.setAttribute("target", p), (!u || /post/i.test(u)) && w.setAttribute("method", "POST"), i != m.url && w.setAttribute("action", m.url), m.skipEncodingOverride || u && !/post/i.test(u) || f.attr({
+                    encoding: "multipart/form-data",
+                    enctype: "multipart/form-data"
+                }), m.timeout && (j = setTimeout(function () {
+                    T = !0, s(D)
+                }, m.timeout));
+                var l = [];
+                try {
+                    if (m.extraData) for (var d in m.extraData) m.extraData.hasOwnProperty(d) && l.push(e.isPlainObject(m.extraData[d]) && m.extraData[d].hasOwnProperty("name") && m.extraData[d].hasOwnProperty("value") ? e('<input type="hidden" name="' + m.extraData[d].name + '">').val(m.extraData[d].value).appendTo(w)[0] : e('<input type="hidden" name="' + d + '">').val(m.extraData[d]).appendTo(w)[0]);
+                    m.iframeTarget || v.appendTo("body"), g.attachEvent ? g.attachEvent("onload", s) : g.addEventListener("load", s, !1), setTimeout(t, 15);
+                    try {
+                        w.submit()
+                    } catch (h) {
+                        var x = document.createElement("form").submit;
+                        x.apply(w)
+                    }
+                } finally {
+                    w.setAttribute("action", i), w.setAttribute("enctype", c), r ? w.setAttribute("target", r) : f.removeAttr("target"), e(l).remove()
+                }
+            }
+
+            function s(t) {
+                if (!x.aborted && !F) {
+                    if (M = n(g), M || (a("cannot access response document"), t = k), t === D && x) return x.abort("timeout"), void S.reject(x, "timeout");
+                    if (t == k && x) return x.abort("server abort"), void S.reject(x, "error", "server abort");
+                    if (M && M.location.href != m.iframeSrc || T) {
+                        g.detachEvent ? g.detachEvent("onload", s) : g.removeEventListener("load", s, !1);
+                        var r, i = "success";
+                        try {
+                            if (T) throw"timeout";
+                            var o = "xml" == m.dataType || M.XMLDocument || e.isXMLDoc(M);
+                            if (a("isXml=" + o), !o && window.opera && (null === M.body || !M.body.innerHTML) && --O) return a("requeing onLoad callback, DOM not available"), void setTimeout(s, 250);
+                            var u = M.body ? M.body : M.documentElement;
+                            x.responseText = u ? u.innerHTML : null, x.responseXML = M.XMLDocument ? M.XMLDocument : M, o && (m.dataType = "xml"), x.getResponseHeader = function (e) {
+                                var t = {"content-type": m.dataType};
+                                return t[e.toLowerCase()]
+                            }, u && (x.status = Number(u.getAttribute("status")) || x.status, x.statusText = u.getAttribute("statusText") || x.statusText);
+                            var c = (m.dataType || "").toLowerCase(), l = /(json|script|text)/.test(c);
+                            if (l || m.textarea) {
+                                var f = M.getElementsByTagName("textarea")[0];
+                                if (f) x.responseText = f.value, x.status = Number(f.getAttribute("status")) || x.status, x.statusText = f.getAttribute("statusText") || x.statusText; else if (l) {
+                                    var p = M.getElementsByTagName("pre")[0], h = M.getElementsByTagName("body")[0];
+                                    p ? x.responseText = p.textContent ? p.textContent : p.innerText : h && (x.responseText = h.textContent ? h.textContent : h.innerText)
+                                }
+                            } else "xml" == c && !x.responseXML && x.responseText && (x.responseXML = X(x.responseText));
+                            try {
+                                E = _(x, c, m)
+                            } catch (y) {
+                                i = "parsererror", x.error = r = y || i
+                            }
+                        } catch (y) {
+                            a("error caught: ", y), i = "error", x.error = r = y || i
+                        }
+                        x.aborted && (a("upload aborted"), i = null), x.status && (i = x.status >= 200 && x.status < 300 || 304 === x.status ? "success" : "error"), "success" === i ? (m.success && m.success.call(m.context, E, "success", x), S.resolve(x.responseText, "success", x), d && e.event.trigger("ajaxSuccess", [x, m])) : i && (void 0 === r && (r = x.statusText), m.error && m.error.call(m.context, x, i, r), S.reject(x, "error", r), d && e.event.trigger("ajaxError", [x, m, r])), d && e.event.trigger("ajaxComplete", [x, m]), d && !--e.active && e.event.trigger("ajaxStop"), m.complete && m.complete.call(m.context, x, i), F = !0, m.timeout && clearTimeout(j), setTimeout(function () {
+                            m.iframeTarget ? v.attr("src", m.iframeSrc) : v.remove(), x.responseXML = null
+                        }, 100)
+                    }
+                }
+            }
+
+            var c, l, m, d, p, v, g, x, y, b, T, j, w = f[0], S = e.Deferred();
+            if (S.abort = function (e) {
+                    x.abort(e)
+                }, r) for (l = 0; l < h.length; l++) c = e(h[l]), i ? c.prop("disabled", !1) : c.removeAttr("disabled");
+            if (m = e.extend(!0, {}, e.ajaxSettings, t), m.context = m.context || m, p = "jqFormIO" + (new Date).getTime(), m.iframeTarget ? (v = e(m.iframeTarget), b = v.attr2("name"), b ? p = b : v.attr2("name", p)) : (v = e('<iframe name="' + p + '" src="' + m.iframeSrc + '" />'), v.css({
+                    position: "absolute",
+                    top: "-1000px",
+                    left: "-1000px"
+                })), g = v[0], x = {
+                    aborted: 0,
+                    responseText: null,
+                    responseXML: null,
+                    status: 0,
+                    statusText: "n/a",
+                    getAllResponseHeaders: function () {
+                    },
+                    getResponseHeader: function () {
+                    },
+                    setRequestHeader: function () {
+                    },
+                    abort: function (t) {
+                        var r = "timeout" === t ? "timeout" : "aborted";
+                        a("aborting upload... " + r), this.aborted = 1;
+                        try {
+                            g.contentWindow.document.execCommand && g.contentWindow.document.execCommand("Stop")
+                        } catch (n) {
+                        }
+                        v.attr("src", m.iframeSrc), x.error = r, m.error && m.error.call(m.context, x, r, t), d && e.event.trigger("ajaxError", [x, m, r]), m.complete && m.complete.call(m.context, x, r)
+                    }
+                }, d = m.global, d && 0 === e.active++ && e.event.trigger("ajaxStart"), d && e.event.trigger("ajaxSend", [x, m]), m.beforeSend && m.beforeSend.call(m.context, x, m) === !1) return m.global && e.active--, S.reject(), S;
+            if (x.aborted) return S.reject(), S;
+            y = w.clk, y && (b = y.name, b && !y.disabled && (m.extraData = m.extraData || {}, m.extraData[b] = y.value, "image" == y.type && (m.extraData[b + ".x"] = w.clk_x, m.extraData[b + ".y"] = w.clk_y)));
+            var D = 1, k = 2, A = e("meta[name=csrf-token]").attr("content"),
+                L = e("meta[name=csrf-param]").attr("content");
+            L && A && (m.extraData = m.extraData || {}, m.extraData[L] = A), m.forceSync ? o() : setTimeout(o, 10);
+            var E, M, F, O = 50, X = e.parseXML || function (e, t) {
+                return window.ActiveXObject ? (t = new ActiveXObject("Microsoft.XMLDOM"), t.async = "false", t.loadXML(e)) : t = (new DOMParser).parseFromString(e, "text/xml"), t && t.documentElement && "parsererror" != t.documentElement.nodeName ? t : null
+            }, C = e.parseJSON || function (e) {
+                return window.eval("(" + e + ")")
+            }, _ = function (t, r, a) {
+                var n = t.getResponseHeader("content-type") || "", i = "xml" === r || !r && n.indexOf("xml") >= 0,
+                    o = i ? t.responseXML : t.responseText;
+                return i && "parsererror" === o.documentElement.nodeName && e.error && e.error("parsererror"), a && a.dataFilter && (o = a.dataFilter(o, r)), "string" == typeof o && ("json" === r || !r && n.indexOf("json") >= 0 ? o = C(o) : ("script" === r || !r && n.indexOf("javascript") >= 0) && e.globalEval(o)), o
+            };
+            return S
+        }
+
+        if (!this.length) return a("ajaxSubmit: skipping submit process - no element selected"), this;
+        var u, c, l, f = this;
+        "function" == typeof t ? t = {success: t} : void 0 === t && (t = {}), u = t.type || this.attr2("method"), c = t.url || this.attr2("action"), l = "string" == typeof c ? e.trim(c) : "", l = l || window.location.href || "", l && (l = (l.match(/^([^#]+)/) || [])[1]), t = e.extend(!0, {
+            url: l,
+            success: e.ajaxSettings.success,
+            type: u || e.ajaxSettings.type,
+            iframeSrc: /^https/i.test(window.location.href || "") ? "javascript:false" : "about:blank"
+        }, t);
+        var m = {};
+        if (this.trigger("form-pre-serialize", [this, t, m]), m.veto) return a("ajaxSubmit: submit vetoed via form-pre-serialize trigger"), this;
+        if (t.beforeSerialize && t.beforeSerialize(this, t) === !1) return a("ajaxSubmit: submit aborted via beforeSerialize callback"), this;
+        var d = t.traditional;
+        void 0 === d && (d = e.ajaxSettings.traditional);
+        var p, h = [], v = this.formToArray(t.semantic, h);
+        if (t.data && (t.extraData = t.data, p = e.param(t.data, d)), t.beforeSubmit && t.beforeSubmit(v, this, t) === !1) return a("ajaxSubmit: submit aborted via beforeSubmit callback"), this;
+        if (this.trigger("form-submit-validate", [v, this, t, m]), m.veto) return a("ajaxSubmit: submit vetoed via form-submit-validate trigger"), this;
+        var g = e.param(v, d);
+        p && (g = g ? g + "&" + p : p), "GET" == t.type.toUpperCase() ? (t.url += (t.url.indexOf("?") >= 0 ? "&" : "?") + g, t.data = null) : t.data = g;
+        var x = [];
+        if (t.resetForm && x.push(function () {
+                f.resetForm()
+            }), t.clearForm && x.push(function () {
+                f.clearForm(t.includeHidden)
+            }), !t.dataType && t.target) {
+            var y = t.success || function () {
+            };
+            x.push(function (r) {
+                var a = t.replaceTarget ? "replaceWith" : "html";
+                e(t.target)[a](r).each(y, arguments)
+            })
+        } else t.success && x.push(t.success);
+        if (t.success = function (e, r, a) {
+                for (var n = t.context || this, i = 0, o = x.length; o > i; i++) x[i].apply(n, [e, r, a || f, f])
+            }, t.error) {
+            var b = t.error;
+            t.error = function (e, r, a) {
+                var n = t.context || this;
+                b.apply(n, [e, r, a, f])
+            }
+        }
+        if (t.complete) {
+            var T = t.complete;
+            t.complete = function (e, r) {
+                var a = t.context || this;
+                T.apply(a, [e, r, f])
+            }
+        }
+        var j = e("input[type=file]:enabled", this).filter(function () {
+                return "" !== e(this).val()
+            }), w = j.length > 0, S = "multipart/form-data", D = f.attr("enctype") == S || f.attr("encoding") == S,
+            k = n.fileapi && n.formdata;
+        a("fileAPI :" + k);
+        var A, L = (w || D) && !k;
+        t.iframe !== !1 && (t.iframe || L) ? t.closeKeepAlive ? e.get(t.closeKeepAlive, function () {
+            A = s(v)
+        }) : A = s(v) : A = (w || D) && k ? o(v) : e.ajax(t), f.removeData("jqxhr").data("jqxhr", A);
+        for (var E = 0; E < h.length; E++) h[E] = null;
+        return this.trigger("form-submit-notify", [this, t]), this
+    }, e.fn.ajaxForm = function (n) {
+        if (n = n || {}, n.delegation = n.delegation && e.isFunction(e.fn.on), !n.delegation && 0 === this.length) {
+            var i = {s: this.selector, c: this.context};
+            return !e.isReady && i.s ? (a("DOM not ready, queuing ajaxForm"), e(function () {
+                e(i.s, i.c).ajaxForm(n)
+            }), this) : (a("terminating; zero elements found by selector" + (e.isReady ? "" : " (DOM not ready)")), this)
+        }
+        return n.delegation ? (e(document).off("submit.form-plugin", this.selector, t).off("click.form-plugin", this.selector, r).on("submit.form-plugin", this.selector, n, t).on("click.form-plugin", this.selector, n, r), this) : this.ajaxFormUnbind().bind("submit.form-plugin", n, t).bind("click.form-plugin", n, r)
+    }, e.fn.ajaxFormUnbind = function () {
+        return this.unbind("submit.form-plugin click.form-plugin")
+    }, e.fn.formToArray = function (t, r) {
+        var a = [];
+        if (0 === this.length) return a;
+        var i, o = this[0], s = this.attr("id"), u = t ? o.getElementsByTagName("*") : o.elements;
+        if (u && !/MSIE [678]/.test(navigator.userAgent) && (u = e(u).get()), s && (i = e(':input[form="' + s + '"]').get(), i.length && (u = (u || []).concat(i))), !u || !u.length) return a;
+        var c, l, f, m, d, p, h;
+        for (c = 0, p = u.length; p > c; c++) if (d = u[c], f = d.name, f && !d.disabled) if (t && o.clk && "image" == d.type) o.clk == d && (a.push({
+            name: f,
+            value: e(d).val(),
+            type: d.type
+        }), a.push({name: f + ".x", value: o.clk_x}, {
+            name: f + ".y",
+            value: o.clk_y
+        })); else if (m = e.fieldValue(d, !0), m && m.constructor == Array) for (r && r.push(d), l = 0, h = m.length; h > l; l++) a.push({
+            name: f,
+            value: m[l]
+        }); else if (n.fileapi && "file" == d.type) {
+            r && r.push(d);
+            var v = d.files;
+            if (v.length) for (l = 0; l < v.length; l++) a.push({
+                name: f,
+                value: v[l],
+                type: d.type
+            }); else a.push({name: f, value: "", type: d.type})
+        } else null !== m && "undefined" != typeof m && (r && r.push(d), a.push({
+            name: f,
+            value: m,
+            type: d.type,
+            required: d.required
+        }));
+        if (!t && o.clk) {
+            var g = e(o.clk), x = g[0];
+            f = x.name, f && !x.disabled && "image" == x.type && (a.push({
+                name: f,
+                value: g.val()
+            }), a.push({name: f + ".x", value: o.clk_x}, {name: f + ".y", value: o.clk_y}))
+        }
+        return a
+    }, e.fn.formSerialize = function (t) {
+        return e.param(this.formToArray(t))
+    }, e.fn.fieldSerialize = function (t) {
+        var r = [];
+        return this.each(function () {
+            var a = this.name;
+            if (a) {
+                var n = e.fieldValue(this, t);
+                if (n && n.constructor == Array) for (var i = 0, o = n.length; o > i; i++) r.push({
+                    name: a,
+                    value: n[i]
+                }); else null !== n && "undefined" != typeof n && r.push({name: this.name, value: n})
+            }
+        }), e.param(r)
+    }, e.fn.fieldValue = function (t) {
+        for (var r = [], a = 0, n = this.length; n > a; a++) {
+            var i = this[a], o = e.fieldValue(i, t);
+            null === o || "undefined" == typeof o || o.constructor == Array && !o.length || (o.constructor == Array ? e.merge(r, o) : r.push(o))
+        }
+        return r
+    }, e.fieldValue = function (t, r) {
+        var a = t.name, n = t.type, i = t.tagName.toLowerCase();
+        if (void 0 === r && (r = !0), r && (!a || t.disabled || "reset" == n || "button" == n || ("checkbox" == n || "radio" == n) && !t.checked || ("submit" == n || "image" == n) && t.form && t.form.clk != t || "select" == i && -1 == t.selectedIndex)) return null;
+        if ("select" == i) {
+            var o = t.selectedIndex;
+            if (0 > o) return null;
+            for (var s = [], u = t.options, c = "select-one" == n, l = c ? o + 1 : u.length, f = c ? o : 0; l > f; f++) {
+                var m = u[f];
+                if (m.selected) {
+                    var d = m.value;
+                    if (d || (d = m.attributes && m.attributes.value && !m.attributes.value.specified ? m.text : m.value), c) return d;
+                    s.push(d)
+                }
+            }
+            return s
+        }
+        return e(t).val()
+    }, e.fn.clearForm = function (t) {
+        return this.each(function () {
+            e("input,select,textarea", this).clearFields(t)
+        })
+    }, e.fn.clearFields = e.fn.clearInputs = function (t) {
+        var r = /^(?:color|date|datetime|email|month|number|password|range|search|tel|text|time|url|week)$/i;
+        return this.each(function () {
+            var a = this.type, n = this.tagName.toLowerCase();
+            r.test(a) || "textarea" == n ? this.value = "" : "checkbox" == a || "radio" == a ? this.checked = !1 : "select" == n ? this.selectedIndex = -1 : "file" == a ? /MSIE/.test(navigator.userAgent) ? e(this).replaceWith(e(this).clone(!0)) : e(this).val("") : t && (t === !0 && /hidden/.test(a) || "string" == typeof t && e(this).is(t)) && (this.value = "")
+        })
+    }, e.fn.resetForm = function () {
+        return this.each(function () {
+            ("function" == typeof this.reset || "object" == typeof this.reset && !this.reset.nodeType) && this.reset()
+        })
+    }, e.fn.enable = function (e) {
+        return void 0 === e && (e = !0), this.each(function () {
+            this.disabled = !e
+        })
+    }, e.fn.selected = function (t) {
+        return void 0 === t && (t = !0), this.each(function () {
+            var r = this.type;
+            if ("checkbox" == r || "radio" == r) this.checked = t; else if ("option" == this.tagName.toLowerCase()) {
+                var a = e(this).parent("select");
+                t && a[0] && "select-one" == a[0].type && a.find("option").selected(!1), this.selected = t
+            }
+        })
+    }, e.fn.ajaxSubmit.debug = !1
+});
+/*
+ * jQuery Validation Plugin v1.13.0
+ *
+ * http://jqueryvalidation.org/
+ *
+ * Copyright (c) 2014 Jörn Zaefferer
+ * Released under the MIT license
+ */
+(function (factory) {
+    if (typeof define === "function" && define.amd) {
+        define(["jquery"], factory);
+    } else {
+        factory(jQuery);
+    }
+}(function ($) {
+    $.extend($.fn, {
+        validate: function (options) {
+            if (!this.length) {
+                if (options && options.debug && window.console) {
+                    console.warn("Nothing selected, can't validate, returning nothing.");
+                }
+                return;
+            }
+            var validator = $.data(this[0], "validator");
+            if (validator) {
+                return validator;
+            }
+            this.attr("novalidate", "novalidate");
+            validator = new $.validator(options, this[0]);
+            $.data(this[0], "validator", validator);
+            if (validator.settings.onsubmit) {
+                this.validateDelegate(":submit", "click", function (event) {
+                    if (validator.settings.submitHandler) {
+                        validator.submitButton = event.target;
+                    }
+                    if ($(event.target).hasClass("cancel")) {
+                        validator.cancelSubmit = true;
+                    }
+                    if ($(event.target).attr("formnovalidate") !== undefined) {
+                        validator.cancelSubmit = true;
+                    }
+                });
+                this.submit(function (event) {
+                    if (validator.settings.debug) {
+                        event.preventDefault();
+                    }
+
+                    function handle() {
+                        var hidden;
+                        if (validator.settings.submitHandler) {
+                            if (validator.submitButton) {
+                                hidden = $("<input type='hidden'/>").attr("name", validator.submitButton.name).val($(validator.submitButton).val()).appendTo(validator.currentForm);
+                            }
+                            validator.settings.submitHandler.call(validator, validator.currentForm, event);
+                            if (validator.submitButton) {
+                                hidden.remove();
+                            }
+                            return false;
+                        }
+                        return true;
+                    }
+
+                    if (validator.cancelSubmit) {
+                        validator.cancelSubmit = false;
+                        return handle();
+                    }
+                    if (validator.form()) {
+                        if (validator.pendingRequest) {
+                            validator.formSubmitted = true;
+                            return false;
+                        }
+                        return handle();
+                    } else {
+                        validator.focusInvalid();
+                        return false;
+                    }
+                });
+            }
+            return validator;
+        }, valid: function () {
+            var valid, validator;
+            if ($(this[0]).is("form")) {
+                valid = this.validate().form();
+            } else {
+                valid = true;
+                validator = $(this[0].form).validate();
+                this.each(function () {
+                    valid = validator.element(this) && valid;
+                });
+            }
+            return valid;
+        }, removeAttrs: function (attributes) {
+            var result = {}, $element = this;
+            $.each(attributes.split(/\s/), function (index, value) {
+                result[value] = $element.attr(value);
+                $element.removeAttr(value);
+            });
+            return result;
+        }, rules: function (command, argument) {
+            var element = this[0], settings, staticRules, existingRules, data, param, filtered;
+            if (command) {
+                settings = $.data(element.form, "validator").settings;
+                staticRules = settings.rules;
+                existingRules = $.validator.staticRules(element);
+                switch (command) {
+                    case"add":
+                        $.extend(existingRules, $.validator.normalizeRule(argument));
+                        delete existingRules.messages;
+                        staticRules[element.name] = existingRules;
+                        if (argument.messages) {
+                            settings.messages[element.name] = $.extend(settings.messages[element.name], argument.messages);
+                        }
+                        break;
+                    case"remove":
+                        if (!argument) {
+                            delete staticRules[element.name];
+                            return existingRules;
+                        }
+                        filtered = {};
+                        $.each(argument.split(/\s/), function (index, method) {
+                            filtered[method] = existingRules[method];
+                            delete existingRules[method];
+                            if (method === "required") {
+                                $(element).removeAttr("aria-required");
+                            }
+                        });
+                        return filtered;
+                }
+            }
+            data = $.validator.normalizeRules($.extend({}, $.validator.classRules(element), $.validator.attributeRules(element), $.validator.dataRules(element), $.validator.staticRules(element)), element);
+            if (data.required) {
+                param = data.required;
+                delete data.required;
+                data = $.extend({required: param}, data);
+                $(element).attr("aria-required", "true");
+            }
+            if (data.remote) {
+                param = data.remote;
+                delete data.remote;
+                data = $.extend(data, {remote: param});
+            }
+            return data;
+        }
+    });
+    $.extend($.expr[":"], {
+        blank: function (a) {
+            return !$.trim("" + $(a).val());
+        }, filled: function (a) {
+            return !!$.trim("" + $(a).val());
+        }, unchecked: function (a) {
+            return !$(a).prop("checked");
+        }
+    });
+    $.validator = function (options, form) {
+        this.settings = $.extend(true, {}, $.validator.defaults, options);
+        this.currentForm = form;
+        this.init();
+    };
+    $.validator.format = function (source, params) {
+        if (arguments.length === 1) {
+            return function () {
+                var args = $.makeArray(arguments);
+                args.unshift(source);
+                return $.validator.format.apply(this, args);
+            };
+        }
+        if (arguments.length > 2 && params.constructor !== Array) {
+            params = $.makeArray(arguments).slice(1);
+        }
+        if (params.constructor !== Array) {
+            params = [params];
+        }
+        $.each(params, function (i, n) {
+            source = source.replace(new RegExp("\\{" + i + "\\}", "g"), function () {
+                return n;
+            });
+        });
+        return source;
+    };
+    $.extend($.validator, {
+        defaults: {
+            messages: {},
+            groups: {},
+            rules: {},
+            errorClass: "errorInput",
+            validClass: "valid",
+            errorElement: "label",
+            focusInvalid: true,
+            errorContainer: $([]),
+            errorLabelContainer: $([]),
+            onsubmit: true,
+            ignore: ":hidden",
+            ignoreTitle: false,
+            onfocusin: function (element) {
+                this.lastActive = element;
+                if (this.settings.focusCleanup && !this.blockFocusCleanup) {
+                    if (this.settings.unhighlight) {
+                        this.settings.unhighlight.call(this, element, this.settings.errorClass, this.settings.validClass);
+                    }
+                    this.hideThese(this.errorsFor(element));
+                }
+            },
+            onfocusout: function (element) {
+                if (!this.checkable(element) && (element.name in this.submitted || !this.optional(element))) {
+                    this.element(element);
+                }
+            },
+            onkeyup: function (element, event) {
+                if (event.which === 9 && this.elementValue(element) === "") {
+                    return;
+                } else if (element.name in this.submitted || element === this.lastElement) {
+                    this.element(element);
+                }
+            },
+            onclick: function (element) {
+                if (element.name in this.submitted) {
+                    this.element(element);
+                } else if (element.parentNode.name in this.submitted) {
+                    this.element(element.parentNode);
+                }
+            },
+            highlight: function (element, errorClass, validClass) {
+                if (element.type === "radio") {
+                    this.findByName(element.name).addClass(errorClass).removeClass(validClass);
+                } else {
+                    $(element).addClass(errorClass).removeClass(validClass);
+                }
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                if (element.type === "radio") {
+                    this.findByName(element.name).removeClass(errorClass).addClass(validClass);
+                } else {
+                    $(element).removeClass(errorClass).addClass(validClass);
+                }
+            }
+        },
+        setDefaults: function (settings) {
+            $.extend($.validator.defaults, settings);
+        },
+        messages: {
+            required: "This field is required.",
+            remote: "Please fix this field.",
+            email: "Please enter a valid email address.",
+            url: "Please enter a valid URL.",
+            date: "Please enter a valid date.",
+            dateISO: "Please enter a valid date ( ISO ).",
+            number: "Please enter a valid number.",
+            digits: "Please enter only digits.",
+            creditcard: "Please enter a valid credit card number.",
+            equalTo: "Please enter the same value again.",
+            maxlength: $.validator.format("Please enter no more than {0} characters."),
+            minlength: $.validator.format("Please enter at least {0} characters."),
+            rangelength: $.validator.format("Please enter a value between {0} and {1} characters long."),
+            range: $.validator.format("Please enter a value between {0} and {1}."),
+            max: $.validator.format("Please enter a value less than or equal to {0}."),
+            min: $.validator.format("Please enter a value greater than or equal to {0}.")
+        },
+        autoCreateRanges: false,
+        prototype: {
+            init: function () {
+                this.labelContainer = $(this.settings.errorLabelContainer);
+                this.errorContext = this.labelContainer.length && this.labelContainer || $(this.currentForm);
+                this.containers = $(this.settings.errorContainer).add(this.settings.errorLabelContainer);
+                this.submitted = {};
+                this.valueCache = {};
+                this.pendingRequest = 0;
+                this.pending = {};
+                this.invalid = {};
+                this.reset();
+                var groups = (this.groups = {}), rules;
+                $.each(this.settings.groups, function (key, value) {
+                    if (typeof value === "string") {
+                        value = value.split(/\s/);
+                    }
+                    $.each(value, function (index, name) {
+                        groups[name] = key;
+                    });
+                });
+                rules = this.settings.rules;
+                $.each(rules, function (key, value) {
+                    rules[key] = $.validator.normalizeRule(value);
+                });
+
+                function delegate(event) {
+                    var validator = $.data(this[0].form, "validator"),
+                        eventType = "on" + event.type.replace(/^validate/, ""), settings = validator.settings;
+                    if (settings[eventType] && !this.is(settings.ignore)) {
+                        settings[eventType].call(validator, this[0], event);
+                    }
+                }
+
+                $(this.currentForm).validateDelegate(":text, [type='password'], [type='file'], select, textarea, " + "[type='number'], [type='search'] ,[type='tel'], [type='url'], " + "[type='email'], [type='datetime'], [type='date'], [type='month'], " + "[type='week'], [type='time'], [type='datetime-local'], " + "[type='range'], [type='color'], [type='radio'], [type='checkbox']", "focusin focusout keyup", delegate).validateDelegate("select, option, [type='radio'], [type='checkbox']", "click", delegate);
+                if (this.settings.invalidHandler) {
+                    $(this.currentForm).bind("invalid-form.validate", this.settings.invalidHandler);
+                }
+                $(this.currentForm).find("[required], [data-rule-required], .required").attr("aria-required", "true");
+            }, form: function () {
+                this.checkForm();
+                $.extend(this.submitted, this.errorMap);
+                this.invalid = $.extend({}, this.errorMap);
+                if (!this.valid()) {
+                    $(this.currentForm).triggerHandler("invalid-form", [this]);
+                }
+                this.showErrors();
+                return this.valid();
+            }, checkForm: function () {
+                this.prepareForm();
+                for (var i = 0, elements = (this.currentElements = this.elements()); elements[i]; i++) {
+                    this.check(elements[i]);
+                }
+                return this.valid();
+            }, element: function (element) {
+                var cleanElement = this.clean(element), checkElement = this.validationTargetFor(cleanElement),
+                    result = true;
+                this.lastElement = checkElement;
+                if (checkElement === undefined) {
+                    delete this.invalid[cleanElement.name];
+                } else {
+                    this.prepareElement(checkElement);
+                    this.currentElements = $(checkElement);
+                    result = this.check(checkElement) !== false;
+                    if (result) {
+                        delete this.invalid[checkElement.name];
+                    } else {
+                        this.invalid[checkElement.name] = true;
+                    }
+                }
+                $(element).attr("aria-invalid", !result);
+                if (!this.numberOfInvalids()) {
+                    this.toHide = this.toHide.add(this.containers);
+                }
+                this.showErrors();
+                return result;
+            }, showErrors: function (errors) {
+                if (errors) {
+                    $.extend(this.errorMap, errors);
+                    this.errorList = [];
+                    for (var name in errors) {
+                        this.errorList.push({message: errors[name], element: this.findByName(name)[0]});
+                    }
+                    this.successList = $.grep(this.successList, function (element) {
+                        return !(element.name in errors);
+                    });
+                }
+                if (this.settings.showErrors) {
+                    this.settings.showErrors.call(this, this.errorMap, this.errorList);
+                } else {
+                    this.defaultShowErrors();
+                }
+            }, resetForm: function () {
+                if ($.fn.resetForm) {
+                    $(this.currentForm).resetForm();
+                }
+                this.submitted = {};
+                this.lastElement = null;
+                this.prepareForm();
+                this.hideErrors();
+                this.elements().removeClass(this.settings.errorClass).removeData("previousValue").removeAttr("aria-invalid");
+            }, numberOfInvalids: function () {
+                return this.objectLength(this.invalid);
+            }, objectLength: function (obj) {
+                var count = 0, i;
+                for (i in obj) {
+                    count++;
+                }
+                return count;
+            }, hideErrors: function () {
+                this.hideThese(this.toHide);
+            }, hideThese: function (errors) {
+                errors.not(this.containers).text("");
+                this.addWrapper(errors).hide();
+            }, valid: function () {
+                return this.size() === 0;
+            }, size: function () {
+                return this.errorList.length;
+            }, focusInvalid: function () {
+                if (this.settings.focusInvalid) {
+                    try {
+                        $(this.findLastActive() || this.errorList.length && this.errorList[0].element || []).filter(":visible").focus().trigger("focusin");
+                    } catch (e) {
+                    }
+                }
+            }, findLastActive: function () {
+                var lastActive = this.lastActive;
+                return lastActive && $.grep(this.errorList, function (n) {
+                    return n.element.name === lastActive.name;
+                }).length === 1 && lastActive;
+            }, elements: function () {
+                var validator = this, rulesCache = {};
+                return $(this.currentForm).find("input, select, textarea").not(":submit, :reset, :image, [disabled]").not(this.settings.ignore).filter(function () {
+                    if (!this.name && validator.settings.debug && window.console) {
+                        console.error("%o has no name assigned", this);
+                    }
+                    if (this.name in rulesCache || !validator.objectLength($(this).rules())) {
+                        return false;
+                    }
+                    rulesCache[this.name] = true;
+                    return true;
+                });
+            }, clean: function (selector) {
+                return $(selector)[0];
+            }, errors: function () {
+                var errorClass = this.settings.errorClass.split(" ").join(".");
+                return $(this.settings.errorElement + "." + errorClass, this.errorContext);
+            }, reset: function () {
+                this.successList = [];
+                this.errorList = [];
+                this.errorMap = {};
+                this.toShow = $([]);
+                this.toHide = $([]);
+                this.currentElements = $([]);
+            }, prepareForm: function () {
+                this.reset();
+                this.toHide = this.errors().add(this.containers);
+            }, prepareElement: function (element) {
+                this.reset();
+                this.toHide = this.errorsFor(element);
+            }, elementValue: function (element) {
+                var val, $element = $(element), type = element.type;
+                if (type === "radio" || type === "checkbox") {
+                    return $("input[name='" + element.name + "']:checked").val();
+                } else if (type === "number" && typeof element.validity !== "undefined") {
+                    return element.validity.badInput ? false : $element.val();
+                }
+                val = $element.val();
+                if (typeof val === "string") {
+                    return val.replace(/\r/g, "");
+                }
+                return val;
+            }, check: function (element) {
+                element = this.validationTargetFor(this.clean(element));
+                var rules = $(element).rules(), rulesCount = $.map(rules, function (n, i) {
+                    return i;
+                }).length, dependencyMismatch = false, val = this.elementValue(element), result, method, rule;
+                for (method in rules) {
+                    rule = {method: method, parameters: rules[method]};
+                    try {
+                        result = $.validator.methods[method].call(this, val, element, rule.parameters);
+                        if (result === "dependency-mismatch" && rulesCount === 1) {
+                            dependencyMismatch = true;
+                            continue;
+                        }
+                        dependencyMismatch = false;
+                        if (result === "pending") {
+                            this.toHide = this.toHide.not(this.errorsFor(element));
+                            return;
+                        }
+                        if (!result) {
+                            this.formatAndAdd(element, rule);
+                            return false;
+                        }
+                    } catch (e) {
+                        if (this.settings.debug && window.console) {
+                            console.log("Exception occurred when checking element " + element.id + ", check the '" + rule.method + "' method.", e);
+                        }
+                        throw e;
+                    }
+                }
+                if (dependencyMismatch) {
+                    return;
+                }
+                if (this.objectLength(rules)) {
+                    this.successList.push(element);
+                }
+                return true;
+            }, customDataMessage: function (element, method) {
+                return $(element).data("msg" + method.charAt(0).toUpperCase() +
+                    method.substring(1).toLowerCase()) || $(element).data("msg");
+            }, customMessage: function (name, method) {
+                var m = this.settings.messages[name];
+                return m && (m.constructor === String ? m : m[method]);
+            }, findDefined: function () {
+                for (var i = 0; i < arguments.length; i++) {
+                    if (arguments[i] !== undefined) {
+                        return arguments[i];
+                    }
+                }
+                return undefined;
+            }, defaultMessage: function (element, method) {
+                return this.findDefined(this.customMessage(element.name, method), this.customDataMessage(element, method), !this.settings.ignoreTitle && element.title || undefined, $.validator.messages[method], "<strong>Warning: No message defined for " + element.name + "</strong>");
+            }, formatAndAdd: function (element, rule) {
+                var message = this.defaultMessage(element, rule.method), theregex = /\$?\{(\d+)\}/g;
+                if (typeof message === "function") {
+                    message = message.call(this, rule.parameters, element);
+                } else if (theregex.test(message)) {
+                    message = $.validator.format(message.replace(theregex, "{$1}"), rule.parameters);
+                }
+                this.errorList.push({message: message, element: element, method: rule.method});
+                this.errorMap[element.name] = message;
+                this.submitted[element.name] = message;
+            }, addWrapper: function (toToggle) {
+                if (this.settings.wrapper) {
+                    toToggle = toToggle.add(toToggle.parent(this.settings.wrapper));
+                }
+                return toToggle;
+            }, defaultShowErrors: function () {
+                var i, elements, error;
+                for (i = 0; this.errorList[i]; i++) {
+                    error = this.errorList[i];
+                    if (this.settings.highlight) {
+                        this.settings.highlight.call(this, error.element, this.settings.errorClass, this.settings.validClass);
+                    }
+                    this.showLabel(error.element, error.message);
+                }
+                if (this.errorList.length) {
+                    this.toShow = this.toShow.add(this.containers);
+                }
+                if (this.settings.success) {
+                    for (i = 0; this.successList[i]; i++) {
+                        this.showLabel(this.successList[i]);
+                    }
+                }
+                if (this.settings.unhighlight) {
+                    for (i = 0, elements = this.validElements(); elements[i]; i++) {
+                        this.settings.unhighlight.call(this, elements[i], this.settings.errorClass, this.settings.validClass);
+                    }
+                }
+                this.toHide = this.toHide.not(this.toShow);
+                this.hideErrors();
+                this.addWrapper(this.toShow).show();
+            }, validElements: function () {
+                return this.currentElements.not(this.invalidElements());
+            }, invalidElements: function () {
+                return $(this.errorList).map(function () {
+                    return this.element;
+                });
+            }, showLabel: function (element, message) {
+                var place, group, errorID, error = this.errorsFor(element), elementID = this.idOrName(element),
+                    describedBy = $(element).attr("aria-describedby");
+                if (error.length) {
+                    error.removeClass(this.settings.validClass).addClass(this.settings.errorClass);
+                    error.html(message);
+                } else {
+                    error = $("<" + this.settings.errorElement + ">").attr("id", elementID + "-error").addClass(this.settings.errorClass).html(message || "");
+                    place = error;
+                    if (this.settings.wrapper) {
+                        place = error.hide().show().wrap("<" + this.settings.wrapper + "/>").parent();
+                    }
+                    if (this.labelContainer.length) {
+                        this.labelContainer.append(place);
+                    } else if (this.settings.errorPlacement) {
+                        this.settings.errorPlacement(place, $(element));
+                    } else {
+                        place.insertAfter(element);
+                    }
+                    if (error.is("label")) {
+                        error.attr("for", elementID);
+                    } else if (error.parents("label[for='" + elementID + "']").length === 0) {
+                        errorID = error.attr("id");
+                        if (!describedBy) {
+                            describedBy = errorID;
+                        } else if (!describedBy.match(new RegExp("\b" + errorID + "\b"))) {
+                            describedBy += " " + errorID;
+                        }
+                        $(element).attr("aria-describedby", describedBy);
+                        group = this.groups[element.name];
+                        if (group) {
+                            $.each(this.groups, function (name, testgroup) {
+                                if (testgroup === group) {
+                                    $("[name='" + name + "']", this.currentForm).attr("aria-describedby", error.attr("id"));
+                                }
+                            });
+                        }
+                    }
+                }
+                if (!message && this.settings.success) {
+                    error.text("");
+                    if (typeof this.settings.success === "string") {
+                        error.addClass(this.settings.success);
+                    } else {
+                        this.settings.success(error, element);
+                    }
+                }
+                this.toShow = this.toShow.add(error);
+            }, errorsFor: function (element) {
+                var name = this.idOrName(element), describer = $(element).attr("aria-describedby"),
+                    selector = "label[for='" + name + "'], label[for='" + name + "'] *";
+                if (describer) {
+                    selector = selector + ", #" + describer.replace(/\s+/g, ", #");
+                }
+                return this.errors().filter(selector);
+            }, idOrName: function (element) {
+                return this.groups[element.name] || (this.checkable(element) ? element.name : element.id || element.name);
+            }, validationTargetFor: function (element) {
+                if (this.checkable(element)) {
+                    element = this.findByName(element.name).not(this.settings.ignore)[0];
+                }
+                return element;
+            }, checkable: function (element) {
+                return (/radio|checkbox/i).test(element.type);
+            }, findByName: function (name) {
+                return $(this.currentForm).find("[name='" + name + "']");
+            }, getLength: function (value, element) {
+                switch (element.nodeName.toLowerCase()) {
+                    case"select":
+                        return $("option:selected", element).length;
+                    case"input":
+                        if (this.checkable(element)) {
+                            return this.findByName(element.name).filter(":checked").length;
+                        }
+                }
+                return value.length;
+            }, depend: function (param, element) {
+                return this.dependTypes[typeof param] ? this.dependTypes[typeof param](param, element) : true;
+            }, dependTypes: {
+                "boolean": function (param) {
+                    return param;
+                }, "string": function (param, element) {
+                    return !!$(param, element.form).length;
+                }, "function": function (param, element) {
+                    return param(element);
+                }
+            }, optional: function (element) {
+                var val = this.elementValue(element);
+                return !$.validator.methods.required.call(this, val, element) && "dependency-mismatch";
+            }, startRequest: function (element) {
+                if (!this.pending[element.name]) {
+                    this.pendingRequest++;
+                    this.pending[element.name] = true;
+                }
+            }, stopRequest: function (element, valid) {
+                this.pendingRequest--;
+                if (this.pendingRequest < 0) {
+                    this.pendingRequest = 0;
+                }
+                delete this.pending[element.name];
+                if (valid && this.pendingRequest === 0 && this.formSubmitted && this.form()) {
+                    $(this.currentForm).submit();
+                    this.formSubmitted = false;
+                } else if (!valid && this.pendingRequest === 0 && this.formSubmitted) {
+                    $(this.currentForm).triggerHandler("invalid-form", [this]);
+                    this.formSubmitted = false;
+                }
+            }, previousValue: function (element) {
+                return $.data(element, "previousValue") || $.data(element, "previousValue", {
+                    old: null,
+                    valid: true,
+                    message: this.defaultMessage(element, "remote")
+                });
+            }
+        },
+        classRuleSettings: {
+            required: {required: true},
+            email: {email: true},
+            url: {url: true},
+            date: {date: true},
+            dateISO: {dateISO: true},
+            number: {number: true},
+            digits: {digits: true},
+            creditcard: {creditcard: true}
+        },
+        addClassRules: function (className, rules) {
+            if (className.constructor === String) {
+                this.classRuleSettings[className] = rules;
+            } else {
+                $.extend(this.classRuleSettings, className);
+            }
+        },
+        classRules: function (element) {
+            var rules = {}, classes = $(element).attr("class");
+            if (classes) {
+                $.each(classes.split(" "), function () {
+                    if (this in $.validator.classRuleSettings) {
+                        $.extend(rules, $.validator.classRuleSettings[this]);
+                    }
+                });
+            }
+            return rules;
+        },
+        attributeRules: function (element) {
+            var rules = {}, $element = $(element), type = element.getAttribute("type"), method, value;
+            for (method in $.validator.methods) {
+                if (method === "required") {
+                    value = element.getAttribute(method);
+                    if (value === "") {
+                        value = true;
+                    }
+                    value = !!value;
+                } else {
+                    value = $element.attr(method);
+                }
+                if (/min|max/.test(method) && (type === null || /number|range|text/.test(type))) {
+                    value = Number(value);
+                }
+                if (value || value === 0) {
+                    rules[method] = value;
+                } else if (type === method && type !== "range") {
+                    rules[method] = true;
+                }
+            }
+            if (rules.maxlength && /-1|2147483647|524288/.test(rules.maxlength)) {
+                delete rules.maxlength;
+            }
+            return rules;
+        },
+        dataRules: function (element) {
+            var method, value, rules = {}, $element = $(element);
+            for (method in $.validator.methods) {
+                value = $element.data("rule" + method.charAt(0).toUpperCase() + method.substring(1).toLowerCase());
+                if (value !== undefined) {
+                    rules[method] = value;
+                }
+            }
+            return rules;
+        },
+        staticRules: function (element) {
+            var rules = {}, validator = $.data(element.form, "validator");
+            if (validator.settings.rules) {
+                rules = $.validator.normalizeRule(validator.settings.rules[element.name]) || {};
+            }
+            return rules;
+        },
+        normalizeRules: function (rules, element) {
+            $.each(rules, function (prop, val) {
+                if (val === false) {
+                    delete rules[prop];
+                    return;
+                }
+                if (val.param || val.depends) {
+                    var keepRule = true;
+                    switch (typeof val.depends) {
+                        case"string":
+                            keepRule = !!$(val.depends, element.form).length;
+                            break;
+                        case"function":
+                            keepRule = val.depends.call(element, element);
+                            break;
+                    }
+                    if (keepRule) {
+                        rules[prop] = val.param !== undefined ? val.param : true;
+                    } else {
+                        delete rules[prop];
+                    }
+                }
+            });
+            $.each(rules, function (rule, parameter) {
+                rules[rule] = $.isFunction(parameter) ? parameter(element) : parameter;
+            });
+            $.each(["minlength", "maxlength"], function () {
+                if (rules[this]) {
+                    rules[this] = Number(rules[this]);
+                }
+            });
+            $.each(["rangelength", "range"], function () {
+                var parts;
+                if (rules[this]) {
+                    if ($.isArray(rules[this])) {
+                        rules[this] = [Number(rules[this][0]), Number(rules[this][1])];
+                    } else if (typeof rules[this] === "string") {
+                        parts = rules[this].replace(/[\[\]]/g, "").split(/[\s,]+/);
+                        rules[this] = [Number(parts[0]), Number(parts[1])];
+                    }
+                }
+            });
+            if ($.validator.autoCreateRanges) {
+                if (rules.min && rules.max) {
+                    rules.range = [rules.min, rules.max];
+                    delete rules.min;
+                    delete rules.max;
+                }
+                if (rules.minlength && rules.maxlength) {
+                    rules.rangelength = [rules.minlength, rules.maxlength];
+                    delete rules.minlength;
+                    delete rules.maxlength;
+                }
+            }
+            return rules;
+        },
+        normalizeRule: function (data) {
+            if (typeof data === "string") {
+                var transformed = {};
+                $.each(data.split(/\s/), function () {
+                    transformed[this] = true;
+                });
+                data = transformed;
+            }
+            return data;
+        },
+        addMethod: function (name, method, message) {
+            $.validator.methods[name] = method;
+            $.validator.messages[name] = message !== undefined ? message : $.validator.messages[name];
+            if (method.length < 3) {
+                $.validator.addClassRules(name, $.validator.normalizeRule(name));
+            }
+        },
+        methods: {
+            required: function (value, element, param) {
+                if (!this.depend(param, element)) {
+                    return "dependency-mismatch";
+                }
+                if (element.nodeName.toLowerCase() === "select") {
+                    var val = $(element).val();
+                    return val && val.length > 0;
+                }
+                if (this.checkable(element)) {
+                    return this.getLength(value, element) > 0;
+                }
+                return $.trim(value).length > 0;
+            }, email: function (value, element) {
+                return this.optional(element) || /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(value);
+            }, url: function (value, element) {
+                return this.optional(element) || /^(https?|s?ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(value);
+            }, date: function (value, element) {
+                return this.optional(element) || !/Invalid|NaN/.test(new Date(value).toString());
+            }, dateISO: function (value, element) {
+                return this.optional(element) || /^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/.test(value);
+            }, number: function (value, element) {
+                return this.optional(element) || /^-?(?:\d+|\d{1,3}(?:,\d{3})+)?(?:\.\d+)?$/.test(value);
+            }, digits: function (value, element) {
+                return this.optional(element) || /^\d+$/.test(value);
+            }, creditcard: function (value, element) {
+                if (this.optional(element)) {
+                    return "dependency-mismatch";
+                }
+                if (/[^0-9 \-]+/.test(value)) {
+                    return false;
+                }
+                var nCheck = 0, nDigit = 0, bEven = false, n, cDigit;
+                value = value.replace(/\D/g, "");
+                if (value.length < 13 || value.length > 19) {
+                    return false;
+                }
+                for (n = value.length - 1; n >= 0; n--) {
+                    cDigit = value.charAt(n);
+                    nDigit = parseInt(cDigit, 10);
+                    if (bEven) {
+                        if ((nDigit *= 2) > 9) {
+                            nDigit -= 9;
+                        }
+                    }
+                    nCheck += nDigit;
+                    bEven = !bEven;
+                }
+                return (nCheck % 10) === 0;
+            }, minlength: function (value, element, param) {
+                var length = $.isArray(value) ? value.length : this.getLength($.trim(value), element);
+                return this.optional(element) || length >= param;
+            }, maxlength: function (value, element, param) {
+                var length = $.isArray(value) ? value.length : this.getLength($.trim(value), element);
+                return this.optional(element) || length <= param;
+            }, rangelength: function (value, element, param) {
+                var length = $.isArray(value) ? value.length : this.getLength($.trim(value), element);
+                return this.optional(element) || (length >= param[0] && length <= param[1]);
+            }, min: function (value, element, param) {
+                return this.optional(element) || value >= param;
+            }, max: function (value, element, param) {
+                return this.optional(element) || value <= param;
+            }, range: function (value, element, param) {
+                return this.optional(element) || (value >= param[0] && value <= param[1]);
+            }, equalTo: function (value, element, param) {
+                var target = $(param);
+                if (this.settings.onfocusout) {
+                    target.unbind(".validate-equalTo").bind("blur.validate-equalTo", function () {
+                        $(element).valid();
+                    });
+                }
+                return value === target.val();
+            }, remote: function (value, element, param) {
+                if (this.optional(element)) {
+                    return "dependency-mismatch";
+                }
+                var previous = this.previousValue(element), validator, data;
+                if (!this.settings.messages[element.name]) {
+                    this.settings.messages[element.name] = {};
+                }
+                previous.originalMessage = this.settings.messages[element.name].remote;
+                this.settings.messages[element.name].remote = previous.message;
+                param = typeof param === "string" && {url: param} || param;
+                if (previous.old === value) {
+                    return previous.valid;
+                }
+                previous.old = value;
+                validator = this;
+                this.startRequest(element);
+                data = {};
+                data[element.name] = value;
+                $.ajax($.extend(true, {
+                    url: param,
+                    mode: "abort",
+                    port: "validate" + element.name,
+                    dataType: "json",
+                    data: data,
+                    context: validator.currentForm,
+                    success: function (response) {
+                        var valid = response === true || response === "true" || (response && response.status === true),
+                            errors, message, submitted;
+                        validator.settings.messages[element.name].remote = previous.originalMessage;
+                        if (valid) {
+                            submitted = validator.formSubmitted;
+                            validator.prepareElement(element);
+                            validator.formSubmitted = submitted;
+                            validator.successList.push(element);
+                            delete validator.invalid[element.name];
+                            validator.showErrors();
+                        } else {
+                            errors = {};
+                            message = response || validator.defaultMessage(element, "remote");
+                            if (response && response.info) {
+                                message = response.info;
+                            }
+                            errors[element.name] = previous.message = $.isFunction(message) ? message(value) : message;
+                            validator.invalid[element.name] = true;
+                            validator.showErrors(errors);
+                        }
+                        previous.valid = valid;
+                        validator.stopRequest(element, valid);
+                    }
+                }, param));
+                return "pending";
+            }
+        }
+    });
+    $.format = function deprecated() {
+        throw"$.format has been deprecated. Please use $.validator.format instead.";
+    };
+    var pendingRequests = {}, ajax;
+    if ($.ajaxPrefilter) {
+        $.ajaxPrefilter(function (settings, _, xhr) {
+            var port = settings.port;
+            if (settings.mode === "abort") {
+                if (pendingRequests[port]) {
+                    pendingRequests[port].abort();
+                }
+                pendingRequests[port] = xhr;
+            }
+        });
+    } else {
+        ajax = $.ajax;
+        $.ajax = function (settings) {
+            var mode = ("mode" in settings ? settings : $.ajaxSettings).mode,
+                port = ("port" in settings ? settings : $.ajaxSettings).port;
+            if (mode === "abort") {
+                if (pendingRequests[port]) {
+                    pendingRequests[port].abort();
+                }
+                pendingRequests[port] = ajax.apply(this, arguments);
+                return pendingRequests[port];
+            }
+            return ajax.apply(this, arguments);
+        };
+    }
+    $.extend($.fn, {
+        validateDelegate: function (delegate, type, handler) {
+            return this.bind(type, function (event) {
+                var target = $(event.target);
+                if (target.is(delegate)) {
+                    return handler.apply(target, arguments);
+                }
+            });
+        }
+    });
+}));
+jQuery.validator.addMethod("isPhone", function (value, element) {
+    var length = value.length;
+    var mobile = /^(((13[0-9]{1})|(15[0-9]{1}))+\d{8})$/;
+    var tel = /^\d{3,4}-?\d{7,9}$/;
+    return this.optional(element) || (tel.test(value) || mobile.test(value));
+}, "请正确填写您的联系电话");
+jQuery.validator.addMethod("isMobile", function (value, element) {
+    var length = value.length;
+    var mobile = /^((13[0-9])|(14[0-35-9])|(15[0-35-9])|(17[0-35-9])|(18[0-9]))[0-9]{8}$/;
+    return this.optional(element) || mobile.test(value);
+}, "请正确填写您的手机号码");
+jQuery.validator.addMethod("isQQ", function (value, element) {
+    return this.optional(element) || /^[1-9][0-9]{4,9}$/.test(value);
+}, "qq号码格式错误");
+jQuery.validator.addMethod("isEmail", function (value, element) {
+    return this.optional(element) || /^[a-zA-Z0-9_+.-]+\@([a-zA-Z0-9-]+\.)+[a-zA-Z0-9]{2,4}$/.test(value);
+}, "邮箱地址不合法");
+jQuery.validator.addMethod("isZipCode", function (value, element) {
+    var tel = /^[0-9]{6}$/;
+    return this.optional(element) || (tel.test(value));
+}, "请正确填写您的邮政编码");
+jQuery.validator.addMethod("isRealName", function (value, element) {
+    return this.optional(element) || /^[\u4E00-\u9FFF·\u4dae]{2,4}$/.test(value);
+}, "由2-4个汉字组成");
+jQuery.validator.addMethod("isIDCardV2", function (value, element) {
+    return this.optional(element) || /^([A-Za-z0-9\u4E00-\u9FFF]{8,18})$/.test(value);
+}, "证证件号不合法");
+jQuery.validator.addMethod("isIDCard", function (value, element) {
+    return this.optional(element) || /^(\d{17}[xX\d])$/.test(value);
+}, "身份证不合法");
+jQuery.validator.addMethod("isIDCardV3", function (value, element, param) {
+    if ('0' == $(param).val()) {
+        return this.optional(element) || /^(\d{17}[xX\d])$/.test(value);
+    }
+    else {
+        return true;
+    }
+}, "身份证不合法");
+jQuery.validator.addMethod("notEqualTo", function (value, element, param) {
+    return value != $(param).val();
+}, "新密码不能和原始密码相同");
+jQuery.validator.addMethod("passwordCheck", function (value, element) {
+    return this.optional(element) || /^[A-Za-z0-9~!@#$%^&*()_+]{6,16}$/.test(value);
+}, "6-16位英文、数字或特殊字符组成");
+jQuery.validator.addMethod("byteRangeLength", function (value, element, param) {
+    var length = value.length;
+    for (var i = 0; i < value.length; i++) {
+        if (value.charCodeAt(i) > 127) {
+            length++;
+        }
+    }
+    return this.optional(element) || (length >= param[0] && length <= param[1]);
+}, $.validator.format("请确保输入的值在{0}-{1}个字节之间(一个中文字算2个字节)"));
+jQuery.validator.addMethod("byteRangeLengthByOne", function (value, element, param) {
+    value = value.replace(/\r\n/ig, "");
+    value = value.replace(/\s+/g, '');
+    var length = value.length;
+    return this.optional(element) || (length >= param[0] && length <= param[1]);
+}, "请确保输入的值在20-500个字节之间(一个中文字算1个字节)");
+jQuery.validator.addMethod("phoneCheck", function (value, element, param) {
+    var length = value.length;
+    if ('+86' == $(param).val()) {
+        var mobile = /^1[0-9]{10}$/;
+    }
+    else {
+        var mobile = /^[0-9]{1,20}$/;
+    }
+    return this.optional(element) || mobile.test(value);
+}, "请输入正确的手机号码");
+/* Copyright (c) 2011 Piotr Rochala (http://rocha.la)
+ * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
+ * and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
+ *
+ * Version: 1.3.3
+ *
+ */
+(function (e) {
+    e.fn.extend({
+        slimScroll: function (g) {
+            var a = e.extend({
+                width: "auto",
+                height: "250px",
+                size: "7px",
+                color: "#ccc",
+                position: "right",
+                distance: "1px",
+                start: "top",
+                opacity: 1,
+                alwaysVisible: !1,
+                disableFadeOut: !1,
+                railVisible: !1,
+                railColor: "#EEE",
+                railOpacity: 1,
+                railDraggable: !0,
+                railClass: "slimScrollRail",
+                barClass: "slimScrollBar",
+                wrapperClass: "slimScrollDiv",
+                allowPageScroll: !1,
+                wheelStep: 20,
+                touchScrollStep: 200,
+                borderRadius: "7px",
+                railBorderRadius: "7px"
+            }, g);
+            this.each(function () {
+                function u(d) {
+                    if (r) {
+                        d = d || window.event;
+                        var c = 0;
+                        d.wheelDelta && (c = -d.wheelDelta / 120);
+                        d.detail && (c = d.detail / 3);
+                        e(d.target || d.srcTarget || d.srcElement).closest("." + a.wrapperClass).is(b.parent()) && m(c, !0);
+                        d.preventDefault && !k && d.preventDefault();
+                        k || (d.returnValue = !1)
+                    }
+                }
+
+                function m(d, e, g) {
+                    k = !1;
+                    var f = d, h = b.outerHeight() - c.outerHeight();
+                    e && (f = parseInt(c.css("top")) + d * parseInt(a.wheelStep) / 100 * c.outerHeight(), f = Math.min(Math.max(f, 0), h), f = 0 < d ? Math.ceil(f) : Math.floor(f), c.css({top: f + "px"}));
+                    l = parseInt(c.css("top")) / (b.outerHeight() - c.outerHeight());
+                    f = l * (b[0].scrollHeight - b.outerHeight());
+                    g && (f = d, d = f / b[0].scrollHeight * b.outerHeight(), d = Math.min(Math.max(d, 0), h), c.css({top: d + "px"}));
+                    b.scrollTop(f);
+                    b.trigger("slimscrolling", ~~f);
+                    v();
+                    p()
+                }
+
+                function C() {
+                    window.addEventListener ? (this.addEventListener("DOMMouseScroll", u, !1), this.addEventListener("mousewheel", u, !1)) : document.attachEvent("onmousewheel", u)
+                }
+
+                function w() {
+                    s = Math.max(b.outerHeight() / b[0].scrollHeight * b.outerHeight(), 30);
+                    c.css({height: s + "px"});
+                    var a = s == b.outerHeight() ? "none" : "block";
+                    c.css({display: a})
+                }
+
+                function v() {
+                    w();
+                    clearTimeout(A);
+                    l == ~~l ? (k = a.allowPageScroll, B != l && b.trigger("slimscroll", 0 == ~~l ? "top" : "bottom")) : k = !1;
+                    B = l;
+                    s >= b.outerHeight() ? k = !0 : (c.stop(!0, !0).fadeIn("fast"), a.railVisible && h.stop(!0, !0).fadeIn("fast"))
+                }
+
+                function p() {
+                    a.alwaysVisible || (A = setTimeout(function () {
+                        a.disableFadeOut && r || x || y || (c.fadeOut("slow"), h.fadeOut("slow"))
+                    }, 1E3))
+                }
+
+                var r, x, y, A, z, s, l, B, k = !1, b = e(this);
+                if (b.parent().hasClass(a.wrapperClass)) {
+                    var n = b.scrollTop(), c = b.parent().find("." + a.barClass),
+                        h = b.parent().find("." + a.railClass);
+                    w();
+                    if (e.isPlainObject(g)) {
+                        if ("height" in g && "auto" == g.height) {
+                            b.parent().css("height", "auto");
+                            b.css("height", "auto");
+                            var q = b.parent().parent().height();
+                            b.parent().css("height", q);
+                            b.css("height", q)
+                        }
+                        if ("scrollTo" in g) n = parseInt(a.scrollTo); else if ("scrollBy" in g) n += parseInt(a.scrollBy); else if ("destroy" in g) {
+                            c.remove();
+                            h.remove();
+                            b.unwrap();
+                            return
+                        }
+                        m(n, !1, !0)
+                    }
+                } else if (!(e.isPlainObject(g) && "destroy" in g)) {
+                    a.height = "auto" == a.height ? b.parent().height() : a.height;
+                    n = e("<div></div>").addClass(a.wrapperClass).css({
+                        position: "relative",
+                        overflow: "hidden",
+                        width: a.width,
+                        height: a.height
+                    });
+                    b.css({overflow: "hidden", width: a.width, height: a.height});
+                    var h = e("<div></div>").addClass(a.railClass).css({
+                        width: a.size,
+                        height: "100%",
+                        position: "absolute",
+                        top: 0,
+                        display: a.alwaysVisible && a.railVisible ? "block" : "none",
+                        "border-radius": a.railBorderRadius,
+                        background: a.railColor,
+                        opacity: a.railOpacity,
+                        zIndex: 90
+                    }), c = e("<div></div>").addClass(a.barClass).css({
+                        background: a.color,
+                        width: a.size,
+                        position: "absolute",
+                        top: 0,
+                        opacity: a.opacity,
+                        display: a.alwaysVisible ? "block" : "none",
+                        "border-radius": a.borderRadius,
+                        BorderRadius: a.borderRadius,
+                        MozBorderRadius: a.borderRadius,
+                        WebkitBorderRadius: a.borderRadius,
+                        zIndex: 99
+                    }), q = "right" == a.position ? {right: a.distance} : {left: a.distance};
+                    h.css(q);
+                    c.css(q);
+                    b.wrap(n);
+                    b.parent().append(c);
+                    b.parent().append(h);
+                    a.railDraggable && c.bind("mousedown", function (a) {
+                        var b = e(document);
+                        y = !0;
+                        t = parseFloat(c.css("top"));
+                        pageY = a.pageY;
+                        b.bind("mousemove.slimscroll", function (a) {
+                            currTop = t + a.pageY - pageY;
+                            c.css("top", currTop);
+                            m(0, c.position().top, !1)
+                        });
+                        b.bind("mouseup.slimscroll", function (a) {
+                            y = !1;
+                            p();
+                            b.unbind(".slimscroll")
+                        });
+                        return !1
+                    }).bind("selectstart.slimscroll", function (a) {
+                        a.stopPropagation();
+                        a.preventDefault();
+                        return !1
+                    });
+                    h.hover(function () {
+                        v()
+                    }, function () {
+                        p()
+                    });
+                    c.hover(function () {
+                        x = !0
+                    }, function () {
+                        x = !1
+                    });
+                    b.hover(function () {
+                        r = !0;
+                        v();
+                        p()
+                    }, function () {
+                        r = !1;
+                        p()
+                    });
+                    b.bind("touchstart", function (a, b) {
+                        a.originalEvent.touches.length && (z = a.originalEvent.touches[0].pageY)
+                    });
+                    b.bind("touchmove", function (b) {
+                        k || b.originalEvent.preventDefault();
+                        b.originalEvent.touches.length && (m((z - b.originalEvent.touches[0].pageY) / a.touchScrollStep, !0), z = b.originalEvent.touches[0].pageY)
+                    });
+                    w();
+                    "bottom" === a.start ? (c.css({top: b.outerHeight() - c.outerHeight()}), m(0, !0)) : "top" !== a.start && (m(e(a.start).position().top, null, !0), a.alwaysVisible || c.hide());
+                    C()
+                }
+            });
+            return this
+        }
+    });
+    e.fn.extend({slimscroll: e.fn.slimScroll})
+})(jQuery);
+(function ($) {
+    var _util = CS.util, _dialog = CS.dialog;
+
+    function show($fileBtn, $previewImg, configs) {
+        if (!$fileBtn || $fileBtn.length === 0 || !$previewImg || $previewImg.length === 0) {
+            return false;
+        }
+        var defaults = {
+            'supportFileTypes': 'jpg',
+            'fileTypeErrorTips': '这个图片的格式一定要是JPG',
+            'imgMaxSize': 5120,
+            'imgMaxSizeTips': '您上传的图片大于5MB'
+        }, options = $.extend(true, {}, defaults, configs);
+        var fileBtn = $fileBtn.get(0), reg = new RegExp('\\.(' + options.supportFileTypes + ')$', 'i');
+        if (!reg.test($fileBtn.val())) {
+            _dialog.alert(options.fileTypeErrorTips);
+            $fileBtn.focus();
+            return false;
+        }
+        if (fileBtn.files && fileBtn.files.length > 0) {
+            var file = fileBtn.files[0];
+            if (file.size >= options.imgMaxSize * 1024) {
+                _dialog.alert(options.imgMaxSizeTips);
+                $fileBtn.focus();
+                return false;
+            }
+            var fileReader = new FileReader();
+            fileReader.onload = function (e) {
+                $previewImg.attr('src', e.target.result).show();
+            };
+            fileReader.readAsDataURL(file);
+        }
+        return true;
+    }
+
+    function showv2($fileBtn, $previewImg, configs) {
+        if (!$fileBtn || $fileBtn.length === 0 || !$previewImg || $previewImg.length === 0 || $fileBtn.val() == '') {
+            return false;
+        }
+        var defaults = {
+            'supportFileTypes': 'jpg',
+            'fileTypeErrorTips': '这个图片的格式一定要是JPG',
+            'imgMaxSize': 5120,
+            'imgMaxSizeTips': '您上传的图片大于5MB'
+        }, options = $.extend(true, {}, defaults, configs);
+        var fileBtn = $fileBtn.get(0), reg = new RegExp('\\.(' + options.supportFileTypes + ')$', 'i');
+        if (!reg.test($fileBtn.val())) {
+            _dialog.alert(options.fileTypeErrorTips);
+            $fileBtn.focus();
+            return false;
+        }
+        if (fileBtn.files && fileBtn.files.length > 0) {
+            var file = fileBtn.files[0];
+            if (file.size >= options.imgMaxSize * 1024) {
+                _dialog.alert(options.imgMaxSizeTips);
+                $fileBtn.focus();
+                return false;
+            }
+            var fileReader = new FileReader();
+            fileReader.onload = function (e) {
+                $previewImg.attr('src', e.target.result).show();
+            };
+            fileReader.readAsDataURL(file);
+        }
+        return true;
+    }
+
+    _util.initNameSpace("CS");
+    CS.localImg = {'show': show, 'showv2': showv2};
+})(jQuery);
+(function ($) {
+    var _util = CS.util;
+    var _nodes = {}, _autoHideTime = 1000, _autoHideTimeout = null;
+    var _boxTpl = ['<div id="topTipBox" class="top-tipbox hidden">', '<p data-node="content"></p>', '</div>'].join('');
+
+    function show(content, closeCallback) {
+        if (!content) {
+            return;
+        }
+        if (_autoHideTimeout) {
+            clearTimeout(_autoHideTimeout);
+        }
+        _nodes.$box = $('#topTipBox');
+        if (!_nodes.$box || _nodes.$box.length === 0) {
+            $(document.body).append(_boxTpl);
+            $(window).on('resize', function () {
+                _util.throttle(setPosition);
+            });
+            _nodes.$box = $('#topTipBox');
+        }
+        _nodes.$content = _nodes.$box.find('[data-node="content"]');
+        _nodes.$content.text(content);
+        setPosition();
+        _nodes.$box.fadeIn('fast');
+        _autoHideTimeout = setTimeout(function () {
+            hide(closeCallback);
+        }, _autoHideTime);
+    }
+
+    function hide(closeCallback) {
+        if (_autoHideTimeout) {
+            clearTimeout(_autoHideTimeout);
+        }
+        _nodes.$box.fadeOut('slow', function () {
+            if (typeof closeCallback === 'function') {
+                closeCallback();
+            }
+        });
+    }
+
+    function setPosition() {
+        var left = ($(window).width() - _nodes.$box.width()) / 2;
+        _nodes.$box.css('left', left + 'px');
+    }
+
+    _util.initNameSpace("CS");
+    CS.topTip = {'show': show, 'hide': hide, 'setPosition': setPosition};
+})(jQuery);
+(function ($) {
+    var _util = CS.util, _uiBinder = CS.uiBinder, _mask = CS.mask, _dialog = CS.dialog, _topTip = CS.topTip,
+        _localImg = CS.localImg;
+    var _params = {}, _nodes = {}, _maskByNovelTagPopup = null, _isRequesting = 0, _isSubmitting = 0,
+        _searchBookTimeout = null, _maskuploadfile = null, _recommendBookMaxCount = 10, _boyHtml = "", _girlHtml = "";
+    var _ajaxUrls = {
+        'searchBook': "/Contentv2/Booknovels/ajaxsearchbook.html",
+        'recommendBook': "/Contentv2/Booknovels/ajaxAddTuiJian.html",
+        'checkBookTitleExist': "/Contentv2/Booknovels/isMayEditBookname.html",
+        'cancelRecommendBook': "/Contentv2/Booknovels/ajaxDelTuiJian.html",
+        'recommendList': "/Contentv2/Booknovels/ajaxGetRecList"
+    };
+    var _tagItemTpl = '<a data-tagid="$tagId$" title="$tagName$" href="javascript:;">$tagName$<i></i></a>';
+    var _searchBookListTpl = ['<dl>', '<%each bookList as book index%>', '<dd>', '<a data-bid="<%= book.BID %>" href="javascript:;"><%= book.title %></a>', '</dd>', '<%/each%>', '</dl>'].join('');
+    var _recommendBookItemTpl = '<a data-bid="$bid$" href="javascript:;">$title$<cite data-node="del" class="icon"></cite></a>';
+
+    function init(CBID, novelssortsman, novelssortslady, site, authorization, isshow, salesleads, categoryid, subcategoryid, taglist, tagshow) {
+        _params.novelssortsman = novelssortsman || '';
+        _params.novelssortslady = novelssortslady || '';
+        _params.CBID = CBID || '';
+        _params.site = site || '';
+        _params.authorization = authorization || '';
+        _params.isshow = isshow || '';
+        _params.saletype = salesleads || '';
+        _params.categoryid = categoryid || '';
+        _params.subcategoryid = subcategoryid || '';
+        _params.taglist = taglist || '';
+        _params.tagshow = tagshow || '';
+        _nodes.$form = $('#formModifyBook');
+        _nodes.$selectedNovelTagList = $('#selectedNovelTagList');
+        oldTagList = $('#selectedNovelTagList').html();
+        oriTagList = $('#tagIdListHidden').val();
+        _tagListPlate();
+        _setFormValidate(_params.site);
+        _bindEvent();
+        _bindEventByBookTag();
+        _bindEventByRecommendBook();
+    }
+
+    function _gettuijianBook(site) {
+        _util.request({
+            url: _ajaxUrls.recommendList,
+            data: {'CBID': _params.CBID, 'site': site},
+            type: 'POST',
+            dataType: "json",
+            success: function (json) {
+                if (!json) {
+                    return;
+                }
+                if (json.status) {
+                    var html = '';
+                    $.each(json.list, function (key, val) {
+                        html += "<a data-bid=\"" + val['BID'] + "\" href=\"javascript:\">" + val['title'] + "";
+                        html += "<cite data-node=\"del\" class=\"icon\"></cite></a>";
+                    });
+                    $('#recommendBookList').html(html);
+                }
+            },
+            error: function () {
+                return;
+            }
+        });
+    }
+
+    function _tagListPlate() {
+        var boyLength = _params.taglist['boy'].length;
+        var girlLength = _params.taglist['girl'].length;
+        $.each(_params.taglist['boy'], function (key, val) {
+            _boyHtml += "<li> <span>" + val['tagName'] + "</span>";
+            _boyHtml += "<div class=\"tagFilter\">";
+            $.each(val['sonSet'], function (key1, val1) {
+                _boyHtml += "<a data-tagid=\"" + val1['id'] + "\" title=\"" + val1['tagName'] + "\" href=\"javascript:\">" + val1['tagName'] + "</a>";
+            });
+            _boyHtml += "</div>";
+            _boyHtml += "</li>";
+        });
+        $.each(_params.taglist['girl'], function (key, val) {
+            _girlHtml += "<li> <span>" + val['tagName'] + "</span>";
+            _girlHtml += "<div class=\"tagFilter\">";
+            $.each(val['sonSet'], function (key1, val1) {
+                _girlHtml += "<a data-tagid=\"" + val1['id'] + "\" title=\"" + val1['tagName'] + "\" href=\"javascript:\">" + val1['tagName'] + "</a>";
+            });
+            _girlHtml += "</div>";
+            _girlHtml += "</li>";
+        });
+        var $cur_site = $("input[name='site']").val();
+        if ($cur_site == 1 || $cur_site == 5) {
+            $('#tagCount').html(boyLength);
+            $('#novelTagPopup_tagList').html(_boyHtml);
+        } else {
+            $('#novelTagPopup_tagList').html(_girlHtml);
+            $('#tagCount').html(girlLength);
+        }
+        if (_params.site == 1 || _params.site == 2) {
+            $('#commendlist_id').show();
+        }
+    }
+
+    function _siteChangeTagList(site) {
+        var boyLength = _params.taglist['boy'].length;
+        var girlLength = _params.taglist['girl'].length;
+        if (site == 1 || site == 5) {
+            $('#novelTagPopup_tagList').html(_boyHtml);
+            $('#tagCount').html(boyLength);
+        } else {
+            $('#novelTagPopup_tagList').html(_girlHtml);
+            $('#tagCount').html(girlLength);
+        }
+    }
+
+    function _bindEvent() {
+        var $bookWrap = $('#bookWrap');
+        $('#selectBookCoverBtn').on('click', function () {
+            _maskuploadfile = new _mask($('#J-dialog1'));
+            if (_maskuploadfile) {
+                _maskuploadfile.open();
+            }
+        });
+        $('#img_file_btn_1,#img_file_btn_2').on('click', function () {
+            $('#bookpic').click();
+            $('.close-btn').click();
+        });
+        $('#bookpic').on('change', function () {
+            _localImg.show($(this), $('#previewImg'), {'imgMaxSize': 5120, 'imgMaxSizeTips': '您上传的图片大于5M'});
+        });
+        $('.close-btn').on('click', function () {
+            if (_maskuploadfile) {
+                _maskuploadfile.close();
+            }
+        });
+        $('#switchModifyModeBtn').on('click', function () {
+            $bookWrap.find('.modify').show();
+            $bookWrap.find('.saved').hide();
+            $bookWrap.find('#novelMainCategorySelect').show();
+            return;
+            if (_params.isshow == 'yes') {
+                $("select[name='sites']").val(_params.site);
+                $("select[name='authorization']").val(_params.authorization);
+                _addsalesLeadsAndRecommendwords(_params.site, _params.categoryid);
+                _NovelSubCategorySelector(_params.site);
+            }
+            return false;
+        });
+        if (_params.isshow == 'yes') {
+            $("select[name='sites']").on('change', function () {
+                var site = $("select[name='sites']").val();
+                _setFormValidate(site);
+                if ($(this).val() != _params.site) {
+                    $("#selectedNovelTagList").html('');
+                    $('#tagIdListHidden').val('');
+                } else {
+                    $("#selectedNovelTagList").html(oldTagList);
+                    $('#tagIdListHidden').val(oriTagList);
+                }
+                _siteChangeTagList($(this).val());
+                _NovelSubCategorySelector($(this).val());
+                _addsalesLeadsAndRecommendwords($(this).val(), $('#parentClass').val());
+                _gettuijianBook($(this).val());
+                if ($(this).val() == 1 || $(this).val() == 2) {
+                    $('#commendlist_id').show();
+                } else {
+                    $('#commendlist_id').hide();
+                }
+            });
+        }
+        $('#cancelBookSettingBtn').on('click', function () {
+            $('#selectedNovelTagList').html(oldTagList);
+            $('#tagIdListHidden').val(oriTagList);
+            if (_params.isshow == 'yes') {
+                $(".novelssort").remove();
+            }
+            $bookWrap.find('.modify').hide();
+            $bookWrap.find('.saved').show();
+        });
+        $('#saveBookSettingBtn').on('click', function () {
+            _submitForm();
+            return false;
+        });
+        $("#pagemessage").click(function () {
+            var obj = $("#pagemessage");
+            var pageMsg = obj.attr('data-p');
+            if (!pageMsg) {
+                return;
+            }
+            if ((obj.val() != pageMsg) && obj.val()) {
+                return;
+            }
+            obj.val(pageMsg);
+        });
+        $('#bookautocoverId').on('click', function () {
+            var val = $(this).attr('data-val');
+            var href = $(this).attr('data-href');
+            if (val == 1) {
+                window.location.href = href;
+            } else {
+                _topTip.show("仅支持首次设计");
+            }
+        })
+    }
+
+    function _addsalesLeadsAndRecommendwords(siteType, categoryid) {
+        if (siteType == 2 || ((siteType == 21 || siteType == 23 || siteType == 24) && categoryid > 30000)) {
+            var html = '';
+            html += "<em>销售意向：</em>";
+            html += "<p class='select-level'><select name='salesleads'><option value=\"2\">包月</option>";
+            html += "<option value=\"1\">单订</option></select></p>";
+            $('#salesLeads').html(html).show();
+            if (siteType == 2) {
+                html = '';
+                html += "<em>推荐语：</em>";
+                html += "<input class='midInput recTagInput valid' tupe='text' name='recommendwords' value='" + $('#rec').val() + "'>";
+                html += "<p data-node=\"ok\" style=\"display:none;\">"
+                html += "<cite class=\"icon ok\"></cite><span class=\"f12 c999\" data-node=\"text\" style=\"padding-left:5px;\"></span></p>"
+                html += "<p data-node=\"error\" class=\"error\" style=\"display:none;\"></p>";
+                $('#recommendwords').css('min-height', "30px");
+                $('#recommendwords').html(html).show();
+            } else {
+                $('#recommendwords').css('min-height', "0px");
+                $('#recommendwords').html('').hide();
+            }
+            $("select[name='salesleads']").css('visibility', 'visible').show();
+            $("select[name='salesleads'] option[value=" + _params.saletype + "]").attr("selected", "selected");
+        } else {
+            $('#salesLeads').html('').hide();
+            $('#recommendwords').html('').hide();
+        }
+        if (_params.site == 2) {
+            $("select[name='salesleads']").val(_params.saletype);
+        }
+    }
+
+    function _ParentNovelChange() {
+        var changeSite = $("select[name='sites']").val();
+        $('#parentClass').on('change', function () {
+            $('#subcategory').html('');
+            var cateId = $(this).val();
+            var novelParentCate, novelSubCate;
+            if (changeSite == 5 || changeSite == 1 || (_params.site == 21 && _params.categoryid < 30000))
+                novelParentCate = _params.novelssortsman; else
+                novelParentCate = _params.novelssortslady;
+            for (var item in novelParentCate) {
+                if (novelParentCate[item]['categoryid'] == cateId) {
+                    novelSubCate = novelParentCate[item];
+                    break;
+                }
+            }
+            var arrnovels = [];
+            for (var itemsub in novelSubCate['son']) {
+                arrnovels.push('<option value="' + novelSubCate['son'][itemsub].subcategoryid + '">' + novelSubCate['son'][itemsub].subcategoryname + '</option>');
+            }
+            $('#subcategory').html(arrnovels);
+        });
+    }
+
+    function _NovelSubCategorySelector($site) {
+        var subcate;
+        $(".novelssort").remove();
+        var arrnovels = "";
+        arrnovels += "<select id='parentClass' name='parentClass' class='modify hidden showselect novelssort'>";
+        if ($site == 5 || $site == 1 || (($site == 21 || $site == 23 || $site == 24) && _params.categoryid < 30000 && $site == _params.site)) {
+            for (var item in _params.novelssortsman) {
+                if (item == _params.categoryid)
+                    subcate = _params.novelssortsman[item]['son'];
+                arrnovels += '<option value="' + _params.novelssortsman[item].categoryid + '">' + _params.novelssortsman[item].categoryname + '</option>';
+            }
+            arrnovels += "</select>";
+            arrnovels += "<select style=\"visibility: visible\" id='subcategory' name= 'subcategory' class='modify hidden showselect novelssort'>";
+            if (subcate == undefined)
+                subcate = _params.novelssortsman['20001']['son'];
+            for (var itemsub in subcate) {
+                arrnovels += '<option value="' + subcate[itemsub].subcategoryid + '">' + subcate[itemsub].subcategoryname + '</option>';
+            }
+        } else {
+            for (var item in _params.novelssortslady) {
+                if (item == _params.categoryid)
+                    subcate = _params.novelssortslady[item]['son'];
+                arrnovels += '<option value="' + _params.novelssortslady[item].categoryid + '">' + _params.novelssortslady[item].categoryname + '</option>';
+            }
+            arrnovels += "</select>";
+            arrnovels += "<select style=\"visibility: visible\" id='subcategory' name='subcategory' class='modify hidden showselect novelssort'>";
+            if (subcate == undefined)
+                subcate = _params.novelssortslady['30001']['son'];
+            for (var itemsub in subcate) {
+                arrnovels += '<option value="' + subcate[itemsub].subcategoryid + '">' + subcate[itemsub].subcategoryname + '</option>';
+            }
+        }
+        arrnovels += "</select>";
+        $('#classificationWorks').append(arrnovels);
+        $('.showselect').css('visibility', 'visible').show();
+        _ParentNovelChange();
+        $("select[name='parentClass']").val(_params.categoryid);
+        $("select[name='subcategory']").val(_params.subcategoryid);
+    }
+
+    function _bindEventByBookTag() {
+        var $novelTagPopup = $('#novelTagPopup'), $tagList = $('#novelTagPopup_tagList'),
+            selectedTags = _getSelectedTags();
+        $tagList.slimScroll({height: '328px', disableFadeOut: true, railVisible: true});
+        if (selectedTags && selectedTags.length > 0) {
+            $.each(selectedTags, function (index, tagid) {
+                $tagList.find('[data-tagid="' + tagid + '"]').addClass('act');
+            });
+        }
+        _nodes.$selectedNovelTagList.on('click', 'a', function () {
+            if (_params.tagshow == 'disabled') {
+                return false;
+            }
+            var val = $(this).attr('data-tagid');
+            _deleteNovelTag(val);
+            return false;
+        });
+        _nodes.$selectedNovelTagList.on('click', function (event) {
+            if (_params.tagshow == 'disabled') {
+                return false;
+            }
+            selectedTags = _getSelectedTags();
+            if (selectedTags && selectedTags.length > 0) {
+                $.each(selectedTags, function (index, tagid) {
+                    $tagList.find('[data-tagid="' + tagid + '"]').addClass('act');
+                });
+            }
+            event.preventDefault();
+            if (!_maskByNovelTagPopup) {
+                _maskByNovelTagPopup = new _mask($novelTagPopup);
+            }
+            if (_maskByNovelTagPopup) {
+                _maskByNovelTagPopup.open();
+            }
+        });
+        $('#novelTagPopup_closeBtn').on('click', function (event) {
+            event.preventDefault();
+            _closeNovelTagPopup();
+        });
+        $('#novelTagPopup_tagList').on('click', 'a', function (event) {
+            event.preventDefault();
+            $(this).addClass('act').siblings('a').removeClass('act');
+        });
+        $('#novelTagPopup_confirmBtn').on('click', function (event) {
+            event.preventDefault();
+            _selectNovelTag();
+        });
+    }
+
+    function _bindEventByRecommendBook() {
+        var $searchBookInput = $("#searchBookInput"), $searchBookResultList = $('#searchBookResultList'),
+            $recommendBookList = $('#recommendBookList');
+        $searchBookInput.on('keyup', function () {
+            if (_searchBookTimeout) {
+                clearTimeout(_searchBookTimeout);
+            }
+            _searchBookTimeout = setTimeout(function () {
+                _searchRecommendBook($searchBookInput.val());
+            }, 200);
+        });
+        $recommendBookList.on("click", '[data-node="del"]', function () {
+            var bid = $(this).parent().attr('data-bid');
+            _cancelRecommendBook(bid);
+            return false;
+        });
+        $searchBookResultList.on('click', 'a', function () {
+            var bid = $(this).attr("data-bid"), title = $(this).text();
+            $searchBookInput.val(title).attr('data-bid', bid);
+            $searchBookResultList.hide().empty();
+        });
+        $('#recommendBookBtn').on("click", function () {
+            var bid = $searchBookInput.attr('data-bid'), bookTitle = $searchBookInput.val();
+            _recommendBook(bid, bookTitle);
+            return false;
+        });
+        $(document).on("click", function (e) {
+            var target = $(e.target);
+            if (target.closest($searchBookInput).length === 0) {
+                $searchBookResultList.fadeOut(200);
+            }
+        });
+    }
+
+    function _setFormValidate(site) {
+        var $bookNameInput = $('#bookNameInput');
+        if (site == '' || site == 'undefined') {
+            site = $("input[name='site']").val();
+        }
+        if (site == 1 || site == 5) {
+            jQuery.validator.addMethod("bookNameCheck", function (value, element) {
+                return this.optional(element) || /^[A-Za-z0-9\u4E00-\u9fa5——，]{1,15}$/.test(value);
+            }, '作品名15字以内，特殊字符仅允许中文标点逗号、破折号');
+        } else {
+            jQuery.validator.addMethod("bookNameCheck", function (value, element) {
+                return this.optional(element) || /^[A-Za-z0-9\u4E00-\u9fa5：！——，]{1,15}$/.test(value);
+            }, "作品名15字以内，特殊字符仅允许中文标点逗号、冒号、感叹号、破折号");
+        }
+        _nodes.$form.validate({
+            'rules': {
+                'bookname': {
+                    bookNameCheck: true,
+                    required: true,
+                    byteRangeLengthByOne: [1, 15],
+                    remote: {
+                        url: _ajaxUrls.checkBookTitleExist, type: "post", data: {
+                            bookTitle: function () {
+                                return $bookNameInput.val();
+                            }, CBID: function () {
+                                return _params.CBID;
+                            }, def: function () {
+                                return $bookNameInput.attr('data-def');
+                            }
+                        }
+                    }
+                },
+                'intro': {required: true, byteRangeLengthByOne: [20, 300]},
+                'recommendwords': {required: true, byteRangeLengthByOne: [1, 16]},
+                'parentClass': {required: true,},
+                'pagemessage': {byteRangeLengthByOne: [0, 32]}
+            },
+            'messages': {
+                'bookname': {
+                    required: "书名不能为空",
+                    byteRangeLengthByOne: '请输入15字以内的作品名',
+                    remote: "这本大作已经有人写过了，再想个名字吧！"
+                },
+                'intro': {required: "请输入作品介绍", byteRangeLengthByOne: "请输入20-300字介绍您的作品"},
+                'recommendwords': {required: "推荐语不能为空", byteRangeLengthByOne: "推荐语必须在16个字内"},
+                'parentClass': {required: '请选择作品类型',},
+                'pagemessage': {byteRangeLengthByOne: "请输入32个字以内的内容",}
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                var $error = element.nextAll('[data-node="error"]');
+                $error.html(error);
+                element.nextAll('[data-node="ok"]').hide();
+                element.nextAll('[data-node="tip"]').hide();
+                if (element.attr('id') === 'bookNameInput') {
+                    $error.css('display', 'inline-block');
+                } else {
+                    $error.show();
+                }
+            },
+            success: function (error) {
+                var $errorBox = error.parent(), $ok = $errorBox.prevAll('[data-node="ok"]');
+                if ($errorBox.parent().hasClass('cf')) {
+                    if (_params.isshow != 'yes') {
+                        $ok.find('[data-node="text"]').text('书名修改后需提交审核，2个工作日内完成');
+                    }
+                } else {
+                    $ok.show();
+                }
+                $ok.css('display', 'inline-block');
+                $errorBox.prevAll('[data-node="tip"]').show();
+                $errorBox.hide();
+                error.remove();
+            }
+        });
+    }
+
+    function _submitForm() {
+        if (!_nodes.$form.valid()) {
+            return;
+        }
+        if (_isSubmitting) {
+            return;
+        }
+        _isSubmitting = 1;
+        _util.ajaxSubmitForm(_nodes.$form, {
+            type: "POST", data: {}, dataType: "json", success: function (json) {
+                if (!json) {
+                    _topTip.show('返回的数据格式异常，请稍候再试');
+                    return;
+                }
+                if (json.status) {
+                    _topTip.show(json.info || '修改成功', function () {
+                        _refreshCurrentPage();
+                    });
+                }
+            }, complete: function () {
+                _isSubmitting = 0;
+            }
+        });
+    }
+
+    function _getSelectedTags() {
+        var arrTag = [];
+        _nodes.$selectedNovelTagList.find('[data-tagid]').each(function (index, el) {
+            var tagid = $(el).attr('data-tagid');
+            if (tagid) {
+                arrTag.push(tagid);
+            }
+        });
+        return arrTag;
+    }
+
+    function _selectNovelTag() {
+        var $selectedTag = $('#novelTagPopup_tagList').find('a.act'), tpl = '',
+            frag = document.createDocumentFragment();
+        _nodes.$selectedNovelTagList.empty();
+        $selectedTag.each(function (index, el) {
+            var $el = $(el), tagId = $el.attr('data-tagid'), tagName = $el.text();
+            tpl = _util.replaceTpl(_tagItemTpl, {'tagId': tagId, 'tagName': tagName});
+            frag.appendChild($(tpl).get(0));
+        });
+        _nodes.$selectedNovelTagList.append(frag);
+        _saveNovelTag();
+        _closeNovelTagPopup();
+    }
+
+    function _deleteNovelTag(tagId) {
+        _nodes.$selectedNovelTagList.find('a').each(function () {
+            var $this = $(this);
+            if ($this.attr("data-tagid") == tagId) {
+                $this.remove();
+                return false;
+            }
+        });
+        $('#novelTagPopup_tagList').find('[data-tagid="' + tagId + '"]').removeClass('act');
+        _saveNovelTag();
+    }
+
+    function _saveNovelTag() {
+        var arrTag = _getSelectedTags();
+        $("#tagIdListHidden").val(arrTag.join(','));
+    }
+
+    function _closeNovelTagPopup() {
+        if (_maskByNovelTagPopup) {
+            _maskByNovelTagPopup.close();
+        }
+    }
+
+    function _searchRecommendBook(inputText) {
+        var $list = $('#searchBookResultList');
+        $list.hide().empty();
+        if (/^[A-Za-z0-9\u4E00-\u9fa5：，]{1,15}$/.test(inputText)) {
+            _util.request({
+                url: _ajaxUrls.searchBook,
+                data: {'Booktitle': inputText, 'CBID': _params.CBID, 'site': $("select[name='sites']").val()},
+                type: 'post',
+                dataType: "json",
+                success: function (json) {
+                    if (json && json.status) {
+                        if (json.data && json.data.list && json.data.count > 0) {
+                            var tpl = _uiBinder.bindData(_searchBookListTpl, {'bookList': json.data.list});
+                            $list.html(tpl).show();
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    function _recommendBook(bid, bookTitle) {
+        if (!bid || !bookTitle) {
+            _dialog.alert('请先点选下拉框中的书名，然后点击推荐按钮确认。');
+            return;
+        }
+        var hasRecommended = 0, $recommendBookList = $('#recommendBookList'),
+            $recommendedBook = $recommendBookList.find('a');
+        if ($recommendedBook.length >= _recommendBookMaxCount) {
+            _dialog.alert('最多可以推荐' + _recommendBookMaxCount + '本作品');
+            return;
+        }
+        $recommendedBook.each(function () {
+            if ($(this).attr('data-bid') === bid) {
+                hasRecommended = 1;
+                return false;
+            }
+        });
+        if (hasRecommended) {
+            _dialog.alert('该作品已在您的推荐作品列表中');
+            return;
+        }
+        _util.request({
+            url: _ajaxUrls.recommendBook,
+            data: {'bid': bid, 'CBID': _params.CBID, 'site': $("select[name='sites']").val()},
+            type: 'POST',
+            dataType: "json",
+            success: function (json) {
+                if (!json) {
+                    return;
+                }
+                if (json.info) {
+                    _topTip.show(json.info);
+                }
+                if (json.status) {
+                    var tpl = _util.replaceTpl(_recommendBookItemTpl, {'bid': bid, 'title': bookTitle});
+                    $recommendBookList.append(tpl);
+                }
+            }
+        });
+    }
+
+    function _cancelRecommendBook(bid) {
+        if (!bid) {
+            _dialog.alert('作品id未获取到');
+            return;
+        }
+        _util.request({
+            url: _ajaxUrls.cancelRecommendBook,
+            data: {'bid': bid, 'CBID': _params.CBID, 'site': $("select[name='sites']").val()},
+            type: 'POST',
+            dataType: "json",
+            success: function (json) {
+                if (!json) {
+                    return;
+                }
+                if (json.info) {
+                    _topTip.show(json.info);
+                }
+                if (json.status) {
+                    $('#recommendBookList').find('a[data-bid="' + bid + '"]').remove();
+                }
+            }
+        });
+    }
+
+    function _refreshCurrentPage() {
+        location.href = location.href;
+    }
+
+    _util.initNameSpace("CS.page.bookManage");
+    CS.page.bookManage.bookModify = {'init': init};
+})(jQuery);
+(function ($) {
+    var _util = CS.util, _uiBinder = CS.uiBinder, _mask = CS.mask, _topTip = CS.topTip, _dialog = CS.dialog,
+        _localImg = CS.localImg, _volume = null, _createChapter = null;
+    var _params = {}, _nodes = {}, _isSubmitting = 0, _maskCreateRolePopup = null, _maskRoleManagePopup = null,
+        _maskRoleDeletePopup = null, _countRoleDeletePopup = 0, _countRoleManagePopup = 0, _countCreateRolePopup = 0,
+        _countBirthday = 0;
+    var _ajaxUrls = {
+        'ajaxGetRoleNum': '/Contentv2/Rolemanage/ajaxGetRoleNum.html',
+        'ajaxAddRole': '/Contentv2/Rolemanage/ajaxAddRole.html',
+        'ajaxUpdateRole': '/Contentv2/Rolemanage/ajaxUpdateRole.html',
+        'ajaxDelRole': '/Contentv2/Rolemanage/ajaxDelRole.html',
+        'ajaxListRole': '/Contentv2/Rolemanage/ajaxListRole.html',
+        'ajaxGetRoleInfo': '/Contentv2/Rolemanage/ajaxGetRoleInfo.html',
+        'ajaxGetConstellation': '/Contentv2/Rolemanage/ajaxGetConstellation.html'
+    };
+    var _roleManageTpl = ['<li>', '<div class="content">', '<div class="avatar"><img src="<%=roleInfo.cfmportrait%>"></div>', '<div class="info">', '<div class="text">', '<h3><%=roleInfo.nickname%><span><%=roleInfo.nametype%></span></h3>', '<p><%=roleInfo.cfmremark%></p>', '</div>', '<i></i>', '</div>', '<div class="btn-box">', '<input type="hidden" value="<%=roleInfo.CRID%>">', '<a class="editRole" href="javascript:">编辑</a>', '<a class="delRole" href="javascript:">删除</a>', '</div>', '</div>', '</li>'].join('');
+
+    function init(CBID) {
+        _params.CBID = CBID;
+        _params.jmoreBtn_click_num = 0;
+        _nodes.$createRolePopup = $('#createRolePopup');
+        _nodes.$roleManagePopup = $('#roleManagePopup');
+        _nodes.$roleDeletePopup = $('#roleDeletePopup');
+        _nodes.$jcharacterList = $('#j-characterList');
+        _nodes.$jinsertStart = $('#j-insertStart');
+        _nodes.$insertEnd = $('#insertEnd');
+        _nodes.$roleId = $('#roleId');
+        _bindEventDialog();
+        _bindDialogLoad();
+        _allCharacterListShow();
+        _jcharacterListSroll()
+        _jAllCharacterList();
+        _changeMonth();
+        _changeDate();
+    }
+
+    function _bindEventDialog() {
+        _bindFileImg('acUpload', 'roleImg');
+        $("#createRole,.add-character").on('click', function () {
+            $("#createRolePopup .popup-title").find('h3').html("创建角色");
+            $("#createRolePopup").find('label[for="acUpload"]').html("上传头像");
+            $("#roleImg").attr("src", default_photo);
+            $("#zsjs").parent(".radio").addClass('on');
+            $("#zsjs").attr("checked", "checked");
+            $("#ycjs").removeAttr('checked');
+            $("#ycjs").parent(".radio").removeClass('on');
+            $(".create-character-wrap .combo-input").val('请选择角色类型');
+            $("#roletype").val(0)
+            _params.class_name = $(this).attr("class");
+            _showCreateRolePopup();
+            _setMonthDate(0, 0);
+        });
+        $("#bookrolemanage").on('click', function () {
+            _showRoleManagePopup();
+        });
+        $("#roleDeleteConfirm").on('click', function () {
+            _roleDeleteSubmit();
+        });
+        $("#roleCreateConfirm").on('click', function () {
+            _roleCreateSubmit();
+        });
+        _nodes.$createRolePopup.find('[data-node-do-role="close"]').click(function (event) {
+            event.preventDefault();
+            _closeCreateRolePopup();
+            return false;
+        })
+        _nodes.$roleDeletePopup.find('[data-node-del-role="close"]').click(function (event) {
+            event.preventDefault();
+            _closeRoleDelPopup();
+            return false;
+        })
+        _nodes.$roleManagePopup.find('[data-node-man-role="close"]').click(function (event) {
+            event.preventDefault();
+            _closeRoleManagePopup();
+            return false;
+        });
+    }
+
+    function _bindDialogLoad() {
+        $(document).on("click", '.editRole', function (event) {
+            event.preventDefault();
+            _params.class_name = $(this).attr("class");
+            _params.CRID = $(this).siblings("input").val();
+            _nodes.$roleContent = $(this).parent('.btn-box').parent('.content');
+            _showCreateRolePopup();
+        });
+        $(document).on("click", '.delRole', function (event) {
+            event.preventDefault();
+            _params.CRID = $(this).siblings("input").val();
+            _nodes.$deleteLi = $(this).parent('.btn-box').parent('.content').parent();
+            _showRoleDelPopup();
+        });
+    }
+
+    function _bindFileImg(fileid, imgid) {
+        if ($('#' + fileid).length !== 0) {
+            $('#' + fileid).on('change', function () {
+                var isSelectedImg = _localImg.showv2($(this), $('#' + imgid), {
+                    'imgMaxSize': 2048 * 5,
+                    'imgMaxSizeTips': '检测到上传照片超过2MB，请重新上传。',
+                    'supportFileTypes': 'jpg|png',
+                    'fileTypeErrorTips': '图片格式一定要是JPG，PNG中的一种'
+                });
+                if (!isSelectedImg) {
+                    $('#' + fileid).val('');
+                }
+            });
+        }
+    }
+
+    function _allCharacterListShow() {
+        var $moreBtn = $('#j-moreBtn'), $characterList = $('#j-AllCharacterList');
+        $moreBtn.on('click', function () {
+            $characterList.fadeIn(200);
+        });
+        $(document).on('click', function (e) {
+            var target = $(e.target);
+            if (target.attr('id') == 'j-moreBtn' || target.closest('#j-AllCharacterList').length > 0 || target.hasClass('more')) {
+                return;
+            } else {
+                $characterList.fadeOut(200);
+            }
+        })
+    }
+
+    function _showCreateRolePopup() {
+        var requestData = {'CBID': _params.CBID, 'CRID': _params.CRID || 0};
+        if (_isSubmitting == 1) {
+            return;
+        }
+        _isSubmitting = 1;
+        _util.request({
+            url: (_params.class_name == 'editRole') ? _ajaxUrls.ajaxGetRoleInfo : _ajaxUrls.ajaxGetRoleNum,
+            data: requestData,
+            type: 'post',
+            success: function (json) {
+                if (!json) {
+                    _dialog.alert('返回数据格式异常，请稍后再试');
+                    return;
+                }
+                if (json.status == false) {
+                    _dialog.alert(json.info);
+                    return;
+                } else {
+                    if (!_maskCreateRolePopup) {
+                        _maskCreateRolePopup = new _mask(_nodes.$createRolePopup);
+                    }
+                    if (!_maskCreateRolePopup) {
+                        return;
+                    }
+                    if (_params.class_name == 'editRole') {
+                        $("#createRolePopup .popup-title").find('h3').html("编辑角色");
+                        $("#createRolePopup").find('label[for="acUpload"]').html("修改头像");
+                        $("#roleName").val(json.nickname);
+                        $("#roleDesc").val(json.cfmremark);
+                        if (json.roleshow_status == -1) {
+                            $("#roleshowstatus").prop("checked", "checked");
+                        } else {
+                            $("#roleshowstatus").removeAttr("checked");
+                        }
+                        $("#roleImg").attr('src', json.cfmportrait);
+                        $("#roletype").val(json.role).change();
+                        $("#height").val(json.height);
+                        $("#weight").val(json.weight);
+                        $("#age").val(json.age);
+                        var md = json.birthday.split('/');
+                        if (md.length == 2) {
+                            month = md[0];
+                            date = md[1];
+                            $("#birMonth_em").text(month);
+                            $("#birDay_em").text(date);
+                            $("#constellation_i").text(json.constellation);
+                            $("#birthday_select").hide();
+                            $("#birthday_text").show();
+                        } else {
+                            _setMonthDate(0, 0);
+                            $("#birthday_select").show();
+                            $("#birthday_text").hide();
+                        }
+                        $(".create-character-wrap .combo-input").val(json.nametype);
+                    } else {
+                        $("#createRolePopup .popup-title").find('h3').html("创建角色");
+                    }
+                    _maskCreateRolePopup.open();
+                    _isSubmitting = 0;
+                }
+            },
+            complete: function () {
+                _isSubmitting = 0;
+            }
+        });
+    }
+
+    function _closeCreateRolePopup() {
+        if (_maskCreateRolePopup) {
+            _maskCreateRolePopup.close();
+            $("#acUpload").val('');
+            $("#roleName").val('');
+            $("#roleDesc").val('');
+            $("#roletype").val("0").change();
+            $("#height").val('');
+            $("#weight").val('');
+            $("#age").val('');
+            $("#roleshowstatus").removeAttr("checked");
+            $("#birMonth").val(0);
+            $("#birDay").val(0);
+            $("#birthday_select").show();
+            $("#birthday_text").hide();
+            _countBirthday = 0;
+        }
+    }
+
+    function _showRoleManagePopup() {
+        var requestData = {'CBID': _params.CBID};
+        if (_countRoleManagePopup > 0) {
+            return;
+        }
+        _countRoleManagePopup = 1;
+        _util.request({
+            url: _ajaxUrls.ajaxListRole, data: requestData, type: 'post', success: function (json) {
+                if (!json) {
+                    _dialog.alert('返回数据格式异常，请稍后再试');
+                    return;
+                }
+                if (json.length == 0) {
+                    _roleEmpty();
+                } else {
+                    _nodes.$jcharacterList.find("ul li").remove();
+                    for (i = 0; i < json.length; i++) {
+                        tpl = _uiBinder.bindData(_roleManageTpl, {'roleInfo': json[i]});
+                        _nodes.$jcharacterList.find("ul").append(tpl);
+                    }
+                    _bindDialogLoad();
+                    return false;
+                }
+            }, complete: function () {
+                _countRoleManagePopup = 0;
+            }
+        });
+        if (!_maskRoleManagePopup) {
+            _maskRoleManagePopup = new _mask(_nodes.$roleManagePopup);
+        }
+        if (!_maskRoleManagePopup) {
+            return;
+        }
+        _maskRoleManagePopup.open();
+        _countRoleManagePopup = 0;
+    }
+
+    function _closeRoleManagePopup() {
+        if (_maskRoleManagePopup) {
+            _maskRoleManagePopup.close();
+            _countRoleManagePopup = 0;
+        }
+    }
+
+    function _showRoleDelPopup() {
+        if (_countRoleDeletePopup > 0) {
+            return;
+        }
+        if (!_maskRoleDeletePopup) {
+            _maskRoleDeletePopup = new _mask(_nodes.$roleDeletePopup);
+        }
+        if (!_maskRoleDeletePopup) {
+            return;
+        }
+        _maskRoleDeletePopup.open();
+        _countRoleDeletePopup = 1;
+    }
+
+    function _closeRoleDelPopup() {
+        if (_maskRoleDeletePopup) {
+            _maskRoleDeletePopup.close();
+            _countRoleDeletePopup = 0;
+        }
+    }
+
+    function _roleDeleteSubmit() {
+        var requestData = {'CBID': _params.CBID, 'CRID': _params.CRID};
+        _util.request({
+            url: _ajaxUrls.ajaxDelRole, data: requestData, type: 'post', success: function (json) {
+                if (!json) {
+                    _dialog.alert('返回数据格式异常，请稍后再试');
+                    return;
+                }
+                if (json.status == false) {
+                    _dialog.alert(json.info);
+                    return;
+                } else {
+                    _topTip.show(json.info);
+                    _nodes.$deleteLi.remove();
+                    _delSelectCharacter(_params.CRID);
+                    _delAllCharacterList(_params.CRID);
+                    _closeRoleDelPopup();
+                }
+            }
+        });
+    }
+
+    function _roleCreateSubmit() {
+        if (_countBirthday == 1) {
+            _dialog.confirm("角色生日一旦填写则不允许修改，是否确认？", function () {
+                _roleCreateSubmitSon();
+            });
+        }
+        else {
+            _roleCreateSubmitSon();
+        }
+    }
+
+    function _roleCreateSubmitSon() {
+        var roleName = $("#roleName").val();
+        var roleDesc = $("#roleDesc").val();
+        var roletype = $("#roletype").val();
+        var height = $("#height").val();
+        var weight = $("#weight").val();
+        var age = $("#age").val();
+        var birthday = _getBirthday();
+        var roleshowStatus = $("#roleshowstatus:checked").val();
+        if (roleName.length < 1 || roleName.length > 10) {
+            alert('昵称至少一个字，最多不超过10个汉字');
+            return;
+        }
+        if (roleDesc.length > 50) {
+            alert('描述至多50个汉字');
+            return;
+        }
+        if (roletype < 1) {
+            alert('请选择角色类型');
+            return;
+        }
+        if (height.length > 10) {
+            alert('身高不超过10个字');
+            return;
+        }
+        if (weight.length > 10) {
+            alert('体重不超过10个字');
+            return;
+        }
+        if (age.length > 10) {
+            alert('年龄不超过10个字');
+            return;
+        }
+        if (!_isValidMonthDate()) {
+            alert('角色生日请填写完整的日期');
+            return;
+        }
+        var formData = new FormData();
+        formData.append("myfile", $("#acUpload")[0].files[0]);
+        formData.append("roleName", roleName);
+        formData.append("roleDesc", roleDesc);
+        formData.append("roletype", roletype);
+        formData.append("roleshowStatus", roleshowStatus);
+        formData.append("CBID", _params.CBID);
+        formData.append("height", height);
+        formData.append("weight", weight);
+        formData.append("age", age);
+        formData.append("birthday", birthday);
+        if (_params.class_name == 'editRole') {
+            formData.append("CRID", _params.CRID);
+        }
+        _util.request({
+            url: (_params.class_name == 'editRole') ? _ajaxUrls.ajaxUpdateRole : _ajaxUrls.ajaxAddRole,
+            data: formData,
+            type: 'post',
+            processData: false,
+            contentType: false,
+            cache: false,
+            success: function (json) {
+                if (!json) {
+                    _dialog.alert('返回数据格式异常，请稍后再试');
+                    return;
+                }
+                if (json.status == false) {
+                    _dialog.alert(json.info);
+                    return;
+                } else {
+                    _topTip.show(json.info);
+                    if (_params.class_name == 'editRole') {
+                        _nodes.$roleContent.find('.text h3').html(json.data.nickname + '<span>' + json.data.nametype + '</span>');
+                        _nodes.$roleContent.find('.text p').html(json.data.remark);
+                        _nodes.$roleContent.find('.avatar img').attr('src', json.data.cfmportrait);
+                        _updateAllCharacterList(json.data.CRID, json.data.nickname, json.data.cfmportrait);
+                    } else {
+                        tpl = _uiBinder.bindData(_roleManageTpl, {'roleInfo': json.data});
+                        $("#noData").hide();
+                        _nodes.$jcharacterList.find("ul").append(tpl);
+                    }
+                    _closeCreateRolePopup();
+                    return false;
+                }
+            }
+        });
+    }
+
+    function _delSelectCharacter(CRID) {
+        if (!CRID) {
+            return;
+        }
+        var currentInput = $('#j-selectCharacter input[value="' + CRID + '"]');
+        if (currentInput.length == 0) {
+            return;
+        }
+        currentInput.parent().remove();
+    }
+
+    function _delAllCharacterList(CRID) {
+        if (!CRID) {
+            return;
+        }
+        var currentLi = $('#j-AllCharacterList').find('ul li[crid="' + CRID + '"]');
+        if (currentLi.length == 0) {
+            return;
+        }
+        currentLi.remove();
+        _doInsertEnd();
+    }
+
+    function _updateAllCharacterList(CRID, nickname, cfmportrait) {
+        if (!CRID || !nickname || !cfmportrait) {
+            return;
+        }
+        var currentLi = $('#j-AllCharacterList').find('ul li[crid="' + CRID + '"]');
+        if (currentLi.length == 0) {
+            return;
+        }
+        currentLi.find('img').attr('src', cfmportrait);
+        currentLi.find('cite').html(nickname);
+    }
+
+    function _jcharacterListSroll() {
+        $('#j-characterList').slimScroll({
+            height: '528px',
+            railVisible: true,
+            size: '8px',
+            wheelStep: 8,
+            borderRadius: 0,
+            railBorderRadius: 0,
+            disableFadeOut: true,
+            allowPageScroll: false,
+            alwaysVisible: false,
+            distance: '-1px'
+        });
+    }
+
+    function _jAllCharacterList() {
+        $('#j-AllCharacterList ul').slimScroll({
+            height: '247px',
+            railVisible: true,
+            size: '6px',
+            wheelStep: 2,
+            borderRadius: 0,
+            railBorderRadius: 0,
+            disableFadeOut: true,
+            allowPageScroll: false,
+            alwaysVisible: true,
+            distance: '-1px'
+        });
+    }
+
+    function _roleEmpty() {
+        var emptytpl = '<div class="no-data" id="noData"> <div class="no-icon"></div> <p>暂无数据</p> </div>';
+        $("#j-characterList").append(emptytpl);
+    }
+
+    function _getDates(month) {
+        return new Date(2016, month, 0).getDate();
+    }
+
+    function _getDateOptions(month, date) {
+        var dates = _getDates(month);
+        var options = '<option value="0"></option>';
+        var selected = '';
+        for (var i = 1; i <= dates; i++) {
+            if (date == i) {
+                selected = "selected";
+            }
+            tmp = i;
+            if (tmp < 10) {
+                tmp = '0' + i;
+            }
+            options += " <option value='" + tmp + "' " + selected + ">" + tmp + "</option>";
+            selected = '';
+        }
+        return options;
+    }
+
+    function _getMonthOptions(month) {
+        var options = '<option value="0"></option>';
+        var selected = '';
+        var tmp = '';
+        for (var i = 1; i <= 12; i++) {
+            if (month == i) {
+                selected = "selected";
+            }
+            tmp = i;
+            if (tmp < 10) {
+                tmp = '0' + i;
+            }
+            options += " <option value='" + tmp + "' " + selected + ">" + tmp + "</option>";
+            selected = '';
+        }
+        return options;
+    }
+
+    function _setMonthDate(month, date) {
+        var monthOptions = _getMonthOptions(month);
+        var dateOptions = _getDateOptions(month, date);
+        $('#birMonth').html(monthOptions);
+        $('#birMonth').comboSelect();
+        $('#birDay').html(dateOptions);
+        $('#birDay').comboSelect();
+        $('#birDay').change();
+    }
+
+    function _changeMonth() {
+        $('#birMonth').on('change', function () {
+            var month = $('#birMonth').val();
+            var dateOptions = _getDateOptions(month, 0);
+            $('#birDay').html(dateOptions);
+            $('#birDay').comboSelect();
+            $('#birDay').change();
+        });
+    }
+
+    function _changeDate() {
+        $('#birDay').on('change', function () {
+            _getConstellation();
+        });
+    }
+
+    function _getConstellation() {
+        var birthday = _getBirthday();
+        if (birthday.length != 5) {
+            return;
+        }
+        _countBirthday = 1;
+        var requestData = {'CBID': _params.CBID, 'birthday': birthday};
+        _util.request({
+            url: _ajaxUrls.ajaxGetConstellation, data: requestData, type: 'post', success: function (json) {
+                if (!json) {
+                    _dialog.alert('返回数据格式异常，请稍后再试');
+                    return;
+                }
+                if (json.status == false) {
+                    _dialog.alert(json.info);
+                    return;
+                } else {
+                    $("#constellation").text(json.data);
+                }
+            }
+        });
+    }
+
+    function _getBirthday() {
+        var month = $('#birMonth').val();
+        var day = $('#birDay').val();
+        if (month == 0 || day == 0 || month == null || day == 0) {
+            return '';
+        }
+        return month + '/' + day;
+    }
+
+    function _isValidMonthDate() {
+        var month = $('#birMonth').val();
+        var day = $('#birDay').val();
+        if ((month != 0 && day == 0) || (month == 0 && day != 0)) {
+            return false;
+        }
+        return true;
+    }
+
+    _util.initNameSpace("CS.page.bookManage");
+    CS.page.bookManage.roleMange = {'init': init};
+})(jQuery);

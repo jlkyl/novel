@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>个人主页</title>
+    <link rel="icon" type="image/x-icon" href="//qidian.gtimg.com/qdp/img/favicon.0.4.ico">
+
+    <link rel="stylesheet" data-ignore="true" href="../css/index.0.110.css" />
+
+    <link rel="stylesheet" data-ignore="true" href="../css/index.0.111.css" />
+
+    <script src="../js/jquery-3.3.1.js" th:inline="none"></script>
+
+    <link rel="stylesheet" type="text/css" href="../css/sweet-alert.css" />
+    <script src="../js/sweet-alert.js" th:inline="none"></script>
+
+</head>
+<body class="user">
+
+    <div class="personal-mheader">
+        <div class="mheader-wrapper">
+            <ul class="mheader-nav fl">
+                <li class="mheader-nav-li mheader-logo">
+                    <a class="pin-logo" href="/jpbook/booktype/queryAll" style = "font-size: 18px;font-family: 'Courier New', Courier, monospace">江派中文网</a>
+                </li>
+
+                <li class="mheader-nav-li">
+                    <a href="/jpbook/showAllBook.html?btid=1" class="mheader-nav-a" target="_blank">玄幻</a>
+                </li>
+                <li class="mheader-nav-li">
+                    <a href="/jpbook/showAllBook.html?btid=5" class="mheader-nav-a" target="_blank">都市</a>
+                </li>
+                <li class="mheader-nav-li">
+                    <a href="/jpbook/showAllBook.html?btid=4" class="mheader-nav-a" target="_blank">仙侠</a>
+                </li>
+                <li class="mheader-nav-li">
+                    <a href="/jpbook/showAllBook.html?btid=11" class="mheader-nav-a" target="_blank">科幻</a>
+                </li>
+                <li class="mheader-nav-li">
+                    <a href="/jpbook/showAllBook.html?btid=9" class="mheader-nav-a" target="_blank">游戏</a>
+                </li>
+                <li class="mheader-nav-li">
+                    <a href="/jpbook/showAllBook.html?btid=8" class="mheader-nav-a" target="_blank">历史</a>
+                </li>
+                <li class="mheader-nav-li">
+                    <a href="/jpbook/books/rank" class="mheader-nav-a" target="_blank">排行</a>
+                </li>
+                <li class="mheader-nav-li mheader-more">
+                    <a href="javascript:;" class="mheader-nav-a">更多<span class="mheader-arrow"></span></a>
+                    <ul class="mheader-drop">
+                        <li>
+                            <a href="/jpbook/showAllBook.html" target="_blank">全部作品</a>
+                        </li>
+                        <li>
+                            <a href="/jpbook/showAllBook.html?btid=13" target="_blank">二次元</a>
+                        </li>
+                        <li>
+                            <a href="/jpbook/showAllBook.html?btid=2" target="_blank">奇幻</a>
+                        </li>
+                        <li>
+                            <a href="/jpbook/showAllBook.html?btid=3" target="_blank">武侠</a>
+                        </li>
+                        <li>
+                            <a href="/jpbook/showAllBook.html?btid=12" target="_blank">灵异</a>
+                        </li>
+                        <li>
+                            <a href="/jpbook/showAllBook.html?btid=7" target="_blank">军事</a>
+                        </li>
+                        <li>
+                            <a href="/jpbook/showAllBook.html?btid=6" target="_blank">现实</a>
+                        </li>
+                        <li>
+                            <a href="/jpbook/showAllBook.html?btid=10" target="_blank">体育</a>
+                        </li>
+                        <li>
+                            <a href="/jpbook/showAllBook.html?btid=14" target="_blank">短篇</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="mheader-nav fr">
+
+                <li class="mheader-nav-li line"></li>
+
+                <th:block th:if="${session}">
+                    <th:block th:if="${session.users}">
+                        <li class="mheader-nav-li mheader-login">
+                            <a href="/jpbook/personal" target="_blank" class="mheader-nav-a"><span class="elNickName" th:text="${session.users.get(0).getUname()}">Joselyn</span><span class="mheader-arrow"></span></a>
+                            <ul class="mheader-drop">
+                                <li>
+                                    <a href="/jpbook/topup.html" target="_blank" data-guid="854009794986" class="elNewToPay">充值</a>
+                                </li>
+                                <li>
+                                    <a href="/jpbook/personal">个人中心</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;" id="elLogOut">退出</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </th:block>
+                </th:block>
+
+
+                <th:block th:if="${session.users} eq null">
+                    <li class="mheader-nav-li" style="">
+                        <div class="mheader-logout">
+                            <a href="/jpbook/register" target="_blank" class="mr8">注册</a>
+                            <a href="/jpbook/login" class="btnLogin">登录</a>
+                        </div>
+                    </li>
+                </th:block>
+
+
+
+                <li class="mheader-nav-li line"></li>
+
+                <li class="mheader-nav-li">
+                    <a th:href="${session.users} ? '../personal.html?key=i' : '../login'" class="mheader-nav-a mheader-shelf-a"><i class="icon icon-book_icon"></i>&nbsp;我的书架</a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+
+
+
+<div class="">
+    <div class="user-header" data-l1="2">
+        <div class="user-header-wrapper">
+            <div class="header-avatar">
+                <a th:href="@{/pc/home?uuid={uuid}(uuid=${h.uuid})}"><img class="header-avatar-img" th:src="@{/images/{icon}(icon = ${h.icon})}"  th:alt="|${h.uname}的头像|"></a>
+            </div>
+            <div class="header-msg">
+                <h3 id="elUidWrap" data-id="265554">
+                    <a th:href="@{/pc/home?uuid={uuid}(uuid=${h.uuid})}" th:text="${h.uname}">昵称</a>
+                    <a class="header-msg-level" target="_blank">Lv<span th:text="${h.grade}"></span></a>
+                </h3>
+                <div class="header-msg-title"></div>
+                <div class="header-msg-desc" th:text="${h.sex == 0 ? '男':'女'}">男</div>
+                <div class="header-msg-title"></div>
+
+                <div class="header-msg-data">
+                    <span class="mr8">关注<strong class="header-msg-strong" th:text="${h.eye}">关注</strong></span>
+                    <span class="ml12 mr8">粉丝<strong class="header-msg-strong" th:text="${h.fans}">粉丝</strong></span>
+                </div>
+
+                <div class="qdp-button" data-l2="1">
+                    <input type="hidden" th:value="${h.uuid}" id="buuid">
+                    <input type="hidden" th:value="${fansState}" id="fansState">
+                    <input type="hidden" th:value="${session.users==null}?'-1':${session.users.get(0).getUuid()}" id="uuid">
+
+
+                    <a href="javascript:;" class="ui-button ui-button-small" id="elToFollow">关注</a>
+                    <a href="javascript:;" class="ui-button ui-button-small" id="elFollowing">已关注</a>
+
+                    <!--<a href="javascript:;" class="qdp-button-a mlr4" id="elSendMsg" data-image="//facepic.qidian.com" data-name="唐家三少" data-id="265554" data-guid="119090278789" data-eid="qd_M246">私信</a>-->
+
+                    <th:block th:if="${h.sta} ne -1">
+                        <a th:href="@{/pc/authorData?bid={uuid}(uuid=${h.uuid})}" class="qdp-button-a mlr4" target="_blank">作家页</a>
+                    </th:block>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="user-content-wrapper" data-l1="2">
+
+        <div class="user-sidebar" >
+            <div class="user-sidebar-wrapper">
+                <h3 class="user-sidebar-title">足迹</h3>
+                <ul class="user-sidebar-list ui-loading ui-loading-animation" id="elHistoryWrap" style="height: 150px; transition: height 200ms ease 0s;">
+                    <li class="user-sidebar-item">书架藏书: <span th:text="${userbooks.size()}"></span>本</li>
+                    <li class="user-sidebar-item">订阅过作品: <span th:text="${q2}"></span>本</li>
+                    <li class="user-sidebar-item">打赏作品: <span th:text="${q3}"></span>本</li>
+                    <li class="user-sidebar-item">投月票: <span th:text="${q1.num2}"></span>张</li>
+                    <li class="user-sidebar-item">投推荐票: <span th:text="${q1.num1}"></span>张</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="author-content" style="margin-top: -5px">
+
+            <h2 class="author-title">书架藏书(<span th:text="${userbooks.size()}"></span>)</h2>
+            <ul class="author-work" data-l2="9">
+
+                <li class="author-work-line"></li>
+
+                <li class="author-item" th:each="q:${userbooks}">
+                    <div class="author-item-time">
+                        <span th:text="${#strings.substring(q.createtime,0,4)}"></span>
+                        ~
+                        <th:block th:if="${q.overtime} ne -1">
+                            <span th:text="${#strings.substring(q.overtime,0,4)}">开始</span>
+                        </th:block>
+                        <th:block th:if="${q.overtime} eq -1">
+                            <span>至今</span>
+                        </th:block>
+                    </div>
+                    <a th:href="'/jpbook/books/queryBookById?bookid='+${q.bookid}" target="_blank" class='author-item-book' data-eid="qd_M268"><img th:src="@{/img/{icon}(icon = ${q.icon})}" class='author-item-img'></a>
+                    <div class="author-item-msg">
+                        <div class="author-item-title"><a th:href="'/jpbook/books/queryBookById?bookid='+${q.bookid}" target="_blank" data-eid="qd_M269" data-bid="8361" th:text="${q.bookname}">书名</a></div>
+                        <div class="author-item-exp"><a th:href="'/jpbook/showAllBook.html?btid='+${q.btid}" target="_blank"><span th:text="${q.btname}">类型</span></a><i class="author-item-line"></i><a target="_blank"><span th:text="${q.bookstate == 0 ? '连载':'完本'}">状态</span></a><i class="author-item-line"></i><span th:text="${q.num}">0</span>万字</div>
+                        <div class="author-item-content" th:text="${q.bookreferral}">简介</div>
+                        <div class="author-item-update">
+                            <a th:href="'/jpbook/chapter/getInformationByChapid?chapid='+${q.chapid}" class="blue" target="_blank" th:title="${q.chapname}">最近更新&nbsp;<b th:text="${q.chapname}"></b></a>
+                            <span>&nbsp;&nbsp;·&nbsp;&nbsp;<i th:text="${#strings.substring(q.chaptime,0,19)}"></i></span>
+                        </div>
+                        <div class="author-item-button">
+                            <a th:href="'/jpbook/books/queryBookById?bookid='+${q.bookid}" target="_blank" class="ui-button" data-eid="qd_M270" data-bid="8361">书籍详情</a>
+                            <th:block th:if="${q.sta} eq -1">
+                                <a th:href="|javascript:addBookrack(${q.bookid});|" class="ui-button ui-button-default elAddShelf">加入书架</a>
+                            </th:block>
+                            <th:block th:if="${q.sta} ne -1">
+                                <span class="ui-button ui-button-default disabled">已在书架</span>
+                            </th:block>
+                        </div>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+
+
+
+    </div>
+
+</div>
+
+    <div class="personal-footer">
+        <div class="footer-sub">
+            <a href="//www.yuewen.com" target="_blank">阅文集团</a>旗下网站：
+            <a href="//www.qidian.com" target="_blank" class="mr8">起点中文网</a>
+            <a href="//www.qdmm.com" target="_blank" class="mr8">起点女生网</a>
+            <a href="http://chuangshi.qq.com" target="_blank" class="mr8">创世中文网</a>
+            <a href="http://yunqi.qq.com" target="_blank" class="mr8">云起书院</a>
+            <a href="//www.hongxiu.com" target="_blank" class="mr8">红袖添香</a>
+            <a href="//www.readnovel.com" target="_blank" class="mr8">小说阅读网</a>
+            <a href="//www.xs8.cn" target="_blank" class="mr8">言情小说吧</a>
+            <a href="//www.xxsy.net" target="_blank" class="mr8">潇湘书院</a>
+            <a href="http://www.tingbook.com" target="_blank" class="mr8">天方听书网</a>
+            <a href="http://www.lrts.me" target="_blank" class="mr8">懒人听书</a>
+            <a href="http://yuedu.yuewen.com" target="_blank" class="mr8">阅文悦读</a>
+            <a href="//www.yuewen.com/app.html" target="_blank" class="mr8">QQ阅读</a>
+            <a href="//www.yuewen.com/app.html#appqd" target="_blank" class="mr8">起点读书</a>
+            <a href="//www.yuewen.com/app.html#appzj" target="_blank" class="mr8">作家助手</a>
+            <a href="//www.webnovel.com" target="_blank" class="mr8">起点国际版</a>
+        </div>
+        <div class="footer-menu">
+            <a href="//www.qidian.com/about/intro" target="_blank">关于起点</a>
+            <a href="//www.qidian.com/about/contact" target="_blank">联系我们</a>
+            <a href="//join.book.qq.com/index.html" target="_blank">加入我们</a>
+            <a href="//www.qidian.com/help/index/2" target="_blank">帮助中心</a>
+            <a href="http://123.206.70.240/online/?cid=0&uid=10&code=0" class="commitAdvice" target="_blank">提交建议</a>
+        </div>
+        <div class="footer-copyright">
+            <p>Copyright (C) 2002-2019 www.qidian.com All Rights Reserved 版权所有 </p>
+            <p>上海玄霆娱乐信息科技有限公司 上海玄霆娱乐信息科技有限公司 增值电信业务经营许可证沪B2-20080046 沪网文[2017]0081-031 新出网证(沪)字010 沪ICP备08017520号-1</p>
+            <p>请所有作者发布作品时务必遵守国家互联网信息管理办法规定，我们拒绝任何色情小说，一经发现，即作删除！</p>
+            <p>本站所收录作品、社区话题、书库评论及本站所做之广告均属其个人行为，与本站立场无关</p>
+        </div>
+    </div>
+
+    </body>
+
+    <script>
+        $(function () {
+            var state = $("#fansState").val();
+            if (state == -1){
+                $("#elToFollow").show();
+                $("#elFollowing").hide();
+            }else {
+                $("#elFollowing").show();
+                $("#elToFollow").hide();
+            }
+
+            var uuid = $("#uuid").val();
+            var buuid = $("#buuid").val();
+            if (uuid == buuid) {
+                $("#elToFollow").hide();
+                $("#elFollowing").hide();
+            }
+
+        })
+
+        $("#elFollowing").hover(function () {
+            $("#elFollowing").text("取消关注");
+        })
+        $("#elFollowing").mouseleave(function () {
+            $("#elFollowing").text("已关注");
+        })
+
+        //关注
+        $("#elToFollow").click(function () {
+            $.ajax({
+                url: "fansAdd",
+                data: {"buuid":$("#buuid").val()},
+                success: function (data) {
+                    if(data == -1){
+                        window.location.href = "/jpbook/login.html";
+                    }else {
+                        swal("关注成功", "", "success");
+                        setTimeout(function(){ window.location.reload();},1000);
+                    }
+                }
+            });
+        });
+        // 取关
+        $("#elFollowing").click(function () {
+            $.ajax({
+                url: "delFans",
+                data: {"buuid":$("#buuid").val()},
+                success: function (data) {
+                    if(data == -1){
+                        window.location.href = "/jpbook/login.html";
+                    }else {
+                        swal("取消关注成功", "", "success");
+                        setTimeout(function(){ window.location.reload();},1000);
+                    }
+                }
+            });
+        });
+
+        function addBookrack(bookid) {
+            $.ajax({
+                url: "/jpbook/pc/add",
+                data: {"bookid": bookid},
+                success: function (data) {
+                    if (data == -1) {
+                        window.location.href = "/jpbook/login";
+                    }else {
+                        swal("已加入书架", "", "success");
+                        setTimeout(function(){ window.location.reload();},1000);
+                    }
+                }
+            })
+        }
+    </script>
+
+</html>
