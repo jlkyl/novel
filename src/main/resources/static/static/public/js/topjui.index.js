@@ -572,7 +572,7 @@ function modifyPwd() {
         width: 400,
         height: 300,
         iconCls: 'fa fa-key',
-        href: '/html/user/modifyPassword.html',
+        href: '/back/modifyPassword.html',
         buttons: [{
             text: '确定',
             iconCls: 'fa fa-save',

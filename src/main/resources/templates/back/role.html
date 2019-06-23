@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<!-- 避免IE使用兼容模式 -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+	<title>菜单管理</title>
+	<!-- 浏览器标签图片 -->
+	<link rel="shortcut icon" href="../topjui//images/favicon.ico"/>
+	<script type="text/javascript" src="../easyui/jquery.min.js"></script>
+	<script type="text/javascript" src="../easyui/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="../easyui/locale/easyui-lang-zh_CN.js"></script>
+	<script type="text/javascript" src="../easyui/myvalidate.js"></script>
+	<link rel="stylesheet" type="text/css" href="../easyui/themes/material/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../easyui/themes/icon.css">
+	<script type="text/javascript">
+		$(function(){
+			$('#list').datagrid({    
+				title:'角色信息',
+			    url:'/role/list',
+			    columns:[
+			    		[
+			        		{field:'roleid',title:'编号',width:100},
+			        		{field:'rolename',title:'名称',width:120},
+							{field:'operateeid',title:'操作人',width:120},
+							{field:'operatedate',title:'操作时间',width:120}
+			        	]
+				],
+			    fitColumns:true,
+			    singleSelect:true,
+			    width:'600',
+			    toolbar:'#tools'
+			}); 
+		});
+		function convert(rows){
+			//判断是否存在上一级
+			function exists(rows, parentId){
+				for(var i=0; i<rows.length; i++){
+					if (rows[i].id == parentId) 
+						return true;
+				}
+				return false;
+			}
+			
+			var nodes = [];
+			for(var i=0; i<rows.length; i++){
+				var row = rows[i];
+				if (!exists(rows, row.parentId)){
+					//添加一级菜单
+					nodes.push({
+						id:row.id,
+						text:row.text,
+						iconCls:row.iconCls,
+						state:"closed",
+						attributes:{url:row.url}
+					});
+				}
+			}
+			
+			var toDo = [];
+			for(var i=0; i<nodes.length; i++){
+				toDo.push(nodes[i]);
+			}
+			while(toDo.length){
+				//删除第一个元素，逐一获取菜单
+				var node = toDo.shift();
+				var rs = false;
+				//添加该菜单的子元素
+				for(var i=0; i<rows.length; i++){
+					var row = rows[i];
+					if (row.parentId == node.id){
+						var child = {id:row.id,text:row.text,iconCls:row.iconCls,state:"closed",attributes:{url:row.url}};
+						if (node.children){
+							node.children.push(child);
+						} else {
+							node.children = [child];
+						}
+						toDo.push(child);
+						rs = true;
+					}
+				}
+				//如果不存在子元素设置节点状态为open
+				if(!rs){
+					node.state = "open";
+				}
+			}
+			return nodes;
+		}
+		function del(){
+			var row = $('#list').datagrid('getSelected');
+			if(row!=null){
+				$.post('/role/del',{'roleid':row.roleid},function(data){
+					if(data!=null){
+						$.messager.show({
+							title:'提示',
+							msg:'删除成功！'
+						});
+						$('#list').datagrid('reload');
+					}else{
+						$.messager.show({
+							title:'提示',
+							msg:'删除失败！'
+						});
+					}
+				});
+			}else{
+				$.messager.alert('提示','请选择要删除的数据');
+			}
+		}
+		var url ;
+		function show(choose){
+			$("#tr").tree({
+				url:"/menu/list",
+				checkbox:true,
+				loadFilter: function(rows){
+					return convert(rows);
+				},
+				onClick:function(node){
+					// 判断是否有子节点
+					if(node.children != null){
+						// 有,点击展开/折叠
+						$("#tr").tree("toggle",node.target);
+					}
+				},
+				onLoadSuccess:function(){
+					var row = $('#list').datagrid('getSelected');
+					if (row){
+						//加载权限信息，默认选中
+						for(var i=0 ; i<row.menus.length ; i++){
+							var node = $("#tr").tree('find',row.menus[i].id);
+							var children = $("#tr").tree('getChildren',node.target);
+							if(children.length==0){
+								$("#tr").tree('check',node.target);
+							}
+						}
+					}
+				}
+			});
+			if(choose=='add'){
+				$('#dlg').dialog('open').dialog('setTitle','添加');
+				$('#fm').form('clear');
+				url = '/role/add';
+			}else if(choose=='upd'){
+				var row = $('#list').datagrid('getSelected');
+				if (row){
+					$('#dlg').dialog('open').dialog('setTitle','修改');
+					$('#fm').form('load',row);
+					url = '/role/upd';
+				}else{
+					$.messager.alert('提示','请选择要修改的数据');
+				}
+			}
+		}
+		function save(){
+			$('#fm').form('submit',{
+				url: url,
+				onSubmit: function(){
+					var nodes = $("#tr").tree('getChecked');
+					var mid = [];
+					for(var i=0; i<nodes.length; i++){
+						// 判断数组中是否已经存在该id
+						var j = jQuery.inArray(nodes[i].id,mid);
+						if(j == -1){
+							mid.push(nodes[i].id);
+						}
+						// 找父节点
+						var parentNode=$("#tr").tree("getParent",nodes[i].target);
+						while(parentNode != null ){
+							// 判断数组中是否已经存在该id
+							var k = jQuery.inArray(parentNode.id,mid);
+							if(k == -1){
+								mid.push(nodes[i].id);
+							}
+							parentNode=$("#tr").tree("getParent",parentNode.target);
+						}
+					}
+					$("input[name='mid']").val(mid);
+					return $(this).form('validate');
+				},
+				success: function(data){
+					if(data>0){
+						$('#dlg').dialog('close');
+						$('#list').datagrid('reload');
+						$.messager.show({
+							title:'提示',
+							msg:'操作成功！'
+						});
+					}else{
+						$.messager.show({
+							title:'提示',
+							msg:'操作失败！'
+						});
+					}
+				}
+			});
+		}
+	</script>
+  </head>
+  
+  <body>
+    <table id="list"></table>
+    <div id="tools">
+		<a id="add" href="javascript:show('add')" class="easyui-linkbutton" data-options="iconCls:'icon-add'">添加</a>  
+		<a id="edit" href="javascript:show('upd')" class="easyui-linkbutton" data-options="iconCls:'icon-edit'">修改</a>  
+		<a id="del" href="javascript:del()" class="easyui-linkbutton" data-options="iconCls:'icon-remove'">删除</a>  
+	</div>
+	<div id="dlg" class="easyui-dialog" style="width:400px;height:400px;padding:10px 20px"
+		closed="true" buttons="#dlg-buttons" modal="true">
+		<div class="ftitle">角色信息</div>
+		<form id="fm" method="post">
+		<table>
+			<input name="roleid" hidden>
+			<tr>
+				<td>角色名称:</td>
+				<td><input name="rolename" class="easyui-textbox" validType="chinese" required="true"></td>
+			</tr>
+			<tr>
+				<td>角色权限:</td>
+				<td><ul id="tr"></ul><input name="mid" hidden></td>
+			</tr>
+		</table>
+		
+		</form>
+	</div>
+	<div id="dlg-buttons">
+		<a href="javascript:save()" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
+		<a href="javascript:$('#dlg').dialog('close')" class="easyui-linkbutton" iconCls="icon-cancel">取消</a>
+	</div>
+  </body>
+</html>

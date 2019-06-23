@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.qianqiu.novel.dao.IRolesDAO">
+    <resultMap id="roleMap" type="Roles">
+        <id column="roleid" property="roleid"></id>
+        <result column="rolename" property="rolename"></result>
+        <result column="operateeid" property="operateeid"></result>
+        <result column="operatedate" property="operatedate"></result>
+        <collection property="menus" ofType="Menus">
+            <id column="id" property="id"></id>
+            <result column="text" property="text"></result>
+            <result column="url" property="url"></result>
+            <result column="parentId" property="parentId"></result>
+            <result column="iconCls" property="iconCls"></result>
+        </collection>
+    </resultMap>
+    <select id="findAll" resultMap="roleMap">
+        select r.*,m.id,m.text,m.url,m.parentId,m.iconCls from roles r
+        left join role_menu rm on r.roleid = rm.roleid
+        left join menus m on rm.menuid = m.id
+    </select>
+    <insert id="add">
+        <selectKey keyColumn="roleid" keyProperty="roleid" resultType="Integer" order="AFTER">
+            select max(roleid) from roles
+        </selectKey>
+        insert into roles values (null,#{rolename},#{operateeid},now())
+    </insert>
+    <insert id="addMenus">
+        <if test="role.menus.size()>0">
+            insert into role_menu values
+            <foreach collection="role.menus" separator="," item="menus" index="index">
+                (#{role.roleid},#{menus.id})
+            </foreach>
+        </if>
+    </insert>
+    <delete id="del">
+        delete from role_menu where roleid = #{roleid};
+        delete from roles where roleid = #{roleid};
+    </delete>
+    <update id="upd">
+        update roles set rolename=#{role.rolename},operateeid=#{role.operateeid},operatedate=now() where roleid=#{role.roleid};
+        delete from role_menu where roleid=#{role.roleid};
+        <if test="role.menus.size()>0">
+            insert into role_menu values
+            <foreach collection="role.menus" separator="," item="menus" index="index" close=";">
+                (#{role.roleid},#{menus.id})
+            </foreach>
+        </if>
+    </update>
+</mapper>
