@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class BooktypeService {
@@ -13,7 +14,7 @@ public class BooktypeService {
     @Resource
     BooktypeDao btd;
 
-    public List<Booktype> queryAll(){
+    public List<Map<String,Object>> queryAll(){
         return btd.queryAll();
     }
 

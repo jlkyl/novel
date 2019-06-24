@@ -1,7 +1,9 @@
 package com.qianqiu.novel.controller;
 
 import com.qianqiu.novel.entity.Booktype;
+import com.qianqiu.novel.entity.Emps;
 import com.qianqiu.novel.service.BooktypeService;
+import com.qianqiu.novel.service.EmpService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,26 +23,25 @@ public class BooktypeController {
     @Resource
     BooktypeService bts;
 
+    @Resource
+    EmpService es;
+
     @RequestMapping("btqueryAll")
     @ResponseBody
-    public List<Booktype> btqueryAll(){
-       System.out.println("查询");
+    public List<Map<String,Object>> btqueryAll(){
        return bts.queryAll();
     }
 
-    @RequestMapping("btqueryId")
-    public String btqueryId(Model bt,Integer typeid){
-        bt.addAttribute("bt", bts.queryById(typeid));
-        System.out.println("查询！！！！！："+bts.queryById(typeid));
-        return "back/bt_update";
+    @RequestMapping("empqueryAll")
+    @ResponseBody
+    public List<Emps> queryEmp(){
+        return es.queryEmp();
     }
 
     @RequestMapping("btadd")
     public String btadd(Booktype bt){
-        System.out.println("btadd");
         bts.add(bt);
-        System.out.println(bt);
-        return "redirect:/bt/jump";
+        return "redirect:/bt/btqueryAll";
     }
 
     @RequestMapping("btupdate")
@@ -51,7 +52,6 @@ public class BooktypeController {
 
     @RequestMapping("btdel")
     public String btdel(Integer typeids){
-        System.out.println("btdel");
         bts.del(typeids);
         return "redirect:/bt/btqueryAll";
     }
