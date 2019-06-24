@@ -14,6 +14,7 @@
 	<script src="./js/jquery-3.3.1.js"></script>
 	<script src="./js/load.min.js"></script>
 
+
 </head>
 <body>
 	<div class="wrap">
@@ -64,16 +65,17 @@
 											<div class="error-tip hidden" id="error-tip"></div>
 											<dl>
 												<dd id="dd1">
-													<em class="icon icon-zhanghu"></em><input type="text" tabindex="1"
-														placeholder="手机/邮箱/用户名" id="username">
+													<em class="icon icon-zhanghu"></em>
+													<input type="text" tabindex="1"placeholder="手机/邮箱/用户名" id="username">
 												</dd>
 												<dd id="dd2">
 													<em class="icon icon-mima"></em><input type="password"
 														tabindex="2" placeholder="密码" id="password">
 												</dd>
 												<dd class="code-input" style="display:none;" id="dvCode">
-													<em class="iconfont"> </em><input type="text" id="txtCode"
-														placeholder="请输入验证码"> <img
+													<em class="iconfont"> </em>
+													<input type="text" id="txtCode"placeholder="请输入验证码">
+													<img
 														src="https://passport.qidian.com/?appid=10&amp;areaid=1&amp;auto=1&amp;autotime=30&amp;version=1.0&amp;ticket=1&amp;target=top&amp;popup=0&amp;source=pc&amp;returnurl=https%3A%2F%2Fbook.qidian.com%2Fhonor%2F1013552688"
 														id="imgCode" alt="验证码">
 													<div class="code-tip">
@@ -261,22 +263,14 @@
                         }
 
                         $.ajax({
-                            url: "login/landing",
+                            url: "Login/yzmLogin",
                             data: {"phone":mobilephone,"yzm":$("#rp").val()},
                             success: function (data) {
-                                if (data == 2) {
-                                    var f = document.referrer;
-                                    var fs = window.location.href.substr(0,window.location.href.lastIndexOf("#")) ;
-                                    if(f === fs){
-                                        window.location.href='./booktype/queryAll';
-                                    }else{
-                                        window.location.href = f;
-                                        window.opener.location.reload();
-                                        window.close()
-                                    }
-
+                                if (data == true) {
+                                    $("#et").attr("class","error-tip hidden");
+                                    window.location.href = "/index.html";
                                 }
-                                if(data == -1){
+                                if(data == false){
                                     $("#et").attr("class","error-tip");
                                     $("#et").text("验证码输入错误");
                                     return false;
@@ -329,7 +323,7 @@
 
                                     if(err == null){
                                         $.ajax({
-                                            url: "login/phoneLogin",
+                                            url: "Login/phoneLogin",
                                             data: {"phone":$("#mobilephone").val()},
                                             type: "post",
                                             dataType: "json",
@@ -406,29 +400,17 @@
                                 onVerify: function (err, data) {
                                     if(null == err){
                                         $.ajax({
-                                            url: "login/landing",
+                                            url: "Login/unameLogin",
                                             data: {"username":$("#username").val(),"password":$("#password").val()},
                                             type: "post",
                                             dataType: "json",
-                                            success: function (d) {
-                                                if(d == 1){
-                                                    falg = true;
+                                            success: function (data) {
+                                                if (data == true) {
+                                                    window.location.href = "/index.html";
                                                 }
-                                                if (data && falg ) {
-                                                    $("#successToken").val(data.validate);
-                                                    var f = document.referrer;
-                                                    var fs = window.location.href.substr(0,window.location.href.lastIndexOf("#")) ;
-                                                    if(f === fs){
-                                                        window.location.href='./booktype/queryAll';
-                                                    }else{
-                                                        window.location.href = f;
-                                                        window.opener.location.reload();
-                                                        window.close()
-                                                    }
-                                                }else if(falg == false && data){
+                                                if(data == false){
                                                     $("#error-tip").attr("class","error-tip");
                                                     $("#error-tip").text("您输入的账号或密码不正确，请重新输入");
-                                                }else{
                                                     return false;
                                                 }
                                             }

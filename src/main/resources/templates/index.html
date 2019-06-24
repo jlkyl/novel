@@ -2,7 +2,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>江派书城</title>
+    <title>千秋书城</title>
     <link data-ignore="true" rel="shortcut icon" type="image/x-icon"
           href="//qidian.gtimg.com/qd/favicon/qd_icon.c443c.ico">
     <link data-ignore="true" rel="Bookmark" type="image/x-icon" href="//qidian.gtimg.com/qd/favicon/qd_icon.c443c.ico">
@@ -15,9 +15,9 @@
     <link rel="stylesheet" data-ignore="true" type="text/css" href="../css/Autocomplete.cab82.css">
     <link rel="stylesheet" href="../css/iconfont.css">
     <link rel="stylesheet" href="../css/css.css">
-    <link rel="stylesheet" href="../layui/layui.css"  media="all">
-    <script src="../js/jquery-3.3.1.js"  th:inline="none"></script>
-    <script src="../layui/layui.js" charset="utf-8"  th:inline="none"></script>
+    <link rel="stylesheet" href="../js/layui/css/layui.css"  media="all">
+   <!-- <script src="../js/jquery-3.3.1.js"  th:inline="none"></script>-->
+    <script src="../js/layui/layui.js" charset="utf-8"  th:inline="none"></script>
 
 </head>
 <body class="index" data-dynamic="false" style="background-image: url()">
@@ -33,17 +33,17 @@
         <div class="box-center cf">
             <div class="login-box fr">
                 <th:block th:if="${session}">
-                    <th:block th:if="${session.users}">
-                        <div th:class="${session.users[0] } ? 'sign-in' : 'sign-in hidden'">
+                    <th:block th:if="${session.user}">
+                        <div th:class="${session.user } ? 'sign-in' : 'sign-in hidden'">
                             <span>你好，</span>
                             <a class="black" id="user-name" href="../personal.html" target="_blank"
-                               th:text="${session.users[0].uname}"></a>
+                               th:text="${session.user.username}"></a>
                             <em>|</em>
                             <a id="exit-btn" href="javascript:void(0);" onclick="removeu()">退出</a>
                         </div>
                     </th:block>
                 </th:block>
-                <div th:class="${session.users} ? 'sign-out hidden' : 'sign-out'">
+                <div th:class="${session.user} ? 'sign-out hidden' : 'sign-out'">
                     <a id="login-btn" class="black" href="../login.html" target="_blank">登录</a><em>|</em>
                     <a id="reg-btn" href="../register.html" target="_blank">注册</a>
                 </div>
@@ -54,7 +54,7 @@
     <div class="logo-wrap box-center" data-l1="2">
         <div class="box-center cf">
             <div class="book-shelf fr">
-                <a th:href="${session.users} ? '../personal.html?key=i' : '../login.html'" target="_blank" id="numero2">
+                <a th:href="${session.user} ? '../personal.html?key=i' : '../login.html'" target="_blank" id="numero2">
                     <em class="iconfont shelf">&#xe66c;</em><i>我的书架</i>
                 </a>
             </div>
@@ -645,7 +645,7 @@
     <div class="new-rec-wrap box-center cf" style="margin-top: 100px">
         <div class="left-wrap fl">
             <h3 class="wrap-title lang">
-                新书推荐<span th:text="|本周入库${queryNewBooks.size()}本|"></span>
+                新书推荐<!--<span th:text="|本周入库${queryNewBooks.size()}本|"></span>-->
             </h3>
             <div class="center-book-list fl" style="width: 700px;" data-l2="2">
                 <div class="line line1"></div>
@@ -1220,6 +1220,18 @@
         }
         return element
     };
+    function removeu() {
+        $.ajax({
+            url: '/Login/logout',
+            success: function (data) {
+                /* jQuery(".sign-in").addClass("sign-in hidden");
+                 jQuery(".sign-out.hidden").addClass("sign-out");
+                 jQuery(".sign-in").removeClass("sign-in");
+                 jQuery(".sign-out.hidden").removeClass("sign-out hidden");*/
+                window.location.reload();
+            }
+        });
+    };
 
     function Animate(element, options, fnCallBack) {
         this.obj = t(element);
@@ -1251,18 +1263,7 @@
         new Youa("box");
     };
 
-    function removeu() {
-        jQuery.ajax({
-            url: '/jpbook/login/quit',
-            success: function (data) {
-                jQuery(".sign-in").addClass("sign-in hidden");
-                jQuery(".sign-out.hidden").addClass("sign-out");
-                jQuery(".sign-in").removeClass("sign-in");
-                jQuery(".sign-out.hidden").removeClass("sign-out hidden");
-                window.location.reload()
-            }
-        });
-    }
+
 </script>
 </body>
 </html>
