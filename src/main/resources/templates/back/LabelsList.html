@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script type="text/javascript" src="../easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="../easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../easyui/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../easyui/myvalidate.js"></script>
+    <link rel="stylesheet" type="text/css" href="../easyui/themes/material/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../easyui/themes/icon.css">
+
+    <script type="text/javascript">
+
+        var action = "";
+
+        $(function() {
+            // 初始化datagrid数据表格
+            $("#tb").datagrid({
+                width: "100%",
+                url: '../pageList',
+                fitColumns: true, // 列宽自适应
+                singleSelect: true,// 当行选中
+                pagination:true,
+                pageList:[1,50,100],
+                pageSize:1,
+                columns: [
+                    [
+                    {field: 'labelid', width: 50, title: '编号'},
+                    {field: 'labelname', width: 100, title: '名称'},
+                    {field: 'operateeid', width: 100, title: '操作人'},
+                    {field: 'operatedate', width: 100, title: '操作时间'}
+                    ]
+                ],
+                toolbar:[{text:"新增",
+                    iconCls:"icon-add",
+                    // 处理
+                    handler:function(){
+                        $("#ff").form("reset");
+                        $("#dl").dialog("setTitle","新增");
+                        $("#dl").dialog("open");
+                        action = "../add";
+                    }
+                },'-',{text:"修改",
+                    iconCls:"icon-edit",
+                    handler:function(){
+                        // 判断是否选中修改数据
+                        var row = $("#tb").datagrid("getSelected");
+                        if(row != null){
+                            $("#ff").form("reset");
+                            $("#ff").form("load",row);
+                            $("#dl").dialog("setTitle","修改").dialog("open");
+                            action = "../update?labelid="+row.labelid;
+                        }else{
+                            $.messager.alert("提示","请选择要修改得数据");
+                        }
+                    }
+                },'-',{text:"删除",
+                    iconCls:"icon-remove",
+                    handler:function(){
+                        var row = $("#tb").datagrid("getSelected");
+                        if(row != null){
+                            $.post("../del",{labelid:row.labelid},function(data){
+                                if(data==1){
+                                    $.messager.show({
+                                        title:"提示",
+                                        msg:"删除成功"
+                                    });
+                                    // 刷新数据表格
+                                    $("#tb").datagrid("reload");
+                                }else{
+                                    $.messager.show({
+                                        title:"提示",
+                                        msg:"删除失败"
+                                    });
+                                }
+                            });
+                        }else{
+                            $.messager.alert("提示","请选择要删除得数据");
+                        }
+                    }
+                }]
+            });
+            $("#dl").dialog("close");
+        });
+
+        function submitForm(){
+            $("#ff").form('submit',{
+                url:action,
+                onSubmit:function(){
+                    var rs = $("#ff").form("validate");
+                    return rs;
+                },
+                success:function(){
+                    // 关闭窗口
+                    $("#dl").dialog("close");
+                    // 刷新数据表格
+                    $("#tb").datagrid("reload");
+                }
+            });
+        }
+
+        function clearForm(){
+            $("#ff").form("reset");
+        }
+    </script>
+</head>
+<body>
+    <table id="tb"></table>
+
+    <div class="easyui-dialog" style="width:500px;height:300px;padding:10px 60px;" id="dl">
+        <form id="ff" method="post">
+            <div style="margin-bottom:20px">
+                <input class="easyui-textbox" style="width:100%" data-options="label:'名称：',required:true" name="labelname">
+            </div>
+            <div style="margin-bottom:20px">
+                <input class="easyui-textbox" style="width:100%" data-options="label:'操作人：',required:true"  name="operateeid">
+            </div>
+        </form>
+
+        <div style="text-align:center;padding:5px 0">
+            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()" style="width:80px">Submit</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()" style="width:80px">Clear</a>
+        </div>
+    </div>
+</body>
+</html>
