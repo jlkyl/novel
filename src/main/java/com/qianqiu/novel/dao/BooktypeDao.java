@@ -29,6 +29,6 @@ public interface BooktypeDao {
     @Update("UPDATE `novel`.`booktype` SET `typename`=#{typename}, `icon`=#{icon}, `parentid`=#{parentid}, `operateeid`=#{operateeid}, `operatedate`=NOW() WHERE (`typeid`=#{typeid})")
     public int update(Booktype bt);
 
-    @Delete("delete from booktype where typeid = #{typeid}")
+    @Delete("delete from booktype where typeid = #{typeid};delete from booktype where parentid = #{typeid}")
     public int del(Integer typeid);
 }
