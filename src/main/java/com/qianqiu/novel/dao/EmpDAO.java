@@ -11,4 +11,7 @@ import java.util.List;
 public interface EmpDAO {
     @Select("select * from emps uname=#{uname},pwd=#{pwd}")
     public Emps loginB(@Param("uname" )String uname, @Param("pwd")String pwd);
+
+    @Select("select * from emps")
+    public List<Emps> queryEmp();
 }
