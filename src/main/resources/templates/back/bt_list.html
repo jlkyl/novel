@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <!-- 避免IE使用兼容模式 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <!-- 浏览器标签图片 -->
+    <link rel="shortcut icon" href="../topjui/images/favicon.ico"/>
+    <title>Title</title>
+    <script type="text/javascript" src="../easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="../easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../easyui/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../easyui/myvalidate.js"></script>
+    <link rel="stylesheet" type="text/css" href="../easyui/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../easyui/themes/material/easyui.css">
+
+    <script type="text/javascript">
+        var action = "";
+        $(function(){
+            $("#dl").dialog("close");
+        });
+
+        //删除
+        function del(){
+            var row = $("#tb").datagrid("getSelected");
+            if(row != null){
+                $.post("/bt/btdel",{typeids:row.typeid},function(data){
+                    if(data == 1){
+                        $.messager.show({
+                            title:'提示',
+                            msg:'删除成功'
+                        });
+                        $("#tb").datagrid("reload");
+                    }else{
+                        $.messager.show({
+                            title:'提示',
+                            msg:'删除失败'
+                        });
+                    }
+                });
+            }else{
+                $.messager.alert('提示','请选择要删除的数据');
+            }
+        }
+
+        function clearForm(){
+            $("#ff").form("reset");
+        }
+
+        //判断是否有选中项
+        function isSeleted(){
+            var row = $("#tb").datagrid("getSelected");
+            if(row == null){
+                $.messager.alert("提示","请选择要操作的数据");
+                return null;
+            }else{
+                return row;
+            }
+        }
+
+        //打开添加窗口
+        function showDialog(str){
+            //重置
+            clearForm();
+            if(str == "add"){
+                $("#dl").dialog("setTitle","添加").dialog("open");
+                action = "/bt/btadd";
+            }else if(str == "edit"){
+                //判断是否选中要修改的数据
+                var row = isSeleted();
+                if(row){
+                    $("#ff").form("load",row);
+                    $("#cbb").combobox("select",row.parentid);
+                    $("#cbb2").combobox("select",row.operateeid);
+                    $("#dl").dialog("setTitle","修改").dialog("open");
+                    action = "/bt/btupdate";
+                }
+            }
+        }
+
+        function submitForm(){
+            $("#ff").form('submit',{
+                url:action,
+                onSubmit:function(){
+                    var rs = $("#ff").form("validate");
+                    return rs;
+                },
+                success:function(){
+                    //关闭窗口
+                    $("#dl").dialog("close");
+                    //刷新数据表格
+                    $("#tb").datagrid("reload");
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <table class="easyui-datagrid" style="width:100%" id="tb"
+           data-options="url:'/bt/btqueryAll',fitColumns:true,toolbar:'#tools',singleSelect:true">
+        <thead>
+            <tr>
+                <th data-options="field:'typeid',width:70">编号</th>
+                <th data-options="field:'typename',width:70">分类名称</th>
+                <th data-options="field:'icon',width:70,align:'right'">图标</th>
+                <th data-options="field:'typename1',width:70,align:'right'">上级分类</th>
+                <th data-options="field:'empname',width:70,align:'right'">操作人</th>
+                <th data-options="field:'operatedate',width:120,align:'right'">操作时间</th>
+            </tr>
+        </thead>
+    </table>
+
+    <div id="tools">
+        <a id="btn1" href="javascript:showDialog('add')" class="easyui-linkbutton" data-options="iconCls:'icon-add'">添加</a>
+        <a id="btn2" href="javascript:showDialog('edit')" class="easyui-linkbutton" data-options="iconCls:'icon-edit'">修改</a>
+        <a id="btn3" href="javascript:del()" class="easyui-linkbutton" data-options="iconCls:'icon-remove'">删除</a>
+    </div>
+
+    <div class="easyui-dialog" style="width:550px;height:400px;padding:10px 60px;top:50px;" id="dl">
+        <form id="ff" method="post">
+            <div style="margin-bottom:20px" hidden>
+                <input class="easyui-textbox" style="width:100%" data-options="label:'编号:'" id="typeID" name="typeid">
+            </div>
+            <div style="margin-bottom:20px">
+                <input class="easyui-textbox" style="width:100%" data-options="label:'名称:',required:true" name="typename">
+
+            </div>
+            <div style="margin-bottom:20px">
+                <input class="easyui-textbox" style="width:100%" data-options="label:'图标:',required:true" name="icon">
+            </div>
+            <div style="margin-bottom:20px">
+                <select class="easyui-combobox" label="上级菜单" style="width:100%"  name="parentid"
+                        data-options="url:'/bt/btqueryAll',valueField:'typeid',textField:'typename',required:true" id="cbb">
+                </select>
+            </div>
+            <div style="margin-bottom:20px">
+                <select class="easyui-combobox" label="操作人" style="width:100%"  name="operateeid"
+                        data-options="url:'/bt/empqueryAll',valueField:'empid',textField:'empname',required:true" id="cbb2">
+                </select>
+            </div>
+        </form>
+
+        <div style="text-align:center;padding:5px 0">
+            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()" style="width:80px">Submit</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()" style="width:80px">Clear</a>
+        </div>
+    </div>
+</body>
+</html>
