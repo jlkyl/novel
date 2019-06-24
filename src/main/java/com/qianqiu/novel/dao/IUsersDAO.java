@@ -20,8 +20,9 @@ public interface IUsersDAO {
 
     @Select("select * from users where phone=#{phone}")
     public Users yzmlogin(@Param("phone") String phone);
+    //INSERT INTO `novel`.`users` (`userid`, `username`, `password`, realname, sex, idcard, email,pen, head, sign, author) VALUES (NULL, NULL, '123yl123', NULL, NULL, NULL, NULL, '16692155040', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+    @Insert("insert into Users (userid,username,phone,password,realname, sex, idcard, email, pen, head, sign, author) values(null,concat('Reader',#{phone}),#{phone},#{password},#{realname},#{sex},#{idcard},#{email},#{pen},#{head},#{sign},#{author})")
+    public int addlogin(Users users );
 
-    @Insert("insert into Users (phone,password) values(#{users.phone},#{users.password})")
-    public int addlogin(@Param("users") Users users );
 
 }
