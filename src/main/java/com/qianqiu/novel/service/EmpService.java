@@ -18,4 +18,8 @@ public class EmpService {
     public Emps loginB(String uname,String pwd){
         return dao.loginB(uname,pwd);
     }
+
+    public List<Emps> queryEmp(){
+        return dao.queryEmp();
+    }
 }
