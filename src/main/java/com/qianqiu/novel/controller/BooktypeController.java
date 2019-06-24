@@ -51,8 +51,9 @@ public class BooktypeController {
     }
 
     @RequestMapping("btdel")
+    @ResponseBody
     public String btdel(Integer typeids){
         bts.del(typeids);
-        return "redirect:/bt/btqueryAll";
+        return "1";
     }
 }
