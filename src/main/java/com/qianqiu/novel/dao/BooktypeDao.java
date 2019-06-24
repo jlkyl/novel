@@ -16,7 +16,7 @@ public interface BooktypeDao {
             "on b.parentid = b2.typeid\n" +
             "left JOIN\n" +
             "emps e\n" +
-            "on b.operateeid = e.empid" +
+            "on b.operateeid = e.empid\n" +
             "ORDER BY b.typeid")
     public List<Map<String,Object>> queryAll();
 
