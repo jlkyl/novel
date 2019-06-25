@@ -237,7 +237,7 @@ $(function () {
     $('.nav-group li').eq('0').trigger('click');
 
 
-    generateMenu(1325, "TopJUI静态演示");
+    generateMenu();
 
     // 显示系统首页
     /*setTimeout(function () {
@@ -443,9 +443,7 @@ function logout() {
 }
 
 // 生成左侧导航菜单
-function generateMenu(menuId, systemName) {
-    if (menuId < 8000) {
-        $(".panel-header .panel-title:first").html(systemName);
+function generateMenu() {
         var allPanel = $("#RightAccordion").iAccordion('panels');
         var size = allPanel.length;
         if (size > 0) {
@@ -455,43 +453,29 @@ function generateMenu(menuId, systemName) {
             }
         }
 
-        var url = "../json/menu/menu_" + menuId + ".json";
+        var url = "/menu/getMenus";
         if (topJUI.config.appendRefererParam) url = appendRefererParam(url);
         $.get(
-            url, {"levelId": "2"}, // 获取第一层目录
+            url, // 获取第一层目录
             function (data) {
-                if (data == "0") {
-                    window.location = "/Account";
-                }
+                data = convert(data);
                 $.each(data, function (i, e) {// 循环创建手风琴的项
-                    var pid = e.pid;
-                    var isSelected = i == 0 ? true : false;
-                    $('#RightAccordion').iAccordion('add', {
-                        fit: false,
-                        title: e.text,
-                        content: "<ul id='tree" + e.id + "' ></ul>",
-                        border: false,
-                        selected: isSelected,
-                        iconCls: e.iconCls
-                    });
-                    //$.parser.parse();
-                    var secondUrl = "../json/menu/menu_" + e.id + ".json";
-                    if (topJUI.config.appendRefererParam) secondUrl = appendRefererParam(secondUrl);
-                    $.get(secondUrl, function (data) {// 循环创建树的项
+                    if(e.children){
+                        var isSelected = i == 0 ? true : false;
+                        $('#RightAccordion').iAccordion('add', {
+                            fit: false,
+                            title: e.text,
+                            content: "<ul id='tree" + e.id + "' ></ul>",
+                            border: false,
+                            selected: isSelected,
+                            iconCls: e.iconCls
+                        });
                         $("#tree" + e.id).tree({
-                            data: data,
+                            data: e.children,
                             lines: false,
                             animate: true,
-                            onBeforeExpand: function (node, param) {
-                                var thirdUrl = "../json/menu/menu_" + node.id + ".json";
-                                if (topJUI.config.appendRefererParam) thirdUrl = appendRefererParam(thirdUrl);
-                                $("#tree" + e.id).tree('options').url = thirdUrl;
-                            },
                             onClick: function (node) {
                                 if (node.url) {
-                                    /*if(typeof node.attributes != "object") {
-                                     node.attributes = $.parseJSON(node.attributes);
-                                     }*/
                                     addTab(node);
                                 } else {
                                     if (node.state == "closed") {
@@ -502,11 +486,65 @@ function generateMenu(menuId, systemName) {
                                 }
                             }
                         });
-                    }, 'json');
+                    }
                 });
             }, "json"
         );
+}
+
+function convert(rows){
+    //判断是否存在上一级
+    function exists(rows, parentId){
+        for(var i=0; i<rows.length; i++){
+            if (rows[i].id == parentId)
+                return true;
+        }
+        return false;
     }
+
+    var nodes = [];
+    for(var i=0; i<rows.length; i++){
+        var row = rows[i];
+        if (!exists(rows, row.parentId)){
+            //添加一级菜单
+            nodes.push({
+                id:row.id,
+                text:row.text,
+                iconCls:row.iconCls,
+                state:"closed",
+                url:row.url
+            });
+        }
+    }
+
+    var toDo = [];
+    for(var i=0; i<nodes.length; i++){
+        toDo.push(nodes[i]);
+    }
+    while(toDo.length){
+        //删除第一个元素，逐一获取菜单
+        var node = toDo.shift();
+        var rs = false;
+        //添加该菜单的子元素
+        for(var i=0; i<rows.length; i++){
+            var row = rows[i];
+            if (row.parentId == node.id){
+                var child = {id:row.id,text:row.text,iconCls:row.iconCls,state:"closed",url:row.url};
+                if (node.children){
+                    node.children.push(child);
+                } else {
+                    node.children = [child];
+                }
+                toDo.push(child);
+                rs = true;
+            }
+        }
+        //如果不存在子元素设置节点状态为open
+        if(!rs){
+            node.state = "open";
+        }
+    }
+    return nodes;
 }
 
 //打开Tab窗口

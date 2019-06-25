@@ -21,4 +21,6 @@ public interface IMenusDAO {
     Integer del(Integer id);
     @Select("select count(*) from menus")
     Integer getCount();
+    @Select("select * from menus where id in (select menuid from role_menu where roleid = #{roleid})")
+    List<Menus> findByRid(Integer roleid);
 }

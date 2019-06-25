@@ -34,4 +34,7 @@ public class MenusService {
 	public Integer del(Integer id){
 		return dao.del(id);
 	}
+	public List<Menus> findByRid(Integer roleid){
+		return dao.findByRid(roleid);
+	}
 }
