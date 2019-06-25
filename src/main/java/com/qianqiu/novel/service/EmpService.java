@@ -22,4 +22,8 @@ public class EmpService {
     public List<Emps> queryEmp(){
         return dao.queryEmp();
     }
+
+    public void updateP(Emps e,Integer empid){
+         dao.updateP(e,empid);
+    }
 }
