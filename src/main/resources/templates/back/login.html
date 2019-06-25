@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <!-- 避免IE使用兼容模式 -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1"/>
-    <meta name="renderer" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <meta name="renderer" content="webkit">
     <meta name="keywords" content='easyui,jui,jquery easyui,easyui demo,easyui中文'/>
     <meta name="description" content='TopJUI前端框架，基于最新版EasyUI前端框架构建，纯HTML调用功能组件，不用写JS代码的EasyUI，专注你的后端业务开发！'/>
     <title>用户登录</title>
     <!-- 浏览器标签图片 -->
     <link rel="shortcut icon" href="../topjui//images/favicon.ico"/>
-    <link rel="stylesheet" href="../static/js/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="../static/plugins/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../static/plugins/font-awesome/css/font-awesome.min.css">
     <style type="text/css">
         html, body {
@@ -29,8 +29,8 @@
 
         .login-box {
             width: 100%;
-            max-width: 400px;
-            height: 300px;
+            max-width: 500px;
+            height: 400px;
             position: absolute;
             top: 50%;
 
@@ -119,9 +119,7 @@
 </head>
 <body>
 <div class="box">
-    <center>
     <div class="login-box">
-
         <div class="login-title text-center">
             <span class="flag"><i class="fa fa-user"></i> 用户登陆</span>
             <h1>
@@ -131,13 +129,12 @@
         <div class="login-content ">
             <div class="form">
                 <form id="modifyPassword" class="form-horizontal" action="#" method="post">
-                    <input type="hidden" id="referer" name="referer">
+                    <input type="hidden" id="referer" name="referer" value="${param.referer}">
                     <div class="form-group">
                         <div class="col-xs-10 col-xs-offset-1">
                             <div class="input-group">
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-                                账号 <input type="text" id="username" name="uname" class="form-control"
-                                       placeholder="账号">
+                                <input type="text" id="username" name="username" class="form-control" placeholder="用户名">
                             </div>
                         </div>
                     </div>
@@ -145,14 +142,14 @@
                         <div class="col-xs-10 col-xs-offset-1">
                             <div class="input-group">
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-                                密码 <input type="password" id="password" name="pwd" class="form-control"
+                                <input type="password" id="password" name="password" class="form-control"
                                        placeholder="密码">
                             </div>
                         </div>
                     </div>
                     <div class="form-group form-actions">
                         <div class="col-xs-12 text-center">
-                            <button type="button" onclick="submitForm" id="login" class="btn btn-sm btn-success">
+                            <button type="button" id="login" class="btn btn-sm btn-success">
                                 <span class="fa fa-check-circle"></span> 登录
                             </button>
                             <button type="button" id="reset" class="btn btn-sm btn-danger">
@@ -164,7 +161,6 @@
             </div>
         </div>
     </div>
-    </center>
 </div>
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -180,7 +176,7 @@
 <!-- 引入jQuery -->
 <script src="../static/plugins/jquery/jquery.min.js"></script>
 <script src="../static/plugins/jquery/jquery.cookie.js"></script>
-<script src="../static/js/bootstrap.js"></script>
+<script src="../static/plugins/bootstrap/js/bootstrap.min.js"></script>
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
@@ -189,7 +185,7 @@
 <![endif]-->
 <script type="text/javascript">
     if (navigator.appName == "Microsoft Internet Explorer" &&
-            (navigator.appVersion.split(";")[1].replace(/[ ]/g, "") == "MSIE6.0" ||
+        (navigator.appVersion.split(";")[1].replace(/[ ]/g, "") == "MSIE6.0" ||
             navigator.appVersion.split(";")[1].replace(/[ ]/g, "") == "MSIE7.0" ||
             navigator.appVersion.split(";")[1].replace(/[ ]/g, "") == "MSIE8.0")
     ) {
@@ -221,28 +217,20 @@
 
         function submitForm() {
             if (navigator.appName == "Microsoft Internet Explorer" &&
-                    (navigator.appVersion.split(";")[1].replace(/[ ]/g, "") == "MSIE6.0" ||
+                (navigator.appVersion.split(";")[1].replace(/[ ]/g, "") == "MSIE6.0" ||
                     navigator.appVersion.split(";")[1].replace(/[ ]/g, "") == "MSIE7.0" ||
                     navigator.appVersion.split(";")[1].replace(/[ ]/g, "") == "MSIE8.0")
             ) {
                 alert("您的浏览器版本过低，请使用360安全浏览器的极速模式或IE9.0以上版本的浏览器");
             } else {
-                var formData = {
-                    username: $('#username').val(),
-                    password: $('#password').val(),
-                    referer: $('#referer').val()
-                };
-                var uname=$("#username").val();
-                var pwd=$("#password").val();
                 $.ajax({
                     type: 'POST',
                     url: '/ep/loginB',
-                    datatype:'json',
-                    data: {'uname':uname,'pwd':pwd},
+                    data: {uname: $('#username').val(),
+                           pwd: $('#password').val()},
                     success: function (data) {
-                        if (data== true) {
+                        if (data) {
                             location.href = '/back/index.html';
-                           // location.href = data.referer;
                         } else {
                             $('#myModal').modal();
                             //alert("用户名或密码错误！");
