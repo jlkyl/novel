@@ -10,12 +10,12 @@ import java.util.List;
 
 @Mapper
 public interface EmpDAO {
-    @Select("select * from emps where uname=#{uname} and pwd=#{pwd} ")
+    @Select("select * from emps where uname=#{uname} and pwd=#{pwd}")
     public Emps loginB(@Param("uname" )String uname, @Param("pwd")String pwd);
-
-    @Update("UPDATE `novel`.`emps` SET `pwd`=#{pwd} WHERE (`empid`=#{empid})")
-    public void  update(Emps e);
 
     @Select("select * from emps")
     public List<Emps> queryEmp();
+
+    @Update("UPDATE `novel`.`emps` SET `pwd`=#{pwd} WHERE (`empid`=#{empid})")
+    public void updateP(Emps e,Integer empid);
 }
