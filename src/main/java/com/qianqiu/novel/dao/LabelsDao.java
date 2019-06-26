@@ -9,6 +9,7 @@ import java.util.List;
 public interface LabelsDao {
     @Select("select * from labels")
     List<Labels> queryAll();
+    @SelectKey(keyProperty = "labelid",keyColumn = "labelid",before = false,resultType = Integer.class,statement = "select max(labelid) from labels")
     @Insert("INSERT INTO `novel`.`labels` (`labelid`, `labelname`, `operateeid`, `operatedate`) VALUES (#{labelid}, #{labelname}, null, now());\n")
     int add(Labels l);
     @Update("UPDATE `novel`.`labels` SET  `labelname`=#{labelname}, `operateeid`=null, `operatedate`=#{operatedate} WHERE (`labelid`=#{labelid});\n")
@@ -26,4 +27,6 @@ public interface LabelsDao {
 
     @Select("select count(*) from labels")
     Integer getCount();
+    @Select("select * from labels where labelname=#{labelname}")
+    Labels queryName(String labelname);
 }

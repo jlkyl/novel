@@ -39,4 +39,8 @@ public class LabelsService {
         pages.setTotal(dao.getCount());
         return pages;
     }
+
+    public Labels queryName(String labelname){
+        return dao.queryName(labelname);
+    }
 }

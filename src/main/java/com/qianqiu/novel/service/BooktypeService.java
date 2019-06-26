@@ -33,4 +33,8 @@ public class BooktypeService {
     public int del(Integer typeid){
         return btd.del(typeid);
     }
+
+    public Booktype queryByName(String typename){
+        return  btd.queryByName(typename);
+    }
 }

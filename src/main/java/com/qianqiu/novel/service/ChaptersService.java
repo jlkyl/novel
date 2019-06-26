@@ -15,4 +15,15 @@ public class ChaptersService {
 	@Resource
 	IChaptersDAO dao;
 
+	public Integer add(Chapters chapters){
+		return dao.add(chapters);
+	}
+
+	public Chapters findByName(String chaptername,Integer bookid){
+		return dao.findByName(chaptername, bookid);
+	}
+
+	public Integer getOrder(Integer bookid){
+		return dao.getOrder(bookid);
+	}
 }

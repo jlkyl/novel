@@ -11,20 +11,18 @@ public class Chapters implements Serializable {
 	private Integer chapternum;
 	private Integer state;
 	private Integer wordnum;
-	private Integer isvip;
 	private Date updatetime;
 	private Integer rollid;
 
 	public Chapters(){}
 
-	public Chapters(Integer chapterid,String chaptername,String url,Integer chapternum,Integer state,Integer wordnum,Integer isvip,Date updatetime,Integer rollid){
+	public Chapters(Integer chapterid,String chaptername,String url,Integer chapternum,Integer state,Integer wordnum,Date updatetime,Integer rollid){
 		this.chapterid = chapterid;
 		this.chaptername = chaptername;
 		this.url = url;
 		this.chapternum = chapternum;
 		this.state = state;
 		this.wordnum = wordnum;
-		this.isvip = isvip;
 		this.updatetime = updatetime;
 		this.rollid = rollid;
 	}
@@ -70,13 +68,6 @@ public class Chapters implements Serializable {
 	public void setWordnum(Integer wordnum){
 		this.wordnum=wordnum;
  	}
-	public Integer getIsvip(){
-		return isvip;
-	}
-
-	public void setIsvip(Integer isvip){
-		this.isvip=isvip;
- 	}
 	public Date getUpdatetime(){
 		return updatetime;
 	}
@@ -92,6 +83,6 @@ public class Chapters implements Serializable {
 		this.rollid=rollid;
  	}
 	public String toString() {
-		return "Chapters [chapterid="+chapterid+", chaptername="+chaptername+", url="+url+", chapternum="+chapternum+", state="+state+", wordnum="+wordnum+", isvip="+isvip+", updatetime="+updatetime+", rollid="+rollid+"]";
+		return "Chapters [chapterid="+chapterid+", chaptername="+chaptername+", url="+url+", chapternum="+chapternum+", state="+state+", wordnum="+wordnum+", updatetime="+updatetime+", rollid="+rollid+"]";
 	}
 }

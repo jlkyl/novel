@@ -24,5 +24,7 @@ public interface IUsersDAO {
     @Insert("insert into Users (userid,username,phone,password,realname, sex, idcard, email, pen, head, sign, author) values(null,concat('Reader',#{phone}),#{phone},#{password},#{realname},#{sex},#{idcard},#{email},#{pen},#{head},#{sign},#{author})")
     public int addlogin(Users users );
 
+    @Select("select * from users where pen=#{pen}")
+    public Users findByPen(String pen);
 
 }

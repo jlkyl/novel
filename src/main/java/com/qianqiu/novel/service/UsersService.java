@@ -29,5 +29,8 @@ public class UsersService {
     public int addlogin(Users users){
       return u.addlogin(users);
     }
+    public Users findByPen(String pen){
+        return u.findByPen(pen);
+    }
 
 }

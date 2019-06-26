@@ -3,12 +3,15 @@ package com.qianqiu.novel.utils;
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
+import javax.servlet.http.HttpServletRequest;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.UUID;
 
 public class FileUtil {
+    //存放路径
+    public static final String path="F:\\books\\";
     /**
      * 创建文件夹
      * @param file
@@ -16,8 +19,7 @@ public class FileUtil {
     public static void File(String file) {
         try
         { // 防止文件建立或读取失败，用catch捕捉错误并打印，也可以throw
-
-            String pathname = "F:\\books\\"+file;
+            String pathname = path+file;
             // 绝对路径或相对路径都可以，这里是绝对路径，写入文件时演示相对路径
             File filename = new File(pathname); // 要读取以上路径的input。txt文件
             if(!filename.exists()){
@@ -29,7 +31,7 @@ public class FileUtil {
     }
     public static void  write(String files,String content){
         try {
-            String pathname = "F:\\books\\"+files;
+            String pathname = path+files;
             File writename = new File(pathname);
             writename.createNewFile(); // 创建新文件
             BufferedWriter out = new BufferedWriter(new FileWriter(writename));

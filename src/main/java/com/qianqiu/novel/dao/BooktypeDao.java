@@ -23,6 +23,7 @@ public interface BooktypeDao {
     @Select("select * from booktype where typeid = #{typeid}")
     public Booktype queryById(Integer typeid);
 
+    @SelectKey(keyColumn = "typeid",keyProperty = "typeid",before = false,resultType = Integer.class,statement = "select max(typeid) from booktype")
     @Insert("INSERT INTO `novel`.`booktype` (`typeid`, `typename`, `icon`, `parentid`, `operateeid`, `operatedate`) VALUES (NULL, #{typename}, #{icon}, #{parentid}, #{operateeid},NOW())")
     public int add(Booktype bt);
 
@@ -31,4 +32,7 @@ public interface BooktypeDao {
 
     @Delete("delete from booktype where typeid = #{typeid}")
     public int del(Integer typeid);
+
+    @Select("select * from booktype where typename = #{typename}")
+    public Booktype queryByName(String typename);
 }
