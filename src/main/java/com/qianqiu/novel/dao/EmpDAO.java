@@ -16,6 +16,8 @@ public interface EmpDAO {
     @Select("select * from emps")
     public List<Emps> queryEmp();
 
-    @Update("UPDATE `novel`.`emps` SET `pwd`=#{pwd} WHERE (`empid`=#{empid})")
-    public void updateP(Emps e,Integer empid);
+    @Update("UPDATE `novel`.`emps` SET `pwd`=#{pwd} WHERE `empid`=#{empid}")
+    public int updateP(Emps e);
+
+
 }

@@ -1,4 +1,4 @@
-<html>
+<html  xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <!-- 避免IE使用兼容模式 -->
@@ -128,7 +128,7 @@
                 <span style=" padding-right: 8px; height: 50px; line-height: 50px;">
                         <a href="javascript:void(0)" data-toggle="topjui-menubutton"
                            data-options="iconCls:'fa fa-user',hasDownArrow:false"
-                           style="color:#fff;">TopJUI前端框架</a>|
+                           style="color:#fff;"><p th:text="${session.emps.uname}"></p></a>|
                         <a href="javascript:void(0)" id="mb3" data-toggle="topjui-menubutton"
                            data-options="menu:'#mm3',iconCls:'fa fa-cog',hasDownArrow:true" style="color:#fff;">设置</a>
                         <div id="mm3" style="width:74px;">
@@ -175,13 +175,11 @@
 
     <div data-options="region:'south',border:true"
          style="text-align:center;height:30px;line-height:30px;border-bottom:0;overflow:hidden;">
-        <span style="float:left;padding-left:5px;width:30%;text-align: left;">当前用户：TopJUI前端框架</span>
+        <span style="float:left;padding-left:5px;width:30%;text-align: left;"></span>
         <span style="padding-right:5px;width:40%">
             版权所有 © 2019
-            <a href="http://www.zuoyour.com" target="_blank">湖南佐佑时代科技有限公司</a>
-            <a href="http://www.miitbeian.gov.cn" target="_blank">湘ICP备18018053号</a>
         </span>
-        <span style="float:right;padding-right:5px;width:30%;text-align: right;">版本：v1.0.0</span>
+        <span style="float:right;padding-right:5px;width:30%;text-align: right;"></span>
     </div>
 </div>
 

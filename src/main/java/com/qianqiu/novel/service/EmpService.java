@@ -23,7 +23,7 @@ public class EmpService {
         return dao.queryEmp();
     }
 
-    public void updateP(Emps e,Integer empid){
-         dao.updateP(e,empid);
+    public int updateP(Emps e){
+         return dao.updateP(e);
     }
 }
