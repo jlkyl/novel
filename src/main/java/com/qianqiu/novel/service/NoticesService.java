@@ -27,6 +27,9 @@ public class NoticesService {
     public Notices queryById(Integer noticeid){
         return dao.queryById(noticeid);
     }
+    public Notices queryByIds(Integer noticeid){
+        return dao.queryByIds(noticeid);
+    }
     public Pages queryPage(Integer offset, Integer pageSize){
        Pages p = new Pages();
        p.setRows(dao.queryPage((offset-1)*pageSize,pageSize));
