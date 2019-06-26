@@ -21,7 +21,7 @@
         <div class="mheader-wrapper">
             <ul class="mheader-nav fl">
                 <li class="mheader-nav-li mheader-logo">
-                    <a class="pin-logo" href="/jpbook/booktype/queryAll" style = "font-size: 18px;font-family: 'Courier New', Courier, monospace">江派中文网</a>
+                    <a class="pin-logo" href="/jpbook/booktype/queryAll" style = "font-size: 18px;font-family: 'Courier New', Courier, monospace">千秋小说网</a>
                 </li>
 
                 <li class="mheader-nav-li">
@@ -83,7 +83,7 @@
                 <li class="mheader-nav-li line"></li>
 
                 <th:block th:if="${session}">
-                    <th:block th:if="${session.users}">
+                    <th:block th:if="${session.user}">
                         <li class="mheader-nav-li mheader-login">
                             <a href="/jpbook/personal" target="_blank" class="mheader-nav-a"><span class="elNickName" th:text="${session.users.get(0).getUname()}">Joselyn</span><span class="mheader-arrow"></span></a>
                             <ul class="mheader-drop">
@@ -102,7 +102,7 @@
                 </th:block>
 
 
-                <th:block th:if="${session.users} eq null">
+                <th:block th:if="${session.user} eq null">
                     <li class="mheader-nav-li" style="">
                         <div class="mheader-logout">
                             <a href="/jpbook/register" target="_blank" class="mr8">注册</a>
@@ -116,7 +116,7 @@
                 <li class="mheader-nav-li line"></li>
 
                 <li class="mheader-nav-li">
-                    <a th:href="${session.users} ? '../personal.html?key=i' : '../login'" class="mheader-nav-a mheader-shelf-a"><i class="icon icon-book_icon"></i>&nbsp;我的书架</a>
+                    <a th:href="${session.user} ? '../personal.html?key=i' : '../login'" class="mheader-nav-a mheader-shelf-a"><i class="icon icon-book_icon"></i>&nbsp;我的书架</a>
                 </li>
 
             </ul>
