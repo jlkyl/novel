@@ -617,12 +617,12 @@ function modifyPwd() {
             btnCls: 'topjui-btn-green',
             handler: function () {
                 if ($('#pwdDialog').form('validate')) {
-                    if ($("#password").val().length < 6) {
+                    if ($("#pwd1").val().length < 6) {
                         $.iMessager.alert('警告', '密码长度不能小于6位', 'messager-warning');
                     } else {
                         var formData = $("#pwdDialog").serialize();
                         $.ajax({
-                            url: '../json/response/success.json',
+                            url: '/ep/updateP',
                             type: 'post',
                             cache: false,
                             data: formData,
@@ -631,17 +631,19 @@ function modifyPwd() {
                                     text: '正在操作...'
                                 });
                             },
-                            success: function (data, response, status) {
+                            success: function (data) {
                                 $.iMessager.progress('close');
-                                if (data.statusCode == 200) {
+                                if (data) {
                                     $.iMessager.show({
                                         title: '提示',
                                         msg: '操作成功'
                                     });
                                     $("#pwdDialog").iDialog('close').form('reset');
+                                    window.location="/back/login.html";
 
                                 } else {
                                     $.iMessager.alert('操作失败！', '未知错误或没有任何修改，请重试！', 'messager-error');
+
                                 }
                             }
                         });
