@@ -36,5 +36,17 @@ public class EmpController {
             return false;
         }
     }
+    @RequestMapping("queryEmp")
+    public String queryEmp(){
+        es.queryEmp();
+        return "";
+    }
+
+    @RequestMapping("updateP")
+    @ResponseBody
+    public Boolean updateP(Emps e){
+        es.updateP(e);
+        return true;
+    }
 
 }

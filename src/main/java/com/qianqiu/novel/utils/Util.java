@@ -4,22 +4,37 @@ import java.io.File;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.qianqiu.novel.entity.Emps;
+import com.qianqiu.novel.entity.Users;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 
 public class Util {
+	public static Integer getuserid(HttpSession session){
+		Users users = (Users)session.getAttribute("user");
+		if (null==users){
+			return null;
+		}
+		return users.getUserid();
+	}
+
+	public static Integer getempid(HttpSession session){
+		Emps emp = (Emps) session.getAttribute("emps");
+		if (null == emp){
+			return null;
+		}
+		return emp.getEmpid();
+	}
 	/**
 	 * 上传文件
 	 * @param realPath 存放路径
