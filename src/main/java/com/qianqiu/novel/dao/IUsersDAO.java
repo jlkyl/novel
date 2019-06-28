@@ -1,10 +1,7 @@
 package com.qianqiu.novel.dao;
 
 import com.qianqiu.novel.entity.Users;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface IUsersDAO {
@@ -24,5 +21,9 @@ public interface IUsersDAO {
     @Insert("insert into Users (userid,username,phone,password,realname, sex, idcard, email, pen, head, sign, author) values(null,concat('Reader',#{phone}),#{phone},#{password},#{realname},#{sex},#{idcard},#{email},#{pen},#{head},#{sign},#{author})")
     public int addlogin(Users users );
 
+    @Update("UPDATE `novel`.`users` SET `username`=#{username},`sex`=#{sex},`sign`=#{sign} WHERE (`userid`=#{userid})")
+    public int update(Users users);
 
+    @Update("UPDATE `novel`.`users` SET `head`=#{head} WHERE (`userid`=#{userid})")
+    public int updhead(Users users);
 }
