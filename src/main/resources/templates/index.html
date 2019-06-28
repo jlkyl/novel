@@ -62,7 +62,7 @@
                 <a href="/jpbook/booktype/queryAll" data-eid="qd_A11"></a>
             </div>
             <div class="search-wrap fl">
-                <form id="formUrl" action="/jpbook/books/likeBooks" method="get" target="_blank">
+                <form id="formUrl" action="/books/likeBooks" method="get" target="_blank">
                     <p>
                         <input class="search-box" id="s-box" name="kw" type="text" placeholder="请输入作家名或书名">
                     </p>
@@ -743,7 +743,7 @@
         <div class="cf" id="numero4">
             <div class="left-wrap fl">
                 <h3 class="wrap-title lang">
-                    完本精品<span th:text="|完本总数${queryWanben.size()}本|"></span>
+                    完本精品<span text="|完本总数${queryWanben.size()}本|"></span>
                     <a class="more" href="//www.qidian.com/finish" target="_blank">更多<em class="iconfont">&#xe553;</em></a>
                 </h3>
                 <div class="center-book-list fl" data-l2="2">
@@ -1218,8 +1218,9 @@
                     break
             }
         }
-        return element
+        return element;
     };
+
     function removeu() {
         $.ajax({
             url: '/Login/logout',
