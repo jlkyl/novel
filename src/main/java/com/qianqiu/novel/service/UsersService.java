@@ -30,4 +30,11 @@ public class UsersService {
       return u.addlogin(users);
     }
 
+    public int update(Users users){
+        return u.update(users);
+    }
+
+    public int updhead(Users users){
+        return u.updhead(users);
+    }
 }
