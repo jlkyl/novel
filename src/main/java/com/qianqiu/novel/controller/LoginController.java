@@ -114,4 +114,13 @@ public class LoginController {
             return true;
         }
     }
+
+    @RequestMapping("userupdate")
+    @ResponseBody
+    public String updateUser(Users user){
+        System.out.println("修改");
+        u.update(user);
+        System.out.println(user);
+        return "1";
+    }
 }
