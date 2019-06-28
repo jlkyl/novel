@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>首页_个人中心_起点书城</title>
@@ -13,11 +13,11 @@
 	<link rel="stylesheet" data-ignore="true" href="./css/index.0.16.css">
 	<link rel="stylesheet" type="text/css" href="./css/icon.css">
 
-	<link rel="stylesheet" href="./layui/layui-v2.4.5/layui/css/layui.css" media="all">
+	<link rel="stylesheet" href="./js//layui/css/layui.css" media="all">
 
 	<script src="./js/jquery-3.3.1.js"></script>
 
-	<script src="./layui/layui-v2.4.5/layui/layui.js"></script>
+	<script src="./js/layui/layui.js"></script>
 
 	<link rel="stylesheet" type="text/css" href="./css/sweet-alert.css" />
 	<script src="./js/sweet-alert.js"></script>
@@ -79,7 +79,7 @@
 				<li id="u10" onclick="u10()">
 					<a class="sideBar-list-a" data-eid="qd_M16"><i class="icon icon-jingyan"></i>经验值等级</a>
 				</li>
-				<li id="u8" onclick="u8()">
+				<li id="u8" onclick="updinfo()">
 					<a class="sideBar-list-a" target="_blank" data-eid="qd_M20"><i class="icon icon-shezhi"></i>个人设置</a>
 				</li>
 				<li id="u5">
@@ -93,19 +93,19 @@
 		<div class="qdp-content home-content" data-l1="3" id="s1" >
 			<div class="home-user-wrapper qdp-border" data-l2="1">
 				<div class="home-user-avatar" data-l3="1">
-					<a href="javascript:u8()" class="user-avatar-a">
-						<img class="user-avatar-img" id="icon" src="/jpbook/images/default_user.0.2.png" alt="" data-eid="qd_M24">
+					<a href="javascript:updinfo()" class="user-avatar-a">
+						<img class="user-avatar-img" id="icon" th:src="${session.user.head}" alt="" data-eid="qd_M24">
 					</a>
 				</div>
 				<div class="home-user" data-l3="1">
 					<div class="qdp-button">
 						<a href="javascript:;" id="homeurl" class="qdp-button-a mlr4" target="_blank" data-eid="qd_M23">个人主页</a>
-						<a href="javascript:u8()" class="qdp-button-a qdp-button-icon ml12" data-eid="qd_M22">
+						<a href="javascript:void(0);" onclick="updinfo()" class="qdp-button-a qdp-button-icon ml12" data-eid="qd_M22">
 							<i class="icon icon-shezhi"></i>
 						</a>
 					</div>
 					<h3>
-						<a href="javascript:u8()" data-eid="qd_M25" id="uname" style="color: white"></a>
+						<a href="javascript:updinfo()" data-eid="qd_M25" id="uname" style="color: white"></a>
 						<a href="javascript:u10()" class="home-user-level" data-eid="qd_M26" id="grade">Lv0</a>
 					</h3>
 
@@ -519,58 +519,43 @@
 
 
 		<!--个人信息设置-->
-		<div class="qdp-content" data-l1="3" style="display:none;" id="s8">
+		<div id="s8" class="qdp-content" data-l1="3" style="display:none;">
 			<h2 class="qdp-hometitle"><a href="/index.html">首页</a>&nbsp;&gt;&nbsp;个人信息设置</h2>
 			<div class="qdp-record setting-record" data-l2="9">
 				<div id="tabView9" class="ui-tab-tabs">
 					<a href="javascript:;" class="checked" data-rel="tabTarget1"  data-eid="qd_M134" id="jpbasic">基本设置</a>
 					<a href="javascript:;" class="" data-rel="tabTarget2" data-eid="qd_M135" id="jpicon">头像设置</a>
-
 				</div>
 				<div id="jsTabContents9" class="ui-tab-contents">
 					<div id="tabTarget11" class="ui-tab-content checked" data-l3="24">
 						<div class="qdp-form">
 							<form id="setBasicForm" method="post" novalidate="novalidate">
+								<input type="text" id="uid" hidden="hidden" th:name="userid" th:value="${session.user.userid}"/>
 								<input type="hidden" name="_csrfToken" value="U0tnpJm757WqRHaD7nolPCFcQzCVf5bHSkgQshrH" class="elCsrf">
-								<dl>
-									<dt>起点ID</dt>
-									<dd style="margin-left: -140px" id="uuid">328998246</dd>
-								</dl>
 								<dl>
 									<dt>昵称</dt>
 									<dd style="margin-left: -140px; margin-top: -8px">
-										<input type="text" id="uname2" name="uname" maxlength="12" disabled>
-										<a href="javascript:;" id="btnEditName" class="blue ml8 cur" role="button" data-eid="qd_M138">修改昵称</a>
+										<input type="text" id="uname2" th:name="username" maxlength="12" th:value="${session.user.username}"/>
 									</dd>
 								</dl>
 
 								<dl>
 									<dt>性别</dt>
 									<dd style="margin-left: -140px">
-										<input type="radio" id="radioSex1" name="gender" data-eid="qd_M139" required="" value="0" checked="">
+										<input type="text" hidden="hidden" id="usex" th:value="${session.user.sex}"/>
+										<input type="radio" id="radioSex1" th:name="sex" data-eid="qd_M139" required="">
 										<label for="radioSex1" class="ui-radio mr5"></label><label for="radioSex1" class="mr20">男</label>
-										<input type="radio" id="radioSex2" name="gender" value="1" data-eid="qd_M139" required="">
+										<input type="radio" id="radioSex2" th:name="sex" data-eid="qd_M139" required="">
 										<label for="radioSex2" class="ui-radio ml5 mr5"></label><label for="radioSex2">女</label>
-									</dd>
-								</dl>
-								<dl class="qdp-form-higher">
-									<dt>生日</dt>
-									<dd style="margin-left: -140px">
-										<span class="ui-input ui-date-input">
-											<div class="layui-inline">
-												<input type="text" class="layui-input" name="birthday" id="iptBorth">
-											  	<label for="iptBorth" class="ui-date-arrow"></label>
-											</div>
-										</span>
 									</dd>
 								</dl>
 
 								<dl class="qdp-form-higher">
-									<dt>简介</dt>
+									<dt>个性签名</dt>
 									<dd style="margin-left: -140px">
 										<div class="ui-textarea-x" style="width:324px;">
-											<textarea id="forIntroArea" name="description" maxlength="140" rows="2" placeholder="可以简单的描述自己" data-eid="qd_M140"></textarea>
-											<div class="ui-textarea"></div>
+											<textarea id="forIntroArea" th:name="sign" maxlength="140" rows="2" data-eid="qd_M140"></textarea>
+											<div class="ui-textarea" id="gxqm" th:text="${session.user.sign}" ></div>
 											<label for="forIntroArea" class="ui-textarea-count"></label>
 										</div>
 									</dd>
@@ -590,10 +575,10 @@
 
 					<div id="tabTarget9" class="ui-tab-content setting-avatar" data-l3="24">
 						<form id="frmpic" method="post" enctype="multipart/form-data" >
-							<input type="file" id="fileAvatar" name="photo" class="clip" onchange="checkicon(this)" accept="image/png, image/jpeg, image/gif, image/jpg">
+							<input type="file" id="fileAvatar" name="head" class="clip" onchange="checkicon(this)" accept="image/png, image/jpeg, image/gif, image/jpg">
 						</form>
 						<div id="avatarXChoose" class="avatar-x-choose">  <!--//facepic.qidian.com/qd_face/349573/6495553/100-->
-							<img id="usersicon" class="avatar-show" th:src="@{/images/{icon}(icon = ${session.users.get(0).getIcon()})}" alt="">
+							<img id="usersicon" class="avatar-show" th:src="${session.user.head}" alt="">
 							<div class="avatar-text">
 								<p class="gray">支持jpg、gif、png格式图片</p>
 							</div>
@@ -745,7 +730,7 @@
 <script src="./js/move-top.js"></script>-->
 <script src="./js/jquery.form.js"></script>
 
-<script>
+<script type="text/javascript">
 
     layui.use('laydate', function(){
         var laydate = layui.laydate;
@@ -792,7 +777,7 @@
         $("#s1").show();
 
         $.ajax({
-            url: "per/fansByeye",
+            url: "",
             data: {},
             success: function (data) {
                 $("#homeurl").prop("href","pc/home?uuid="+data[0].uuid);
@@ -816,13 +801,13 @@
         });
 
         $.ajax({
-            url: "per/guess",
+            url: "",
             data: {},
             success: function (data) {
                 var yemian = "";
                 if (data.length > 0){
                     for (var i=0; i<data.length; i++){
-                        yemian+="<li class='recmd-list-item' style='margin-left: 15px'>"+
+                        yemian+="<li class='recmd-list-item' style=': 15pmargin-leftx'>"+
                             "<a href='/jpbook/books/queryBookById?bookid="+data[i].bookid+"' target='_blank' class='recmd-list-a' data-eid='qd_M42' data-bid='1004895204'>" +
                             "<div class='recmd-commet'>"+data[i].bookreferral.substring(0,30)+"</div>" +
                             "<img src='/jpbook/img/"+data[i].icon+"' alt='' class='recmd-list-img'>" +
@@ -868,7 +853,7 @@
         $("#tabTarget1").prop("class","ui-tab-content checked");
 
         $.ajax({
-            url: "per/mutualquery",
+            url: "",
             success: function (data) {
 				var t1 = "";
                if (data.length > 0){
@@ -910,7 +895,7 @@
         $("#tabTarget2").prop("class","ui-tab-content checked");
 
         $.ajax({
-            url: "per/eyequery",
+            url: "",
             success: function (data) {
                 var t2 = "";
                 if (data.length > 0){
@@ -952,7 +937,7 @@
         $("#tabTarget2").prop("class","ui-tab-content");
         $("#tabTarget3").prop("class","ui-tab-content checked");
         $.ajax({
-            url: "per/fansquery",
+            url: "",
             success: function (data) {
                 var t3 = "";
                 if (data.length > 0){
@@ -992,7 +977,7 @@
     
     function canceleye(buuid,state) {
         $.ajax({
-            url: "pc/delFans",
+            url: "",
 			data:{"buuid":buuid},
             success: function (data) {
                 swal("取消关注成功", "", "success");
@@ -1014,7 +999,7 @@
     }
 	function fansadd(buuid) {
 		$.ajax({
-			url: "pc/fansAdd",
+			url: "",
 			data: {"buuid":buuid},
 			success: function (data) {
 				swal("关注成功", "", "success");
@@ -1043,7 +1028,7 @@
         $("#tabTarget21").prop("class","ui-tab-content");
         $("#tabTarget12").prop("class","ui-tab-content checked");
         $.ajax({
-            url: "per/reviewquery",
+            url: "",
             success: function (data) {
                 var tbom1="";
                 if(data.length>0){
@@ -1067,7 +1052,7 @@
         $("#tabTarget12").prop("class","ui-tab-content");
         $("#tabTarget21").prop("class","ui-tab-content checked");
         $.ajax({
-            url: "per/replyquery",
+            url: "",
             success: function (data) {
                 var tbom2="";
                 if(data.length>0){
@@ -1098,14 +1083,14 @@
 
         var grade = 1;
         $.ajax({
-            url: "per/queryusers",
+            url: "",
             success: function (data) {
                 grade = data[0].grade;
             }
         });
 
         $.ajax({
-            url:"per/wtid1",
+            url:"",
             success:function (data) {
                 if (grade >= 3 && grade < 13){
 					$("#wtid1").text(1);
@@ -1145,7 +1130,7 @@
         });
 
         $.ajax({
-            url: "per/wtid2",
+            url: "",
             success: function (data) {
 				if (data.employ == null || data.employ == undefined){
                     $("#wtid4").text(data.walnum);
@@ -1312,112 +1297,49 @@
         });
     })
 
-    function u8() {
-        for (var i = 1; i <= 10; i++) {
+    function updinfo(){
+		for (var i = 1; i <= 10; i++) {
             $("#u" + i).prop("class", "");
         }
+
         $("#u8").prop("class", "active");
         for (var i = 1; i <= 10; i++) {
             $("#s" + i).hide();
         }
         $("#s8").show();
 
-        $.ajax({
-            url: "per/queryusers",
-            success: function (data) {
-                $("#uuid").text(data[0].uuid);
-                $("#uname2").val(data[0].uname);
-                $("#iptBorth").val(renderTime(data[0].birthday).substring(0,10));
-
-                $("#forIntroArea").val(data[0].self);
-                var sex = data[0].sex;
-                if (sex == 0){
-                    $("#radioSex2").prop("");
-                    $("#radioSex1").prop("checked",true);
-
-				}else {
-                    $("#radioSex1").prop("");
-                    $("#radioSex2").prop("checked",true);
-				}
-
-            }
-        });
+        var usex = $("#usex").val();
+        if(usex == "女"){
+			$("#radioSex1").prop("");
+			$("#radioSex2").prop("checked",true);
+		}else if(usex == "男"){
+			$("#radioSex2").prop("");
+			$("#radioSex1").prop("checked",true);
+		}
     }
 
+    $("#forIntroArea").click(function(){
+    	$("#gxqm").html("");
+	});
+
     $("#dialogMsgSubmit").click(function () {
-        var uname = $("#uname2").val()
-        var birthday = $("#iptBorth").val();
-        var self = $("#forIntroArea").val();
-        var sex = 0;
+        var username = $("#uname2").val();
+        var sex = "";
         if($("#radioSex1").prop("checked")){
-            sex = 0;
-        }else {
-            sex = 1;
+            sex = "男";
+        }else if($("#radioSex2").prop("checked")){
+            sex = "女";
         }
 
-        if ($("#uname2").val() == ""){
-            $("#uname2").focus();
-            $("#uname2").css("border","1px solid red");
-            return false;
-        }
-        $.ajax({
-            url:'per/getuname',
-            data:{"uname":$("#uname2").val()},
-            success:function (data) {
-                if (data > 0){
-                    swal("用户名已存在", "", "error");
-                    return false;
-                }
-                if(birthday > getNowFormatDate()){
-                    swal("生日选择有误", "", "error");
-                    return false;
-                }
-                $.ajax({
-                    url:'per/editusers',
-                    data:{"uname":uname,"birthday":birthday,"self":self,"sex":sex},
-                    success:function (data) {
-                        $("#btnEditName").text("修改昵称");
-                        $("#uname2").css("border","");
-                        $("#uname2").prop("disabled","disabled");
-
-                        u8();
-                        swal("保存信息成功", "", "success");
-                    }
-                })
-
-            }
-        })
-
-    })
-
-    $("#btnEditName").click(function () {
-		if ($("#uname2").val() == ""){
-            $("#uname2").focus();
-            $("#uname2").css("border","1px solid red");
-            return false;
-		}
-
-		if ($("#btnEditName").text() == "修改昵称"){
-            $("#btnEditName").text("保存");
-            $("#uname2").css("border","1px solid lightgray");
-            $("#uname2").prop("disabled","");
-		}else {
-            $.ajax({
-                url:'per/getuname',
-                data:{"uname":$("#uname2").val()},
-                success:function (data) {
-                    if (data > 0){
-                        swal("用户名已存在", "", "error");
-                        return false;
-					}else {
-                        $("#btnEditName").text("修改昵称");
-                        $("#uname2").css("border","");
-                        $("#uname2").prop("disabled","disabled");
-					}
-                }
-            })
-		}
-    })
+		$.ajax({
+			url: "/Login/userupdate",
+			data:{username:$("#uname2").val(),sex:sex,sign:$("#forIntroArea").val(),userid:$("#uid").val()},
+			success: function (data) {
+				console.log(data);
+				swal("信息修改成功", "", "success");
+			}
+		});
+    });
 
     $("#jpbasic").click(function () {
         $("#jpicon").prop("class","");
@@ -1425,10 +1347,27 @@
         $("#tabTarget9").prop("class","ui-tab-content setting-avatar");
         $("#tabTarget11").prop("class","ui-tab-content checked");
 
-        u8();
+		updinfo();
     })
 
-    $("#jpicon").click(function () {
+	function lookImg(){
+		var f = $("#fb").next().find('input[type=file]')[0];
+		/* <![CDATA[ */
+		if (f.files && f.files[0]){
+			$('#addImage').html('');
+			for(var i=0;i<f.files.length;i++){
+				var reader = new FileReader(f.files[i]);
+				reader.onload = function(e){
+					$('#addImage').append("<img src='"+e.target.result+"'width='100px;'/>");
+				};
+				reader.readAsDataURL(f.files[i]);
+			}
+		}
+		/*]]>*/
+	}
+
+
+	$("#jpicon").click(function () {
         $("#jpbasic").prop("class","");
         $("#jpicon").prop("class","checked");
         $("#tabTarget11").prop("class","ui-tab-content");
@@ -1444,6 +1383,7 @@
             alert("图片的格式必须为png或者jpg或者jpeg格式！");
             return;
         }
+
         var isIE = navigator.userAgent.match(/MSIE/) != null,
             isIE6 = navigator.userAgent.match(/MSIE 6.0/) != null;
 
@@ -1478,7 +1418,7 @@
 		}else{
 			var form = $("#frmpic");
 			var options = {
-				url:'per/editicon', //上传文件的路径
+				url:'/Upload/upload', //上传文件的路径
 				type:'post',
 				async :true,
 				success:function(data){
