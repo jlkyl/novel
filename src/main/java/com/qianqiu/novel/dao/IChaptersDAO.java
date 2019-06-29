@@ -19,4 +19,6 @@ public interface IChaptersDAO {
     Integer getOrder(Integer bookid);
     @Select("select * from chapters where rollid=#{rollid}")
     List<Chapters> findByRollid(Integer rollid);
+
+
 }

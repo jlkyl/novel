@@ -39,13 +39,14 @@
                             <a class="black" id="user-name" href="../personal.html" target="_blank"
                                th:text="${session.user.username}"></a>
                             <em>|</em>
-                            <a id="exit-btn" href="javascript:void(0);" onclick="removeu()">退出</a>
+                            <a id="exit-btn" href="/Login/logout" >退出</a>
                         </div>
                     </th:block>
                 </th:block>
                 <div th:class="${session.user} ? 'sign-out hidden' : 'sign-out'">
-                    <a id="login-btn" class="black" href="../login.html" target="_blank">登录</a><em>|</em>
-                    <a id="reg-btn" href="../register.html" target="_blank">注册</a>
+                    <a id="login-btn" class="black" href="../login.html">登录</a><em>|</em>
+                    <!--target="_blank" 添加新页面-->
+                    <a id="reg-btn" href="../register.html" >注册</a>
                 </div>
             </div>
         </div>
@@ -1220,19 +1221,7 @@
         }
         return element
     };
-    function removeu() {
-        $.ajax({
-            url: "Login/logout",
-            success: function (data) {
-                /* jQuery(".sign-in").addClass("sign-in hidden");
-                 jQuery(".sign-out.hidden").addClass("sign-out");
-                 jQuery(".sign-in").removeClass("sign-in");
-                 jQuery(".sign-out.hidden").removeClass("sign-out hidden");
-                  window.location.reload();*/
-               window.location.href("/index.html");
-            }
-        });
-    };
+
 
     function Animate(element, options, fnCallBack) {
         this.obj = t(element);
@@ -1263,7 +1252,32 @@
     window.onload = function () {
         new Youa("box");
     };
-
+    function removeu() {
+        jQuery.ajax({
+            url: "Login/logout",
+            success: function (data) {
+                /* jQuery(".sign-in").addClass("sign-in hidden");
+                 jQuery(".sign-out.hidden").addClass("sign-out");
+                 jQuery(".sign-in").removeClass("sign-in");
+                 jQuery(".sign-out.hidden").removeClass("sign-out hidden");
+                  window.location.reload();*/
+                window.location.href("/index.html");
+            }
+        });
+    };
+    function writerManager(){
+        jQuery.ajax({
+          url:"Login/writerManager",
+          type:"post",
+          success:function(data){
+              if(data==true){
+                  window.location.href("/authorWorks.html");
+              }else{
+                  window.location.href("/writerperfect.html");
+              }
+          }
+      });
+    };
 
 </script>
 </body>

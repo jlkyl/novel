@@ -1,6 +1,7 @@
 package com.qianqiu.novel.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -22,4 +23,7 @@ public class RollsService {
 	public List<Rolls> findByBookid(Integer bookid){
 		return dao.findByBookid(bookid);
 	}
+	//查询书籍中的书卷名是否存在
+	public Rolls queryRollname(String rollname,Integer bookid){return dao.queryRollname(rollname,bookid);}
+
 }

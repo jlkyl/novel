@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public class FileUtil {
     //存放路径
-    public static final String path="F:\\books\\";
+    public static final String path="D:\\Study\\Writerread\\";
     /**
      * 创建文件夹
      * @param file
@@ -45,7 +45,7 @@ public class FileUtil {
     public static String  read(String files){
         String str="";
         try {
-            String pathname = "F:\\books\\"+files; // 绝对路径或相对路径都可以，这里是绝对路径，写入文件时演示相对路径
+            String pathname = path+files; // 绝对路径或相对路径都可以，这里是绝对路径，写入文件时演示相对路径
             File filename = new File(pathname); // 要读取以上路径的input。txt文件
             InputStreamReader reader = new InputStreamReader(
                     new FileInputStream(filename)); // 建立一个输入流对象reader
@@ -71,7 +71,7 @@ public class FileUtil {
         File newFile = new File(pathname);
         oldFile.renameTo(newFile);
     }
-    public static String createImage(String name){
+    public static String createImage(String name,String pen){
         String fileLocation="";
         UUID uuid=null;
         try{
@@ -91,20 +91,20 @@ public class FileUtil {
 
             f = new Font("宋体", Font.BOLD, 20);
             fm = sun.font.FontDesignMetrics.getMetrics(f);
-            stringWidth = fm.stringWidth("爱色鬼 著");
+            stringWidth = fm.stringWidth(pen+" 著");
             graphics.setFont(f);
-            graphics.drawString("爱色鬼 著", 300-(stringWidth/2), 650);
+            graphics.drawString(pen+" 著", 300-(stringWidth/2), 650);
 
             f = new Font("宋体", Font.BOLD, 30);
             fm = sun.font.FontDesignMetrics.getMetrics(f);
-            stringWidth = fm.stringWidth("江派书城");
+            stringWidth = fm.stringWidth("千秋小说网");
             graphics.setFont(f);
-            graphics.drawString("江派书城", 300-(stringWidth/2), 750);
+            graphics.drawString("千秋小说网", 300-(stringWidth/2), 750);
 
             graphics.setFont(new Font("宋体", Font.BOLD, 20));
 
             uuid = UUID.randomUUID();
-            fileLocation="F:\\PICS\\"+uuid+".png";
+            fileLocation="D:\\Study\\S3\\IDEA_idea\\novel\\src\\main\\resources\\static\\img\\"+uuid+".png";
             FileOutputStream fos = new FileOutputStream(fileLocation);
             BufferedOutputStream bos = new BufferedOutputStream(fos);
             JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(bos);

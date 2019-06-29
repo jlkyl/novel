@@ -35,12 +35,12 @@
                 <ul class="cf">
                     <li class="line"></li>
                     <li id="headPhotoBox" class="headPhoto">
-                        <p><em><img th:src="${session.users[0].getIcon()}" width="36" height="36" alt=""></em><a class="userName" href="javascript:" th:text="${session.users[0].getPen()}">爱色鬼</a></p>
+                        <p><em><img th:src="${session.user.getHead()}" width="36" height="36" alt=""></em><a class="userName" href="javascript:" th:text="${session.users[0].getPen()}">爱色鬼</a></p>
                         <dl class="userBox">
                             <cite class="icon whiteSj"></cite>
                             <dd class="userInfo hidden">
                                 <!-- 增加身份标识"ico-level",silver为白金作家，dashen为大神作家 -->
-                                <p class="name" th:title="${session.users[0].getPen()}" th:text="${session.users[0].getPen()}">爱色鬼
+                                <p class="name" th:title="${session.user.getPen()}" th:text="${session.user.getPen()}">爱色鬼
 
                                 </p>
                                 <p class="level">
@@ -48,7 +48,7 @@
                                     <span><em style="width:70%">0/0</em></span></p>
                             </dd>
                             <dd class="link"><a href="writerdata.html">作家资料</a></dd>
-                            <dd class="link end"><a href="/jbook/login/emptySession">退出登录</a></dd>
+                            <dd class="link end"><a href="/Login/logout">退出登录</a></dd>
                         </dl>
                     </li>
                 </ul>
@@ -208,7 +208,7 @@
                                     </div>
                                         <script type="text/javascript">
                                             $.ajax({
-                                                url:"roll/getByBookid",
+                                                url:"rolls/queryRoll",
                                                 success:function (data) {
                                                     var str="";
                                                     $("#rollid").val(data[0].rollid);
@@ -560,10 +560,10 @@
             <p class="mb20"><input data-node="volumeTitleInput" class="longInput" type="text" id="rollname" value=""></p>
         </div>
             <div>
-                <p>是否收费</p>
+                <p>是否VIP</p>
                 <p class="mb20">
-                    <input type="radio" name="rollmoney" value="1" checked>免费
-                    <input type="radio" name="rollmoney" value="2">收费
+                    <input type="radio" name="rollmoney" value="0" checked>免费
+                    <input type="radio" name="rollmoney" value="1">VIP
                 </p>
             </div>
             <div class="confirmBtn">
@@ -583,7 +583,7 @@
     function ajaxaddroll() {
         $.ajax({
             url:"roll/addRoll",
-            data:{"rollname":$("#rollname").val(),"rollmoney":$("input[name='rollmoney']:checked").val()},
+            data:{"rollname":$("#rollname").val(),"isvip":$("input[name='rollmoney']:checked").val()},
             success:function (data) {
                 if (data==0){
                     swal("卷名已存在!", "请修改卷名", "warning");

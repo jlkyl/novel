@@ -1,12 +1,10 @@
 package com.qianqiu.novel.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.qianqiu.novel.entity.Rolls;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface IRollsDAO {
@@ -15,4 +13,8 @@ public interface IRollsDAO {
     Integer add(Rolls rolls);
     @Select("select * from rolls where bookid=#{bookid} order by rollid")
     List<Rolls> findByBookid(Integer bookid);
+    //查询书卷名是否存在
+    @Select("select * from rolls where rollname=#{rollname} and bookid=#{bookid}")
+    Rolls queryRollname(@Param("rollname") String rollname,@Param("bookid") Integer bookid);
+
 }
