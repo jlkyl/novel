@@ -10,8 +10,10 @@ import java.io.*;
 import java.util.UUID;
 
 public class FileUtil {
-    //存放路径
-    public static final String path="D:\\Study\\Writerread\\";
+    //图书存放路径
+    public static final String path="F:\\books\\";
+    //图片存放路径
+    public static final String imgpath="D:\\Workspace\\IdeaProjects\\novel\\src\\main\\resources\\static\\img\\";
     /**
      * 创建文件夹
      * @param file
@@ -65,9 +67,9 @@ public class FileUtil {
         return str;
     }
     public static void upFileName(String oldFileName,String newFileName){
-        String pathname = "F:\\books\\"+oldFileName;
+        String pathname = path+oldFileName;
         File oldFile = new File(pathname);
-        pathname = "F:\\books\\"+newFileName;
+        pathname = path+newFileName;
         File newFile = new File(pathname);
         oldFile.renameTo(newFile);
     }
@@ -104,7 +106,7 @@ public class FileUtil {
             graphics.setFont(new Font("宋体", Font.BOLD, 20));
 
             uuid = UUID.randomUUID();
-            fileLocation="D:\\Study\\S3\\IDEA_idea\\novel\\src\\main\\resources\\static\\img\\"+uuid+".png";
+            fileLocation=imgpath+uuid+".png";
             FileOutputStream fos = new FileOutputStream(fileLocation);
             BufferedOutputStream bos = new BufferedOutputStream(fos);
             JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(bos);
@@ -126,10 +128,10 @@ public class FileUtil {
         System.out.println(oldName+"\n"+newName);
         System.out.println(222);
         System.out.println(oldName+"\n"+newName);
-        File f=new File("f:\\\\books\\\\"+oldName+".txt");
+        File f=new File(path+oldName+".txt");
         String c=f.getParent();
         System.out.println(c);
-        File mm=new File("f:\\\\books\\\\"+newName+".txt");
+        File mm=new File(path+newName+".txt");
         if(f.renameTo(mm))
         {
             System.out.println("修改成功!");

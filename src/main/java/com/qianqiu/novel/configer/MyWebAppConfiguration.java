@@ -1,5 +1,6 @@
 package com.qianqiu.novel.configer;
 
+import com.qianqiu.novel.utils.FileUtil;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -15,7 +16,7 @@ public class MyWebAppConfiguration extends WebMvcConfigurerAdapter {
          *这是图片的物理路径  "file:/+本地图片的地址"
          * @Date： Create in 14:08 2017/12/20
          */
-        registry.addResourceHandler("/img/**").addResourceLocations("file:/D:/Study/S3/IDEA_idea/novel/src/main/resources/static/img/");
+        registry.addResourceHandler("/img/**").addResourceLocations("file:/"+ FileUtil.imgpath);
         super.addResourceHandlers(registry);
     }
 }
