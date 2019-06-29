@@ -6,6 +6,7 @@ import com.qianqiu.novel.utils.FileUtil;
 import com.qianqiu.novel.utils.GsonUtil;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -42,8 +43,20 @@ public class AuthorController {
     private LabelsService ls;
 
     @RequestMapping("list")
-    public List<Map<String,Object>> list(){
-        return us.findAuthor();
+    public List<Map<String,Object>> list(Integer siteid){
+        List<Map<String,Object>> list = us.findAuthor(siteid);
+        if(list!=null) {
+            for (Map<String, Object> map : list) {
+                List<Map<String,Object>> list1 = bs.findAll(Integer.parseInt(map.get("userid").toString()));
+                if(list1!=null){
+                    for(Map<String,Object> map1 : list1){
+                        map1.put("rolls",rs.findByBookid(Integer.parseInt(map1.get("bookid").toString())));
+                    }
+                }
+                map.put("books",list1);
+            }
+        }
+        return list;
     }
     @RequestMapping("add")
     public Boolean add(Users users) {
@@ -66,7 +79,14 @@ public class AuthorController {
 
     public Boolean getBooks(Integer userid,String pen){
         // 获取http客户端
-        CloseableHttpClient client = HttpClients.createDefault();
+        RequestConfig defaultRequestConfig = RequestConfig.custom()
+                .setSocketTimeout(10000)
+                .setConnectTimeout(10000)
+                .setConnectionRequestTimeout(5000)
+                .build();
+        CloseableHttpClient client = HttpClients.custom()
+                .setDefaultRequestConfig(defaultRequestConfig)
+                .build();
         try {
             try {
                 //获取作者对应书籍信息

@@ -26,4 +26,8 @@ public class ChaptersService {
 	public Integer getOrder(Integer bookid){
 		return dao.getOrder(bookid);
 	}
+
+	public List<Chapters> findByRollid(Integer rollid){
+		return dao.findByRollid(rollid);
+	}
 }

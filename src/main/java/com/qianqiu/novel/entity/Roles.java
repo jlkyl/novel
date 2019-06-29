@@ -15,6 +15,7 @@ public class Roles implements Serializable {
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	private Date operatedate;
+	private String empname;
 	private List<Menus> menus = new ArrayList<Menus>();
 
 	public Roles(){}
@@ -60,6 +61,14 @@ public class Roles implements Serializable {
 
 	public void setMenus(List<Menus> menus) {
 		this.menus = menus;
+	}
+
+	public String getEmpname() {
+		return empname;
+	}
+
+	public void setEmpname(String empname) {
+		this.empname = empname;
 	}
 
 	public String toString() {

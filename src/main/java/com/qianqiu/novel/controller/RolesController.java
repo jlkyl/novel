@@ -3,10 +3,12 @@ package com.qianqiu.novel.controller;
 import com.qianqiu.novel.entity.Menus;
 import com.qianqiu.novel.entity.Roles;
 import com.qianqiu.novel.service.RolesService;
+import com.qianqiu.novel.utils.MyUtil;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RestController
@@ -21,8 +23,9 @@ public class RolesController {
 		return service.findAll();
 	}
 	@RequestMapping("add")
-	public Integer add(Roles roles,String mid){
+	public Integer add(Roles roles, String mid, HttpSession session){
 		addMenus(roles,mid);
+		roles.setOperateeid(MyUtil.getempid(session));
 		return service.add(roles);
 	}
 	@RequestMapping("del")
@@ -30,8 +33,9 @@ public class RolesController {
 		return service.del(roleid);
 	}
 	@RequestMapping("upd")
-	public Integer upd(Roles roles,String mid){
+	public Integer upd(Roles roles,String mid,HttpSession session){
 		addMenus(roles,mid);
+		roles.setOperateeid(MyUtil.getempid(session));
 		return service.upd(roles);
 	}
 

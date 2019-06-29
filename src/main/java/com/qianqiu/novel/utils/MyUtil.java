@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 
-public class Util {
+public class MyUtil {
 	public static Integer getuserid(HttpSession session){
 		Users users = (Users)session.getAttribute("user");
 		if (null==users){

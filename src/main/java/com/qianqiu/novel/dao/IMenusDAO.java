@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface IMenusDAO {
-    @Select("<script>select * from menus" +
+    @Select("<script>select *,getEmp(operateeid) empname from menus" +
             "<if test=\"offset!=null and pageSize!=null\">\n" +
             "   limit #{offset},#{pageSize}\n" +
             "</if></script>")

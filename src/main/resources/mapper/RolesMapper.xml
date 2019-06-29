@@ -6,6 +6,7 @@
         <result column="rolename" property="rolename"></result>
         <result column="operateeid" property="operateeid"></result>
         <result column="operatedate" property="operatedate"></result>
+        <result column="empname" property="empname"></result>
         <collection property="menus" ofType="Menus">
             <id column="id" property="id"></id>
             <result column="text" property="text"></result>
@@ -15,7 +16,7 @@
         </collection>
     </resultMap>
     <select id="findAll" resultMap="roleMap">
-        select r.*,m.id,m.text,m.url,m.parentId,m.iconCls from roles r
+        select r.*,m.id,m.text,m.url,m.parentId,m.iconCls,getEmp(r.operateeid) empname from roles r
         left join role_menu rm on r.roleid = rm.roleid
         left join menus m on rm.menuid = m.id
     </select>

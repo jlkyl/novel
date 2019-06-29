@@ -1,6 +1,7 @@
 package com.qianqiu.novel.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.qianqiu.novel.entity.Books;
 import org.apache.ibatis.annotations.Insert;
@@ -19,4 +20,6 @@ public interface IBooksDAO {
     Integer addLabel(Integer bookid,Integer labelid);
     @Select("select count(*) from chapters where rollid in (select rollid from rolls where bookid=#{bookid})")
     Integer getChapterNums(Integer bookid);
+    @Select("select b.*,(select typename from booktype where typeid=b.typeid) typename,(select max(chapternum) from chapters where rollid in (select rollid from rolls where bookid=b.bookid)) chapternum,(select sum(wordnum) from chapters where rollid in (select rollid from rolls where bookid=b.bookid)) wordnum from books b where userid = #{userid}")
+    List<Map<String,Object>> findAll(Integer userid);
 }

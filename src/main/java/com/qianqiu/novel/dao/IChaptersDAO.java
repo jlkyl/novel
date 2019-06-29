@@ -17,4 +17,6 @@ public interface IChaptersDAO {
     Chapters findByName(String chaptername,Integer bookid);
     @Select("select COALESCE(max(chapternum),0) from chapters where rollid in (select rollid from rolls where bookid=#{bookid})")
     Integer getOrder(Integer bookid);
+    @Select("select * from chapters where rollid=#{rollid}")
+    List<Chapters> findByRollid(Integer rollid);
 }

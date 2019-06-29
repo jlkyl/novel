@@ -1,6 +1,7 @@
 package com.qianqiu.novel.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.qianqiu.novel.entity.Booktype;
 import org.springframework.stereotype.Service;
@@ -30,5 +31,9 @@ public class BooksService {
 
 	public Integer getChapterNums(Integer bookid){
 		return dao.getChapterNums(bookid);
+	}
+
+	public List<Map<String,Object>> findAll(Integer userid){
+		return dao.findAll(userid);
 	}
 }
