@@ -4,6 +4,7 @@ import com.qianqiu.novel.entity.Emps;
 import com.qianqiu.novel.entity.Menus;
 import com.qianqiu.novel.entity.Pages;
 import com.qianqiu.novel.service.MenusService;
+import com.qianqiu.novel.utils.MyUtil;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,13 +30,15 @@ public class MenusController {
 	}
 
 	@RequestMapping("add")
-	public Integer add(Menus menus){
+	public Integer add(Menus menus,HttpSession session){
+		menus.setOperateeid(MyUtil.getempid(session));
 		return service.add(menus);
 	}
 
 	@RequestMapping("upd")
 
-	public Integer upd(Menus menus){
+	public Integer upd(Menus menus,HttpSession session){
+		menus.setOperateeid(MyUtil.getempid(session));
 		return service.update(menus);
 	}
 

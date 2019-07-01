@@ -37,4 +37,8 @@ public class BooktypeService {
     public Booktype queryByName(String typename){
         return  btd.queryByName(typename);
     }
+
+    public List<Map<String,Object>> queryParentall(){return btd.queryParentall();}
+
+    public List<Map<String,Object>> queryByparentid(Integer parentid){return btd.queryByparentid(parentid);}
 }

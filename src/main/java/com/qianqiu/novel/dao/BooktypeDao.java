@@ -35,4 +35,11 @@ public interface BooktypeDao {
 
     @Select("select * from booktype where typename = #{typename}")
     public Booktype queryByName(String typename);
+
+    //查询父类
+    @Select("SELECT * from booktype where parentid is null or parentid=typeid")
+    public List<Map<String,Object>> queryParentall();
+
+    @Select("select * from booktype where parentid=#{parentid}")
+    public List<Map<String,Object>> queryByparentid(@Param("parentid") Integer parentid);
 }

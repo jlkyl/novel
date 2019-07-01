@@ -23,7 +23,7 @@ public interface IUsersDAO {
 
 
     @SelectKey(keyColumn = "userid",keyProperty = "userid",before = false,resultType = Integer.class,statement = "select max(userid) from users")
-    @Insert("insert into users (userid,username,phone,password,realname, sex, idcard, email, pen, head, sign, author) values(null,concat('书友',#{phone}),#{phone},#{password},#{realname},#{sex},#{idcard},#{email},#{pen},#{head},#{sign},#{author})")
+    @Insert("insert into users (userid,username,phone,password,realname, sex, idcard, email, pen, head, sign, author, siteid) values(null,#{username},#{phone},#{password},#{realname},#{sex},#{idcard},#{email},#{pen},#{head},#{sign},#{author},#{siteid})")
     public int addlogin(Users users );
 
     @Select("select * from users where pen=#{pen}")
@@ -46,8 +46,8 @@ public interface IUsersDAO {
     @Select("select * from users where idcard=#{idcard}")
     public Integer Sureidcard(@Param("idcard")String username);
 
-    @Select("select u.*,(select count(*) from books where userid=u.userid) nums from users u where author=2")
-    List<Map<String,Object>> findAuthor();
+    @Select("select u.*,(select count(*) from books where userid=u.userid) nums from users u where author=2 and siteid=#{siteid}")
+    List<Map<String,Object>> findAuthor(Integer siteid);
 
     @Update("update users set pen=#{pen},email=#{email},realname=#{realname},idcard=#{idcard},phone=#{phone} where userid=#{userid}")
     Integer updAuthor(Users users);

@@ -49,4 +49,10 @@ public class EmpController {
         return true;
     }
 
+    @RequestMapping("logout")
+    public String logout(HttpSession session){
+        session.invalidate();
+        return "redirect:/back/login";
+    }
+
 }

@@ -4,7 +4,7 @@ import java.net.URLEncoder;
 
 import com.miaodiyun.httpApiDemo.common.Config;
 import com.miaodiyun.httpApiDemo.common.HttpUtil;
-import com.qianqiu.novel.utils.Util;
+import com.qianqiu.novel.utils.MyUtil;
 
 /**
  * 验证码通知短信接口
@@ -19,7 +19,7 @@ public class IndustrySMS
 
 	private static String accountSid = Config.ACCOUNT_SID;
 	private static String templateid = "899234068";
-	private static String param = Util.createRandomVcode();
+	private static String param = MyUtil.createRandomVcode();
 	
 	/**
 	 * 验证码通知短信

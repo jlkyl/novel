@@ -47,8 +47,8 @@ public class UsersService {
     //查询身份证
     public Integer Sureidcard(String username){return u.Sureidcard(username);}
 
-    public List<Map<String,Object>> findAuthor(){
-        return u.findAuthor();
+    public List<Map<String,Object>> findAuthor(Integer siteid){
+        return u.findAuthor(siteid);
     }
     public Integer updAuthor(Users users){
         return u.updAuthor(users);

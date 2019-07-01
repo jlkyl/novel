@@ -15,6 +15,7 @@
     <meta name="__hash__" content="392c8dc771a8bb85cb23b4cfda7279f9_f0817b9cdc1612470db34b9d8f8d0d69">
     <script src="./js/jquery.form.js"></script>
     <script src="./js/sweet-alert.js"></script>
+
     <link rel="stylesheet" href="./css/sweet-alert.css">
 
 </head>
@@ -175,7 +176,11 @@
                         <li class="zIndexTop cf"><em>作品类型</em>
                             <div class="selectBox cf">
                                 <!-- 主分类选择器 -->
-                                <select class="bigClass" id="novelMainCategorySelect" name="btid">
+                                <select class="bigClass" id="novelMainCategorySelect" name="typeid" onchange="btParent00(this.options[this.options.selectedIndex].value)">
+
+                                </select>
+                                <!--子分类选择器-->
+                                <select class="bigClass" id="novelbyparentidSelect" name="typeid">
 
                                 </select>
                                 <cite data-node="ok" class="icon ok" style="display:none;"></cite>
@@ -191,7 +196,7 @@
 
 
                         <li><em>作品介绍</em>
-                            <textarea id="introduction" name="bookreferral"></textarea>
+                            <textarea id="introduction" name="details"></textarea>
                             <cite data-node="ok" class="icon ok" style="display:none;"></cite>
                             <p data-node="tip" class="tip">20~300字</p>
                             <p data-node="error" style="display:none;" class="error"></p>
@@ -346,25 +351,50 @@
         $("#topnum").prop("class","");
     }
     $.ajax({
-        url:"booktype/query",
+        url:"bt/queryParentid",
+        type:"post",
         success:function (data) {
             var str="";
             str+="<option value=\"-1\">请选择</option>";
             for(var i=0;i<data.length;i++){
-                str+="<option value=\""+data[i].btid+"\">"+data[i].btname+"</option>";
+                str+="<option onchange='btParent00(this.value)' value=\""+data[i].typeid+"\">"+data[i].typename+"</option>";
             }
             $("#novelMainCategorySelect").html(str);
         }
     })
 
+        function btParent00(typeid) {
+            $.ajax({
+                url:'bt/queryByparent',
+                type:'post',
+                data:{'typeid':typeid},
+                success:function(data){
+                    if(data!=null){
+                        $("#novelMainCategorySelect").removeAttr('name');
+                        var str="";
+                        str+="<option value=\"-1\">请选择</option>";
+                        for(var i=0;i<data.length;i++){
+                            str+="<option  value=\""+data[i].typeid+"\">"+data[i].typename+"</option>";
+                        }
+                        $("#novelbyparentidSelect").html(str);
+
+                    }else{
+                        $("#novelbyparentidSelect").removeAttr('name');
+                    }
+                }
+            });
+        }
+
+
+
     $("#createNovelBtn").click(function () {
         var form = $("#createBookForm");
         var options = {
-            url:'books/add', //上传文件的路径
+            url:'books/addBooks', //上传文件的路径
             type:'post',
             async :true,
             success:function(data){
-                if(data==0){
+                if(data!=true){
                     swal("小说名已存在!", "请更换小说名称", "warning");
                 }else{
                     $("#two").css("display","none");

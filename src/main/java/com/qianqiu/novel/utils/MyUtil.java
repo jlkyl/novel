@@ -1,7 +1,5 @@
 package com.qianqiu.novel.utils;
 
-import java.io.File;
-import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
@@ -13,13 +11,12 @@ import com.qianqiu.novel.entity.Users;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 
-public class Util {
+public class MyUtil {
 	public static Integer getuserid(HttpSession session){
 		Users users = (Users)session.getAttribute("user");
 		if (null==users){
@@ -35,31 +32,7 @@ public class Util {
 		}
 		return emp.getEmpid();
 	}
-	/**
-	 * 上传文件
-	 * @param realPath 存放路径
-	 * @param file 上传的文件
-	 * @param request 请求
-	 * @return 文件相对路径
-	 * @throws IllegalStateException
-	 * @throws IOException
-	 */
-	public static String fileUpload(String realPath, MultipartFile[] file, HttpServletRequest request) throws IllegalStateException, IOException {
-		String value = "";
-		for(MultipartFile f : file){
-			if(!f.isEmpty()){
-				String savepath = request.getServletContext().getRealPath(realPath);
-				String filename = UUID.randomUUID().toString() + "_" + f.getOriginalFilename();
-				String path = savepath+"/"+filename;
-				f.transferTo(new File(path));
-				if(value!=""){
-					value += ";";
-				}
-				value += realPath+"/"+filename;
-			}
-		}
-		return value;
-	}
+
 	/**
 	 * 获得IP地址
 	 *
@@ -167,7 +140,7 @@ public class Util {
 	}
 	/**
 	 * 发送邮箱验证码
-	 * @param eamil
+	 * @param eamil 接受者的邮箱
 	 * @return
 	 */
 	public static String sendEamilCode(String email) {

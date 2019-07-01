@@ -55,4 +55,20 @@ public class BooktypeController {
         bts.del(typeids);
         return "redirect:/bt/btqueryAll";
     }
+
+    @RequestMapping("queryParentid")
+    @ResponseBody
+    public List<Map<String,Object>> queryParentall(){
+    List<Map<String,Object>> b=bts.queryParentall();
+    System.out.println("总分类："+b);
+    return b;
+    }
+
+    @RequestMapping("queryByparent")
+    @ResponseBody
+    public List<Map<String,Object>> queryByparent(Integer typeid){
+        List<Map<String,Object>> b=bts.queryByparentid(typeid);
+        System.out.println("子分类："+b);
+        return b;
+    }
 }
