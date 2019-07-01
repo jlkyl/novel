@@ -2,6 +2,7 @@ package com.qianqiu.novel.utils;
 
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.awt.*;
@@ -72,6 +73,28 @@ public class FileUtil {
         pathname = path+newFileName;
         File newFile = new File(pathname);
         oldFile.renameTo(newFile);
+    }
+    /**
+     * 上传文件
+     * @param file 上传的文件
+     * @return 文件相对路径
+     * @throws IllegalStateException
+     * @throws IOException
+     */
+    public static String fileUpload(MultipartFile[] file) throws IllegalStateException, IOException {
+        String value = "";
+        for(MultipartFile f : file){
+            if(!f.isEmpty()){
+                String filename = UUID.randomUUID().toString() + "_" + f.getOriginalFilename();
+                String path = imgpath+filename;
+                f.transferTo(new File(path));
+                if(value!=""){
+                    value += ";";
+                }
+                value += filename;
+            }
+        }
+        return value;
     }
     public static String createImage(String name,String pen){
         String fileLocation="";
