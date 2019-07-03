@@ -37,7 +37,7 @@ public interface BooktypeDao {
     public Booktype queryByName(String typename);
 
     //查询父类
-    @Select("SELECT * from booktype where parentid is null or parentid=typeid")
+    @Select("SELECT *,(select count(*) from books where typeid in (select typeid from booktype where parentid = bt.typeid or typeid = bt.typeid)) nums from booktype bt where parentid is null or parentid=typeid")
     public List<Map<String,Object>> queryParentall();
 
     @Select("select * from booktype where parentid=#{parentid}")

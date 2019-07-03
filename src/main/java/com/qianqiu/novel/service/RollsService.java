@@ -26,4 +26,7 @@ public class RollsService {
 	//查询书籍中的书卷名是否存在
 	public Rolls queryRollname(String rollname,Integer bookid){return dao.queryRollname(rollname,bookid);}
 
+	public Integer updvip(Integer isvip,Integer rollid){
+		return dao.updvip(isvip, rollid);
+	}
 }

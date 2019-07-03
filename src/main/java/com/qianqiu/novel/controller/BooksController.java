@@ -71,4 +71,10 @@ public class BooksController {
 	    return true;
     }
 
+	@RequestMapping("updPutaway")
+	@ResponseBody
+    public Integer updPutaway(Integer putaway,Integer bookid){
+		return service.updPutaway(putaway, bookid);
+	}
+
 }
