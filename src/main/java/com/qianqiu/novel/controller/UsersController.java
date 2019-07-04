@@ -19,6 +19,7 @@ import java.util.List;
 public class UsersController {
     @Resource
     UsersService service;
+    @Resource
     ExpnsesService eservice;
 
     @RequestMapping(value="query")

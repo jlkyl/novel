@@ -47,11 +47,11 @@ public class BooksController {
 		}
 	}
 
-	@RequestMapping(value="query")
+	@RequestMapping(value="queryB")
     @ResponseBody
-	public List<Books> query(){
+	public List<Books> queryB(){
 
-		return service.query();
+		return service.queryB();
 	}
 
 	@RequestMapping("booksAll")

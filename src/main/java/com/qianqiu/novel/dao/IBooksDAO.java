@@ -129,5 +129,5 @@ public interface IBooksDAO {
     List<Map<String,Object>> find(Integer bookid);
 
     @Select("select * from books")
-     List<Books> query();
+    List<Books> queryB();
 }
