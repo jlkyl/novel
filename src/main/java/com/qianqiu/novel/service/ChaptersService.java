@@ -58,8 +58,8 @@ public class ChaptersService {
 		return dao.queryChapter(bookid);
 	}
 
-	public Chapters queryId(Integer chapterId,Integer rollid){
-		return  dao.queryId(chapterId,rollid);
+	public Chapters queryId(Integer chapterId){
+		return  dao.queryId(chapterId);
 	}
 
 	public List<Chapters> upDow(Integer chapterid,Integer rollid){

@@ -54,10 +54,10 @@
     <div class="logo-wrap box-center" data-l1="2">
         <div class="box-center cf">
             <div class="book-shelf fr">
-            <a th:href="${session.user} ? '../personal.html?key=i' : '../login.html'" target="_blank" id="numero2">
-                <em class="iconfont shelf">&#xe66c;</em><i>我的书架</i>
-            </a>
-        </div>
+                <a th:href="${session.user} ? '../personal.html?key=i' : '../login.html'" target="_blank" id="numero2">
+                    <em class="iconfont shelf">&#xe66c;</em><i>我的书架</i>
+                </a>
+            </div>
             <div class="logo fl">
                 <a href="/jpbook/booktype/queryAll" data-eid="qd_A11"></a>
             </div>
@@ -80,7 +80,6 @@
                 <li class="nav-li"><a href="/jpbook/showAllBook.html"
                                       data-eid="qd_A15">全部作品</a></li>
                 <!--<li class="nav-li"><a href="/jpbook/books/rank"
-                                      data-eid="qd_A16">排行</a></li>-->
                                       data-eid="qd_A16">排行</a></li>-->
                 <li class="nav-li"><a
                         href="/Login/writerManager" target="_blank"
@@ -230,8 +229,8 @@
                     }
                 });
             </script>
+            <div class="notice-banner" id="tr-banner" data-l1="30">
                 <div class="op-tag"></div>
-                <div class="notice-banner" id="tr-banner" data-l1="30">
                 <a href="http://cpgame.qd.game.qidian.com/Home/Index/directLogin/name/ldqk/way/1?qd_game_key=ldqk216x150&qd_dd_p1=34610"
                    target="_blank" data-eid="qd_A101" data-qd_dd_p1="1" style="display: inline;"><img
                         src="//bossaudioandcomic-1252317822.file.myqcloud.com/activity/document/2aa44876c883d828410b365d18b0a227.jpg"></a><a
@@ -254,7 +253,7 @@
                            href="//www.qidian.com/xuanhuan" target="_blank" th:text="|[${pr.typename}]|"></a>
                         <!--作品详细信息显示-->
                         <strong>
-                            <a class="name" th:href="@{/books/queryBookById(bookid=${pr.bookid})}"
+                            <a class="name" th:href="@{/books/queryAll(bookid=${pr.bookid})}"
                                style="margin-left:-5px;" target="_blank" th:title="${pr.bookname}"
                                th:text="${pr.bookname}"></a>
                         </strong>
@@ -274,12 +273,12 @@
                     <th:block th:if="${status.index} lt 6">
                     <div class="item">
                         <div class="pic">
-                            <a th:href="@{/books/queryBookById(bookid=${qr.bookid})}"><img th:src="|${qr.cover}|"/></a>
+                            <a th:href="@{/books/queryAll(bookid=${qr.bookid})}"><img th:src="|${qr.cover}|"/></a>
                         </div>
                         <div class="txt">
                             <dl>
                                 <dt>
-                                    <a th:href="@{/books/queryBookById(bookid=${qr.bookid})}"
+                                    <a th:href="@{/books/queryAll(bookid=${qr.bookid})}"
                                        th:text="${qr.bookname}"></a>
                                 </dt>
                                 <dd class="info" th:text="|      ${qr.pen}     著|"></dd>
@@ -305,7 +304,7 @@
                         <th:block th:if="${status.index} gt 5 and ${status.index} lt 9">
                             <li data-rid="1" style="height:100px;margin-top:25px;">
                                 <h3>
-                                    <a th:href="@{/books/queryBookById(bookid=${qr.bookid})}" th:text="${qr.bookname}"
+                                    <a th:href="@{/books/queryAll(bookid=${qr.bookid})}" th:text="${qr.bookname}"
                                        target="_blank"></a>
                                 </h3>
                                 <em class="total"><cite th:text="${qr.buynum}">29,604</cite><i>人在追</i></em>
@@ -323,7 +322,7 @@
                         <th:block th:if="${status.index} gt 8 and ${status.index} lt 12">
                             <li>
                                 <h3>
-                                    <a th:href="@{/books/queryBookById(bookid=${qr.bookid})}" th:text="${qr.bookname}"
+                                    <a th:href="@{/books/queryAll(bookid=${qr.bookid})}" th:text="${qr.bookname}"
                                        target="_blank"></a>
                                 </h3>
                                 <em class="total"><cite th:text="${qr.buynum}">29,604</cite><i>人在追</i></em>
@@ -349,7 +348,7 @@
                            target="_blank">
                         </a>
                         <strong>
-                            <a class="name" th:href="@{/books/queryBookById(bookid=${qr.bookid})} " target="_blank"
+                            <a class="name" th:href="@{/books/queryAll(bookid=${qr.bookid})} " target="_blank"
                                th:text="${qr.bookname}" th:title="${qr.bookname}"></a>
                         </strong>
                         <span class="rec" target="_blank" th:text="${qr.pen}"></span>
@@ -384,7 +383,7 @@
                                             <div class="book-info fl">
                                                 <h3>NO.1</h3>
                                                 <h4>
-                                                    <a th:href="@{/books/queryBookById(bookid=${qb.bookid})}"
+                                                    <a th:href="@{/books/queryAll(bookid=${qb.bookid})}"
                                                        target="_blank" th:text="${qb.bookname}">召唤梦魇</a>
                                                 </h4>
                                                 <p class="digital f16">销量冠军</p>
@@ -398,7 +397,7 @@
                                                 </p>
                                             </div>
                                             <div class="book-cover">
-                                                <a class="link" th:href="@{/books/queryBookById(bookid=${qb.bookid})}"
+                                                <a class="link" th:href="@{/books/queryAll(bookid=${qb.bookid})}"
                                                    target="_blank">
                                                     <img th:src="|${qb.cover}|">
                                                 </a>
@@ -411,7 +410,7 @@
                                             <span th:class="|num${status.index+1}|" th:text="${status.index+1}"></span>
                                         </div>
                                         <div class="name-box">
-                                            <a class="name" th:href="@{/books/queryBookById(bookid=${qb.bookid})}"
+                                            <a class="name" th:href="@{/books/queryAll(bookid=${qb.bookid})}"
                                                target="_blank" th:text="${qb.bookname}">
                                                 大唐第一狠人
                                             </a>
@@ -438,7 +437,7 @@
                                             <div class="book-info fl">
                                                 <h3>NO.1</h3>
                                                 <h4>
-                                                    <a th:href="@{/books/queryBookById(bookid=${qb.bookid})}"
+                                                    <a th:href="@{/books/queryAll(bookid=${qb.bookid})}"
                                                        target="_blank" th:text="${qb.bookname}">召唤梦魇</a>
                                                 </h4>
                                                 <p class="digital"><em th:text="${qb.votenum}"></em>推荐票</p>
@@ -452,7 +451,7 @@
                                                 </p>
                                             </div>
                                             <div class="book-cover">
-                                                <a class="link" th:href="@{/books/queryBookById(bookid=${qb.bookid})}"
+                                                <a class="link" th:href="@{/books/queryAll(bookid=${qb.bookid})}"
                                                    target="_blank">
                                                     <img th:src="|${qb.cover}|">
                                                 </a>
@@ -465,7 +464,7 @@
                                             <span th:class="|num${status.index+1}|" th:text="${status.index+1}"></span>
                                         </div>
                                         <div class="name-box">
-                                            <a class="name" th:href="@{/books/queryBookById(bookid=${qb.bookid})}"
+                                            <a class="name" th:href="@{/books/queryAll(bookid=${qb.bookid})}"
                                                target="_blank" th:text="${qb.bookname}">
                                                 大唐第一狠人
                                             </a>
@@ -492,7 +491,7 @@
                                             <div class="book-info fl">
                                                 <h3>NO.1</h3>
                                                 <h4>
-                                                    <a th:href="@{/books/queryBookById(bookid=${qb.bookid})}"
+                                                    <a th:href="@{/books/queryAll(bookid=${qb.bookid})}"
                                                        target="_blank" th:text="${qb.bookname}">召唤梦魇</a>
                                                 </h4>
                                                 <p class="digital"><em th:text="${#numbers.formatDecimal(qb.givemoney,0,0)}"></em>书币</p>
@@ -506,7 +505,7 @@
                                                 </p>
                                             </div>
                                             <div class="book-cover">
-                                                <a class="link" th:href="@{/books/queryBookById(bookid=${qb.bookid})}"
+                                                <a class="link" th:href="@{/books/queryAll(bookid=${qb.bookid})}"
                                                    target="_blank">
                                                     <img th:src="|${qb.cover}|">
                                                 </a>
@@ -519,7 +518,7 @@
                                             <span th:class="|num${status.index+1}|" th:text="${status.index+1}"></span>
                                         </div>
                                         <div class="name-box">
-                                            <a class="name" th:href="@{/books/queryBookById(bookid=${qb.bookid})}"
+                                            <a class="name" th:href="@{/books/queryAll(bookid=${qb.bookid})}"
                                                target="_blank"
                                                th:text="${qb.bookname}">大唐第一狠人
                                             </a>
@@ -545,7 +544,7 @@
                                             <div class="book-info fl">
                                                 <h3>NO.1</h3>
                                                 <h4>
-                                                    <a th:href="@{/books/queryBookById(bookid=${qc.bookid})}"
+                                                    <a th:href="@{/books/queryAll(bookid=${qc.bookid})}"
                                                        target="_blank"
                                                        th:text="${qc.bookname}"></a>
                                                 </h4>
@@ -561,7 +560,7 @@
                                                 </p>
                                             </div>
                                             <div class="book-cover">
-                                                <a class="link" th:href="@{/books/queryBookById(bookid=${qc.bookid})}"
+                                                <a class="link" th:href="@{/books/queryAll(bookid=${qc.bookid})}"
                                                    data-eid="qd_A117" target="_blank" data-bid="1013406185">
                                                     <img th:src="|${qc.cover}|"></a><span></span>
                                             </div>
@@ -574,7 +573,7 @@
                                             <span class="|num${status.index+1}|" th:text="${status.index+1}"></span>
                                         </div>
                                         <div class="name-box">
-                                            <a class="name" th:href="@{/books/queryBookById(bookid=${qc.bookid})}"
+                                            <a class="name" th:href="@{/books/queryAll(bookid=${qc.bookid})}"
                                                target="_blank" th:text="${qc.bookname}"></a><i
                                                 class="total" th:text="${qc.racknum}"></i>
                                         </div>
@@ -599,7 +598,7 @@
                                             <div class="book-info fl">
                                                 <h3>NO.1</h3>
                                                 <h4>
-                                                    <a th:href="@{/books/queryBookById(bookid=${wc.bookid})}"
+                                                    <a th:href="@{/books/queryAll(bookid=${wc.bookid})}"
                                                        target="_blank"
                                                        th:text="${wc.bookname}">英雄联盟：我的时代</a></h4>
                                                 <p class="digital"><em th:text="${wc.potential}">3464490</em>潜力值</p>
@@ -614,7 +613,7 @@
                                                 </p>
                                             </div>
                                             <div class="book-cover">
-                                                <a class="link" th:href="@{/books/queryBookById(bookid=${wc.bookid})}"
+                                                <a class="link" th:href="@{/books/queryAll(bookid=${wc.bookid})}"
                                                    target="_blank">
                                                     <img th:src="|${wc.cover}|">
                                                 </a>
@@ -627,7 +626,7 @@
                                             <span th:class="|num${status.index+1}|" th:text="${status.index+1}">2</span>
                                         </div>
                                         <div class="name-box">
-                                            <a class="name" th:href="@{/books/queryBookById(bookid=${wc.bookid})}"
+                                            <a class="name" th:href="@{/books/queryAll(bookid=${wc.bookid})}"
                                                target="_blank"
                                                th:text="${wc.bookname}">捡了一片荒野</a>
                                             <i class="total" th:text="${wc.potential}">2633023</i>
@@ -664,14 +663,14 @@
                         <th:block th:if="${status.index} lt 6">
                             <li data-rid="1">
                                 <div class="book-img">
-                                    <a  th:href="@{/books/queryBookById(bookid=${qn.bookid})}" target="_blank">
+                                    <a  th:href="@{/books/queryAll(bookid=${qn.bookid})}" target="_blank">
                                         <img class="lazy" th:src="|${qn.cover}|"
                                              th:alt="${qn.bookname}">
                                     </a>
                                 </div>
                                 <div class="book-info">
                                     <h3>
-                                        <a th:href="@{/books/queryBookById(bookid=${qn.bookid})}" target="_blank"
+                                        <a th:href="@{/books/queryAll(bookid=${qn.bookid})}" target="_blank"
                                            th:text="${qn.bookname}"></a>
                                     </h3>
                                     <p th:text="${qn.details}"></p>
@@ -702,7 +701,7 @@
                                         <div class="book-info fl">
                                             <h3>NO.1</h3>
                                             <h4>
-                                                <a th:href="@{/books/queryBookById(bookid=${cp.bookid})}"
+                                                <a th:href="@{/books/queryAll(bookid=${cp.bookid})}"
                                                    target="_blank"
                                                    th:text="${cp.bookname}">仙宫</a>
                                             </h4>
@@ -718,7 +717,7 @@
                                             </p>
                                         </div>
                                         <div class="book-cover">
-                                            <a class="link" th:href="@{/books/queryBookById(bookid=${cp.bookid})}"
+                                            <a class="link" th:href="@{/books/queryAll(bookid=${cp.bookid})}"
                                                target="_blank">
                                                 <img th:src="|${cp.cover}|">
                                             </a>
@@ -731,7 +730,7 @@
                                         <span th:class="|num${status.index+1}|" th:text="${status.index+1}">2</span>
                                     </div>
                                     <div class="name-box">
-                                        <a class="name" th:href="@{/books/queryBookById(bookid=${cp.bookid})}"
+                                        <a class="name" th:href="@{/books/queryAll(bookid=${cp.bookid})}"
                                            target="_blank"
                                            th:text="${cp.bookname}">你真是个天才</a>
 
@@ -766,13 +765,13 @@
                             <th:block th:if="${status.index} lt 6">
                                 <li data-rid="1">
                                     <div class="book-img" th:style="background">
-                                        <a th:href="@{/books/queryBookById(bookid=${qw.bookid})}" target="_blank">
+                                        <a th:href="@{/books/queryAll(bookid=${qw.bookid})}" target="_blank">
                                             <img class="lazy" th:src="|${qw.cover}|"
                                                  th:alt="${qw.bookname}"><span th:text="${qw.score}">9</span></a>
                                     </div>
                                     <div class="book-info">
                                         <h3>
-                                            <a th:href="@{/books/queryBookById(bookid=${qw.bookid})}" target="_blank"
+                                            <a th:href="@{/books/queryAll(bookid=${qw.bookid})}" target="_blank"
                                                th:title="${qw.bookname}" th:text="${qw.bookname}"></a>
                                         </h3>
                                         <p th:text="${qw.details}"></p>
@@ -801,7 +800,7 @@
                                             <div class="book-info fl">
                                                 <h3 th:text="${qj.typename}">都市</h3>
                                                 <h4>
-                                                    <a th:href="@{/books/queryBookById(bookid=${qj.bookid})}"
+                                                    <a th:href="@{/books/queryAll(bookid=${qj.bookid})}"
                                                        th:text="${qj.bookname}"
                                                        target="_blank"></a>
                                                 </h4>
@@ -814,7 +813,7 @@
                                                 </p>
                                             </div>
                                             <div class="book-cover">
-                                                <a class="link" th:href="@{/books/queryBookById(bookid=${qj.bookid})}"
+                                                <a class="link" th:href="@{/books/queryAll(bookid=${qj.bookid})}"
                                                    target="_blank">
                                                     <img th:src="|${qj.cover}|">
                                                 </a>
@@ -826,7 +825,7 @@
                                 <th:block th:if="${status.index} gt 0 and ${status.index} lt 10">
                                     <li>
                                         <a th:text="${qj.bookname}" class="name"
-                                           th:href="@{/books/queryBookById(bookid=${qj.bookid})}" target="_blank"
+                                           th:href="@{/books/queryAll(bookid=${qj.bookid})}" target="_blank"
                                            th:title="${qj.bookname}"></a>
                                         <i th:text="|${qj.wordcount}字|"></i>
                                     </li>
@@ -853,7 +852,7 @@
                                 <div class="book-wrap cf">
                                     <div class="book-info fr">
                                         <h4>
-                                            <a th:href="@{/books/queryBookById(bookid=${r.bookid})}" target="_blank"
+                                            <a th:href="@{/books/queryAll(bookid=${r.bookid})}" target="_blank"
                                                th:text="${r.bookname}">最牛寻宝人</a>
                                         </h4>
 
@@ -864,7 +863,7 @@
                                         </p>
                                     </div>
                                     <div class="book-cover">
-                                        <a class="link" th:href="@{/books/queryBookById(bookid=${r.bookid})}" target="_blank">
+                                        <a class="link" th:href="@{/books/queryAll(bookid=${r.bookid})}" target="_blank">
                                             <img th:src="|${r.cover}|">
                                         </a>
                                         <span></span>
@@ -890,10 +889,10 @@
                                        th:utext="|<em>「</em>${r.typename}<em>」</em>|"></a>
                                 </td>
                                 <td><a class="name"
-                                       th:href="@{/books/queryBookById(bookid=${r.bookid})}" target="_blank"
+                                       th:href="@{/books/queryAll(bookid=${r.bookid})}" target="_blank"
                                        th:text="${r.bookname}">正义巨像守护之翼</a></td>
                                 <td><a class="section"
-                                       th:href="|/jpbook/chapter/getInformationByChapid?chapterid=${r.chapterid}|"
+                                       th:href="@{/chapters/queryId(chapterId=${r.chapterid})}"
                                        target="_blank" th:text="${r.chaptername}">第二十六章天降奇兵</a>
                                     <th:block th:if="${r.isvip} eq 1">
                                     <span class="vip"></span>
@@ -924,7 +923,7 @@
                             </div>
                             <h3><a href="//me.qidian.com/authorIndex.aspx?id=4406509" target="_blank" data-eid="qd_A160" th:text="${a.pen}">净无痕</a></h3>
                             <h4>代表作</h4>
-                            <p class="works cf"><a href="//book.qidian.com/info/3446747" target="_blank" data-eid="qd_A162" data-bid="3446747" th:text="${a.bookname}" >太古神王</a></p>
+                            <p class="works cf"><a th:href="@{/books/queryAll(bookid=${a.bookid})}" target="_blank" data-eid="qd_A162" data-bid="3446747" th:text="${a.bookname}" >太古神王</a></p>
                             <p class="intro" th:text="''">阅文集团白金作家，网络文学知名玄幻作家，名校高材生，作品深受读者喜爱。</p>
                         </div>
                     </li>

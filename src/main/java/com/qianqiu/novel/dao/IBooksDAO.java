@@ -106,7 +106,8 @@ public interface IBooksDAO {
 
     @Select("select u.*,\n" +
             "(select COALESCE(sum(expmoney),0) from expenses where bookid in (select bookid from books where userid=u.userid)) m,\n" +
-            "(select bookname from books where bookid in (select bookid from books where userid=u.userid) limit 1) bookname\n" +
+            "(select bookname from books where bookid = (select bookid from books where userid=u.userid limit 1)) bookname,\n" +
+            "(select bookid from books where userid=u.userid limit 1) bookid " +
             "from users u\n" +
             "where author!=0\n" +
             "order by m desc " +

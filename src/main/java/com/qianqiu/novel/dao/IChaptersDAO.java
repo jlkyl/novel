@@ -43,8 +43,8 @@ public interface IChaptersDAO {
     @Select("select r.isvip,COUNT(chaptername) num,r.rollid,r.rollname,SUM(c.wordnum) zi from chapters c LEFT JOIN rolls r on c.rollid = r.rollid where r.bookid = #{bookid} GROUP BY r.rollid ")
     List<Map<String,Object>> queryChapter(Integer bookid);
 
-    @Select("select * from chapters where chapterid = #{chapterid} and rollid = #{rollid}")
-    Chapters queryId(Integer chapterid,Integer rollid);
+    @Select("select * from chapters where chapterid = #{chapterid}")
+    Chapters queryId(Integer chapterid);
 
     @Select(" SELECT * FROM chapters WHERE chapterid IN (SELECT CASE\n" +
             "            WHEN SIGN(chapterid - #{chapterid}) > 0 THEN MIN(chapterid)\n" +
@@ -61,4 +61,5 @@ public interface IChaptersDAO {
             "            ) and rollid=#{rollid} \n" +
             "            ORDER BY chapterid ASC;")
     List<Chapters> upDow(Integer chapterid,Integer rollid);
+
 }

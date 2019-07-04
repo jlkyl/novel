@@ -1,7 +1,6 @@
 package com.qianqiu.novel.controller;
 
 import com.qianqiu.novel.entity.Notices;
-import com.qianqiu.novel.entity.Pages;
 import com.qianqiu.novel.service.NoticesService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,17 +18,11 @@ public class NoticesController {
     @Resource
     NoticesService service;
 
-    @RequestMapping("topage")
-    public String topage(){
-        return "back/notices";
-    }
-
-
     @RequestMapping(value="query")
-    @ResponseBody
-    public List<Notices> query(){
-        List<Notices> query = service.query();
-        return query;
+    public String query(Model u){
+        List<Notices> list = service.query();
+        u.addAttribute("list",list);
+        return "notice";
     }
 
     @RequestMapping("queryAll")
@@ -61,13 +54,6 @@ public class NoticesController {
         System.out.println(rs);
         return "redirect:query";
     }
-    @RequestMapping(value="queryById")
-    public String queryById(Integer noticeid){
-        Notices n = service.queryById(noticeid);
-        System.out.println(n);
-        return "update";
-    }
-
     @RequestMapping(value="queryByIds")
     public String queryByIds(Integer noticeid,Model u){
         Notices n = service.queryById(noticeid);
