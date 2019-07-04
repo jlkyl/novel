@@ -4,23 +4,23 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>首页_个人中心_起点书城</title>
 	
-	<link rel="icon" type="image/x-icon" href="./images/jp_iocn.ico">
-	<link rel="stylesheet" data-ignore="true" href="./css/index.0.11.css">
-	<link rel="stylesheet" data-ignore="true" href="./css/index.0.12.css">
-	<link rel="stylesheet" data-ignore="true" href="./css/index.0.13.css">
-	<link rel="stylesheet" data-ignore="true" href="./css/index.0.14.css">
-	<link rel="stylesheet" data-ignore="true" href="./css/index.0.15.css">
-	<link rel="stylesheet" data-ignore="true" href="./css/index.0.16.css">
-	<link rel="stylesheet" type="text/css" href="./css/icon.css">
+	<link rel="icon" type="image/x-icon" href="../images/jp_iocn.ico">
+	<link rel="stylesheet" data-ignore="true" href="../css/index.0.11.css">
+	<link rel="stylesheet" data-ignore="true" href="../css/index.0.12.css">
+	<link rel="stylesheet" data-ignore="true" href="../css/index.0.13.css">
+	<link rel="stylesheet" data-ignore="true" href="../css/index.0.14.css">
+	<link rel="stylesheet" data-ignore="true" href="../css/index.0.15.css">
+	<link rel="stylesheet" data-ignore="true" href="../css/index.0.16.css">
+	<link rel="stylesheet" type="text/css" href="../css/icon.css">
 
-	<link rel="stylesheet" href="./layui/layui-v2.4.5/layui/css/layui.css" media="all">
+	<link rel="stylesheet" href="../js/layui/css/layui.css" media="all">
 
-	<script src="./js/jquery-3.3.1.js"></script>
+	<script src="../js/jquery-3.3.1.js"></script>
 
-	<script src="./layui/layui-v2.4.5/layui/layui.js"></script>
+	<script src="../js/layui/layui.js"></script>
 
-	<link rel="stylesheet" type="text/css" href="./css/sweet-alert.css" />
-	<script src="./js/sweet-alert.js"></script>
+	<link rel="stylesheet" type="text/css" href="../css/sweet-alert.css" />
+	<script src="../js/sweet-alert.js"></script>
 
 </head>
 
@@ -47,7 +47,7 @@
 
 			</ul>
 			<a href="login/emptySession" id="elLoginOut" class="header-log" style="color: white">退出</a>
-			<a href="personal.html" id="headerLog" class="header-log"  style="color: white"></a>
+			<a href="personal.html" id="headerLog" class="header-log"  style="color: white"><span th:text="${session.user.getUsername()}"></span></a>
 			<div class="header-goHome">
 				<a href="booktype/queryAll" target="_blank" style="color: white">起点首页</a>
 			</div>	
@@ -438,7 +438,7 @@
 			<div class="finance-asset" data-l2="2">
 				<h3 class="asset-title">账户余额（起点币）</h3>
 				<div class="asset-count">
-					<span id="balance">0</span>
+					<span id="balance">money</span>
 					<br><br>
 				</div>
 				<div class="asset-recharge-wrapper">
@@ -593,7 +593,7 @@
 							<input type="file" id="fileAvatar" name="photo" class="clip" onchange="checkicon(this)" accept="image/png, image/jpeg, image/gif, image/jpg">
 						</form>
 						<div id="avatarXChoose" class="avatar-x-choose">  <!--//facepic.qidian.com/qd_face/349573/6495553/100-->
-							<img id="usersicon" class="avatar-show" th:src="@{/images/{icon}(icon = ${session.users.get(0).getIcon()})}" alt="">
+							<!--<img id="usersicon" class="avatar-show" th:src="@{/images/{icon}(icon = ${session.users.get(0).getIcon()})}" alt="">-->
 							<div class="avatar-text">
 								<p class="gray">支持jpg、gif、png格式图片</p>
 							</div>
@@ -1219,7 +1219,7 @@
         $("#s6").show();
 
         $.ajax({
-            url: "per/queryusers",
+            url: "/user/query",
             success: function (data) {
 				$("#balance").text(data[0].money);
             }
@@ -1236,14 +1236,14 @@
         $("#record1").prop("class","checked");
 
         $.ajax({
-            url: "per/record1",
+            url: "/expn/querys",
             success: function (data) {
-               var record1=""
+               var record1="";
                if (data.length>0){
                    for (var i = 0; i<data.length; i++){
                        record1 += "<tr class='qdp-operate-wrapper'><td class='col1'>"+
-                           "<span class='shelf-table-author font12'>"+data[i].money+"元</span> </td>"+
-                           "<td class='col1'><span class='shelf-table-author font12'>"+renderTime(data[i].topuptime).substring(0,10)+"</span></td>"+
+                           "<span class='shelf-table-author font12'>"+data[i].expmoney+"元</span> </td>"+
+                           "<td class='col1'><span class='shelf-table-author font12'>"+renderTime(data[i].exptime).substring(0,10)+"</span></td>"+
                            "<td class='col1'><span class='shelf-table-author font12'>书币充值</span></td></tr>";
 				   }
                   $("#tab1").html(record1);
@@ -1264,9 +1264,9 @@
         $("#record2").prop("class","checked");
 
         $.ajax({
-            url: "per/record2",
+            url: "expn/querys",
             success: function (data) {
-                var record2=""
+                var record2="";
                 if (data.length>0){
                     for (var i = 0; i<data.length; i++){
                         record2 += "<tr class='qdp-operate-wrapper'><td class='col1'>"+
@@ -1295,7 +1295,7 @@
         $.ajax({
             url: "per/record3",
             success: function (data) {
-                var record3=""
+                var record3="";
                 if (data.length>0){
                     for (var i = 0; i<data.length; i++){
                         record3 += "<tr class='qdp-operate-wrapper'><td class='col1'>"+

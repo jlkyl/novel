@@ -52,6 +52,6 @@ public class alipay {
     @RequestMapping("success")
     public String success(int money,int userid) {
 
-        return "redirect:/close";
+        return "redirect:user/update";
     }
 }

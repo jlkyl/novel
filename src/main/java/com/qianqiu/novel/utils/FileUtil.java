@@ -14,7 +14,7 @@ public class FileUtil {
     //图书存放路径
     public static final String path="F:\\books\\";
     //图片存放路径
-    public static final String imgpath="D:\\Workspace\\IdeaProjects\\novel\\src\\main\\resources\\static\\img\\";
+    public static final String imgpath="C:\\Users\\Administrator\\IdeaProjects\\novel\\src\\main\\resources\\static\\img\\";
     /**
      * 创建文件夹
      * @param file

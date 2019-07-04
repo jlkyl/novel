@@ -18,6 +18,10 @@ public class BooksService {
 	@Resource
 	IBooksDAO dao;
 
+	public List<Books> query(){
+		return dao.query();
+	}
+
 	public Integer add(Books books){
 		return dao.add(books);
 	}

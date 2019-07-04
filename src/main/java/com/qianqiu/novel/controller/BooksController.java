@@ -47,6 +47,13 @@ public class BooksController {
 		}
 	}
 
+	@RequestMapping(value="query")
+    @ResponseBody
+	public List<Books> query(){
+
+		return service.query();
+	}
+
 	@RequestMapping("booksAll")
 	@ResponseBody
 	public List<Map<String,Object>> booksAll(Integer userid,HttpSession session){

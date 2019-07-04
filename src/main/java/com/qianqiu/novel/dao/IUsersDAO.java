@@ -2,13 +2,24 @@ package com.qianqiu.novel.dao;
 
 import com.qianqiu.novel.entity.Users;
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 import java.util.Map;
 
+import java.util.List;
 @Mapper
 public interface IUsersDAO {
 
+    //查询
+    //SELECT u.pen,u.sign,COUNT(bookid) as kd,(SELECT SUM(wordnum) from chapters) as 字数,(SELECT TIMESTAMPDIFF(DAY,b.createtime,NOW())) as ssk from users u
+    //join books b
+    //on b.userid = u.userid
+    //where u.author = null
+    @Select(value = "SELECT u.pen,u.sign,COUNT(bookid) as kd ,(SELECT SUM(wordnum) from chapters) as mo,(SELECT TIMESTAMPDIFF(DAY,b.createtime,NOW())) as ks from users u\n" +
+            "   join books b " +
+            "   on b.userid = u.userid")
+     List<Users> querys();
     @Select("select * from users where username=#{username} and password=#{password}")
     public Users unamelogin(@Param("username") String username, @Param("password") String password);
 
@@ -52,4 +63,9 @@ public interface IUsersDAO {
     @Update("update users set pen=#{pen},email=#{email},realname=#{realname},idcard=#{idcard},phone=#{phone} where userid=#{userid}")
     Integer updAuthor(Users users);
 
+    @Select(value = "select money from users")
+    List<Users> query();
+
+    @Update(value = "UPDATE `novel`.`users` SET `money`=#{money},`ticket`=#{ticket} WHERE (`userid`=#{userid})")
+    int update(@Param("money") Integer money,@Param("ticket") Integer ticket,@Param("userid") Integer userid);
 }
