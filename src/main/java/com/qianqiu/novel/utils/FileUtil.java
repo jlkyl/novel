@@ -48,7 +48,7 @@ public class FileUtil {
     public static String  read(String files){
         String str="";
         try {
-            String pathname = path+files; // 绝对路径或相对路径都可以，这里是绝对路径，写入文件时演示相对路径
+            String pathname = "F:\\books\\"+files; // 绝对路径或相对路径都可以，这里是绝对路径，写入文件时演示相对路径
             File filename = new File(pathname); // 要读取以上路径的input。txt文件
             InputStreamReader reader = new InputStreamReader(
                     new FileInputStream(filename)); // 建立一个输入流对象reader

@@ -1,6 +1,7 @@
 package com.qianqiu.novel.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -29,5 +30,21 @@ public class ChaptersService {
 
 	public List<Chapters> findByRollid(Integer rollid){
 		return dao.findByRollid(rollid);
+	}
+
+	public List<Map<String,Object>> queryAll(Integer bookid){
+		return dao.queryAll(bookid);
+	}
+
+	public List<Map<String,Object>> queryChapter(Integer bookid){
+		return dao.queryChapter(bookid);
+	}
+
+	public Chapters queryId(Integer chapterId,Integer rollid){
+		return  dao.queryId(chapterId,rollid);
+	}
+
+	public List<Chapters> upDow(Integer chapterid,Integer rollid){
+		return dao.upDow(chapterid,rollid);
 	}
 }

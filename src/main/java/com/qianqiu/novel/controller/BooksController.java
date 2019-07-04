@@ -5,6 +5,8 @@ import com.qianqiu.novel.entity.Chapters;
 import com.qianqiu.novel.entity.Users;
 import com.qianqiu.novel.service.BooksService;
 import com.qianqiu.novel.utils.FileUtil;
+import com.qianqiu.novel.service.BrowsesService;
+import com.qianqiu.novel.service.ChaptersService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -76,5 +78,27 @@ public class BooksController {
     public Integer updPutaway(Integer putaway,Integer bookid){
 		return service.updPutaway(putaway, bookid);
 	}
+
+	@RequestMapping("queryAll")
+	public String queryAll(Model m,Integer bookid){
+		m.addAttribute("list",service.queryAll(bookid));
+
+        m.addAttribute("query",service.queryChapter(bookid));
+
+        m.addAttribute("queryC",service.queryC());
+
+        return "book";
+	}
+
+	@RequestMapping("query")
+	public String query(Model m,Integer bookid){
+
+		m.addAttribute("list",service.find(bookid));
+
+		m.addAttribute("str",	FileUtil.read((String) service.find(bookid).get(0).get("url")));
+
+		return "lookBook";
+	}
+
 
 }

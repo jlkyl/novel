@@ -6,6 +6,10 @@ import java.util.Map;
 import com.qianqiu.novel.entity.Books;
 import com.qianqiu.novel.entity.Chapters;
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectKey;
 
 @Mapper
 public interface IBooksDAO {
@@ -108,4 +112,20 @@ public interface IBooksDAO {
             "order by m desc " +
             "limit 3")
     List<Map<String,Object>> queryAuthor();
+
+    @Select("select b.bookid, b.details,b.cover,b.bookname,u.pen,bt.typename,r.rollname,c.chaptername,c.chapternum,count(chapternum) num,c.updatetime,SUM(wordnum) zi,b.clicknum,r.rollid from books b LEFT JOIN users u on b.userid = u.userid LEFT JOIN booktype bt on b.typeid = bt.typeid \n" +
+            "LEFT JOIN rolls r on b.bookid = r.bookid LEFT JOIN chapters c on r.rollid = c.rollid where b.bookid=#{bookid}")
+    List<Map<String,Object>> queryAll(Integer bookid);
+
+    @Select("select r.isvip,COUNT(chaptername) num,r.rollid,r.rollname,SUM(c.wordnum) zi from chapters c LEFT JOIN rolls r on c.rollid = r.rollid where r.bookid = #{bookid} GROUP BY r.rollid ")
+    List<Map<String,Object>> queryChapter(Integer bookid);
+
+    @Select("select * from chapters")
+    List<Chapters> queryC();
+
+    @Select("select * from books b LEFT JOIN users u on b.userid = u.userid LEFT JOIN booktype bt on b.typeid = bt.typeid \n" +
+            "            LEFT JOIN rolls r on b.bookid = r.bookid LEFT JOIN chapters c on r.rollid = c.rollid where b.bookid=1 ORDER BY c.chapterid ASC LIMIT 1\n" +
+            " \n")
+    List<Map<String,Object>> find(Integer bookid);
+
 }

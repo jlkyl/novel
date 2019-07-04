@@ -61,4 +61,20 @@ public class BooksService {
 	public List<Map<String,Object>> queryAuthor(){
 		return dao.queryAuthor();
 	}
+
+	public List<Map<String,Object>> queryAll(Integer bookid){
+		return dao.queryAll(bookid);
+	}
+
+    public List<Map<String,Object>> queryChapter(Integer bookid){
+        return dao.queryChapter(bookid);
+    }
+
+    public  List<Chapters> queryC(){
+	    return dao.queryC();
+    }
+
+	public List<Map<String,Object>> find(Integer bookid){
+		return dao.queryAll(bookid);
+	}
 }
