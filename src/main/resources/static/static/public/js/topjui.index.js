@@ -437,7 +437,7 @@ function logout() {
             $.iMessager.progress({
                 text: '正在退出中...'
             });
-            window.location.href = '../back/login.html' + location.search;
+            window.location.href = '/ep/logout';
         }
     });
 }
@@ -639,7 +639,7 @@ function modifyPwd() {
                                         msg: '操作成功'
                                     });
                                     $("#pwdDialog").iDialog('close').form('reset');
-                                    window.location="/back/login.html";
+                                    window.location.href ="/ep/logout";
 
                                 } else {
                                     $.iMessager.alert('操作失败！', '未知错误或没有任何修改，请重试！', 'messager-error');

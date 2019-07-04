@@ -54,10 +54,10 @@
     <div class="logo-wrap box-center" data-l1="2">
         <div class="box-center cf">
             <div class="book-shelf fr">
-                <a th:href="${session.user} ? '../personal.html?key=i' : '../login.html'" target="_blank" id="numero2">
-                    <em class="iconfont shelf">&#xe66c;</em><i>我的书架</i>
-                </a>
-            </div>
+            <a th:href="${session.user} ? '../personal.html?key=i' : '../login.html'" target="_blank" id="numero2">
+                <em class="iconfont shelf">&#xe66c;</em><i>我的书架</i>
+            </a>
+        </div>
             <div class="logo fl">
                 <a href="/jpbook/booktype/queryAll" data-eid="qd_A11"></a>
             </div>
@@ -80,13 +80,13 @@
                 <li class="nav-li"><a href="/jpbook/showAllBook.html"
                                       data-eid="qd_A15">全部作品</a></li>
                 <li class="nav-li"><a href="/jpbook/books/rank"
-                                      data-eid="qd_A16">排行</a></li>
+                                      data-eid="qd_A16">排行</a></li>7
                 <li class="nav-li"><a href="/jpbook/showEndBook.html"
                                       data-eid="qd_A17">完本</a></li>
                 <li class="nav-li"><a href="/jpbook/showFreeBook.html"
                                       data-eid="qd_A18">免费</a></li>
                 <li class="nav-li"><a
-                        href="/jpbook/users/openwriter" target="_blank"
+                        href="/Login/writerManager" target="_blank"
                         data-eid="qd_A19">作家专区</a></li>
             </ul>
         </div>
@@ -1222,13 +1222,14 @@
     };
     function removeu() {
         $.ajax({
-            url: '/Login/logout',
+            url: "Login/logout",
             success: function (data) {
                 /* jQuery(".sign-in").addClass("sign-in hidden");
                  jQuery(".sign-out.hidden").addClass("sign-out");
                  jQuery(".sign-in").removeClass("sign-in");
-                 jQuery(".sign-out.hidden").removeClass("sign-out hidden");*/
-                window.location.reload();
+                 jQuery(".sign-out.hidden").removeClass("sign-out hidden");
+                  window.location.reload();*/
+               window.location.href("/index.html");
             }
         });
     };

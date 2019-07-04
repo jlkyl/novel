@@ -593,7 +593,7 @@
 							<input type="file" id="fileAvatar" name="photo" class="clip" onchange="checkicon(this)" accept="image/png, image/jpeg, image/gif, image/jpg">
 						</form>
 						<div id="avatarXChoose" class="avatar-x-choose">  <!--//facepic.qidian.com/qd_face/349573/6495553/100-->
-							<img id="usersicon" class="avatar-show" th:src="@{/images/{icon}(icon = ${session.users.get(0).getIcon()})}" alt="">
+							<img id="usersicon" class="avatar-show" th:src="@{/images/{icon}(icon = ${session.user.head})}" alt="">
 							<div class="avatar-text">
 								<p class="gray">支持jpg、gif、png格式图片</p>
 							</div>
@@ -664,16 +664,14 @@
 		<!--我的书架-->
 		<div class="qdp-content" id="q2">
 			<br>
-			<input type="text" name="kw" id="kw" class="shelf-search-input" style="background-color: white; width: 300px;border: 1px solid lightgray; border-radius: 3px" placeholder="&nbsp;&nbsp;输入作品名或作家名">
+			<input type="text" name="km" id="km" class="shelf-search-input" style="background-color: white; width: 300px; height: 35px; border: 1px solid lightgray; border-radius: 3px" placeholder="&nbsp;&nbsp;输入作品名或作家名">
 			<label class="shelf-search-submit ui-button" style="border-radius: 3px;margin-left: -6px;position: relative;top: -2px ;height: 23px" id="shelfSearch" onclick="m2()">搜书架</label>
 			<br><br>
-
 			<div class="qdp-border table-x shelf-default shelf-table" data-l2="3" style="background-color: white" >
 				<div class="table-msg" data-l3="2">
 					<span class="shelf-title" id="shelfTitle" data-gid="-100">我的书架</span>
 					&nbsp;&nbsp;共&nbsp;<span id="shelfAmount">0&nbsp;本书籍</span>
 				</div>
-
 				<div class="table-size" data-l3="2" id="ts">
 					<table id="shelfTable1" class="ui-table table-checkbox" data-count="2" >
 						<thead>
@@ -683,16 +681,13 @@
 							<th scope="col" width="120">更新时间</th>
 							<th scope="col" width="110">作者</th>
 							<th scope="col" width="55">更新进度</th>
-
 						</tr>
 						</thead>
-
 						<tbody id="tbo2">
 							<!--我的书架-->
 						</tbody>
 					</table>
 					<div class="table-null-x" style="display: none;" id="rac1">书架内暂无相关书籍</div>
-
 					<div class="ui-loading" style="display:none;"><i class="ui-loading-icon"></i></div>
 					<div class="style" style="height:51px;">
 						<div id="tableFixedFoot" class="shelf-foot">
@@ -718,12 +713,7 @@
 
 			</div>
 		</div>
-
-
-
 	</div>
-
-	
 	<div class="personal-footer">
 		<div class="footer-menu">
 			<a href="https://www.qidian.com/about/intro" target="_blank">关于起点</a>
@@ -1488,10 +1478,7 @@
 			};
 			form.ajaxSubmit(options);
 		}
-
     }
-
-
 	var indexSecond;
 	var shownum;
     function u10() {
@@ -1704,7 +1691,6 @@
 					}
 					$("#tbo").html(r1);
 				}
-
             }
         });
 	}
@@ -1729,10 +1715,9 @@
         $("#m2").prop("class","active");
 	    $("#q1").hide();
 		$("#q2").show();
-
         $.ajax({
-            url: "bookrack/rack",
-			data: {"par":$("#kw").val()},
+            url: "bor/queryBr",
+			data:{km:$("#km").val()},
             success: function (data) {
                 var tbo2 = "";
 				if (data.length == 0){
@@ -1743,19 +1728,20 @@
 					$("#shelfAmount").html(data[0].num+"&nbsp;本书籍");
                     for (var i=0; i<data.length; i++){
                         tbo2 += "<tr>"+
-                            "<td class='col1'><input type='checkbox' class='elWcheckbox' id='chkBookName"+i+"' name='bookname' value='"+data[i].brid+"' onclick='uncheckAll()' >" +
+                            "<td class='col1'><input type='checkbox' class='elWcheckbox' id='chkBookName"+i+"' name='"+data[i].rackid+"' value='bookname' onclick='uncheckAll()' >" +
 							"<label class='ui-checkbox' for='chkBookName"+i+"'></label></td>"+
                             "<td class='col2'>"+
                             "<span class='shelf-table-name'>"+
                             "<b>"+
-                            "<a href='/jpbook/showAllBook.html?btid="+data[i].btid+"' target='_blank' class='fen-category' style='color: grey'>「"+data[i].btname+"」</a>"+
-                            "<a href='/jpbook/books/queryBookById?bookid="+data[i].bookid+"' target='_blank' title='' data-bid='1013406185' data-eid='qd_M198'>"+data[i].bookname+"</a>"+
-                            "</b></span></td>"+
-                            "<td class='col3 font12' >"+renderTime(data[i].chaptime).substring(0,16)+"</td>"+
-                            "<td class='col4'>"+
-                            "<a href='/jpbook/pc/authorData?bid="+data[i].uuid+"' target='_blank' title='' class='shelf-table-author font12' data-eid='qd_M200' >"+data[i].pen+"</a>"+
+                            "<a href='/jpbook/showAllBook.html?btid="+data[i].typeid+"' target='_blank' class='fen-category' style='color: grey'>「"+data[i].typename+"」</a>"+
+                            "<a href='/jpbook/books/queryBookById?bookid="+data[i].bookid+"' target='_blank' title='' data-bid='1013406185' data-eid='qd_M198'>"+data[i].bookname+"</a>&nbsp;&nbsp;"+
+                            "<a href='/jpbook/books/queryBookById?bookid="+data[i].chapterid+"'>"+data[i].chaptername+"</a>" +
+							"</b></span></td>"+
+							"<td class='col3 font12' >"+renderTime(data[i].updatetime).substring(0,16)+"</td>"+
+							"<td class='col4'>"+
+                            "<a href='/jpbook/pc/authorData?bid="+data[i].userid+"' target='_blank' title='' class='shelf-table-author font12' data-eid='qd_M200' >"+data[i].pen+"</a>"+
                             "</td>";
-								if(data[i].bookstate == 0 ){
+								if(data[i].state == 0 ){
                                     tbo2 += "<td class='col5'><a href='/jpbook/books/queryBookById?bookid="+data[i].bookid+"' class='spTips font12 yesReadStatus' target='_blank' title=''>连载中</a></td>";
 								}else {
                                     tbo2 += "<td class='col5'><a href='/jpbook/books/queryBookById?bookid="+data[i].bookid+"' class='spTips font12 yesReadStatus' target='_blank' title=''>已完本</a></td>";
@@ -1770,10 +1756,32 @@
 
             }
         });
-
     }
+	function del(){
+		var checkboxs = $("[type='checkbox']:checked");
 
-    function  del() {
+		var rs = true;
+		for(var i=0;i<checkboxs.length;i++){
+			var id = $(checkboxs[i]).attr("name");
+			//alert(id);
+			$.post("bor/delete",{rackid:id},function(data){
+				if(data != 1){
+
+					rs = false;
+				}
+			});
+		}
+
+		if(rs){
+			m2();
+			alert("删除成功");
+		}else{
+			alert("删除失败");
+		}
+
+		//window.location.href="bor/queryBr";
+	}
+    /*function  del() {
         var str = "";
         var i = 0;
         $.each($("input[name=bookname]"), function() {
@@ -1783,16 +1791,14 @@
             }
         });
 	   $.ajax({
-			url: "bookrack/del",
-			data: {"brid":str.substring(0,str.length-1)},
+			url: "bor/delete",
+			data: {"rackid":str.substring(0,str.length-1)},
 			success: function (data) {
 			    m2();
                 swal("删除成功", "", "success");
 			}
 		});
-
-    }
-
+    }*/
     function renderTime(date) {
         var dateee = new Date(date).toJSON();
         return new Date(+new Date(dateee) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
@@ -1800,13 +1806,13 @@
 
     function checkAll() {
 	    if ($("#chkBookNameAll2").prop("checked") == true){
-            $.each($("input[name=bookname]"), function() {
+            $.each($("input[value=bookname]"), function() {
                 if ($(this).prop("checked") == false) {
                     $(this).prop("checked", "true");
                 }
             });
 		}else {
-            $.each($("input[name=bookname]"), function() {
+            $.each($("input[value=bookname]"), function() {
                 if ($(this).prop("checked") == true) {
 					$(this).prop("checked", false);
                 }
@@ -1825,8 +1831,12 @@
             }
         });
     }
+	function renderTime(date) {
+		var dateee = new Date(date).toJSON();
+		return new Date(+new Date(dateee) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
+	}
 
-    function formatDate(NewDtime){
+	function formatDate(NewDtime){
 		var dt = new Date(parseInt(NewDtime.slice(6, 19)));
 		var year = dt.getFullYear();
 		var month = dt.getMonth() + 1;
