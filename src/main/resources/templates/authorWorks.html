@@ -31,12 +31,13 @@
                 <ul class="cf">
                     <li class="line"></li>
                     <li id="headPhotoBox" class="headPhoto">
-                        <p><em><img th:src="${session.user.getHead()}" width="36" height="36" alt=""></em><a class="userName" href="javascript:" th:text="${session.user.getPen()}">爱色鬼</a></p>
+                        <p><em><!--<img th:src="${session.user.cover}" width="36" height="36" alt="">--></em>
+                            <a class="userName" href="javascript:" th:text="${session.user.pen}">爱色鬼</a></p>
                         <dl class="userBox">
                             <cite class="icon whiteSj"></cite>
                             <dd class="userInfo hidden">
                                 <!-- 增加身份标识"ico-level",silver为白金作家，dashen为大神作家 -->
-                                <p class="name" th:title="${session.user.getPen()}" th:text="${session.user.getPen()}">爱色鬼
+                                <p class="name" th:title="${session.user.pen}" th:text="${session.user.pen}">爱色鬼
 
                                 </p>
                                 <p class="level">
@@ -369,7 +370,7 @@
             },
             function(){
                 $.ajax({
-                    url: "books/updBookputaway",
+                    url: "books/updBookstate",
                     data:{"bookid":bookid},
                     success: function (data) {
                         window.location.reload();
@@ -378,10 +379,13 @@
             });
 
     }
+
     function skip(bookname) {
         $.ajax({
-            url: "rolls/querybookid",
-            data:{"bookname":bookname},
+            url: "",
+            data:{},
+            type:"post",
+            dataType:"JSON",
             success: function (data) {
 
             }

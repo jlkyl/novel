@@ -32,6 +32,24 @@ public class ChaptersService {
 		return dao.findByRollid(rollid);
 	}
 
+	public List<Chapters> findName(Integer rollid,Integer state){
+		return dao.findName(rollid,state);
+	}
+	//修改章节状态
+	public Integer updChapter(Integer state,Integer chapterid){
+		return dao.updChapter(state,chapterid);
+	}
+	//根据ID查询章节信息
+	public Chapters queryById(Integer chapterid){return dao.queryById(chapterid);}
+	//保存或者修改章节信息
+	public Integer updChapterInfo(String chaptername, String url,Integer state,Integer chapterid){
+		return dao.updChapterInfo(chaptername,url,state,chapterid);
+	}
+
+	public Integer updChapDel(Integer state,Integer chapterid){
+		return dao.updChapDel(state,chapterid);
+	}
+
 	public List<Map<String,Object>> queryAll(Integer bookid){
 		return dao.queryAll(bookid);
 	}

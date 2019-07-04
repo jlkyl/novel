@@ -30,9 +30,9 @@ public interface IBooksDAO {
             "LEFT JOIN chapters c on c.rollid=r.rollid where b.userid=#{userid} GROUP BY t.typeid ")
     List<Map<String,Object>> booksAll(@Param("userid")Integer userid);
     @Select("select * from chapters where chapternum = (select max(chapternum) from chapters " +
-            "                       where rollid in (select rollid from rolls where bookid =#{bookid}))")
+            "                       where rollid in (select rollid from rolls where bookid =#{bookid})) and rollid in (select rollid from rolls where bookid =#{bookid})")
     Chapters queryTime(@Param("bookid") Integer bookid);
-    @Update("update books set putaway=1 where bookid=#{bookid}")
+    @Update("update books set state=1 where bookid=#{bookid}")
     Integer updBookstate(Integer bookid);
     @Select("select * from books where bookid=#{bookid}")
     Books querybyId(@Param("bookid") Integer bookid);
@@ -130,4 +130,7 @@ public interface IBooksDAO {
 
     @Select("select * from books")
     List<Books> queryB();
+
+    @Update("update books set bookname=#{bookname} where bookid=#{bookid}")
+    Integer updBookname(@Param("bookname") String bookname,@Param("bookid") Integer bookid);
 }

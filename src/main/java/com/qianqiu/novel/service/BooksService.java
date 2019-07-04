@@ -81,4 +81,8 @@ public class BooksService {
 	public List<Map<String,Object>> find(Integer bookid){
 		return dao.queryAll(bookid);
 	}
+
+	public Integer updBookname(String bookname,Integer bookid){
+		return dao.updBookname(bookname,bookid);
+	}
 }
