@@ -29,7 +29,7 @@
                     [
                     {field: 'labelid', width: 50, title: '编号'},
                     {field: 'labelname', width: 100, title: '名称'},
-                    {field: 'operateeid', width: 100, title: '操作人'},
+                    {field: 'empname', width: 100, title: '操作人'},
                     {field: 'operatedate', width: 100, title: '操作时间'}
                     ]
                 ],
@@ -114,14 +114,11 @@
             <div style="margin-bottom:20px">
                 <input class="easyui-textbox" style="width:100%" data-options="label:'名称：',required:true" name="labelname">
             </div>
-            <div style="margin-bottom:20px">
-                <input class="easyui-textbox" style="width:100%" data-options="label:'操作人：',required:true"  name="operateeid">
-            </div>
         </form>
 
         <div style="text-align:center;padding:5px 0">
-            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()" style="width:80px">Submit</a>
-            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()" style="width:80px">Clear</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()" style="width:80px">提交</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()" style="width:80px">重置</a>
         </div>
     </div>
 </body>

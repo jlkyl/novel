@@ -1596,7 +1596,7 @@
         });
     }
 
-    function _setTipByRefreshPage() {
+    /*function _setTipByRefreshPage() {
         window.onbeforeunload = function () {
             if (!_isTipByExitEdit || !_checkChapterIsModified()) {
                 return;
@@ -1612,9 +1612,9 @@
                 return tips;
             }
         };
-    }
+    }*/
 
-    function _confirmExitEdit(exitFn) {
+    /*function _confirmExitEdit(exitFn) {
         if (typeof exitFn !== 'function') {
             exitFn = function () {
             };
@@ -1624,7 +1624,7 @@
         } else {
             exitFn();
         }
-    }
+    }*/
 
     function _setTipByExitEdit() {
         _isTipByExitEdit = 1;

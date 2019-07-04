@@ -16,7 +16,8 @@ import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
-@RestController
+//@RestController
+@Controller
 @RequestMapping("Login")
 public class LoginController {
 
@@ -26,6 +27,7 @@ public class LoginController {
 
     //账户（用户名，或邮箱，或手机号）登录
     @RequestMapping("unameLogin")
+    @ResponseBody
     public boolean unameLogin(String username, String password, HttpSession session) {
         String em="^\\w+([-+.])*@\\w+([-.]\\+)*\\.\\w+([-.]\\w+)*$";
         String ph="^[1][345678]\\d{9}$";
@@ -52,10 +54,11 @@ public class LoginController {
     @RequestMapping("logout")
     public String logout(HttpSession session){
         session.invalidate();
-        return "login";
+        return "redirect:/index";
     }
     //手机号发送验证码
     @RequestMapping("phoneLogin")
+    @ResponseBody
     public String phoneLogin(String phone){
         Users users=u.yzmlogin(phone);
         if(users!=null){
@@ -69,6 +72,7 @@ public class LoginController {
     }
     //验证码登录（检查手机号是否存在）
     @RequestMapping("yzmLogin")
+    @ResponseBody
     public boolean yzmLogin(String phone,String yzm){
         System.out.println(map.get(phone));
         if(yzm.equals(map.get(phone))){
@@ -79,10 +83,14 @@ public class LoginController {
     }
     //前台注册
     @RequestMapping("addlogin")
+    @ResponseBody
     public Integer addlogin(String phone,String password,String yzm){
         Users users=new Users();
         users.setPhone(phone);
         users.setPassword(password);
+        users.setUsername("书友"+users.getPhone());
+        users.setSex("男");
+        users.setAuthor(0);
         //String returnCode= IndustrySMS.execute(phone);
         String returnCode="110033";
         map.put(phone,returnCode);
@@ -111,6 +119,7 @@ public class LoginController {
     }
     //作者申请
     @RequestMapping("updUsers")
+    @ResponseBody
     public boolean updUsers(Users users,HttpSession session){
         Users U=(Users)session.getAttribute("user");
         int id=U.getUserid();
@@ -130,16 +139,24 @@ public class LoginController {
     //读者身份验证（是读者还是作者）
     @RequestMapping("writerManager")
     public String writerManager(HttpSession session){
-        Users U=(Users)session.getAttribute("user");
-        int author=U.getAuthor();
-        if(author!=1){
-            return "writerperfect";
-        }else{
-            return "authorWorks";
+
+        //判断是否登录
+        if(session.getAttribute("user")!=null){
+            Users U=(Users)session.getAttribute("user");
+            int author=U.getAuthor();
+            //判断登录人是否是作者
+            if(author==1){
+                return "redirect:/authorWorks";
+            }else{
+                return "redirect:/writerperfect";
+            }
+        }else {
+            return "redirect:/login";
         }
     }
     //检查手机号，邮箱，用户名是否唯一
     @RequestMapping("one")
+    @ResponseBody
     public boolean one(String name){
         //邮箱
         String em="^\\w+([-+.])*@\\w+([-.]\\+)*\\.\\w+([-.]\\w+)*$";
@@ -177,6 +194,7 @@ public class LoginController {
     }
 
     @RequestMapping("pen")
+    @ResponseBody
     public boolean pen(String name){
         Integer i=u.Surepen(name);
         if(i!=null){
@@ -187,6 +205,7 @@ public class LoginController {
     }
 
     @RequestMapping("realname")
+    @ResponseBody
     public boolean realname(String name){
         Integer i=u.Surerealname(name);
         if(i!=null){

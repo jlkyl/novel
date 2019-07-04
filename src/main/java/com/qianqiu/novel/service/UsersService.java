@@ -3,7 +3,6 @@ package com.qianqiu.novel.service;
 import com.qianqiu.novel.dao.IUsersDAO;
 import com.qianqiu.novel.entity.Pages;
 import com.qianqiu.novel.entity.Users;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -61,5 +60,14 @@ public class UsersService {
     }
     public Integer updAuthor(Users users){
         return u.updAuthor(users);
+    }
+    public List<Users> query(){
+        return u.query();
+    }
+    public List<Users> querys(){
+        return u.querys();
+    }
+    public int update(Integer money,Integer ticket,Integer userid){
+        return u.update(money,ticket,userid);
     }
 }

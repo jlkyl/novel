@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <!-- saved from url=(0039)https://book.qidian.com/info/1013432619 -->
-<html class="loaded"  lang="en"  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
 
 <title>书籍详情</title>
 
@@ -24,7 +23,7 @@
 <link data-ignore="true" rel="stylesheet" href="../css/Drag.css">
 <link rel="stylesheet" data-ignore="true" href="../css/iconfont.css">
     <link rel="stylesheet" href="../js/layui/css/modules/layer/default/layer.css">
-    <link rel="stylesheet" data-ignore="true" href="../css/iconfonts.css">
+    <link rel="stylesheet" data-ignore="true" href="../css/iconfont.css">
     <script src="../js/jquery-3.3.1.js" type="text/javascript" charset="utf-8"></script>
     <script src="../js/sweet-alert.js"></script>
     <script src="../js/jquerysession.js" type="text/javascript" charset="utf-8"></script>
@@ -321,7 +320,7 @@
 </head>
 <body style="zoom: 1;">
 	<div class="share-img">
-		<img src="./《人皇在上》_九州方圆著_玄幻_起点中文网_files/share.6aa92.png" width="300" height="300">
+		<!--<img src="./《人皇在上》_九州方圆著_玄幻_起点中文网_files/share.6aa92.png" width="300" height="300">-->
 	</div>
 	<div class="wrap">
 		<div id="pin-nav" class="pin-nav-wrap need-search" data-l1="40">
@@ -364,11 +363,11 @@
 							<a class="reg" href="../register.html" target="_blank">注册</a>
 						</li>
 						<th:block th:if="${session}">
-							<th:block th:if="${session.users}">
-								<li th:class="${session.users[0] } ? 'sign-in' : 'sign-in hidden'">
+							<th:block th:if="${session.user}">
+								<li th:class="${session.user } ? 'sign-in' : 'sign-in hidden'">
 									<a href="../personal.html" target="_blank">
-										<span id = "uuid" style="display: none" th:text="${session.users[0].uuid}"></span>
-										<i id="nav-user-name" th:text="${session.users[0].uname}"></i>
+										<span id = "uuid" style="display: none" th:text="${session.user.getUserid()}"></span>
+										<i id="nav-user-name" th:text="${session.user.getUsername()}"></i>
 										<span></span>
 									</a>
 									<div class="dropdown">
@@ -382,7 +381,7 @@
 
 						<li class="line"></li>
 						<li class="book-shelf" id="top-book-shelf">
-							<a th:href="${session.users} ? '../personal.html?key=i' : '../login.html'" target="_blank">
+							<a th:href="${session.user} ? '../personal.html?key=i' : '../login.html'" target="_blank">
 								<em class = "iconfont icon-book_icon"></em>
 								<i>我的书架</i>
 							</a>
@@ -391,7 +390,6 @@
 				</div>
 			</div>
 		</div>
-
 		<div id="j-topHeadBox" class="top-bg-op-box " data-cookie="1" style="background-image: url(&quot;//qidian.qpic.cn/qidian_common/349573/13d0351cb3cc62ac95a0ddfc7376be8a/0&quot;); display: none;" data-l1="1">
 			<a class="jumpWrap"
 				href="http://cpgame.qd.game.qidian.com/Home/Index/directLogin/name/hlw/way/1?qd_game_key=hlw2560x450&amp;qd_dd_p1=1292"
@@ -401,19 +399,19 @@
 			<a class="close-game-op" id="closeTopGame" href="javascript:">关闭广告</a>
 
 		</div>
-		<div class="top-bg-box " id="j-topBgBox"
+		<!--<div class="top-bg-box " id="j-topBgBox"
 			style="background-image:url(&#39;//qidian.qpic.cn/qidian_common/349573/7f689b6db8ad99e6093bae7db9a7d130/0&#39;)">
-		</div>
+		</div>-->
 		<div class="crumbs-nav center990" data-l1="1">
 
 			<span>
-				<cite class="lt"></cite>
+				<!--<cite class="lt"></cite>
 				<a href="/jpbook/booktype/queryAll" data-eid="qd_G01">首页</a>
 				<em class="iconfont icon-xiayige"></em>
 				<a th:href="@{/showAllBook.html?btid={filename}(filename=${queryBookById[0].btid})}" target="_blank" th:text="|${queryBookById[0].btname}频道|"></a>
 				<em class="iconfont icon-xiayige"></em>
-				<a th:href="@{/showAllBook.html?btid={filename}(filename=${queryBookById[0].bookid})}" th:text="${queryBookById[0].bookname}">人皇在上</a>
-				<cite class="rt"></cite>
+				<a th:href="@{/showAllBook.html?btid={filename}(filename=${queryBookById[0].bookid})}" th:text="${list[0].bookname}">人皇在上</a>
+				<cite class="rt"></cite>-->
 			</span>
 		</div>
 		<div class="border-shadow ">
@@ -423,52 +421,47 @@
 			<div class="book-information cf" data-l1="2">
 				<div class="book-img">
 					<a class="J-getJumpUrl" id="bookImg" href="javascript:void(0)">
-						<img th:src="@{/img/{filename}(filename=${queryBookById[0].icon})}"/>
+						<img th:src="${list[0].cover}"/>
 					</a>
 				</div>
 
 				<div class="book-info ">
 					<h1>
-
-						<em th:text="${queryBookById[0].bookname}">人皇在上</em>
+						<em th:text="${list[0].bookname}"></em>
 						<span>
 							<a class="writer" href="https://me.qidian.com/authorIndex.aspx?id=4242192"
-							target="_blank" th:text="${queryBookById[0].pen}">九州方圆</a> 著</span>
+							target="_blank" th:text="${list[0].pen}"></a> 著</span>
 
 					</h1>
 					<p class="tag">
-						<span class="blue" th:text="${queryBookById[0].bookstate}">连载</span>
-						<a th:href="@{/showAllBook.html?btid={filename}(filename=${queryBookById[0].btid})}" class="red" target="_blank" th:text="${queryBookById[0].btname}">玄幻</a>
-
+						<span class="blue" th:text="${list[0].typename}"></span>
 					</p>
 
 					<p class="intro" ></p>
 					<p>
 						<em>
-							<span th:text="${queryBookById[0].chapcount}"></span>
+							<span th:text="${list[0].zi}"></span>
 						</em><cite>字</cite><i>|</i>
 						<em>
-						<span th:text="${queryBookById[0].cnum}"></span>
+						<span th:text="${list[0].num}"></span>
 						</em>
 						<cite>阅文总点击</cite><i>|</i>
 						<em>
-							<span th:text="${queryBookById[0].zvote}"></span>
+							<span th:text="${list[0].clicknum}"></span>
 						</em>
 						<cite>总推荐</cite><i>|</i>
-						<em>
-							<span th:text="${queryBookById[0].mvote}"></span>
-						</em><cite>月推荐</cite>
+
 					</p>
 
                 <p>
-                    <input type="hidden" id="atbookid" th:value="${queryBookById.get(0).get('bookid')}">
+                    <input type="hidden" id="atbookid" th:value="${list.get(0).get('bookid')}">
 
-					<th:block th:if="${queryChapters.size()} eq 0">
+					<th:block th:if="${list[0].clicknum} eq 0">
 						<a class="red-btn J-getJumpUrl">暂无章节</a>
 					</th:block>
-					<th:block th:if="${queryChapters.size()} ne 0">
+					<th:block th:if="${list[0].clicknum} ne 0">
 						<a class="red-btn J-getJumpUrl "
-						   th:href="@{/chapter/getInformationByChapid?chapid={filename}(filename=${queryChapters[0].chapid})}"
+                           th:href="@{/books/query(bookid=${list[0].bookid})}"
 						   id="readBtn">免费试读</a>
 					</th:block>
 
@@ -481,7 +474,7 @@
                                     if (data == -1) {
                                         return;
                                     } else {
-                                        $("#readBtn").attr("href", "/jpbook/chapter/getInformationByChapid?chapid=" + data);
+                                        /*$("#readBtn").attr("href", "/jpbook/chapter/getInformationByChapid?chapid=" + data);*/
                                         $("#readBtn").html("继续阅读");
                                     }
                                 }
@@ -538,16 +531,16 @@
 
 						<div class="j_getData hidden" style="display: block;">
 							<h4 id="j_bookScore">
-								<span><cite id="score1" th:text="${zEvaluate.evalv}"></cite><i id = "score2">分</i></span>
+								<span><cite id="score1" th:text="${list[0].clicknum}"></cite><i id = "score2">分</i></span>
 							</h4>
 							<p id="j_userCount">
-								<span th:text="${zEvaluate.unum}"></span>人评价
+								<span th:text="${list[0].clicknum}"></span>人评价
 							</p>
 						</div>
 					</div>
 					<h5>我要评价</h5>
 					<div class="score-mid" id="scoreBtn" style="cursor: pointer; width: 116px;">
-						<th:block th:if="${queryByUuid} eq null">
+						<th:block th:if="${list[0].clicknum} eq null">
 							<img src="../images/star-off.b2a1b.png" alt="1" title="不知所云">&nbsp;
 							<img src="../images/star-off.b2a1b.png" alt="2" title="随便看看">&nbsp;
 							<img src="../images/star-off.b2a1b.png" alt="3" title="值得一读">&nbsp;
@@ -555,9 +548,9 @@
 							<img src="../images/star-off.b2a1b.png" alt="5" title="经典必读">
 							<input type="hidden" name="score">
 						</th:block>
-						<th:block th:if="${queryByUuid} ne null">
+						<th:block th:if="${session.user} ne null">
 							<th:block th:each="k,s : ${#numbers.sequence(0,5)}">
-								<th:block th:if="${s.index} lt ${queryByUuid.getEvalv()}">
+								<th:block th:if="${s.index} ">
 									<th:block th:if="${s.index} eq 0">
 										<img src="../images/star-on.02731.png" th:alt="${s.index+1}" title="不知所云">&nbsp;
 									</th:block>
@@ -574,7 +567,7 @@
 										<img src="../images/star-on.02731.png" th:alt="${s.index+1}" title="经典必读">&nbsp;
 									</th:block>
 								</th:block>
-								<th:block th:if="${s.index} gt ${queryByUuid.getEvalv()-1}">
+								<th:block th:if="${s.index}">
 									<th:block th:if="${s.index} eq 0">
 										<img src="../images/star-off.b2a1b.png" th:alt="${s.index+1}" title="不知所云">&nbsp;
 									</th:block>
@@ -597,10 +590,9 @@
 				</div>
 				<div class="take-wrap">
 
-
-                <a class="blue" id="subscribe" th:href="@{/books/getMoneyBookByBookid?bookid={filename}(filename=${queryBookById[0].bookid})}" data-eid="qd_G13"><em
+                <a class="blue" id="subscribe" th:href="${list[0].bookid}" data-eid="qd_G13"><em
                         class="iconfont icon-dingyue"></em>订阅</a> <i></i> <a class="blue download"
-                                                                             id="download" th:href="@{/books/download?bookid={filename}(filename=${queryBookById[0].bookid})}"
+                                                                             id="download" th:href="${list[0].bookid}"
                                                                              data-eid="qd_G14"><em
                     class="iconfont icon-xiazai-xue"></em>下载 </a>
             </div>
@@ -639,14 +631,14 @@
                     <li class="j_catalog_block" onclick="showChapter(this)">
                         <a class="lang" href="javascript:" id="catalogPage">
                             目录<i>
-                            <span id="J-catalogCount" th:text="|(${queryBookById[0].chapscount}章)|"></span>
+                            <span id="J-catalogCount" th:text="|(${list[0].num}章)|"></span>
                         </i>
                         </a>
                     </li>
                     <li class="j_discussion_block">
-                        <a class="lang" th:href="@{/reviewbook/queryAll(bookid=${queryBookById[0].bookid})}" target="_blank">作品讨论
+                        <a class="lang" th:href="${list[0].bookid}" target="_blank">作品讨论
                             <i>
-                                <span id="J-discusCount" th:text="|(${queryBookById[0].reviewcount}条)|">(301条)</span>
+                                <span id="J-discusCount" th:text="|(${list[0].clicknum}条)|">(301条)</span>
                             </i>
                         </a>
                     </li>
@@ -661,23 +653,21 @@
 							class="icon-go-top"><em class="iconfont" data-eid="qd_G72"></em></a>
 					</div>
 				</div>
-                <th:block th:if="${queryRolls[0].chapcounts} eq 0 and ${queryRolls[0].sumchap} eq 0 and ${queryRolls[0].rollid} eq 0">
-                    <h4>暂时还没有卷，等待作者大大创建卷吧...</h4>
-                </th:block>
-                <th:block th:if="${queryRolls[0].rollid} ne 0">
+
+                <th:block th:if="${query[0].rollid} ne 0">
                     <!--章节页面-->
                     <div class="volume-wrap" id = "zhangjie">
 
-                        <th:block th:each="qr:${queryRolls}">
+                        <th:block th:each="q:${query}">
 							<!--卷中章节总数为0-->
-							<th:block th:if="${qr.sumchap} eq 0">
+							<th:block th:if="${q.num} eq 0">
 								<div class="volume">
 									<h3 >
 										<!--<a class="subscri j_subscribe" href="javascript:" target="_blank">
                                             <em class="btn"><b class="iconfont"></b>订阅本卷</em></a>-->
-										<i th:utext="|${qr.rollname}<i>·</i>共${qr.sumchap}章|"></i>
-										<span th:class="${qr.rollstate}" th:text="${qr.rollmoney} eq 1 ? '免费' : 'VIP'">VIP</span>
-										<em class="count" th:utext="|本卷共<cite>${qr.chapcounts}</cite>字 |">
+										<i th:utext="|${q.rollname}<i>·</i>共${q.num}章|"></i>
+										<span th:class="${q.isvip}" th:text="${q.isvip} eq 1 ? '免费' : 'VIP'">免费</span>
+										<em class="count" th:utext="|本卷共<cite>${q.zi}</cite>字 |">
 
 										</em>
 									</h3>
@@ -685,30 +675,30 @@
 								</div>
 							</th:block>
 							<!--卷中章节总数不为0-->
-							<th:block th:if="${qr.sumchap} ne 0">
+							<th:block th:if="${q.num} ne 0">
 								<div class="volume">
 									<div class="cover"></div>
 									<h3 >
 										<!--<a class="subscri j_subscribe" href="javascript:" target="_blank">
                                             <em class="btn"><b class="iconfont"></b>订阅本卷</em></a>-->
-										<i th:utext="|${qr.rollname}<i>·</i>共${qr.sumchap}章|"></i>
-										<span th:class="${qr.rollstate}" th:text="${qr.rollmoney} eq 1 ? '免费' : 'VIP'">VIP</span>
-										<em class="count" th:utext="|本卷共<cite>${qr.chapcounts}</cite>字 |">
+										<i th:utext="|${q.rollname}<i>·</i>共${q.num}章|"></i>
+										<span th:class="${q.isvip}" th:text="${q.isvip} eq 1 ? '免费' : 'VIP'">免费</span>
+										<em class="count" th:utext="|本卷共<cite>${q.zi}</cite>字 |">
 										</em>
 									</h3>
 									<ul class="cf">
-											<th:block  th:each="qc : ${queryChapters}">
-												<th:block  th:if="${qr.rollid} eq ${qc.rollid}">
+											<th:block  th:each="qc:${queryC}">
+												<th:block  th:if="${q.rollid} eq ${qc.rollid}">
 													<li>
 														<!--title="首发时间：2018-12-07 12:08:13 章节字数：2514"-->
-														<a th:href="|/jpbook/chapter/getInformationByChapid?chapid=${qc.chapid}|" target="_blank"
-														   th:title="|首发时间：${qc.chaptime} 章节字数:${qc.chapcount}|" th:text="${qc.chapname}">
+														<a  target="_blank"
+														   th:title="|首发时间：${qc.updatetime} 章节字数:${qc.wordnum}|" th:text="${qc.chaptername}" th:href="@{/chapters/queryId(chapterId=${qc.chapterid},rollid=${qc.rollid})}">
 															第七十三章没架打真的好无聊啊（求订阅，求支持，拜谢各位）
 														</a>
-														<th:block th:if="${qc.vip} eq '收费'">
-															<span th:text="${qc.uuid} eq 0 ? '收费':'已购买'" style = "float:right;background: linear-gradient(to right, red, blue);-webkit-background-clip: text;color: transparent;"></span>
+														<th:block th:if="${q.isvip} eq '收费'">
+															<span th:text="${q.isvip} eq 0 ? '收费':'已购买'" style = "float:right;background: linear-gradient(to right, red, blue);-webkit-background-clip: text;color: transparent;"></span>
 														</th:block>
-														<!--<em class="iconfont icon-jiesuo"></em>-->
+														<em class="iconfont icon-jiesuo"></em>
 													</li>
 												</th:block>
 											</th:block>
@@ -728,7 +718,7 @@
 					<div class="book-info-detail">
 						<cite class="icon-pin"></cite>
 						<div class="book-intro">
-							<p th:text="${queryBookById[0].bookreferral}">
+							<p th:text="${list[0].details}">
 							</p>
 						</div>
 						<div class="book-state" data-l1="4">
@@ -737,13 +727,13 @@
 									<b>最近更新</b>
 									<div class="detail">
 										<p class="cf">
-                                            <th:block th:if="${queryBookById[0].chapnum} gt 1">
-                                                <a class="blue" th:href="|/jpbook/chapter/getInformationByChapid?chapid=${qc.chapid}|" target="_blank"
-												   th:title="|第${queryBookById[0].chapnum}章  ${queryBookById[0].chapname}|"
+                                            <th:block th:if="${list[0].num} gt 1">
+                                               <!-- <a class="blue" th:href="|/jpbook/chapter/getInformationByChapid?chapid=${qc.chapid}|" target="_blank"
+                                                   th:title="|第${queryBookById[0].chapnum}章  ${queryBookById[0].chapname}|"
                                                    th:text="|第${queryBookById[0].chapnum}章  ${queryBookById[0].chapname}|">
-                                                </a>
+                                                </a>-->
                                                 <i>·</i>
-                                                <em class="time" th:text="|更新时间：${queryBookById[0].chaptime}|"></em>
+                                                <em class="time" th:text="|更新时间:${list[0].updatetime}|"></em>
                                             </th:block>
 
 										</p>
@@ -1121,7 +1111,7 @@
 						<div class="user-comment-wrap book-friend">
 							<div class="comment-head cf">
 								<h3 class="lang"><!--@{/books/fatie(retype=1,bookid=${queryBookById[0].bookid})}-->
-									<a class="send blue j_forumBtn" href = "javascript:void(0);" th:onclick="|faties(${queryBookById[0].bookid})|">我要发帖
+									<a class="send blue j_forumBtn" href = "javascript:void(0);" th:onclick="|faties(${list[0].bookid})|">我要发帖
 									</a>
 									<a class="comment-btn blue j_commentBtn hidden" id="goComment"
 										href="javascript:">我要评价
@@ -1142,7 +1132,7 @@
 									<div class="comment-list">
 										<!-- start 有数据状态 -->
 										<dl>
-											<dd th:each="q,s : ${queryAllByBookid}">
+											<!--<dd th:each="q,s : ${queryAllByBookid}">
 												<div class="user-photo">
 													<a th:href="|/jpbook/pc/home?uuid=${q.uuid}|" target="_blank">
 														<img th:src="|../images/${q.icon}|">
@@ -1169,7 +1159,7 @@
 														</th:block>
 													</th:block>
 												</div>
-											</dd>
+											</dd>-->
 
 										</dl>
 										<!-- end 有数据状态 -->
@@ -1255,9 +1245,9 @@
 											<!-- 置顶帖 end -->
 										</ul>
 										<!--如果还有数据就跳转页面查看更多的评论-->
-                                        <th:block th:if="${queryReviewbook.size()} gt 15">
+                                        <th:block th:if="${list[0].num} gt 15">
                                             <p class="go-discuss">
-                                                <a class="blue" th:href="@{/books/queryBookById(bookid=${queryBookById[0].bookid})}"
+                                                <a class="blue" th:href="@{/books/queryBookById(bookid=${list[0].bookid})}"
                                                    target="_blank">
                                                     去讨论区
                                                     <em class="iconfont icon-xiayige"></em>
@@ -1278,15 +1268,15 @@
 					<div class="author-state mb10">
 						<div class="author-info">
 							<div class="info-wrap nobt" data-l1="9">
-								<div class="author-photo" id="authorId" data-authorid="4242192">
+								<!--<div class="author-photo" id="authorId" data-authorid="4242192">
 									<a th:href="@{/pc/authorData?bid={filename}(filename=${queryUsers[0].uuid})}" target="_blank"
 										data-eid="qd_G38">
 										<img th:src="@{/images/{filename}(filename=${queryUsers[0].icon})}">
 									</a>
 									<span class="lv" th:text="|Lv.${queryUsers[0].grade}|">Lv.1</span>
-								</div>
+								</div>-->
 								<p>
-									<a href="https://my.qidian.com/author/4242192" target="_blank" th:text="${queryUsers[0].pen}"></a>
+									<a href="https://my.qidian.com/author/4242192" target="_blank" th:text="${list[0].pen}"></a>
 								</p>
 							</div>
 							<div class="info-wrap" data-l1="9">
@@ -1311,7 +1301,7 @@
 								<h3 class="wrap-title lang">
 									粉丝排行榜
 								</h3>
-								<div class="book-list">
+								<!--<div class="book-list">
 									<ul >
 										<th:block th:each="q,s : ${queryFansByBookid}">
 											<th:block th:if="${s.index} lt 10">
@@ -1355,7 +1345,7 @@
 											</th:block>
 										</th:block>
 									</ul>
-								</div>
+								</div>-->
 							</div>
 						</div>
 					</div>
@@ -1907,9 +1897,9 @@
                                     }
                                 </script>
                             </div>
-                            <h4>账户余额<em
+                            <!--<h4>账户余额<em
                                     th:text="${session.users==null?0:session.users.get(0).getMoney()}"></em>起点币<i>·</i>本次打赏<em
-                                    class="calcReward">500</em>起点币</h4>
+                                    class="calcReward">500</em>起点币</h4>-->
                         </div>
                         <div class="popup-btn">
                             <a class="red-btn" id="voteReward" href="javascript:reward()" data-eid="qd_G59">确认打赏</a>
@@ -2003,7 +1993,7 @@
 								<img src="../images/star-off.b2a1b.png" alt="1" title="不知所云" class="">&nbsp;<img src="../images/star-off.b2a1b.png" alt="2" title="随便看看" class="">&nbsp;<img src="../images/star-off.b2a1b.png" alt="3" title="值得一读" class="">&nbsp;<img src="../images/star-off.b2a1b.png" alt="4" title="不容错过" class="">&nbsp;<img src="../images/star-off.b2a1b.png" alt="5" title="经典必读" class=""><input type="hidden" name="score" value="5"></span><em id="hint">经典必读</em>
 						</div>
 						<h4>简短评价</h4>
-						<input type = "hidden" id = "bookid" th:value="${queryBookById[0].bookid}">
+						<input type = "hidden" id = "bookid" th:value="${list[0].bookid}">
 						<div class="count-text">
 							<span class="count"><em id="evaCounter">0</em>/350</span>
 							<textarea class="gray" id="evaMsgText" maxlength="350" placeholder="撰写高质量书评的建议：

@@ -42,7 +42,7 @@
             <!-- start 账号 -->
             <div class="account-wrap">
                 <h6>账号</h6>
-                <p><img src="./images/user.0.5.png"><span th:text="${session.users.get(0).getUname()}">Joselyn</span></p>
+                <p><img src="./images/user.0.5.png"><span th:text="${session.user.getUsername()}"></span></p>
             </div>
             <!-- end 账号 -->
         </div>
@@ -205,6 +205,6 @@
 
     </script>
 
-
-    </body>
+</div>
+</body>
 </html>

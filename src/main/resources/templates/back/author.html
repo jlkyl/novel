@@ -30,9 +30,12 @@
                     [
                         {field: 'siteid', width: 50, title: '编号'},
                         {field: 'sitename', width: 80, title: '网站名'},
-                        {field: 'siteurl', width: 80, title: '网站地址'},
-                        {field: 'empname', width: 120, title: '操作人'},
-                        {field: 'operatedate', width: 120, title: '操作时间'}
+                        {field: 'siteurl', width: 120, title: '网站地址'},
+                        {field: 'principal', width: 50, title: '负责人'},
+                        {field: 'phone', width: 80, title: '手机号'},
+                        {field: 'email', width: 120, title: '邮箱'},
+                        {field: 'empname', width: 50, title: '操作人'},
+                        {field: 'operatedate', width: 100, title: '操作时间'}
                     ]
                 ],
                 toolbar: [{
@@ -194,7 +197,7 @@
                                                 var rr = $("#book").datagrid("getSelected");
                                                 if(rr!=null){
                                                     if(rr.putaway=="0"){
-
+                                                        putaway(1,rr.bookid);
                                                     }
                                                 }else{
                                                     $.messager.alert("提示","请选择要操作的数据！");
@@ -207,13 +210,13 @@
                                                 var rr = $("#book").datagrid("getSelected");
                                                 if(rr!=null){
                                                     if(rr.putaway=="1"){
-
+                                                        putaway(0,rr.bookid);
                                                     }
                                                 }else{
                                                     $.messager.alert("提示","请选择要操作的数据！");
                                                 }
                                             }
-                                        },'-',{text:"完结",
+                                        }/*,'-',{text:"完结",
                                             iconCls:"icon-ok",
                                             // 处理
                                             handler:function(){
@@ -226,7 +229,7 @@
                                                     $.messager.alert("提示","请选择要操作的数据！");
                                                 }
                                             }
-                                        }],
+                                        }*/],
                                         onDblClickRow:function(index,row){
                                             $("#roll").datagrid({
                                                 width: "100%",
@@ -264,7 +267,7 @@
                                                         var rr = $("#roll").datagrid("getSelected");
                                                         if(rr!=null){
                                                             if(rr.isvip=="0"){
-
+                                                                isvip(1,rr.rollid);
                                                             }
                                                         }else{
                                                             $.messager.alert("提示","请选择要操作的数据！");
@@ -277,7 +280,7 @@
                                                         var rr = $("#roll").datagrid("getSelected");
                                                         if(rr!=null){
                                                             if(rr.isvip=="1"){
-
+                                                                isvip(0,rr.rollid);
                                                             }
                                                         }else{
                                                             $.messager.alert("提示","请选择要操作的数据！");
@@ -296,6 +299,34 @@
 
 
         });
+        function putaway(put,bookid){
+            $.post("/books/updPutaway",{putaway:put,bookid:bookid},function(data){
+                if(data==1){
+                    $.messager.show({
+                        title: '提示',
+                        msg: '操作成功'
+                    });
+                    // 刷新数据表格
+                    $("#book").datagrid("reload");
+                } else {
+                    $.messager.alert('操作失败！', '未知错误或没有任何修改，请重试！', 'messager-error');
+                }
+            });
+        }
+        function isvip(vip,rollid){
+            $.post("/rolls/updvip",{isvip:vip,rollid:rollid},function(data){
+                if(data==1){
+                    $.messager.show({
+                        title: '提示',
+                        msg: '操作成功'
+                    });
+                    // 刷新数据表格
+                    $("#roll").datagrid("reload");
+                } else {
+                    $.messager.alert('操作失败！', '未知错误或没有任何修改，请重试！', 'messager-error');
+                }
+            });
+        }
 
         function submitForm(form,dialog,datagrid){
             $(form).form('submit',{
@@ -331,11 +362,20 @@
 <table id="tb"></table>
 <div class="easyui-dialog" style="width:500px;height:300px;padding:10px 60px;" id="site" data-options="modal:true">
     <form id="fm" method="post">
-        <div style="margin-bottom:20px">
+        <div style="margin-bottom:10px">
             <input class="easyui-textbox" style="width:100%" data-options="label:'网站名：',required:true" name="sitename">
         </div>
-        <div style="margin-bottom:20px">
+        <div style="margin-bottom:10px">
             <input class="easyui-textbox" style="width:100%" data-options="label:'网站地址：',required:true"  name="siteurl">
+        </div>
+        <div style="margin-bottom:10px">
+            <input class="easyui-textbox" style="width:100%" data-options="label:'负责人：',required:true" name="principal">
+        </div>
+        <div style="margin-bottom:10px">
+            <input class="easyui-textbox" style="width:100%" data-options="label:'手机号：',required:true"  name="phone">
+        </div>
+        <div style="margin-bottom:10px">
+            <input class="easyui-textbox" style="width:100%" data-options="label:'邮箱：',required:true"  name="email">
         </div>
     </form>
 
@@ -346,19 +386,19 @@
 </div>
 <div class="easyui-dialog" style="width:500px;height:300px;padding:10px 60px;" id="dl" data-options="modal:true">
     <form id="ff" method="post">
-        <div style="margin-bottom:20px">
+        <div style="margin-bottom:10px">
             <input class="easyui-textbox" style="width:100%" data-options="label:'笔名：',required:true" name="pen">
         </div>
-        <div style="margin-bottom:20px">
+        <div style="margin-bottom:10px">
             <input class="easyui-textbox" style="width:100%" data-options="label:'姓名：',required:true"  name="realname">
         </div>
-        <div style="margin-bottom:20px">
+        <div style="margin-bottom:10px">
             <input class="easyui-textbox" style="width:100%" data-options="label:'身份证号：',required:true"  name="idcard">
         </div>
-        <div style="margin-bottom:20px">
+        <div style="margin-bottom:10px">
             <input class="easyui-textbox" style="width:100%" data-options="label:'邮箱：',required:true"  name="email">
         </div>
-        <div style="margin-bottom:20px">
+        <div style="margin-bottom:10px">
             <input class="easyui-textbox" style="width:100%" data-options="label:'手机号：',required:true"  name="phone">
         </div>
     </form>

@@ -35,8 +35,6 @@ public class NoticesController {
     @RequestMapping("queryAll")
     @ResponseBody
     public Object queryAll(Integer page, Integer rows) {
-//        System.out.println(offset+pageSize);
-//        System.out.println(service.queryPage(offset,pageSize));
         return service.queryPage(page,rows);
     }
 
@@ -70,4 +68,11 @@ public class NoticesController {
         return "update";
     }
 
+    @RequestMapping(value="queryByIds")
+    public String queryByIds(Integer noticeid,Model u){
+        Notices n = service.queryById(noticeid);
+        System.out.println(n);
+        u.addAttribute("ns",n);
+        return "Notice_details";
+    }
 }

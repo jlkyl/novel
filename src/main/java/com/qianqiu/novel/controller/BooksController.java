@@ -1,12 +1,19 @@
 package com.qianqiu.novel.controller;
 
 import com.qianqiu.novel.entity.Books;
+import com.qianqiu.novel.entity.Chapters;
+import com.qianqiu.novel.entity.Users;
 import com.qianqiu.novel.service.BooksService;
+import com.qianqiu.novel.utils.FileUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("books")
@@ -14,5 +21,108 @@ public class BooksController {
 
 	@Resource
 	BooksService service;
+
+	@RequestMapping("addBooks")
+	@ResponseBody
+	public boolean addBooks(Books books, HttpSession session){
+
+		String name=books.getBookname();
+		Users u=(Users) session.getAttribute("user");
+		u.getUserid();
+		String pen=u.getPen();
+		String cover= FileUtil.createImage(name,pen);
+
+		books.setCover(cover);
+        System.out.println("图片路径："+books.getCover());
+		books.setUserid(u.getUserid());
+		books.setState(0);//默认连载0
+		books.setPutaway(0);//默认状态为0，未上架
+		books.setClicknum(0);//默认点击数量0
+		Books b=service.findByName(name);
+		if(b!=null){
+			return false;
+		}else {
+			Integer i=service.add(books);
+			FileUtil.File(books.getBookname());
+			return true;
+		}
+	}
+
+	@RequestMapping(value="queryB")
+    @ResponseBody
+	public List<Books> queryB(){
+
+		return service.queryB();
+	}
+
+	@RequestMapping("booksAll")
+	@ResponseBody
+	public List<Map<String,Object>> booksAll(Integer userid,HttpSession session){
+		Users u=(Users) session.getAttribute("user");
+
+		return service.booksAll(u.getUserid());
+	}
+
+	@RequestMapping("queryTime")
+	@ResponseBody
+	public Chapters queryTime(Integer bookid){
+
+        Chapters c=service.queryTime(bookid);
+        System.out.println("查询的最新章节："+c.getChaptername()+c.getUpdatetime());
+		return c;
+	}
+
+	@RequestMapping("updBookstate")
+    @ResponseBody
+	public boolean updBookstate(Integer bookid){
+	    service.updBookstate(bookid);
+	    return true;
+    }
+
+    @RequestMapping("updBookname")
+	@ResponseBody
+    public boolean updBookname(HttpSession session,String bookname){
+		Books books=(Books)session.getAttribute("BOOK");
+		String oldChaptername=books.getBookname();
+		Books b=service.findByName(oldChaptername);
+		Integer bookid=books.getBookid();
+		Integer i=service.updBookname(bookname,bookid);
+		if (i!=null) {
+			Books bb=service.findByName(bookname);
+			session.setAttribute("BOOK",bb);
+			FileUtil.upFileName(oldChaptername, bookname);
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+	@RequestMapping("updPutaway")
+	@ResponseBody
+    public Integer updPutaway(Integer putaway,Integer bookid){
+		return service.updPutaway(putaway, bookid);
+	}
+
+	@RequestMapping("queryAll")
+	public String queryAll(Model m,Integer bookid){
+		m.addAttribute("list",service.queryAll(bookid));
+
+        m.addAttribute("query",service.queryChapter(bookid));
+
+        m.addAttribute("queryC",service.queryC());
+
+        return "book";
+	}
+
+	@RequestMapping("query")
+	public String query(Model m,Integer bookid){
+
+		m.addAttribute("list",service.find(bookid));
+
+		m.addAttribute("str",	FileUtil.read((String) service.find(bookid).get(0).get("url")));
+
+		return "lookBook";
+	}
+
 
 }
