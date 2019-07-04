@@ -35,11 +35,11 @@ public class ChaptersController {
 	}
 
 	@RequestMapping("queryId")
-	public String queryId(Model m,Integer chapterId,Integer rollid){
+	public String queryId(Model m,Integer chapterId){
 
-		m.addAttribute("queryId",service.queryId(chapterId,rollid));
+		m.addAttribute("queryId",service.queryId(chapterId));
 
-		String read = 	FileUtil.read(service.queryId(chapterId,rollid).getUrl());
+		String read = 	FileUtil.read(service.queryId(chapterId).getUrl());
 
 		read = read.replaceAll("(\r\n|\n)","</p><p>");
 
