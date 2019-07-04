@@ -14,9 +14,6 @@ public interface EmpDAO {
     @Select("select * from emps")
     List<Emps> queryEmp();
 
-    @Update("UPDATE `novel`.`emps` SET `pwd`=#{pwd} WHERE (`empid`=#{empid})")
-    public void updateP(Emps e,Integer empid);
-
     @Insert("INSERT INTO `novel`.`emps` (`empid`, `uname`, `pwd`, `empname`, `phone`, `idcard`, `roleid`, `state`, `operateeid`, `operatedate`) VALUES " +
             "( null,#{uname}, #{pwd}, #{empname}, #{phone}, #{idcard}, #{roleid}, 0, #{operateeid}, now());\n")
     int add(Emps e);

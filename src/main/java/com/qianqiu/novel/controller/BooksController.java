@@ -5,8 +5,6 @@ import com.qianqiu.novel.entity.Chapters;
 import com.qianqiu.novel.entity.Users;
 import com.qianqiu.novel.service.BooksService;
 import com.qianqiu.novel.utils.FileUtil;
-import com.qianqiu.novel.service.BrowsesService;
-import com.qianqiu.novel.service.ChaptersService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
