@@ -4,26 +4,27 @@ import com.qianqiu.novel.entity.Labels;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface LabelsDao {
     @Select("select * from labels")
     List<Labels> queryAll();
     @SelectKey(keyProperty = "labelid",keyColumn = "labelid",before = false,resultType = Integer.class,statement = "select max(labelid) from labels")
-    @Insert("INSERT INTO `novel`.`labels` (`labelid`, `labelname`, `operateeid`, `operatedate`) VALUES (#{labelid}, #{labelname}, null, now());\n")
+    @Insert("INSERT INTO `novel`.`labels` (`labelid`, `labelname`, `operateeid`, `operatedate`) VALUES (#{labelid}, #{labelname}, #{operateeid}, now());\n")
     int add(Labels l);
-    @Update("UPDATE `novel`.`labels` SET  `labelname`=#{labelname}, `operateeid`=null, `operatedate`=#{operatedate} WHERE (`labelid`=#{labelid});\n")
+    @Update("UPDATE `novel`.`labels` SET  `labelname`=#{labelname}, `operateeid`=#{operateeid}, `operatedate`=now() WHERE (`labelid`=#{labelid});\n")
     int update(Labels l);
     @Delete("delete from labels where labelid = #{labelid}")
     int del(Integer labelid);
     @Select("select * from labels where labelid = #{labelid}")
     List<Labels> queryId(Integer labelid);
 
-    @Select("<script>select * from labels" +
+    @Select("<script>select * from labels a LEFT JOIN emps e ON a.operateeid = e.empid" +
             "<if test=\"offset!=null and pageSize!=null\">\n" +
             "   limit #{offset},#{pageSize}\n" +
             "</if></script>")
-    List<Labels> findAll(@Param("offset")Integer offset,@Param("pageSize")Integer pageSize);
+    List<Map<String,Object>> findAll(@Param("offset")Integer offset,@Param("pageSize")Integer pageSize);
 
     @Select("select count(*) from labels")
     Integer getCount();

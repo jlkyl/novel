@@ -71,4 +71,32 @@ public class BooksController {
 	    return true;
     }
 
+	@RequestMapping("updPutaway")
+	@ResponseBody
+    public Integer updPutaway(Integer putaway,Integer bookid){
+		return service.updPutaway(putaway, bookid);
+	}
+
+	@RequestMapping("queryAll")
+	public String queryAll(Model m,Integer bookid){
+		m.addAttribute("list",service.queryAll(bookid));
+
+        m.addAttribute("query",service.queryChapter(bookid));
+
+        m.addAttribute("queryC",service.queryC());
+
+        return "book";
+	}
+
+	@RequestMapping("query")
+	public String query(Model m,Integer bookid){
+
+		m.addAttribute("list",service.find(bookid));
+
+		m.addAttribute("str",	FileUtil.read((String) service.find(bookid).get(0).get("url")));
+
+		return "lookBook";
+	}
+
+
 }

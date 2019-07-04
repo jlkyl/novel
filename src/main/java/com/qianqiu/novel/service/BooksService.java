@@ -45,4 +45,36 @@ public class BooksService {
 	public Integer updBookstate(Integer bookid){return dao.updBookstate(bookid);}
 	//根据ID查询书籍名称
 	public  Books querybyId(Integer bookid){return dao.querybyId(bookid);}
+
+	public Integer updPutaway(Integer putaway,Integer bookid){
+		return dao.updPutaway(putaway,bookid);
+	}
+
+	public List<Map<String,Object>> query(Integer choose,Integer putaway,Integer state){
+		return dao.query(choose,putaway,state);
+	}
+
+	public List<Map<String,Object>> queryUpdate(){
+		return dao.queryUpdate();
+	}
+
+	public List<Map<String,Object>> queryAuthor(){
+		return dao.queryAuthor();
+	}
+
+	public List<Map<String,Object>> queryAll(Integer bookid){
+		return dao.queryAll(bookid);
+	}
+
+    public List<Map<String,Object>> queryChapter(Integer bookid){
+        return dao.queryChapter(bookid);
+    }
+
+    public  List<Chapters> queryC(){
+	    return dao.queryC();
+    }
+
+	public List<Map<String,Object>> find(Integer bookid){
+		return dao.queryAll(bookid);
+	}
 }

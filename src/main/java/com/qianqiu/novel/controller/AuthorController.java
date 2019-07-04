@@ -4,6 +4,7 @@ import com.qianqiu.novel.entity.*;
 import com.qianqiu.novel.service.*;
 import com.qianqiu.novel.utils.FileUtil;
 import com.qianqiu.novel.utils.GsonUtil;
+import com.qianqiu.novel.utils.MyUtil;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.RequestConfig;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -59,14 +61,14 @@ public class AuthorController {
         return list;
     }
     @RequestMapping("add")
-    public Boolean add(Users users) {
+    public Boolean add(Users users,HttpSession session) {
         users.setAuthor(2);
         us.addlogin(users);
-        return getBooks(users.getUserid(),users.getPen());
+        return getBooks(users.getUserid(),users.getPen(),session);
     }
     @RequestMapping("update")
-    public Boolean update(Integer userid,String pen){
-        return getBooks(userid,pen);
+    public Boolean update(Integer userid,String pen,HttpSession session){
+        return getBooks(userid,pen,session);
     }
     @RequestMapping("updAuthor")
     public Boolean updAuthor(Users users){
@@ -77,7 +79,7 @@ public class AuthorController {
         return false;
     }
 
-    public Boolean getBooks(Integer userid,String pen){
+    public Boolean getBooks(Integer userid,String pen,HttpSession session){
         // 获取http客户端
         RequestConfig defaultRequestConfig = RequestConfig.custom()
                 .setSocketTimeout(10000)
@@ -91,7 +93,7 @@ public class AuthorController {
             try {
                 //获取作者对应书籍信息
                 String url = "https://novel.juhe.im/author-books?author="+pen;
-                addBooks(client,url,userid);
+                addBooks(client,url,userid,session);
             } finally {
                 client.close();
             }
@@ -102,7 +104,7 @@ public class AuthorController {
         return true;
     }
 
-    public void addBooks(CloseableHttpClient client,String url,Integer userid) {
+    public void addBooks(CloseableHttpClient client, String url, Integer userid, HttpSession session) {
         String json = getUrl(client,url);
         System.out.println(json);
         Map<String,Object> bookmap = GsonUtil.GsonToMaps(json);
@@ -152,6 +154,7 @@ public class AuthorController {
                                 if(l==null){
                                     l = new Labels();
                                     l.setLabelname(o.toString());
+                                    l.setOperateeid(MyUtil.getempid(session));
                                     ls.add(l);
                                 }
                                 bs.addLabel(books.getBookid(),l.getLabelid());

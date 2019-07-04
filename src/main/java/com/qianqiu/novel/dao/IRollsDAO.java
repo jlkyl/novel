@@ -16,5 +16,6 @@ public interface IRollsDAO {
     //查询书卷名是否存在
     @Select("select * from rolls where rollname=#{rollname} and bookid=#{bookid}")
     Rolls queryRollname(@Param("rollname") String rollname,@Param("bookid") Integer bookid);
-
+    @Update("update rolls set isvip=#{param1} where rollid=#{param2}")
+    Integer updvip(Integer isvip,Integer rollid);
 }

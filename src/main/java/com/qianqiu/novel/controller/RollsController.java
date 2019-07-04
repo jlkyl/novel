@@ -53,4 +53,10 @@ public class RollsController {
 	public List<Rolls> queryRoll(Integer bookid){
 		return service.findByBookid(bookid);
 	}
+
+	@RequestMapping("updvip")
+	@ResponseBody
+	public Integer updvip(Integer isvip,Integer rollid){
+		return service.updvip(isvip, rollid);
+	}
 }

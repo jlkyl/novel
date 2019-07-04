@@ -28,8 +28,6 @@ public class NoticesController {
     @RequestMapping("queryAll")
     @ResponseBody
     public Object queryAll(Integer page, Integer rows) {
-//        System.out.println(offset+pageSize);
-//        System.out.println(service.queryPage(offset,pageSize));
         return service.queryPage(page,rows);
     }
 
@@ -55,12 +53,6 @@ public class NoticesController {
         Integer rs = service.del(noticeid);
         System.out.println(rs);
         return "redirect:query";
-    }
-    @RequestMapping(value="queryById")
-    public String queryById(Integer noticeid){
-        Notices n = service.queryById(noticeid);
-        System.out.println(n);
-        return "update";
     }
     @RequestMapping(value="queryByIds")
     public String queryByIds(Integer noticeid,Model u){
