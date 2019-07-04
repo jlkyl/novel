@@ -88,6 +88,9 @@ public class LoginController {
         Users users=new Users();
         users.setPhone(phone);
         users.setPassword(password);
+        users.setUsername("书友"+users.getPhone());
+        users.setSex("男");
+        users.setAuthor(0);
         //String returnCode= IndustrySMS.execute(phone);
         String returnCode="110033";
         map.put(phone,returnCode);

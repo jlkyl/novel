@@ -18,4 +18,6 @@ public interface IRollsDAO {
     Rolls queryRollname(@Param("rollname") String rollname,@Param("bookid") Integer bookid);
     @Update("update rolls set isvip=#{param1} where rollid=#{param2}")
     Integer updvip(Integer isvip,Integer rollid);
+    @Select("select * from rolls where rollid=#{rollid}")
+    Rolls queryId(@Param("rollid")Integer rollid);
 }

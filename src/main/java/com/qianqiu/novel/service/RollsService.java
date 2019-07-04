@@ -29,4 +29,7 @@ public class RollsService {
 	public Integer updvip(Integer isvip,Integer rollid){
 		return dao.updvip(isvip, rollid);
 	}
+	public Rolls queryId(Integer rollid){
+		return dao.queryId(rollid);
+	}
 }

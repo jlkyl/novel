@@ -43,6 +43,7 @@ public class BooksController {
 			return false;
 		}else {
 			Integer i=service.add(books);
+			FileUtil.File(books.getBookname());
 			return true;
 		}
 	}
@@ -64,12 +65,30 @@ public class BooksController {
 		return c;
 	}
 
-	@RequestMapping("updBookputaway")
+	@RequestMapping("updBookstate")
     @ResponseBody
-	public boolean updBookputaway(Integer bookid){
+	public boolean updBookstate(Integer bookid){
 	    service.updBookstate(bookid);
 	    return true;
     }
+
+    @RequestMapping("updBookname")
+	@ResponseBody
+    public boolean updBookname(HttpSession session,String bookname){
+		Books books=(Books)session.getAttribute("BOOK");
+		String oldChaptername=books.getBookname();
+		Books b=service.findByName(oldChaptername);
+		Integer bookid=books.getBookid();
+		Integer i=service.updBookname(bookname,bookid);
+		if (i!=null) {
+			Books bb=service.findByName(bookname);
+			session.setAttribute("BOOK",bb);
+			FileUtil.upFileName(oldChaptername, bookname);
+			return true;
+		}else {
+			return false;
+		}
+	}
 
 	@RequestMapping("updPutaway")
 	@ResponseBody

@@ -4,10 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.qianqiu.novel.entity.Chapters;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectKey;
+import com.qianqiu.novel.entity.Rolls;
+import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface IChaptersDAO {
@@ -18,8 +16,23 @@ public interface IChaptersDAO {
     Chapters findByName(String chaptername,Integer bookid);
     @Select("select COALESCE(max(chapternum),0) from chapters where rollid in (select rollid from rolls where bookid=#{bookid})")
     Integer getOrder(Integer bookid);
+    //查询某卷的章节
     @Select("select * from chapters where rollid=#{rollid}")
     List<Chapters> findByRollid(Integer rollid);
+    //根据章节状态显示某卷的章节信息
+    @Select("select * from chapters where  rollid =#{rollid} and state=#{state}")
+    List<Chapters> findName(@Param("rollid") Integer rollid,@Param("state")Integer state);
+    //修改章节状态 0发布 1未发布 2待审核 4 回收站
+    @Update("update chapters set state=#{state} where chapterid=#{chapterid}")
+    Integer updChapter(@Param("state") Integer state,@Param("chapterid")Integer chapterid);
+    //根据ID查询章节信息
+    @Select("select * from chapters where chapterid=#{chapterid}")
+    Chapters queryById(@Param("chapterid") Integer chapterid);
+    //修改章节（章节名，文章信息，根据ID）
+    @Update("update chapters set chaptername=#{chaptername},url=#{url},state=#{state} where chapterid=#{chapterid}")
+    Integer updChapterInfo(@Param("chaptername") String chaptername,@Param("url") String url,@Param("state") Integer state,@Param("chapterid") Integer chapterid);
+    @Update("update chapters set state=#{state} where chapterid=#{chapterid}")
+    Integer updChapDel(@Param("state") Integer state,@Param("chapterid")Integer chapterid);
 
 
 
