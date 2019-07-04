@@ -24,9 +24,6 @@ public class NoticesService {
     public int del(Integer noticeid){
         return dao.del(noticeid);
     }
-    public Notices queryById(Integer noticeid){
-        return dao.queryById(noticeid);
-    }
     public Notices queryByIds(Integer noticeid){
         return dao.queryByIds(noticeid);
     }
@@ -34,7 +31,7 @@ public class NoticesService {
        Pages p = new Pages();
        p.setRows(dao.queryPage((offset-1)*pageSize,pageSize));
        p.setTotal(dao.getCounts());
-        return p;
+       return p;
     }
 
 

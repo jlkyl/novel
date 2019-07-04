@@ -1,6 +1,7 @@
 package com.qianqiu.novel.controller;
 
 import com.qianqiu.novel.entity.Expnses;
+import com.qianqiu.novel.entity.Pages;
 import com.qianqiu.novel.entity.Users;
 import com.qianqiu.novel.service.ExpnsesService;
 import com.qianqiu.novel.service.UsersService;
@@ -21,6 +22,12 @@ public class UsersController {
     UsersService service;
     @Resource
     ExpnsesService eservice;
+
+    @RequestMapping("pageList")
+    @ResponseBody
+    public Pages pageList(Integer page, Integer rows) {
+        return service.querypage(page,rows);
+    }
 
     @RequestMapping(value="query")
     @ResponseBody

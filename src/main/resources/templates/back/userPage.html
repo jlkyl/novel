@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="../easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="../easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../easyui/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../easyui/myvalidate.js"></script>
+    <link rel="stylesheet" type="text/css" href="../easyui/themes/material/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../easyui/themes/icon.css">
+
+    <script type="text/javascript">
+        var action = "";
+
+        $(function() {
+            // 初始化datagrid数据表格
+            $("#tb").datagrid({
+                width: "100%",
+                url: '/user/pageList',
+                fitColumns: true, // 列宽自适应
+                singleSelect: true,// 当行选中
+                pagination:true,
+                pageList:[1,50,100],
+                pageSize:1,
+
+                columns: [
+                    [
+                        {field: 'userid', width: 20, title: '编号'},
+                        {field: 'username', width: 20, title: '用户'},
+                        {field: 'password', width: 20, title: '密码'},
+                        {field: 'realname', width: 20, title: '真实姓名'},
+                        {field: 'sex', width: 10, title: '性别'},
+                        {field: 'email', width: 20, title: '邮箱'},
+                        {field: 'phone', width: 30, title: '手机号'},
+                        {field: 'pen', width: 30, title: '笔名'},
+                        {
+                            field: 'head',
+                            width: 20,
+                            title: '头像',
+                            formatter:function(value,row){
+                                //var str = "";
+                                if(value!="" || value!=null){
+                                   // str = "<img style=\"height: 50px;width: 80px;\" src=\""+value+"\"/>";
+                                    return "<img style=\"height: 50px;width: 80px;\" src=\""+value+"\"/>";
+                                }
+                            }},
+                        {
+                            field: 'author',
+                            width: 20,
+                            title : '作家',
+                            formatter : function(value,row,index){
+                                if(value=='1'){
+                                    return '作者'
+                                }
+                                else if(value=='0'){
+                                    return '普通用户'
+                                }
+                            }
+                        }
+                        /* {field: 'sign', width: 10, title: '签名'},
+                         {field: 'money', width: 10, title: '余额'},
+                         {field: 'income', width: 20, title: '收入'},
+                        {field: 'ticked', width: 10, title: '票数'},
+                        {field: 'idcard', width: 30, title: '身份证'},*/
+                    ]
+                ]
+            });
+        });
+    </script>
+</head>
+<body>
+    <table id="tb"></table>
+</body>
+</html>

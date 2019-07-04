@@ -11,15 +11,10 @@ import java.util.List;
 @Mapper
 public interface IUsersDAO {
 
-    //查询
-    //SELECT u.pen,u.sign,COUNT(bookid) as kd,(SELECT SUM(wordnum) from chapters) as 字数,(SELECT TIMESTAMPDIFF(DAY,b.createtime,NOW())) as ssk from users u
-    //join books b
-    //on b.userid = u.userid
-    //where u.author = null
     @Select(value = "SELECT u.pen,u.sign,COUNT(bookid) as kd ,(SELECT SUM(wordnum) from chapters) as mo,(SELECT TIMESTAMPDIFF(DAY,b.createtime,NOW())) as ks from users u\n" +
             "   join books b " +
             "   on b.userid = u.userid")
-     List<Users> querys();
+    List<Users> querys();
     @Select("select * from users where username=#{username} and password=#{password}")
     public Users unamelogin(@Param("username") String username, @Param("password") String password);
 
@@ -32,6 +27,14 @@ public interface IUsersDAO {
     @Select("select * from users where phone=#{phone}")
     public Users yzmlogin(@Param("phone") String phone);
 
+    @Select("select count(*) from users")
+    public Integer getCount();
+
+    @Select("<script>select * from users" +
+            "<if test=\"offset!=null and pageSize!=null\">\n" +
+            "   limit #{offset},#{pageSize}\n" +
+            "</if></script>")
+    public List<Users> listAll(@Param("offset")Integer offset,@Param("pageSize")Integer pageSize);
 
     @SelectKey(keyColumn = "userid",keyProperty = "userid",before = false,resultType = Integer.class,statement = "select max(userid) from users")
     @Insert("insert into users (userid,username,phone,password,realname, sex, idcard, email, pen, head, sign, author, siteid) values(null,#{username},#{phone},#{password},#{realname},#{sex},#{idcard},#{email},#{pen},#{head},#{sign},#{author},#{siteid})")

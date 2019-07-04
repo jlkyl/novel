@@ -1,6 +1,7 @@
 package com.qianqiu.novel.service;
 
 import com.qianqiu.novel.dao.IUsersDAO;
+import com.qianqiu.novel.entity.Pages;
 import com.qianqiu.novel.entity.Users;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +34,12 @@ public class UsersService {
     public Users findByPen(String pen){
         return u.findByPen(pen);
     }
-
+    public Pages querypage(Integer pageNum, Integer pageSize){
+        Pages pages = new Pages();
+        pages.setRows(u.listAll((pageNum-1)*pageSize, pageSize));
+        pages.setTotal(u.getCount());
+        return pages;
+    }
     public int updUser(Users users){return u.updUser(users);}
     //查询手机号
     public Integer Surephone(String phone){return u.Surephone(phone);}

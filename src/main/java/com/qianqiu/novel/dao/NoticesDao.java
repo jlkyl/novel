@@ -17,8 +17,6 @@ public interface NoticesDao {
     int update(Notices n);
     @Delete(value = "Delete from notices where noticeid =#{noticeid}")
     int del(Integer noticeid);
-    @Select(value="select * from notices where  noticeid =#{noticeid}")
-     Notices queryById(Integer noticeid);
     @Select(value="select * from notices where noticeid =#{noticeid}")
     Notices queryByIds(Integer noticeid);
     @Select(" select * from notices limit #{offset},#{pageSize}")
