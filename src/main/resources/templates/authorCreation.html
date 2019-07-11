@@ -188,7 +188,18 @@
                             </div>
                             <p class="tag-intro" id="tag-intro"></p>
                             <!-- 分类对应的活动条目容器 -->
-                        </li><li id="activityList" class="show-match-popup"></li>
+                        </li>
+                        <li class="zIndexTop cf"><em>作品标签</em>
+                            <select class="bigClass" id="novelLabelSelect01" name="labelid" >
+
+                            </select>
+                            <select class="bigClass" id="novelLabelSelect02" name="labelid">
+
+                            </select>
+                            <select class="bigClass" id="novelLabelSelect03" name="labelid">
+
+                            </select>
+                        </li>
                         <!-- 云起站点特有 -->
 
                         <div id="yqItemBox" style="display: none">
@@ -218,12 +229,9 @@
                 <p class="c999 info"><b>请注意：根据国家相关法律法规要求，切勿上传任何色情、低俗、涉政等违法违规内容。一旦出现，我们将会根据法规进行审核处理。</b></p>
                 <br>
                 <br>
-                <!--        <center class="step3Btn"><a class="button"
-                                                    href="/booknovels/chaptertmp/CBID/13173713005719804/addType/1.html">添加新章节</a>
-                            <a class="button white" href="/booknovels/bookmanage/CBID/13173713005719804.html">管理作品信息</a>
-                        </center>-->
+
                 <center class="step4Btn">
-                    <a class="button" id="continue" href="chapteradd">继续上传章节</a>
+                    <a class="button" id="continue" href="javascript:void(0)" onclick="continum()">继续上传章节</a>
                     <!--                <a class="button white" href="/booknovels/bookmodify/CBID/13173713005719804.html">完善作品资料</a>-->
                 </center>
             </div>
@@ -361,7 +369,21 @@
             }
             $("#novelMainCategorySelect").html(str);
         }
-    })
+    });
+    $.ajax({
+        url:"books/queryLabels",
+        type:"post",
+        success:function(data){
+            var str="";
+            str+="<option value=\"-1\">请选择</option>";
+            for(var i=0;i<data.length;i++){
+                str+="<option  value=\""+data[i].labelid+"\">"+data[i].labelname+"</option>";
+            }
+            $("#novelLabelSelect01").html(str);
+            $("#novelLabelSelect02").html(str);
+            $("#novelLabelSelect03").html(str);
+        }
+    });
 
         function btParent00(typeid) {
             $.ajax({
@@ -385,6 +407,10 @@
             });
         }
 
+        function continum(){
+            var bookname=$("#bookname").val();
+            window.location.href="/rolls/querybookid?bookname="+bookname;
+        }
 
 
     $("#createNovelBtn").click(function () {
@@ -397,10 +423,28 @@
                 if(data!=true){
                     swal("小说名已存在!", "请更换小说名称", "warning");
                 }else{
+
+                    var labelidselect=$("select[name='labelid']");
+                    var labelid=[];
+                    for(var i=0;i<labelidselect.length;i++){
+                        if(labelidselect[i].value!=-1) {
+                            labelid[i] = labelidselect[i].value;
+                        }
+                    }
+                    $.ajax({
+                        url:"books/addLabel",
+                        type:"post",
+                        data:{"bookname":$("#bookname").val(),"labelid":labelid},
+                        traditional:true,
+                        success:function () {
+
+                        }
+                    });
                     $("#two").css("display","none");
                     $("#three").css("display","block");
                     $("#top").find("span").prop("class","act");
                     $("#top").find("em").prop("class","act");
+
                     swal("创建成功", "您可以开始写作了", "success");
                 }
             }

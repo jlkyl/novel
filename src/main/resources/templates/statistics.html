@@ -7,7 +7,7 @@
     <!-- IE使用它支持的最高模式 -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="shortcut icon" type="image/x-icon" href="https://img1.write.qq.com/writer/p1/contentv2/aa_ico.ico">
-    <title>数据统计-江派作家专区</title>
+    <title>数据统计-千秋作家专区</title>
     <link rel="stylesheet" type="text/css" href="./css/contentv2_base.css"><script src="./css/stats.js.下载" name="MTAH5" sid="500659219"></script><script type="text/javascript" src="./css/contentv2_base.js.下载"></script>    <!-- prevent dom xss -->
     <script type="text/javascript" src="./css/aq_common.js.下载"></script>
     <meta name="__hash__" content="8059a4d934094f3b0445d577c309de4f_804f2b5277930d395c04dabd8b59fd0c">
@@ -28,12 +28,12 @@
                 <ul class="cf">
                     <li class="line"></li>
                     <li id="headPhotoBox" class="headPhoto">
-                        <p><em><img th:src="${session.users[0].getIcon()}" width="36" height="36" alt=""></em><a class="userName" href="javascript:" th:text="${session.users[0].getPen()}">爱色鬼</a></p>
+                        <p><em><img th:src="${session.user.head}" width="36" height="36" alt=""></em><a class="userName" href="javascript:" th:text="${session.user.pen}">爱色鬼</a></p>
                         <dl class="userBox">
                             <cite class="icon whiteSj"></cite>
                             <dd class="userInfo hidden">
                                 <!-- 增加身份标识"ico-level",silver为白金作家，dashen为大神作家 -->
-                                <p class="name" th:title="${session.users[0].getPen()}" th:text="${session.users[0].getPen()}">爱色鬼
+                                <p class="name" th:title="${session.user.pen}" th:text="${session.user.pen}">爱色鬼
 
                                 </p>
                                 <p class="level">
@@ -41,7 +41,7 @@
                                     <span><em style="width:70%">0/0</em></span></p>
                             </dd>
                             <dd class="link"><a href="writerdata.html">作家资料</a></dd>
-                            <dd class="link end"><a href="/jbook/login/emptySession">退出登录</a></dd>
+                            <dd class="link end"><a href="/Login/logout">退出登录</a></dd>
                         </dl>
                     </li>
                 </ul>
@@ -147,7 +147,7 @@
 
             <script>
                 $.ajax({
-                    url:"books/queryByUuid",
+                    url:"books/booksAll",
                     success:function(data){
                         var str="";
                         str+="<div><em style='float:left'>选择作品：</em>\n" +
@@ -170,8 +170,9 @@
                         str+="</select>\n" +
                             "            \n" +
                             "\n" +
-                            "            <a class=\"button\" href=\"javascript:void(0)\" onclick='queryStatistics()' style=\"display:inline-block;line-height:30px;width: 50px;height: 30px;\">查看</a></div>";
+                            "            <a class=\"button\" href=\"javascript:queryStatistics()\" style=\"display:inline-block;line-height:30px;width: 50px;height: 30px;\">查看</a></div>";
                         $("#sehui").html(str);
+
                         queryStatistics();
                     }
                 })
@@ -197,14 +198,15 @@
                             <span id="singlechaptersubscription">0</span></li>
                     </ul>
                 </div>
-                <p class="tip">* 为更好的让作家了解iOS渠道情况，从2015年7月1日起正式分离统计，之前均包含在集团渠道内；因苹果账期影响，iOS的订阅稿酬，延迟三个月发放。 </p>
+                <p class="tip">* 为更好的让作家了解iOS渠道情况，从2019年7月1日起正式分离统计，之前均包含在集团渠道内；因苹果账期影响，iOS的订阅稿酬，延迟三个月发放。 </p>
             </div>
             <script type="text/javascript">
                 function queryStatistics() {
                     if($("#CBID").val()==""){return;}
                     $.ajax({
-                        url:"buyrecord/queryStatistics",
-                        data:{"bookid":$("#CBID").val()},
+                        url:"books/queryExp",
+                        data:{"bookid":$("#CBID").val(),"exptypeid":3},
+
                         success:function (data) {
                             if(data==""){
                                 $("#Totalsubscription").html(0);
@@ -212,10 +214,10 @@
                                 $("#chaptersubscription").html(0);
                                 $("#singlechaptersubscription").html(0);
                             }else {
-                                $("#Totalsubscription").html(data.sum);
-                                $("#yesterdaysubscription").html(data.yesterday);
-                                $("#chaptersubscription").html(data.avg);
-                                $("#singlechaptersubscription").html(data.num);
+                                $("#Totalsubscription").html(data[0].sum);
+                                $("#yesterdaysubscription").html(data[0].yesteday);
+                                $("#chaptersubscription").html(data[0].avg);
+                                $("#singlechaptersubscription").html(data[0].max);
                             }
                         }
                     })
@@ -227,19 +229,20 @@
 
 
                 <div class="detailWrap mb10" id="subscriptionList">
-                    <table class="layui-table" lay-data="{url:'buyrecord/getStatistics', id:'test'}" lay-filter="test">
+                    <table class="layui-table" lay-data="{url:'/books/queryExpbook',id:'test'}" lay-filter="test"><!-- lay-filter="test"-->
                         <thead>
                         <tr>
                             <th lay-data="{field:'bookname'}">书名</th>
-                            <th lay-data="{field:'btname'}">类型</th>
-                            <th lay-data="{field:'sum', sort: true}">订阅次数</th>
-                            <th lay-data="{field:'createtime', sort: true,templet:function (d) { return jsonDateFormat(d.createtime)}}">创建时间</th>
+                            <th lay-data="{field:'typename'}">类型</th>
+                            <th lay-data="{field:'sum'}">订阅次数</th>
+                            <th lay-data="{field:'money'}">订阅金额</th>
+                            <th lay-data="{field:'createtime'}">创建时间</th>
                         </tr>
                         </thead>
                     </table>
 
                 </div>
-                <div class="pageBox pr0 fr" id="pager"></div>
+                <!--<div class="pageBox pr0 fr" id="pager"></div>-->
             </div>
         </div>
         <script type="text/javascript">

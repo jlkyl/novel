@@ -32,4 +32,9 @@ public class RollsService {
 	public Rolls queryId(Integer rollid){
 		return dao.queryId(rollid);
 	}
+
+	public List<Map<String,Object>> findByBookid001(Integer bookid){
+		return dao.findByBookid001(bookid);
+	}
+
 }

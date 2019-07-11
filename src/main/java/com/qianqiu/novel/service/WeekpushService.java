@@ -24,6 +24,8 @@ public class WeekpushService {
 		return dao.getCount();
 	}
 
+	public Integer getbookidCount(Integer bookid){return dao.getbookidCount(bookid);}
+
 	public List<Map<String,Object>> findAll(Integer all,Integer userid){
 		return dao.findAll(all, userid);
 	}

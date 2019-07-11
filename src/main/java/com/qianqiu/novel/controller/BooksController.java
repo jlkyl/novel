@@ -1,17 +1,18 @@
 package com.qianqiu.novel.controller;
 
-import com.qianqiu.novel.entity.Books;
-import com.qianqiu.novel.entity.Chapters;
-import com.qianqiu.novel.entity.Users;
+import com.qianqiu.novel.entity.*;
 import com.qianqiu.novel.service.BooksService;
 import com.qianqiu.novel.utils.FileUtil;
+import com.qianqiu.novel.utils.MyUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -81,26 +82,42 @@ public class BooksController {
 
     @RequestMapping("updBookname")
 	@ResponseBody
-    public boolean updBookname(HttpSession session,String bookname){
-		Books books=(Books)session.getAttribute("BOOK");
-		String oldChaptername=books.getBookname();
-		Books b=service.findByName(oldChaptername);
-		Integer bookid=books.getBookid();
-		Integer i=service.updBookname(bookname,bookid);
-		if (i!=null) {
-			Books bb=service.findByName(bookname);
-			session.setAttribute("BOOK",bb);
-			FileUtil.upFileName(oldChaptername, bookname);
+    public boolean updBookname(HttpSession session, Books books, MultipartFile[] file){
+		String cover = "";
+		try {
+			cover=FileUtil.fileUpload(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		if(cover!=""){
+			books.setCover(cover);
+		}
+		Integer i=service.updBookname(books);
+
+		if(i!=null){
 			return true;
 		}else {
 			return false;
 		}
+
 	}
 
 	@RequestMapping("updPutaway")
 	@ResponseBody
     public Integer updPutaway(Integer putaway,Integer bookid){
 		return service.updPutaway(putaway, bookid);
+	}
+
+	@RequestMapping("autoPutaway")
+	@ResponseBody
+	public boolean autoPutaway(Integer bookid){
+		Integer i=service.queryWordNum(0,bookid);
+		if(i!=null && i>3000){
+			service.updPutaway(1,bookid);
+			return true;
+		}
+		return false;
+
 	}
 
 	@RequestMapping("queryAll")
@@ -124,5 +141,73 @@ public class BooksController {
 		return "lookBook";
 	}
 
+	@RequestMapping("queryLabels")
+	@ResponseBody
+	public List<Labels> queryLabels(){
+		System.out.println(service.queryLabels());
+		return service.queryLabels();
 
+	}
+
+	@RequestMapping("addLabel")
+	@ResponseBody
+	public boolean addLabel(Integer[] labelid,String bookname){
+		Books b=service.findByName(bookname);
+		for(int i=0;i<labelid.length;i++){
+			service.addLabel(b.getBookid(),labelid[i]);
+		}
+		return true;
+	}
+
+	@RequestMapping("queryExp")
+	@ResponseBody
+	public List<Map<String,Object>> queryExp(Integer exptypeid,Integer bookid){
+		return service.queryExp(exptypeid, bookid);
+	}
+
+	@RequestMapping("queryExpbook")
+	@ResponseBody
+	public Layui queryExpbook(HttpSession session){
+		Layui layui = new Layui();
+		layui.setData(service.queryExpbook(3, MyUtil.getuserid(session)));
+		return layui;
+	}
+
+	//查询章节金额收入
+
+	@RequestMapping("queryExpmoney")
+	@ResponseBody
+	public List<Map<String,Object>> queryExpmoney(Integer exptypeid,HttpSession session,String bookname){
+
+		return service.queryExpmoney(exptypeid,MyUtil.getuserid(session),bookname);
+	}
+
+	@RequestMapping("queryExpbook02")
+	@ResponseBody
+	public List<Map<String,Object>> queryExpbook02(Integer exptypeid,HttpSession session){
+
+		return service.queryExpbook02(exptypeid,MyUtil.getuserid(session));
+	}
+
+	@RequestMapping("queryLabel")
+	@ResponseBody
+	public List<Labels> queryLabel(HttpSession session){
+		Books books=(Books)session.getAttribute("BOOK");
+		Integer bookid=books.getBookid();
+		return service.queryLabel(bookid);
+	}
+
+	@RequestMapping("queryTypename")
+	@ResponseBody
+	public List<Booktype> queryTypename(HttpSession session){
+		Books books=(Books)session.getAttribute("BOOK");
+		Integer typeid=books.getTypeid();
+		return service.queryTypename(typeid);
+
+	}
+	@RequestMapping("queryWeek")
+	@ResponseBody
+	public List<Map<String,Object>> queryWeek(HttpSession session){
+		return service.queryWeek(MyUtil.getuserid(session));
+	}
 }

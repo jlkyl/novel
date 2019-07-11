@@ -12,9 +12,9 @@ import java.util.UUID;
 
 public class FileUtil {
     //图书存放路径
-    public static final String path="F:\\books\\";
+    public static final String path="D:\\Study\\Writerread\\";
     //图片存放路径
-    public static final String imgpath="D:\\Workspace\\IdeaProjects\\novel\\src\\main\\resources\\static\\img\\";
+    public static final String imgpath="D:\\Study\\S3\\IDEA_idea\\novel\\src\\main\\resources\\static\\img\\";
     /**
      * 创建文件夹
      * @param file
@@ -36,7 +36,9 @@ public class FileUtil {
         try {
             String pathname = path+files;
             File writename = new File(pathname);
-            writename.createNewFile(); // 创建新文件
+            if(!writename.exists()) {
+                writename.createNewFile(); // 创建新文件
+            }
             BufferedWriter out = new BufferedWriter(new FileWriter(writename));
             out.write(content); // \r\n即为换行
             out.flush(); // 把缓存区内容压入文件
@@ -48,7 +50,7 @@ public class FileUtil {
     public static String  read(String files){
         String str="";
         try {
-            String pathname = "F:\\books\\"+files; // 绝对路径或相对路径都可以，这里是绝对路径，写入文件时演示相对路径
+            String pathname = "D:\\Study\\Writerread\\"+files; // 绝对路径或相对路径都可以，这里是绝对路径，写入文件时演示相对路径
             File filename = new File(pathname); // 要读取以上路径的input。txt文件
             InputStreamReader reader = new InputStreamReader(
                     new FileInputStream(filename)); // 建立一个输入流对象reader
@@ -91,7 +93,7 @@ public class FileUtil {
                 if(value!=""){
                     value += ";";
                 }
-                value += filename;
+                value += "/img/"+filename;
             }
         }
         return value;
@@ -140,7 +142,7 @@ public class FileUtil {
         }catch (Exception e){
             e.printStackTrace();
         }
-        return uuid+".png";
+        return "/img/"+uuid+".png";
     }
     public static void delPaper(String oldName){
         File file = new File(oldName);

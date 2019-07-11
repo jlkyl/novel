@@ -158,9 +158,9 @@
                         <th class="tl" width="100px;">最新章节</th>
                         <th class="center">编辑分组</th>
                         <th>点击量</th>
-                        <th>书籍状态</th>
+                        <th>书籍</th>
                         <th>编辑状态</th>
-                        <th class="center" width="200px;">操作</th>
+                        <th class="center" width="300px;">操作</th>
                     </tr>
                     </thead>
                     <tbody id="novelList">
@@ -298,7 +298,7 @@
                     str+="<div class=\"work-photo\">";
                     //file:///D:/Study/picture/
                     str+="<a href=\"http://chat.yuewen.com/book/13129224804944103\" target=\"_blank\">";
-                    str+="<img src=\"./img/"+data[i].cover+"\" width=\"83\" height=\"108\" alt=\"作品封面\">";
+                    str+="<img src=\""+data[i].cover+"\" width=\"83\" height=\"108\" alt=\"作品封面\">";
                     str+="</a>";
                     str+="</div>";
                     str+="<p class=\"work-name\">";
@@ -328,23 +328,51 @@
                     str+="<td>";
                     str+="<em class=\"Num\">"+data[i].clicknum+"</em>"
                     str+="</td>";
-                    var putaway=data[i].putaway==0?'连载中':'完结';
+                    var putaway=data[i].putaway==0?'未上架':'已上架';
+                    if(data[i].putaway==0){
+                        $.ajax({
+                            url:"books/autoPutaway",
+                            type:"post",
+                            data:{"bookid":data[i].bookid},
+                            success:function(data){
+                                swal(data[i].bookname,"已自动上架","success");
+                            }
+                        });
+                    }
                     str+="<td>"+putaway+"";
                     str+="</td>";
-                    var state=data[i].state==0?'未上架':'已上架';
+                    var state=data[i].state==0?'连载中':'完结';
                     str+="<td>"+state+"";
                     str+="</td>";
                     str+="<td>";
                     str+="<div class=\"dib-wrap\">";
 
                     if(data[i].state==0){
-                        str+="<a class=\"button blue\" href=\"rolls/querybookid?bookname="+data[i].bookname+"\"><span class=\"icon\"></span><i>写新章节</i></a>"
-                        //querybookid
+                        if(data[i].putaway!=0){
+                            str+="<a class=\"button blue\" href=\"javascript:void(0);\" onclick=\"bookEnd("+data[i].bookid+")\"><span class=\"icon\"></span><i>完结</i></a>"
+                        }
                         str+="<a class=\"button white\" href=\"javascript:void(0);\" onclick=\"skip0("+data[i].bookid+")\"><span class=\"icon\"></span><i>已发布章节</i></a>";
-                         }else{
-                        str+="<a class=\"button blue\" href=\"javascript:void(0);\" onclick=\"bookEnd("+data[i].bookid+")\"><span class=\"icon\"></span><i>完结</i></a>"
-                        /*str+="<a class=\"button white\" href=\"javascript:void(0);\"><span class=\"icon\"></span><i>已完结</i></a>";
-*/                    }
+                        str+="<a class=\"button blue\" href=\"rolls/querybookid?bookname="+data[i].bookname+"\"><span class=\"icon\"></span><i>写新章节</i></a>"
+
+                    }else{
+                        str+="<a class=\"button white\" href=\"javascript:void(0);\" onclick=\"skip0("+data[i].bookid+")\"><span class=\"icon\"></span><i>已发布章节</i></a>";
+                        }
+                    if(data[i].putaway!=0 && data[i].potential>100){
+
+                        $.ajax({
+                            url:"weekpush/getbookidCount",
+                            type:"post",
+                            data:{"bookid":data[i].bookid},
+                            async:false,
+                            success:function(d){
+                                if(d==0){
+                                    str+="<a class=\"button white\" href=\"pay?choose=1&money=100&bookid="+data[i].bookid+"&potential="+data[i].potential+"\"><span class=\"icon\"></span><i>申请周推</i></a>";
+                                }
+                            }
+
+                        });
+
+                    }
                     str+="</div>";
                     str+="</td>";
                     str+="</tr>";
@@ -358,6 +386,9 @@
         var dateee = new Date(date).toJSON();
         return new Date(+new Date(dateee) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
     }
+
+
+
     function bookEnd(bookid) {
         swal({
                 title: "确定操作吗?",
