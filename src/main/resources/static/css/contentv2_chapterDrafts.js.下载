@@ -2708,6 +2708,7 @@
         return isModified;
     }
 
+    /*
     function _setTipByRefreshPage() {
         window.onbeforeunload = function () {
             if (!_isTipByExitEdit || !_checkChapterIsModified()) {
@@ -2737,6 +2738,7 @@
             exitFn();
         }
     }
+    */
 
     function _setTipByExitEdit() {
         _isTipByExitEdit = 1;

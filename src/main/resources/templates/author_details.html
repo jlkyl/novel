@@ -21,7 +21,7 @@
         <div class="mheader-wrapper">
             <ul class="mheader-nav fl">
                 <li class="mheader-nav-li mheader-logo">
-                    <a class="pin-logo" href="/jpbook/booktype/queryAll" style = "font-size: 18px;font-family: 'Courier New', Courier, monospace">江派中文网</a>
+                    <a class="pin-logo" href="/jpbook/booktype/queryAll" style = "font-size: 18px;font-family: 'Courier New', Courier, monospace">千秋小说网</a>
                 </li>
 
                 <li class="mheader-nav-li">
@@ -83,9 +83,9 @@
                 <li class="mheader-nav-li line"></li>
 
                 <th:block th:if="${session}">
-                    <th:block th:if="${session.users}">
+                    <th:block th:if="${session.user}">
                         <li class="mheader-nav-li mheader-login">
-                            <a href="/jpbook/personal" target="_blank" class="mheader-nav-a"><span class="elNickName" th:text="${session.users.get(0).getUname()}">Joselyn</span><span class="mheader-arrow"></span></a>
+                            <a href="/jpbook/personal" target="_blank" class="mheader-nav-a"><span class="elNickName" th:text="${session.user.getUsername()}">Joselyn</span><span class="mheader-arrow"></span></a>
                             <ul class="mheader-drop">
                                 <li>
                                     <a href="/jpbook/topup.html" target="_blank" data-guid="854009794986" class="elNewToPay">充值</a>
@@ -102,7 +102,7 @@
                 </th:block>
 
 
-                <th:block th:if="${session.users} eq null">
+                <th:block th:if="${session.user} eq null">
                     <li class="mheader-nav-li" style="">
                         <div class="mheader-logout">
                             <a href="/jpbook/register" target="_blank" class="mr8">注册</a>
@@ -116,7 +116,7 @@
                 <li class="mheader-nav-li line"></li>
 
                 <li class="mheader-nav-li">
-                    <a th:href="${session.users} ? '../personal.html?key=i' : '../login'" class="mheader-nav-a mheader-shelf-a"><i class="icon icon-book_icon"></i>&nbsp;我的书架</a>
+                    <a th:href="${session.user} ? '../personal.html?key=i' : '../login'" class="mheader-nav-a mheader-shelf-a"><i class="icon icon-book_icon"></i>&nbsp;我的书架</a>
                 </li>
 
             </ul>
@@ -126,19 +126,21 @@
     <div class="author-header" data-l1="2">
         <div class="author-header-wrapper">
             <div class="header-avatar">
-                <img class="header-avatar-img" th:src="@{/images/{icon}(icon = ${author.icon})}"  th:alt="|${author.pen}的头像|">
+                <!--<img class="header-avatar-img" th:src="@{/images/{icon}(icon = ${author.icon})}"  th:alt="|${author.pen}的头像|">-->
+                <img class="header-avatar-img"  th:src="@{/images/{icon}(icon = ${session.user})}" th:alt="|${session.user}的头像|">
                 <span class="header-avatar-vip "></span>
             </div>
-            <div class="header-msg">
+            <div class="header-msg" >
 
-                <a th:href="@{/pc/home?uuid={uuid}(uuid=${author.uuid})}" class="header-msg-tosingle" target="_blank">个人主页</a>
+               <!-- <a th:href="@{/pc/home?uuid={uuid}(uuid=${author.uuid})}" class="header-msg-tosingle" target="_blank">个人主页</a>-->
+                 <a href="http://localhost:8080/homepage.html" class="header-msg-tosingle" target="_blank">个人主页</a>
 
-                <h3 th:text="${author.pen}">笔名</h3>
+                <h3 th:text="${session.user}">笔名</h3>
                 <div class="header-msg-desc"></div>
                 <div class="header-msg-data">
-                    <span class="mr12">作品总数<strong class="header-msg-strong" th:text="${author.amount}">0</strong></span>
-                    <span class="ml12 mr12">累计字数<strong class="header-msg-strong" th:text="${author.num}">0</strong>万</span>
-                   <!-- <span class="ml12 mr12">创作天数<strong class="header-msg-strong">548</strong>天</span>-->
+                    <span class="mr12">作品总数<strong class="header-msg-strong" th:text="${session.user}">0</strong></span>
+                    <span class="ml12 mr12">累计字数<strong class="header-msg-strong" th:text="${session.user}">0</strong>万</span>
+                    <span class="ml12 mr12">创作天数<strong class="header-msg-strong" th:text="${session.user}">0</strong>天</span>
                 </div>
             </div>
         </div>
@@ -150,27 +152,27 @@
             <h2 class="author-title">火热连载</h2>
             <ul class="author-hot" data-l2="9">
                 <li class="author-item">
-                    <a th:href="'/jpbook/books/queryBookById?bookid='+${hot.bookid}" target="_blank" class='author-item-book' data-eid="qd_M268"><img th:src="@{/img/{icon}(icon = ${hot.icon})}" class='author-item-img'></a>
+                    <a  target="_blank" class='author-item-book' data-eid="qd_M268"><img class='author-item-img'></a>
                     <div class="author-item-msg">
-                        <div class="author-item-title"><a th:href="'/jpbook/books/queryBookById?bookid='+${hot.bookid}" target="_blank" data-eid="qd_M269" data-bid="1013406185" th:text="${hot.bookname}">书名</a></div>
+                        <div class="author-item-title"><a  target="_blank" data-eid="qd_M269" data-bid="1013406185" >书名</a></div>
                         <div class="author-item-exp">
-                            <a th:href="'/jpbook/showAllBook.html?btid='+${hot.btid}" target="_blank" th:text="${hot.btname}">类型</a>
+                            <a  target="_blank" >类型</a>
                             <i class="author-item-line"></i>
-                            <a target="_blank" th:text="${hot.bookstate == 0 ? '连载':'完本'}">状态</a>
-                            <i class="author-item-line"></i><span th:text="${hot.num}">0</span>万字
+                            <a target="_blank" >状态</a>
+                            <i class="author-item-line"></i><span >0</span>万字
                         </div>
-                        <div class="author-item-content" th:text="${hot.bookreferral}">简介</div>
+                        <div class="author-item-content" >简介</div>
                         <div class="author-item-update">
-                            <a th:href="'/jpbook/chapter/getInformationByChapid?chapid='+${hot.chapid}" class="blue" target="_blank" th:title="${hot.cname}">最近更新&nbsp;<b th:text="${hot.cname}"></b></a>
-                            <span>&nbsp;&nbsp;·&nbsp;&nbsp;<i th:text="${#strings.substring(hot.time,0,19)}"></i></span>
+                            <a class="blue" target="_blank" >最近更新&nbsp;<b></b></a>
+                            <span>&nbsp;&nbsp;·&nbsp;&nbsp;<i></i></span>
                         </div>
 
                         <div class="author-item-button">
-                            <a th:href="'/jpbook/books/queryBookById?bookid='+${hot.bookid}" target="_blank" class="ui-button" data-eid="qd_M270">书籍详情</a>
-                            <th:block th:if="${hot.sta} eq -1">
-                                <a th:href="|javascript:addBookrack(${hot.bookid});|" class="ui-button ui-button-default elAddShelf">加入书架</a>
+                            <a  target="_blank" class="ui-button" data-eid="qd_M270">书籍详情</a>
+                            <th:block >
+                                <a  class="ui-button ui-button-default elAddShelf">加入书架</a>
                             </th:block>
-                            <th:block th:if="${hot.sta} ne -1">
+                            <th:block >
                                 <span class="ui-button ui-button-default disabled">已在书架</span>
                             </th:block>
                         </div>
@@ -178,12 +180,12 @@
                 </li>
             </ul>
 
-            <h2 class="author-title">全部作品(<span th:text="${list.size()}"></span>)</h2>
+          <!--  <h2 class="author-title">全部作品(<span th:text="${list.size()}"></span>)</h2>-->
             <ul class="author-work" data-l2="9">
 
                 <li class="author-work-line"></li>
 
-                <li class="author-item" th:each="q:${list}">
+               <!-- <li class="author-item" th:each="q:${list}">
                     <div class="author-item-time">
                         <span th:text="${#strings.substring(q.createtime,0,4)}"></span>
                         ~
@@ -213,7 +215,7 @@
                             </th:block>
                         </div>
                     </div>
-                </li>
+                </li>-->
 
             </ul>
         </div>
@@ -264,10 +266,12 @@
     <script>
         function addBookrack(bookid) {
             $.ajax({
+                //添加进书架的添加方法
                 url: "/jpbook/pc/add",
                 data: {"bookid": bookid},
                 success: function (data) {
                     if (data == -1) {
+
                         window.location.href = "/jpbook/login";
                     }else {
                         swal("已加入书架", "", "success");

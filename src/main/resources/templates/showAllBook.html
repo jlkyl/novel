@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- saved from url=(0026)https://www.qidian.com/all -->
 <html class="loaded" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -13,8 +12,8 @@
     <meta http-equiv="mobile-agent" content="format=html5; url=http://h5.qidian.com/bookstore.html">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
     <meta name="renderer" content="webkit">
-    <link charset="utf-8" rel="stylesheet" href="./css/iconfont.css">
-    <script src="./css/stats.js.下载" name="MTAH5" sid="500451537"></script>
+    <link charset="utf-8" rel="stylesheet" href="../css/iconfont.css">
+    <script src="../css/stats.js.下载" name="MTAH5" sid="500451537"></script>
     <script>
         var speedTimer = [],
             speedZero = new Date().getTime();
@@ -70,15 +69,16 @@
           href="https://qidian.gtimg.com/qd/favicon/qd_icon.c443c.ico">
     <link data-ignore="true" rel="Bookmark" type="image/x-icon"
           href="https://qidian.gtimg.com/qd/favicon/qd_icon.c443c.ico">
-    <link  rel="stylesheet" href="./css/icon.css">
+    <link  rel="stylesheet" href="../css/icon.css">
 
-    <link rel="stylesheet" data-ignore="true" href="./css/Button.e5a3e.css">
+    <link rel="stylesheet" data-ignore="true" href="../css/Button.e5a3e.css">
 
 
-    <link charset="utf-8" rel="stylesheet" href="./css/Autocomplete.css">
-    <link charset="utf-8" rel="stylesheet" href="./css/Dropdown.css">
-    <link charset="utf-8" rel="stylesheet" href="./css/Popup.css">
-    <script src="./js/jquery-3.3.1.js"></script>
+    <link charset="utf-8" rel="stylesheet" href="../css/Autocomplete.css">
+    <link charset="utf-8" rel="stylesheet" href="../css/Dropdown.css">
+    <link charset="utf-8" rel="stylesheet" href="../css/Popup.css">
+    <script src="../js/jquery-3.3.1.js"></script>
+
 </head>
 <body style="zoom: 1;">
 
@@ -89,24 +89,24 @@
         <div class="box-center cf">
             <div class="login-box fr">
                 <th:block th:if="${session}">
-                    <th:block th:if="${session.users}">
-                        <div th:class="${session.users[0] } ? 'sign-in' : 'sign-in hidden'">
+                    <th:block th:if="${session.user}">
+                        <div th:class="${session.user } ? 'sign-in' : 'sign-in hidden'">
                             <span>你好，</span>
-                            <a class="black" id="user-name"  href="../personal.html" target="_blank" th:text="${session.users[0].uname}"></a>
+                            <a class="black" id="user-name" href="../personal.html" target="_blank"
+                               th:text="${session.user.username}"></a>
                             <em>|</em>
-                            <a id="exit-btn" href="javascript:void(0);" onclick="removeu()">退出</a>
+                            <a id="exit-btn" href="/Login/logout" >退出</a>
                         </div>
                     </th:block>
                 </th:block>
-                <div th:class="${session.users} ? 'sign-out hidden' : 'sign-out'">
-                    <a id="login-btn" class="black" href="./login.html">登录</a><em>|</em>
-                    <a id="reg-btn" href="./register.html" target="_blank">注册</a>
+                <div th:class="${session.user} ? 'sign-out hidden' : 'sign-out'">
+                    <a id="login-btn" class="black" href="../login.html">登录</a><em>|</em>
+                    <!--target="_blank" 添加新页面-->
+                    <a id="reg-btn" href="../register.html" >注册</a>
                 </div>
             </div>
         </div>
     </div>
-
-
 
     <div class="logo-wrap box-center" data-l1="2">
         <div class="box-center cf">
@@ -119,11 +119,11 @@
                 <a href="/jpbook/booktype/queryAll" data-eid="qd_A11"></a>
             </div>
             <div class="search-wrap fl">
-                <form id="formUrl" action="/jpbook/books/likeBooks" method="get" target="_blank">
+                <form id="formUrl" action="" method="get" target="_blank">
                     <p>
                         <input class="search-box" id="s-box" name="kw" type="text" placeholder="请输入作家名或书名">
                     </p>
-                    <input class="submit-input" type="submit" id="searchSubmit">
+                    <input class="submit-input" type="button" id="searchSubmit" onclick="read()">
                     <label id="search-btn" class="search-btn" for="searchSubmit" style="width:100px">
                         <em class="iconfont">&#xe7fc;</em></label>
                 </form>
@@ -337,89 +337,84 @@
                                 href="javascript:closesel('btid','booktype','btdiv')"
                                 data-eid="qd_B17">全部</a></li>
 
-                        <li data-id="21" class=""><a
-                                href="javascript:btck(1,'玄幻',21)"
+                        <li data-id="2" class=""><a
+                                href="javascript:btck(2,'玄幻',2)"
                                 data-eid="qd_B18">玄幻<cite><i></i></cite></a></li>
 
-                        <li data-id="1" class=""><a
-                                href="javascript:btck(2,'奇幻',1)"
+                        <li data-id="7" class=""><a
+                                href="javascript:btck(7,'奇幻',7)"
                                 data-eid="qd_B19">奇幻<cite><i></i></cite></a></li>
 
-                        <li data-id="2" class=""><a
-                                href="javascript:btck(3,'武侠',2)"
+                        <li data-id="12" class=""><a
+                                href="javascript:btck(12,'武侠',12)"
                                 data-eid="qd_B20">武侠<cite><i></i></cite></a></li>
 
-                        <li data-id="22" class=""><a
-                                href="javascript:btck(4,'仙侠',22)"
+                        <li data-id="16" class=""><a
+                                href="javascript:btck(16,'仙侠',16)"
                                 data-eid="qd_B21">仙侠<cite><i></i></cite></a></li>
 
                     </ul>
 
                     <ul class="row-2" type="category">
 
-                        <li data-id="4" class=""><a
-                                href="javascript:btck(5,'都市',4)"
+                        <li data-id="21" class=""><a
+                                href="javascript:btck(21,'都市',21)"
                                 data-eid="qd_B22">都市<cite><i></i></cite></a></li>
 
-                        <li data-id="15" class=""><a
-                                href="javascript:btck(6,'现实',15)"
-                                data-eid="qd_B23">现实<cite><i></i></cite></a></li>
+                        <li data-id="28" class=""><a
+                                href="javascript:btck(28,'职场',28)"
+                                data-eid="qd_B23">职场<cite><i></i></cite></a></li>
 
-                        <li data-id="6" class=""><a
-                                href="javascript:btck(7,'军事',6)"
+                        <li data-id="36" class=""><a
+                                href="javascript:btck(36,'军事',36)"
                                 data-eid="qd_B24">军事<cite><i></i></cite></a></li>
 
-                        <li data-id="5" class=""><a
-                                href="javascript:btck(8,'历史',5)"
+                        <li data-id="32" class=""><a
+                                href="javascript:btck(32,'历史',32)"
                                 data-eid="qd_B25">历史<cite><i></i></cite></a></li>
 
-                        <li data-id="7" class=""><a
-                                href="javascript:btck(9,'游戏',7)"
+                        <li data-id="42" class=""><a
+                                href="javascript:btck(42,'游戏',42)"
                                 data-eid="qd_B26">游戏<cite><i></i></cite></a></li>
 
                     </ul>
 
                     <ul class="row-3" type="category">
 
-                        <li data-id="8" class=""><a
-                                href="javascript:btck(10,'体育',8)"
-                                data-eid="qd_B27">体育<cite><i></i></cite></a></li>
+                        <li data-id="47" class=""><a
+                                href="javascript:btck(47,'竞技',47)"
+                                data-eid="qd_B27">竞技<cite><i></i></cite></a></li>
 
-                        <li data-id="9" class=""><a
-                                href="javascript:btck(11,'科幻',9)"
+                        <li data-id="52" class=""><a
+                                href="javascript:btck(52,'科幻',52)"
                                 data-eid="qd_B28">科幻<cite><i></i></cite></a></li>
 
-                        <li data-id="10" class=""><a
-                                href="javascript:btck(12,'灵异',10)"
+                        <li data-id="60" class=""><a
+                                href="javascript:btck(60,'灵异',60)"
                                 data-eid="qd_B29">灵异<cite><i></i></cite></a></li>
 
-                        <li data-id="12" class=""><a
-                                href="javascript:btck(13,'二次元',12)"
-                                data-eid="qd_B30">二次元<cite><i></i></cite></a></li>
-
-                        <li data-id="20076" class=""><a
-                                href="javascript:btck(14,'短篇',20076)"
-                                data-eid="qd_B70">短篇<cite><i></i></cite></a></li>
+                        <li data-id="65" class=""><a
+                                href="javascript:btck(65,'同人',65)"
+                                data-eid="qd_B30">同人<cite><i></i></cite></a></li>
 
                     </ul>
                 <script type="text/javascript" >
                     $(function () {
                         var btid=$("#btid").val();
                         switch (parseInt(btid)){
-                            case 1:btck(1,'玄幻',21);break;
-                            case 2:btck(2,'奇幻',1);break;
-                            case 3:btck(3,'武侠',2);break;
-                            case 4:btck(4,'仙侠',22);break;
-                            case 5:btck(5,'都市',4);break;
-                            case 6:btck(6,'现实',15);break;
-                            case 7:btck(7,'军事',6);break;
-                            case 8:btck(8,'历史',5);break;
-                            case 9:btck(9,'游戏',7);break;
-                            case 10:btck(11,'科幻',9);break;
-                            case 11:btck(12,'灵异',10);break;
-                            case 12:btck(8,'历史',5);break;
-                            case 13:btck(13,'二次元',12);break;
-                            case 14:btck(14,'短篇',20076);break;
+                            case 1:btck(2,'玄幻',2);break;
+                            case 2:btck(7,'奇幻',7);break;
+                            case 3:btck(12,'武侠',12);break;
+                            case 4:btck(16,'仙侠',16);break;
+                            case 5:btck(21,'都市',21);break;
+                            case 6:btck(28,'职场',28);break;
+                            case 7:btck(36,'军事',36);break;
+                            case 8:btck(32,'历史',32);break;
+                            case 9:btck(42,'游戏',42);break;
+                            case 10:btck(47,'竞技',47);break;
+                            case 11:btck(52,'科幻',52);break;
+                            case 12:btck(60,'灵异',60);break;
+                            case 13:btck(65,'同人',65);break;
                             default:break;
                         }
                     })
@@ -487,11 +482,11 @@
                                 data-eid="qd_B34">全部</a></li>
 
                         <li data-id="0" class=""><a
-                                href="javascript:rmck(1,'免费',0)"
+                                href="javascript:rmck(0,'免费',0)"
                                 data-eid="qd_B35">免费</a></li>
 
                         <li data-id="1" class=""><a
-                                href="javascript:rmck(2,'收费',1)"
+                                href="javascript:rmck(1,'收费',1)"
                                 data-eid="qd_B36">收费</a></li>
 
                     </ul>
@@ -509,63 +504,25 @@
                     </script>
                 </div>
 
-                <div class="work-filter" data-l2="6" id="sumdiv">
 
-                    <h3>字数</h3>
-                    <ul type="size">
-                        <input type="hidden" id="startSum" value="">
-                        <input type="hidden" id="endSum" value="">
-                        <li data-id="-1" class="act"><a
-                                href="javascript:sumchosesel()"
-                                data-eid="qd_B37">全部</a></li>
+                <div class="work-filter" data-l2="6" id="lbdiv">
 
-                        <li data-id="1" class=""><a
-                                href="javascript:sumck('',300000,'30万字以下',1)"
-                                data-eid="qd_B38">30万字以下</a></li>
-
-                        <li data-id="2" class=""><a
-                                href="javascript:sumck(300000,500000,'30-50万字',2)"
-                                data-eid="qd_B39">30-50万字</a></li>
-
-                        <li data-id="3" class=""><a
-                                href="javascript:sumck(500000,1000000,'50-100万字',3)"
-                                data-eid="qd_B40">50-100万字</a></li>
-
-                        <li data-id="4" class=""><a
-                                href="javascript:sumck(1000000,2000000,'100-200万字',4)"
-                                data-eid="qd_B41">100-200万字</a></li>
-
-                        <li data-id="5" class=""><a
-                                href="javascript:sumck(2000000,'','200万字以上',5)"
-                                data-eid="qd_B42">200万字以上</a></li>
-
+                    <h3>标签</h3>
+                    <ul type="size" id="showlabels">
                     </ul>
                     <script type="text/javascript" >
-                        function sumck(startSum,endSum,sumname,dataid) {
-                            $("#sumdiv").find("li").prop("class","");
-                            $("#sumdiv").find("li[data-id="+dataid+"]").prop("class","act arrow");
-                            $("#startSum").val(startSum);
-                            $("#endSum").val(endSum);
+                        function lbck(labelid,labelname,dataid) {
+                            $("#lbdiv").find("li").prop("class","");
+                            $("#lbdiv").find("li[data-id="+dataid+"]").prop("class","act arrow");
+                            $("#labelid").val(labelid);
                             $("#selectxuanze").find(".all").remove();
-                            $("#selectxuanze").find(".sumname").remove();
-                            $("#selectxuanze").html($("#selectxuanze").html()+"<a class=\"sumname\" href=\"javascript:sumchosesel()\" type=\"chanId\">"+sumname+"×</a>");
-                            read();
-                        }
-                        function sumchosesel() {
-                            $("#startSum").val("");
-                            $("#endSum").val("");
-                            $("#selectxuanze").find(".sumname").remove();
-                            if (!$("#selectxuanze").is(":has(a)")){
-                                $("#selectxuanze").html("<a class=\"all\" href=\"javascript:\" type=\"all\">全部</a>");
-                            }
-                            $("#sumdiv").find("li").prop("class","");
-                            $("#sumdiv").find("li[data-id='-1']").prop("class","act arrow");
+                            $("#selectxuanze").find(".lableid").remove();
+                            $("#selectxuanze").html($("#selectxuanze").html()+"<a class=\"labelid\" href=\"javascript:closesel('labelid','labelid','lbdiv')\" type=\"chanId\">"+labelname+"×</a>");
                             read();
                         }
                     </script>
                 </div>
-                <div class="work-filter" data-l2="9" id="updiv">
-
+                <!--<div class="work-filter" data-l2="9" id="updiv">
                     <h3>更新时间</h3>
                     <ul type="update">
                         <input type="hidden" id="updatetime" value="">
@@ -601,19 +558,19 @@
                             read();
                         }
                     </script>
-                </div>
+                </div>-->
             </div>
         </div>
         <div class="main-content-wrap fl" data-l1="5">
 
             <div class="tool-bar cf">
                 <div class="select-wrap">
-                    <input type="hidden" id="order" name="order" value="updatetime">
-                    <a data-id="5" class="act"
-                       href="javascript:ordertab('更新时间',5,'updatetime')"
+                    <input type="hidden" id="order" name="order" value="1">
+                    <a data-id="0" class="act"
+                       href="javascript:ordertab('更新时间',0,1)"
                        data-eid="qd_B49">更新时间</a>
-                    <a data-id="3"
-                       href="javascript:ordertab('总字数',3,'sum')"
+                    <a data-id="1"
+                       href="javascript:ordertab('总字数',1,2)"
                        data-eid="qd_B52">总字数</a>
                     <script type="text/javascript">
                         function ordertab(name,obj,order) {
@@ -631,15 +588,12 @@
                 </div>
             </div>
 
-
             <div class="all-book-list">
-
                 <div class="book-img-text">
                     <ul class="all-img-list cf" id="showbooks">
+
                     </ul>
                 </div>
-
-
             </div>
             <div class="page-box cf">
                 <div class="pagination fr" data-eid="qd_C44" id="page-container" data-pagemax="57236" data-page="1">
@@ -647,7 +601,7 @@
                         <ul class="lbf-pagination-item-list">
                             <li class="lbf-pagination-item"><a
                                     href="javascript:paging(1)"
-                                    class="lbf-pagination-next ">首页</a></li>
+                                    class="lbf-pagination$-next ">首页</a></li>
                             <li class="lbf-pagination-item"><a
                                     href="javascript:paging(1)" id="prepage"
                                     class="lbf-pagination-next ">上一页</a></li>
@@ -665,18 +619,19 @@
                                 $("#Index").val(Index);
                                 read();
                             }
+
                             function go() {
-                                if($("#Index").val()>$("#lastpage").attr("page")){
+                                if($("#Index").val()>$("#lastpage").attr("")){
                                     $("#Index").val($("#lastpage").attr("page"))
                                 }
                                 read();
                             }
                         </script>
 
-                        <div class="lbf-pagination-jump"><input id="Index" type="text"
-                                                                class="lbf-pagination-input" value="1"><a
-                                href="javascript:go();" id="PAGINATION-BUTTON"
-                                class="lbf-pagination-go">GO</a></div>
+                        <div class="lbf-pagination-jump">
+                            <input id="Index" type="text" class="lbf-pagination-input" value="1">
+                            <a href="javascript:go();" id="PAGINATION-BUTTON" class="lbf-pagination-go">GO</a>
+                        </div>
 
                     </div>
                 </div>
@@ -820,11 +775,11 @@
 </body>
 
 <script type="text/javascript">
-    jQuery("#s-box").keyup(function () {
+    /*jQuery("#s-box").keyup(function () {
         jQuery(".lbf-autocomplete-suggestions").attr("style", "position: absolute; max-height: 384px; z-index: 9999; width: 346px; top: 96px; left: 560.6px; display:block");
         if (jQuery("#s-box").val() != '') {
             jQuery.ajax({
-                url: '/jpbook/books/likeQuery',
+                url: '/books/typeBooks',
                 data: {"kw": jQuery("#s-box").val()},
                 type: 'post',
                 datatype: "text",
@@ -836,18 +791,18 @@
                             "</div>";
                         for (var i = 1; i < data.length; i++) {
                             ra += "<div class=\"lbf-autocomplete-suggestion\">" +
-                                "<a target=\"_blank\" href=\"/jpbook/books/queryBookById?bookid=" + data[i].bookid + "\">" +
+                                "<a target=\"_blank\" href=\"/books/queryBookById?bookid=" + data[i].bookid + "\">" +
                                 "<strong>" + jQuery("#s-box").val() + "</strong>" + data[i].bookname.substr(jQuery("#s-box").val().length, data[i].bookname.length) +
                                 "</a>" +
                                 "</div>";
                         }
                     } else if (data[0] != null && data[1] == null) {
-                        /*查询作者创作的所有书籍*/
+                        /!*查询作者创作的所有书籍*!/
                         ra += "<div class=\"lbf-autocomplete-group lbf-autocomplete-group-a\">" +
                             "<strong>作家</strong>" +
                             "</div>" +
                             "<div class=\"lbf-autocomplete-suggestion\">" +
-                            "<a target=\"_blank\" href=\"/jpbook/books/queryBookByUuid?uuid=" + data[0].uuid + "\">" +
+                            "<a target=\"_blank\" href=\"/books/queryBookByUuid?uuid=" + data[0].uuid + "\">" +
                             "<strong>" + jQuery("#s-box").val() + "</strong>" + data[0].pen.substr(jQuery("#s-box").val().length, data[0].pen.length) +
                             "</a>" +
                             "</div>"
@@ -856,7 +811,7 @@
                             "<strong>作家</strong>" +
                             "</div>" +
                             "<div class=\"lbf-autocomplete-suggestion\">" +
-                            "<a target=\"_blank\" href=\"/jpbook/books/queryBookByUuid?uuid=" + data[0].uuid + "\">" +
+                            "<a target=\"_blank\" href=\"/books/queryBookByUuid?uuid=" + data[0].uuid + "\">" +
                             "<strong>" + jQuery("#s-box").val() + "</strong>" + data[0].pen.substr(jQuery("#s-box").val().length, data[0].pen.length) +
                             "</a>" +
                             "</div>" +
@@ -865,20 +820,20 @@
                             "</div>";
                         for (var i = 1; i < data.length; i++) {
                             ra += "<div class=\"lbf-autocomplete-suggestion\">" +
-                                "<a target=\"_blank\" href=\"/jpbook/books/queryBookById?bookid=" + data[i].bookid + "\">" +
+                                "<a target=\"_blank\" href=\"/books/queryBookById?bookid=" + data[i].bookid + "\">" +
                                 "<strong>" + jQuery("#s-box").val() + "</strong>" + data[i].bookname.substr(jQuery("#s-box").val().length, data[i].bookname.length) +
                                 "</a>" +
                                 "</div>";
                         }
                     }
                     jQuery(".lbf-autocomplete-suggestions").html(ra);
-                    /**
+                    /!**
                      * 点击时和#s-box失去焦点是都隐藏
-                     */
+                     *!/
                     jQuery(".lbf-autocomplete-suggestion").click(function () {
                         jQuery("#s-box").val('');
                         jQuery(".lbf-autocomplete-suggestions").attr("style", "position: absolute; max-height: 384px; z-index: 9999; width: 346px; top: 96px; left: 560.6px; display:none");
-                    })
+                    });
                     jQuery("#s-box").blur(function () {
                         setTimeout(function () {  //进行延时处理，时间单位为千分之一秒
                             jQuery("#s-box").val('');
@@ -891,62 +846,86 @@
             jQuery(".lbf-autocomplete-suggestions").html('');
             jQuery(".lbf-autocomplete-suggestions").attr("style", "position: absolute; max-height: 384px; z-index: 9999; width: 346px; top: 96px; left: 560.6px; display:none");
         }
-    })
+    });*/
+
     $(function () {
+        console.log(JSON.stringify(window.location.search));
+        $("#s-box").val(window.location.search.substr(8,9).toString());
         read();
-    })
+
+        $.ajax({
+           url:'/queryAll',
+           data:{},
+           type:'post',
+           success:function(data){
+               var labels = "";
+               labels += "<input type=\"hidden\" id=\"labelid\" value=\"\">";
+               labels += "<li data-id=\"-1\" class=\"act\"><a\n" +
+                   "href=\"javascript:closesel('labelid','labelid','lbdiv')\"\n" +
+                   "data-eid=\"qd_B34\">全部</a></li>";
+               for (var i = 0; i < data.length; i++) {
+                   labels += "<li data-id=\""+data[i].labelid+"\" class=\"\"><a\n" +
+                       "href=\"javascript:lbck("+data[i].labelid+",'"+data[i].labelname+"',"+data[i].labelid+")\"\n" +
+                       "data-eid=\"qd_B36"+data[i].labelid+"\">"+data[i].labelname+"</a></li>";
+               }
+               console.log(labels);
+               $("#showlabels").html(labels);
+           }
+        });
+    });
 
     function read() {
         if($("#Index").val()==""||$("#Index").val()==0){
             $("#Index").val(1);
         }
         $.ajax({
-            url: "/jpbook/books/queryBookByState",
+            url: "/books/typeBooks",
             data: {
                 "Index": $("#Index").val(),
-                "btid": $("#btid").val(),
-                "bookstate": $("#bookstate").val(),
-                "rollmoney": $("#rollmoney").val(),
-                "updatetime": $("#updatetime").val(),
-                "startSum": $("#startSum").val(),
-                "endSum": $("#endSum").val(),
-                "order":$("#order").val()
+                "typeid": $("#btid").val(),
+                "state": $("#bookstate").val(),
+                "isvip": $("#rollmoney").val(),
+                "orders": $("#order").val(),
+                "rows": 20,
+                "kw": $("#s-box").val(),
+                "labelid": $("#labelid").val()
             },
             type: "post",
             success: function (data) {
-
                 var str = "";
-                for (var i = 0; i < data.length; i++) {
+                for (var i = 0; i < data.rows.length; i++) {
+
                     str += "<li data-rid=\"1\">\n" +
-                        "<div class=\"book-img-box\">\n" +
-                        "<a href=\"/jpbook/books/queryBookById?bookid=" + data[i].bookid + "\" data-bid=\"1010734492\" " +
-                        "data-eid=\"qd_B57\" target=\"_blank\"><img src=\"/jpbook/img/" + data[i].icon + "\"></a>" +
-                        "</div>" +
-                        "<div class=\"book-mid-info\">" +
-                        "<h4><a href=\"/jpbook/books/queryBookById?bookid="+data[i].bookid+"\" target=\"_blank\" data-eid=\"qd_B58\"" +
-                        "data-bid=\"1010734492\">" + data[i].bookname + "</a></h4>" +
-                        "<p class=\"author\">" +
-                        "<img src=\"./css/user.f22d3.png\"><a class=\"name\"" +
-                        "href=\"/jpbook/pc/authorData?bid="+data[i].uuid+"\"" +
-                        "data-eid=\"qd_B59\"" +
-                        "target=\"_blank\">" + data[i].pen + "</a><em>|</em><a " +
-                        "href=\"/jpbook/showAllBook.html?btid="+data[i].btid+"\" target=\"_blank\"" +
-                        "data-eid=\"qd_B60\">" + data[i].btname + "</a><em>|</em><span>" + data[i].bookstatename + "</span>" +
-                        "</p>" +
-                        "<p class=\"intro\">" + (data[i].bookreferral) +
-                        "</p>" +
-                        "<p class=\"update\"><span><span class=\"wDcilLiv\">" + data[i].sum + "</span>字</span>" +
-                        "</p>" +
-                        "</div>" +
-                        "</li>";
+                           "<div class=\"book-img-box\">\n" +
+                           "<a href=\"/books/queryAll?bookid=" + data.rows[i].bookid + "\" data-bid=\"1010734492\" " +
+                           "data-eid=\"qd_B57\" target=\"_blank\"><img src=\"" + data.rows[i].cover + "\"></a>" +
+                           "</div>" +
+                           "<div class=\"book-mid-info\">" +
+                           "<h4><a href=\"/books/queryAll?bookid=" + data.rows[i].bookid+"\" target=\"_blank\" data-eid=\"qd_B58\" "+
+                           "data-bid=\"1010734492\">" + data.rows[i].bookname + "</a></h4>" +
+                           "<p class=\"author\">" +
+                           "<img src=\"./css/user.f22d3.png\"><a class=\"name\"" +
+                           "href=\"/user/queryAuthorById?userid="+data.rows[i].userid+"\"" +
+                           "data-eid=\"qd_B59\"" +
+                           "target=\"_blank\">" + data.rows[i].pen + "</a><em>|</em><a " +
+                           "href=\"/showAllBook.html?btid="+data.rows[i].typeid+"\" target=\"_blank\"" +
+                           "data-eid=\"qd_B60\">" + data.rows[i].typename + "</a><em>|</em><span th:class=\""+data.rows[i].state+"\" th:text=\""+data.rows[i].state+"\"eq 1 ? \"连载\" : \"完本\"></span>" +
+                           "</p>" +
+                           "<p class=\"intro\">" + (data.rows[i].details) +
+                           "</p>" +
+                           "<p class=\"update\"><span><span class=\"wDcilLiv\">" + data.rows[i].num + "</span>字</span>" +
+                           "</p>" +
+                           "</div>" +
+                           "</li>";
                 }
+                console.log(str);
                 $("#showbooks").html(str);
-                $("#bookcount").html(data.length);
-                var i=data.length/8;
+                $("#bookcount").html(data.rows.length);
+                var i=data.rows.length/8;
                 if(i.toString().indexOf(".")!=-1){
                     i=i.toString().substring(0,(i.toString().indexOf(".")));
                 }
-                var page=data.length%8==0?i:i-1+2;
+                var page=data.rows.length%8==0?i:i-1+2;
                 $("#lastpage").prop("href","javascript:paging("+page+")");
                 $("#lastpage").attr("page",page);
                 if($("#Index").val()<page){
@@ -960,7 +939,7 @@
                     $("#prepage").prop("href","javascript:void(0)");
                 }
             }
-        })
+        });
     }
 </script>
 </html>

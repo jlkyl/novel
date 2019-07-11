@@ -30,7 +30,7 @@ public class UploadController {
         // 判断是否有文件
         if (originalFilename != null) {
             // 1.保存路径
-            String savePath = "D:/upload";
+            String savePath = "C:/_idea/novel/src/main/resources/static/images";
 
             // 2.重命名
             UUID randomUUID = UUID.randomUUID();
@@ -38,7 +38,8 @@ public class UploadController {
             String saveFilePath = savePath + "/" + newFileName;
             Users user = new Users();
             user.setUserid(((Users)session.getAttribute("user")).getUserid());
-            user.setHead(saveFilePath);
+            /*user.setHead(saveFilePath);*/
+            user.setHead("../images/"+newFileName);
             us.updhead(user);
             // 3.保存文件:另存为
             head.transferTo(new File(saveFilePath));

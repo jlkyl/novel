@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script type="text/javascript" src="../easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="../easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../easyui/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../easyui/myvalidate.js"></script>
+    <link rel="stylesheet" type="text/css" href="../easyui/themes/material/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../easyui/themes/icon.css">
+
+    <script type="text/javascript">
+
+        var action = "";
+
+        $(function() {
+            $("#detail").dialog("close");
+            $("#dl").dialog("close");
+            $("#site").dialog("close");
+            // 初始化datagrid数据表格
+            $("#tt").datagrid({
+                title:'合作网站',
+                width: "100%",
+                url: '/site/list',
+                fitColumns: true, // 列宽自适应
+                singleSelect: true,// 当行选中
+                columns: [
+                    [
+                        {field: 'siteid', width: 50, title: '编号'},
+                        {field: 'sitename', width: 80, title: '网站名'},
+                        {field: 'siteurl', width: 120, title: '网站地址'},
+                        {field: 'principal', width: 50, title: '负责人'},
+                        {field: 'phone', width: 80, title: '手机号'},
+                        {field: 'email', width: 120, title: '邮箱'},
+                        {field: 'empname', width: 50, title: '操作人'},
+                        {field: 'operatedate', width: 100, title: '操作时间'}
+                    ]
+                ],
+                toolbar: [{
+                    text: "新增",
+                    iconCls: "icon-add",
+                    // 处理
+                    handler: function () {
+                        $("#fm").form("reset");
+                        $("#site").dialog("setTitle", "新增");
+                        $("#site").dialog("open");
+                        action = "/site/add";
+                    }
+                }, '-', {
+                    text: "修改",
+                    iconCls: "icon-edit",
+                    handler: function () {
+                        // 判断是否选中修改数据
+                        var row = $("#tt").datagrid("getSelected");
+                        if (row != null) {
+                            $("#fm").form("reset");
+                            $("#fm").form("load", row);
+                            $("#site").dialog("setTitle", "修改").dialog("open");
+                            action = "/site/update?siteid=" + row.siteid;
+                        } else {
+                            $.messager.alert("提示", "请选择要修改得数据");
+                        }
+                    }
+                }],
+                onDblClickRow:function(i,r){
+                    $("#tb").datagrid({
+                        title:'合作作家',
+                        width: "100%",
+                        url: '/author/list?siteid='+r.siteid,
+                        fitColumns: true, // 列宽自适应
+                        singleSelect: true,// 当行选中
+                        columns: [
+                            [
+                                {field: 'userid', width: 50, title: '编号'},
+                                {field: 'pen', width: 80, title: '笔名'},
+                                {field: 'realname', width: 80, title: '姓名'},
+                                {field: 'idcard', width: 120, title: '身份证号'},
+                                {field: 'email', width: 120, title: '邮箱'},
+                                {field: 'phone', width: 100, title: '手机号'},
+                                {field: 'income', width: 80, title: '收入'},
+                                {field: 'nums', width: 80, title: '作品数量'}
+                            ]
+                        ],
+                        toolbar:[{text:"新增",
+                            iconCls:"icon-add",
+                            // 处理
+                            handler:function(){
+                                $("#ff").form("reset");
+                                $("#dl").dialog("setTitle","新增");
+                                $("#dl").dialog("open");
+                                action = "/author/add?siteid="+r.siteid;
+                            }
+                        },'-',{text:"修改",
+                            iconCls:"icon-edit",
+                            handler:function(){
+                                // 判断是否选中修改数据
+                                var row = $("#tb").datagrid("getSelected");
+                                if(row != null){
+                                    $("#ff").form("reset");
+                                    $("#ff").form("load",row);
+                                    $("#dl").dialog("setTitle","修改").dialog("open");
+                                    action = "/author/updAuthor?userid="+row.userid+"&siteid="+r.siteid;
+                                }else{
+                                    $.messager.alert("提示","请选择要修改得数据");
+                                }
+                            }
+                        },'-',{text:"更新",
+                            iconCls:"icon-reload",
+                            handler:function(){
+                                var row = $("#tb").datagrid("getSelected");
+                                if(row != null){
+                                    $.ajax({
+                                        url: '/author/update',
+                                        type: 'post',
+                                        cache: false,
+                                        data: {userid:row.userid,pen:row.pen},
+                                        beforeSend: function () {
+                                            $.messager.progress({
+                                                text: '正在操作...,请稍候！'
+                                            });
+                                        },
+                                        success: function (data) {
+                                            $.messager.progress('close');
+                                            if (data) {
+                                                $.messager.show({
+                                                    title: '提示',
+                                                    msg: '操作成功'
+                                                });
+                                                // 刷新数据表格
+                                                $("#tb").datagrid("reload");
+                                            } else {
+                                                $.messager.alert('操作失败！', '未知错误或没有任何修改，请重试！', 'messager-error');
+                                            }
+                                        }
+                                    });
+                                }else{
+                                    $.messager.alert("提示","请选择要操作的数据！");
+                                }
+                            }
+                        },'-',{text:"作品详情",
+                            iconCls:"icon-more",
+                            handler:function(){
+                                // 判断是否选中修改数据
+                                var row = $("#tb").datagrid("getSelected");
+                                if(row != null){
+                                    $("#detail").dialog("setTitle","作品详情").dialog("open").dialog("center");
+                                    $("#book").datagrid({
+                                        width:"100%",
+                                        data:row.books,
+                                        fitColumns:true, // 列宽自适应
+                                        singleSelect:true,// 当行选中
+                                        columns:[
+                                            [
+                                                {field:'bookid',title:'编号',width:50},
+                                                {field:'bookname',title:'书名',width:80},
+                                                {field:'cover',title:'封面',width:60,
+                                                    formatter: function(value){
+                                                        if (value){
+                                                            return "<img src='"+value+"' width='60px' height='80px'/>";
+                                                        } else {
+                                                            return value;
+                                                        }
+                                                    }
+                                                },
+                                                {field:'typename',title:'类型',width:70},
+                                                {field:'state',title:'属性',width:50,
+                                                    formatter: function(value){
+                                                        if (value=="0"){
+                                                            return "连载";
+                                                        } else {
+                                                            return "完结";
+                                                        }
+                                                    }
+                                                },
+                                                {field:'putaway',title:'状态',width:50,
+                                                    formatter: function(value){
+                                                        if (value=="0"){
+                                                            return "未上架";
+                                                        } else {
+                                                            return "已上架";
+                                                        }
+                                                    }
+                                                },
+                                                {field:'createtime',title:'创建时间',width:80},
+                                                {field:'endtime',title:'完结时间',width:80},
+                                                {field:'clicknum',title:'点击量',width:50},
+                                                {field:'chapternum',title:'章节数',width:50},
+                                                {field:'wordnum',title:'总字数',width:80}
+                                            ]
+                                        ],
+                                        toolbar:[{text:"上架",
+                                            iconCls:"icon-add",
+                                            // 处理
+                                            handler:function(){
+                                                var rr = $("#book").datagrid("getSelected");
+                                                if(rr!=null){
+                                                    if(rr.putaway=="0"){
+                                                        putaway(1,rr.bookid);
+                                                    }
+                                                }else{
+                                                    $.messager.alert("提示","请选择要操作的数据！");
+                                                }
+                                            }
+                                        },'-',{text:"下架",
+                                            iconCls:"icon-remove",
+                                            // 处理
+                                            handler:function(){
+                                                var rr = $("#book").datagrid("getSelected");
+                                                if(rr!=null){
+                                                    if(rr.putaway=="1"){
+                                                        putaway(0,rr.bookid);
+                                                    }
+                                                }else{
+                                                    $.messager.alert("提示","请选择要操作的数据！");
+                                                }
+                                            }
+                                        }/*,'-',{text:"完结",
+                                            iconCls:"icon-ok",
+                                            // 处理
+                                            handler:function(){
+                                                var rr = $("#book").datagrid("getSelected");
+                                                if(rr!=null){
+                                                    if(rr.state=="0"){
+
+                                                    }
+                                                }else{
+                                                    $.messager.alert("提示","请选择要操作的数据！");
+                                                }
+                                            }
+                                        }*/],
+                                        onDblClickRow:function(index,row){
+                                            $("#roll").datagrid({
+                                                width: "100%",
+                                                data: row.rolls,
+                                                fitColumns: true, // 列宽自适应
+                                                singleSelect: true,// 当行选中
+                                                columns: [
+                                                    [
+                                                        {field: 'rollid', title: '编号', width: 50},
+                                                        {field: 'rollname', title: '卷名', width: 100},
+                                                        {field: 'isvip', title: '属性', width: 100,
+                                                            formatter: function(value){
+                                                                if (value=="0"){
+                                                                    return "免费";
+                                                                } else {
+                                                                    return "付费";
+                                                                }
+                                                            }
+                                                        },
+                                                        {field: 'createtime', title: '创建时间', width: 100,
+                                                            formatter : function(value){
+                                                                var date = new Date(value);
+                                                                var y = date.getFullYear();
+                                                                var m = date.getMonth() + 1;
+                                                                var d = date.getDate();
+                                                                return y + '-' +m + '-' + d;
+                                                            }
+                                                        }
+                                                    ]
+                                                ],
+                                                toolbar:[{text:"付费",
+                                                    iconCls:"icon-add",
+                                                    // 处理
+                                                    handler:function(){
+                                                        var rr = $("#roll").datagrid("getSelected");
+                                                        if(rr!=null){
+                                                            if(rr.isvip=="0"){
+                                                                isvip(1,rr.rollid);
+                                                            }
+                                                        }else{
+                                                            $.messager.alert("提示","请选择要操作的数据！");
+                                                        }
+                                                    }
+                                                },'-',{text:"免费",
+                                                    iconCls:"icon-remove",
+                                                    // 处理
+                                                    handler:function(){
+                                                        var rr = $("#roll").datagrid("getSelected");
+                                                        if(rr!=null){
+                                                            if(rr.isvip=="1"){
+                                                                isvip(0,rr.rollid);
+                                                            }
+                                                        }else{
+                                                            $.messager.alert("提示","请选择要操作的数据！");
+                                                        }
+                                                    }
+                                                }]
+                                            });
+                                        }
+                                    });
+                                }
+                            }
+                        }]
+                    });
+                }
+            });
+
+
+        });
+        function putaway(put,bookid){
+            $.post("/books/updPutaway",{putaway:put,bookid:bookid},function(data){
+                if(data==1){
+                    $.messager.show({
+                        title: '提示',
+                        msg: '操作成功'
+                    });
+                    // 刷新数据表格
+                    $("#book").datagrid("reload");
+                } else {
+                    $.messager.alert('操作失败！', '未知错误或没有任何修改，请重试！', 'messager-error');
+                }
+            });
+        }
+        function isvip(vip,rollid){
+            $.post("/rolls/updvip",{isvip:vip,rollid:rollid},function(data){
+                if(data==1){
+                    $.messager.show({
+                        title: '提示',
+                        msg: '操作成功'
+                    });
+                    // 刷新数据表格
+                    $("#roll").datagrid("reload");
+                } else {
+                    $.messager.alert('操作失败！', '未知错误或没有任何修改，请重试！', 'messager-error');
+                }
+            });
+        }
+
+        function submitForm(form,dialog,datagrid){
+            $(form).form('submit',{
+                url:action,
+                onSubmit:function(){
+                    var rs = $(form).form("validate");
+                    return rs;
+                },
+                success:function(data){
+                    if(data){
+                        $.messager.show({
+                            title:"提示",
+                            msg:"操作成功"
+                        });
+                        // 关闭窗口
+                        $(dialog).dialog("close");
+                        // 刷新数据表格
+                        $(datagrid).datagrid("reload");
+                    }else {
+                        $.messager.alert('操作失败！', '未知错误或没有任何修改，请重试！', 'messager-error');
+                    }
+                }
+            });
+        }
+
+        function clearForm(id){
+            $(id).form("reset");
+        }
+    </script>
+</head>
+<body>
+<table id="tt"></table>
+<table id="tb"></table>
+<div class="easyui-dialog" style="width:500px;height:300px;padding:10px 60px;" id="site" data-options="modal:true">
+    <form id="fm" method="post">
+        <div style="margin-bottom:10px">
+            <input class="easyui-textbox" style="width:100%" data-options="label:'网站名：',required:true" name="sitename">
+        </div>
+        <div style="margin-bottom:10px">
+            <input class="easyui-textbox" style="width:100%" data-options="label:'网站地址：',required:true"  name="siteurl">
+        </div>
+        <div style="margin-bottom:10px">
+            <input class="easyui-textbox" style="width:100%" data-options="label:'负责人：',required:true" name="principal">
+        </div>
+        <div style="margin-bottom:10px">
+            <input class="easyui-textbox" style="width:100%" data-options="label:'手机号：',required:true"  name="phone">
+        </div>
+        <div style="margin-bottom:10px">
+            <input class="easyui-textbox" style="width:100%" data-options="label:'邮箱：',required:true"  name="email">
+        </div>
+    </form>
+
+    <div style="text-align:center;padding:5px 0">
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm('#fm','#site','#tt')" style="width:80px">提交</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm('fm')" style="width:80px">重置</a>
+    </div>
+</div>
+<div class="easyui-dialog" style="width:500px;height:300px;padding:10px 60px;" id="dl" data-options="modal:true">
+    <form id="ff" method="post">
+        <div style="margin-bottom:10px">
+            <input class="easyui-textbox" style="width:100%" data-options="label:'笔名：',required:true" name="pen">
+        </div>
+        <div style="margin-bottom:10px">
+            <input class="easyui-textbox" style="width:100%" data-options="label:'姓名：',required:true"  name="realname">
+        </div>
+        <div style="margin-bottom:10px">
+            <input class="easyui-textbox" style="width:100%" data-options="label:'身份证号：',required:true"  name="idcard">
+        </div>
+        <div style="margin-bottom:10px">
+            <input class="easyui-textbox" style="width:100%" data-options="label:'邮箱：',required:true"  name="email">
+        </div>
+        <div style="margin-bottom:10px">
+            <input class="easyui-textbox" style="width:100%" data-options="label:'手机号：',required:true"  name="phone">
+        </div>
+    </form>
+
+    <div style="text-align:center;padding:5px 0">
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm('#ff','#dl','#tb')" style="width:80px">提交</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm('#ff')" style="width:80px">重置</a>
+    </div>
+</div>
+<div class="easyui-dialog" modal="true" maximizable="true" style="width:800px;height:450px" id="detail">
+    <table	id="book" class="easyui-datagrid" style="width:100%"></table>
+    <table	id="roll" class="easyui-datagrid" style="width:100%"></table>
+</div>
+</body>
+</html>

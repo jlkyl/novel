@@ -71,7 +71,6 @@
                 if(row){
                     $("#ff").form("load",row);
                     $("#cbb").combobox("select",row.parentid);
-                    $("#cbb2").combobox("select",row.operateeid);
                     $("#dl").dialog("setTitle","修改").dialog("open");
                     action = "/bt/btupdate";
                 }
@@ -97,7 +96,7 @@
 </head>
 <body>
     <table class="easyui-datagrid" style="width:100%" id="tb"
-           data-options="url:'/bt/btqueryAll',fitColumns:true,toolbar:'#tools',singleSelect:true">
+           data-options="url:'/bt/pageList',fitColumns:true,toolbar:'#tools',singleSelect:true,pagination:true,pageList:[15,30,50],pageSize:15">
         <thead>
             <tr>
                 <th data-options="field:'typeid',width:70,align:'center'">编号</th>
@@ -130,12 +129,7 @@
             </div>
             <div style="margin-bottom:20px">
                 <select class="easyui-combobox" label="上级菜单" style="width:100%"  name="parentid"
-                        data-options="url:'/bt/btqueryAll',valueField:'typeid',textField:'typename',required:true" id="cbb">
-                </select>
-            </div>
-            <div style="margin-bottom:20px">
-                <select class="easyui-combobox" label="操作人" style="width:100%"  name="operateeid"
-                        data-options="url:'/bt/empqueryAll',valueField:'empid',textField:'empname',required:true" id="cbb2">
+                        data-options="url:'/bt/btqueryAll',valueField:'typeid',textField:'typename'" id="cbb">
                 </select>
             </div>
         </form>

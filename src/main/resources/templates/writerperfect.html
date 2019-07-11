@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <!-- saved from url=(0041)https://write.qq.com/public/register.html -->
-<html xmlns:th="http://www.thymeleaf.org"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
     <!-- 360安全游览器使用webkit极速核 -->
     <meta name="renderer" content="webkit">
@@ -22,7 +25,7 @@
                 <img class="logo fl" src="../css/logo.png" width="225" height="28" alt="阅文·作家专区">
             </a>
             <div class="headUser fr">
-                <a class="exit" href="/jbook/login/emptySession"><span class="icon"></span>退出登录</a>
+                <a class="exit" href="Login/logout"><span class="icon"></span>退出登录</a>
             </div>
         </div>
     </div>
@@ -30,9 +33,9 @@
         <div class="authorApplyWrap">
             <h3>申请作者</h3>
             <center id="stepTabBox" class="stepTitle">
-                <span class="act">1</span><em class="actText">基础信息</em><i class="icon nogt"></i>
-                <span>2</span><em>详细信息</em><i class="icon nogt"></i>
-                <span>3</span><em>申请成功</em>
+                <span class="act" id="first01">1</span><em class="actText" id="w01">完善信息</em><i class="icon nogt"></i>
+               <!-- <span>2</span><em>详细信息</em><i class="icon nogt"></i>-->
+                <span id="second02">2</span><em id="s01">申请成功</em>
             </center>
             <!-- 基础信息 -->
             <div id="baseInfoBox" class="applyForm infoListWrap">
@@ -42,123 +45,43 @@
                             <em>笔名</em>
                             <input class="midInput" id="authorNameInput" name="pen" type="text">
                             <cite data-node="ok" class="icon ok" style="display:none;"></cite>
-                            <p data-node="tip" class="tip">2~6个汉字、数字或英文字母组成，笔名申请后不可变更</p>
-                            <p data-node="error" class="error" style="display:none;"></p>
+                            <p data-node="tip" class="tip" id="staffNameValueError">2~10个汉字组成，笔名申请后不可变更</p>
                         </li>
                         <li>
                             <em>电子邮箱</em>
-                            <input class="midInput" name="email" type="text">
+                            <input class="midInput" name="email" type="text" id="email">
                             <cite data-node="ok" class="icon ok" style="display:none;"></cite>
-                            <p data-node="tip" class="tip">请填写常用的邮箱，便于编辑快速联系到您</p>
-                            <p data-node="error" class="error" style="display:none;"></p>
+                            <p data-node="tip" class="tip" id="staffEmailError">请填写常用的邮箱，便于编辑快速联系到您</p>
+
                         </li>
-                        <li>
-                            <em>QQ号码</em>
-                            <input class="midInput" name="qqid" type="text" onkeyup="this.value=this.value.replace(/[^\d]/g,'') " onafterpaste="this.value=this.value.replace(/[^\d]/g,'') " >
-                            <cite data-node="ok" class="icon ok" style="display:none;"></cite>
-                            <p data-node="tip" class="tip">请填写常用的QQ号码，便于编辑快速联系到您</p>
-                            <p data-node="error" class="error" style="display:none;"></p>
-                        </li>
-                    </ul>
-                    <input type="hidden" name="__hash__" value="13e101baf03beea5e40581051cbd4e2e_e168cd5f2c560072b9b4b8c6a27b8448">
-                </form>
-                <br>
-                <p class="confirm">
-                    <a id="nextStepBtn" class="button" href="javascript:">下一步</a>
-                </p>
-            </div>
-            <!-- 注册表单 -->
-            <div id="registerAuthorBox" class="applyForm infoListWrap" style="display:none;">
-                <form id="formRegisterAuthor" name="formRegisterAuthor" method="post" action="https://write.qq.com/public/applyauthor.html" novalidate="novalidate">
-                    <ul>
-                        <div id="baseInfoHiddenBox" style="display:none">
-                            <input class="midInput" name="pen" type="text" value="">
-                            <input class="midInput" name="email" type="text" value="">
-                            <input class="midInput" name="qqid" type="text" value="">
-                        </div>
                         <li>
                             <em>真实姓名</em>
-                            <input class="midInput" id="realName" name="realname" type="text">
+                            <input class="midInput" id="realname" name="realname" type="text"/>
                             <cite data-node="ok" class="icon ok" style="display:none;"></cite>
-                            <p data-node="tip" class="tip">真实姓名请使用2~10位汉字或英文</p>
-                            <p data-node="error" class="error" style="display:none;"></p>
+                            <p data-node="tip" class="tip" id="staffRealnameError">真实姓名请使用2~10位汉字或英文</p>
                         </li>
                         <li>
                             <em>身份证</em>
-                            <input class="midInput w245" id="cardId" name="idcard" type="text">
+                            <input class="midInput w245" id="idcard" name="idcard" type="text">
                             <cite data-node="ok" class="icon ok" style="display:none;"></cite>
-                            <p data-node="tip" class="tip">请输入您的证件号码</p>
-                            <p data-node="error" class="error" style="display:none;"></p>
+                            <p data-node="tip" class="tip" id="staffIdcardError">请输入您的证件号码</p>
                         </li>
                         <li>
-                            <em>所在地区</em>
-                            <select id="provinceSelect" class="w140" name="pro">
-
-                            </select>
-                            <script type="text/javascript">
-                                $.ajax({
-                                    url:"/jpbook/province/queryAll",
-                                    success:function (data) {
-                                        var str="";
-                                        for(var i=0;i<data.length;i++){
-                                            if(i==0){
-                                                str+="<option value=\""+data[i].pid+"\" selected>"+data[i].pname+"</option>";
-                                            }else{
-                                                str+="<option value=\""+data[i].pid+"\">"+data[i].pname+"</option>";
-                                            }
-
-                                        }
-                                        $("#provinceSelect").html(str);
-                                    }
-                                })
-                            </script>
-                            <select id="citySelect" class="w120" name="city">
-                            </select>
-                            <script type="text/javascript">
-                                $(function () {
-                                    getcity();
-                                })
-                                $("#provinceSelect").change(function () {
-                                    getcity();
-                                })
-                                function getcity() {
-                                    $.ajax({
-                                        url:"/jpbook/city/getCityByPid",
-                                        data:{"pid":$("#provinceSelect").val()==null?1:$("#provinceSelect").val()},
-                                        success:function (data) {
-                                            var str="";
-                                            for(var i=0;i<data.length;i++){
-                                                if(i==0){
-                                                    str+="<option value=\""+data[i].cid+"\" selected>"+data[i].cname+"</option>";
-                                                }else{
-                                                    str+="<option value=\""+data[i].cid+"\">"+data[i].cname+"</option>";
-                                                }
-
-                                            }
-                                            $("#citySelect").html(str);
-                                        }
-                                    })
-                                }
-                            </script>
-                        </li>
-                        <li>
-							<span id="agreenBox" class="checkBox agreen">
-								<input id="agreeCheckbox" name="agree" type="checkbox" class="checkClass">
+							<span class="checkBox agreen">
+								<input id="agreeCheckbox" type="checkbox" />
 							</span>
                             <label class="f12" for="agreeCheckbox">
                                 我已阅读并同意
                                 <a class="blue" href="https://write.qq.com/public/agreement.html" target="_blank">《阅文作者注册投稿协议》</a>
                             </label>
                             <cite data-node="ok" class="icon ok" style="display:none;"></cite>
-                            <p data-node="error" class="error" style="display:none;"></p>
+                            <p data-node="tip" class="tip" id="cche"></p>
                         </li>
                     </ul>
                     <br>
                     <p class="confirm">
-                        <a id="submitBtn" class="button" href="javascript:">提交申请</a>
-                        <a id="preStepBtn" class="back" href="javascript:">返回上一步</a>
+                        <input  type="button" onclick="sub()" value="确认提交" class="button"/>
                     </p>
-                    <input type="hidden" name="__hash__" value="13e101baf03beea5e40581051cbd4e2e_e168cd5f2c560072b9b4b8c6a27b8448">
                 </form>
 
             </div>
@@ -171,8 +94,8 @@
                     </h4>
                     <p>恭喜，您已加入阅文集团作者大家庭！</p>
                     <center>
-                        <a class="button" href="/jpbook/authorWorks">进入专区</a>
-                        <a class="button white" href="/jpbook/authorCreation">创建新作品</a>
+                        <a class="button" href="/authorWorks.html">进入专区</a>
+                        <a class="button white" href="/authorCreation.html">创建新作品</a>
                     </center>
                 </div>
                 <div class="qrZone">
@@ -208,7 +131,10 @@
     </div>
     <script type="text/javascript" src="../css/contentv2_help_connectkefu.js.下载"></script>
 </div>
-<script type="text/javascript" src="../css/contentv2_layout.js.下载"></script><script type="text/javascript" src="../css/contentv2_registerAuthor.js.下载"></script><script type="text/javascript">
+<script type="text/javascript" src="../css/contentv2_layout.js.下载"></script>
+<script type="text/javascript" src="../css/contentv2_registerAuthor.js.下载"></script>
+
+<script type="text/javascript">
     $(function(){
         var systemTip = "";
 
@@ -239,7 +165,173 @@
         //new write
         $.getScript("https://tajs.qq.com/stats?sId=51056771");
     });
-</script>
 
+</script>
+<script src="./js/jquery-3.3.1.js"></script>
+<script type="text/javascript">
+
+        //用户名校验
+        $("#authorNameInput").keyup(function () {
+            var nameValue = document.getElementById("authorNameInput");
+            var reg = /^[\u2E80-\u9FFF]+$/;
+            if ($.trim(nameValue.value) == "") {
+                $("#staffNameValueError").css("display", "inline-block");
+                $("#staffNameValueError").html("请填写笔名");
+            }else{
+                if (nameValue.value.length < 2 || nameValue.value.length > 10) {
+                    $("#staffNameValueError").css("display", "inline-block");
+                    $("#staffNameValueError").html("笔名必须大于2个汉字并且小于10个汉字");
+                }else{
+                    if (!reg.test($.trim($(nameValue).val()))) {
+                        $("#staffNameValueError").css("display", "inline-block");
+                        $("#staffNameValueError").html("笔名只能是汉字");
+                    }else{
+                        $.ajax({
+                            url:'Login/pen',
+                            type:'post',
+                            data:{"name":nameValue.value},
+                            success:function(data){
+                                alert(data);
+                                if(data==true){
+                                    $("#staffNameValueError").css("display", "inline-block");
+                                    $("#staffNameValueError").html("笔名已存在！");
+                                }else{
+                                    $("#staffNameValueError").css("display", "inline-block");
+                                    $("#staffNameValueError").html("");
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+
+        });
+        //邮箱校验
+        $("#email").keyup(function () {
+            var em=/^\w+@[a-z0-9]+\.[a-z]+$/i;
+            var email=$("#email").val();
+            if(em.test(email)){
+                $.ajax({
+                    url:'Login/one',
+                    type:'post',
+                    data:{"name":email},
+                    success:function(data){
+                        alert(data);
+                        if(data==true){
+                            $("#staffEmailError").css("display", "inline-block");
+                            $("#staffEmailError").html("邮箱已使用！");
+                        }else{
+                            $("#staffEmailError").css("display", "inline-block");
+                            $("#staffEmailError").html("");
+                        }
+                    }
+                });
+            }else{
+                $("#staffEmailError").css("display", "inline-block");
+                $("#staffEmailError").html("请填写正确的邮箱地址");
+            }
+        });
+        //真实姓名校验
+        $("#realname").keyup(function () {
+            var english=/^[a-zA-Z]+$/
+            var reg = /^[\u2E80-\u9FFF]+$/;
+            var realname=$.trim($("#realname").val());
+            if (realname == "") {
+                $("#staffRealnameError").css("display", "inline-block");
+                $("#staffRealnameError").html("请填写真实姓名");
+            }else {
+                if (reg.test(realname) || english.test(realname)) {
+                    if (realname.length < 2 || realname.length > 10) {
+                        $("#staffRealnameError").css("display", "inline-block");
+                        $("#staffRealnameError").html("长度不符合要求");
+                    } else {
+                        $.ajax({
+                            url:'Login/realname',
+                            type:'post',
+                            data:{"name":realname},
+                            success:function(data){
+                                alert(data);
+                                if(data==true){
+                                    $("#staffRealnameError").css("display", "inline-block");
+                                    $("#staffRealnameError").html("该用户已存在！");
+                                }else{
+                                    $("#staffRealnameError").css("display", "inline-block");
+                                    $("#staffRealnameError").html("");
+                                }
+                            }
+                        });
+                    }
+                } else {
+                    $("#staffRealnameError").css("display", "inline-block");
+                    $("#staffRealnameError").html("请填写正确的姓名,全中文或全英文");
+                }
+            }
+        });
+        //身份证校验
+        $("#idcard").keyup(function () {
+            var reg =/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+            var card=$("#idcard").val();
+            if(!reg.test(card)){
+                $("#staffIdcardError").css("display", "inline-block");
+                $("#staffIdcardError").html("请填写正确的身份证号");
+            }else{
+                $.ajax({
+                    url:'Login/one',
+                    type:'post',
+                    data:{"name":card},
+                    success:function(data){
+                        if(data==true){
+                            $("#staffIdcardError").css("display", "inline-block");
+                            $("#staffIdcardError").html("身份证已使用！");
+                        }else{
+                            $("#staffIdcardError").css("display", "inline-block");
+                            $("#staffIdcardError").html("");
+                        }
+                    }
+                });
+            }
+        });
+
+        //提交
+    function sub() {
+        var pen=$("#staffNameValueError").html();
+        var email=$("#staffEmailError").html();
+        var idcard=$("#staffIdcardError").html();
+        var realname=$("#staffRealnameError").html();
+        var ccheck=$("#agreeCheckbox").prop("checked");
+        alert("pen:"+pen+"___email:"+email)
+          if(pen=="" && email=="" && idcard=="" && realname=="" ){
+              alert("格式正确！");
+              //var ccheck=$("#agreeCheckbox:checked");
+              alert(ccheck);
+              if(ccheck){
+                  $("#cche").html("");
+                  $.ajax({
+                      url: "Login/updUsers",
+                      type: "post",
+                      data: $("#baseInfoForm").serialize(),
+                      success: function (data) {
+                          if (data == true) {
+                              $("#first01").removeClass("act");
+                              $("#second02").addClass("act");
+                              $("#w01").removeClass("actText");
+                              $("#s01").addClass("actText");
+                              $("#baseInfoBox").hide();
+                              $("#successBox").show();
+                          } else {
+                              window.location.href="/writerperfect.html";
+                          }
+                      }
+                  });
+              }else{
+                  $("#cche").html("请先阅读《阅文作者注册投稿协议》，并且同意之后再提交");
+              }
+           }else{
+               $("#cche").html("请把信息补充完整再提交")
+           }
+
+    }
+
+</script>
 
 </body></html>

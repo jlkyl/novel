@@ -13,17 +13,28 @@
 	<script type="text/javascript" src="../easyui/myvalidate.js"></script>
 	<link rel="stylesheet" type="text/css" href="../easyui/themes/material/easyui.css">
 	<link rel="stylesheet" type="text/css" href="../easyui/themes/icon.css">
+	  <!-- FontAwesome字体图标 -->
+	  <link type="text/css" href="../static/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
 	
 	<script type="text/javascript">
 		var comboboxs=[{    
-		    "id":"icon-add",    
-		    "text":"<img src='../easyui/themes/icons/edit_add.png'>"
+		    "id":"fa fa-list",
+		    "text":"<span class=\"fa fa-list\"></span>"
 		},{    
-		    "id":"icon-edit",    
-		    "text":"<img src='../easyui/themes/icons/pencil.png'>"
+		    "id":"fa fa-folder",
+		    "text":"<span class=\"fa fa-folder\"></span>"
 		},{    
-		    "id":"icon-cancel",
-		    "text":"<img src='../easyui/themes/icons/cancel.png'>"
+		    "id":"fa fa-file-text-o",
+		    "text":"<span class=\"fa fa-file-text-o\"></span>"
+		},{
+			"id":"fa fa-table",
+			"text":"<span class=\"fa fa-table\"></span>"
+		},{
+			"id":"fa fa-bar-chart",
+			"text":"<span class=\"fa fa-bar-chart\"></span>"
+		},{
+			"id":"fa fa-heartbeat",
+			"text":"<span class=\"fa fa-heartbeat\"></span>"
 		}];
 		
 		var editNodeId = -1;
@@ -38,7 +49,7 @@
 				          {field:'iconCls',title:'图标',width:100,editor:{"type":"combobox","options":{"data":comboboxs,valueField:"id",textField:"text"}}},
 				          {field:'url',title:'访问路径',width:120,editor:{"type":"validatebox","options":{"validType":"maxSize[50]"}}},
 				          {field:'_parentId',title:'上级菜单',width:120,formatter:fmParentid,editor:{"type":"combotree","options":{"url":"../menu/list"}}},
-				          {field:'operateeid',title:'操作人',width:120},
+				          {field:'empname',title:'操作人',width:120},
 				          {field:'operatedate',title:'操作时间',width:120}
 				        ]
 				],
@@ -96,22 +107,29 @@
 					handler:function(){
 						var row = $("#tb").datagrid("getSelected");
 						if(row!=null){
-							// 删除节点以及子节点
-							$.post("../menu/del",{id:row.id},function(data){
-								if(data!=null){
-									$.messager.show({
-										title:'提示',
-										msg:'删除成功！'
-									});
-									// 刷新
-									$('#tb').treegrid('reload');
-								}else{
-									$.messager.show({
-										title:'提示',
-										msg:'删除失败！'
-									});
-								}
-							});
+							if(editNodeId==-1){
+								// 删除节点以及子节点
+								$.post("../menu/del",{id:row.id},function(data){
+									if(data!=null){
+										$.messager.show({
+											title:'提示',
+											msg:'删除成功！'
+										});
+										// 刷新
+										$('#tb').treegrid('reload');
+									}else{
+										$.messager.show({
+											title:'提示',
+											msg:'删除失败！'
+										});
+									}
+								});
+							}else{
+								$.messager.show({
+									title:'提示',
+									msg:'有正在编辑的数据！'
+								});
+							}
 						}else{
 							$.messager.alert('提示','请选择要删除的数据');
 						}

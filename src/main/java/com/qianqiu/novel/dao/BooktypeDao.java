@@ -9,7 +9,8 @@ import java.util.Map;
 @Mapper
 public interface BooktypeDao {
 
-    @Select("SELECT b.*,b2.typename typename1,e.empname\n" +
+    @Select("<script>" +
+            "SELECT b.*,b2.typename typename1,e.empname\n" +
             "from booktype b\n" +
             "LEFT JOIN\n" +
             "booktype b2\n" +
@@ -17,12 +18,19 @@ public interface BooktypeDao {
             "left JOIN\n" +
             "emps e\n" +
             "on b.operateeid = e.empid\n" +
-            "ORDER BY b.typeid")
-    public List<Map<String,Object>> queryAll();
+            "ORDER BY b.typeid\n" +
+            "<if test=\"offset!=null and pageSize!=null\">\n" +
+            "   limit #{offset},#{pageSize}\n" +
+            "</if></script>")
+    public List<Map<String,Object>> queryAll(@Param("offset")Integer offset,@Param("pageSize")Integer pageSize);
+
+    @Select("select count(*) from booktype")
+    Integer getCount();
 
     @Select("select * from booktype where typeid = #{typeid}")
     public Booktype queryById(Integer typeid);
 
+    @SelectKey(keyColumn = "typeid",keyProperty = "typeid",before = false,resultType = Integer.class,statement = "select max(typeid) from booktype")
     @Insert("INSERT INTO `novel`.`booktype` (`typeid`, `typename`, `icon`, `parentid`, `operateeid`, `operatedate`) VALUES (NULL, #{typename}, #{icon}, #{parentid}, #{operateeid},NOW())")
     public int add(Booktype bt);
 
@@ -31,4 +39,14 @@ public interface BooktypeDao {
 
     @Delete("delete from booktype where typeid = #{typeid};delete from booktype where parentid = #{typeid}")
     public int del(Integer typeid);
+
+    @Select("select * from booktype where typename = #{typename}")
+    public Booktype queryByName(String typename);
+
+    //查询父类
+    @Select("SELECT *,(select count(*) from books where typeid in (select typeid from booktype where parentid = bt.typeid or typeid = bt.typeid)) nums from booktype bt where parentid is null or parentid=typeid")
+    public List<Map<String,Object>> queryParentall();
+
+    @Select("select * from booktype where parentid=#{parentid}")
+    public List<Map<String,Object>> queryByparentid(@Param("parentid") Integer parentid);
 }

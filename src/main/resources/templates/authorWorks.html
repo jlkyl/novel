@@ -31,12 +31,13 @@
                 <ul class="cf">
                     <li class="line"></li>
                     <li id="headPhotoBox" class="headPhoto">
-                        <p><em><img th:src="${session.users[0].getIcon()}" width="36" height="36" alt=""></em><a class="userName" href="javascript:" th:text="${session.users[0].getPen()}">爱色鬼</a></p>
+                        <p><em><!--<img th:src="${session.user.cover}" width="36" height="36" alt="">--></em>
+                            <a class="userName" href="javascript:" th:text="${session.user.pen}">爱色鬼</a></p>
                         <dl class="userBox">
                             <cite class="icon whiteSj"></cite>
                             <dd class="userInfo hidden">
                                 <!-- 增加身份标识"ico-level",silver为白金作家，dashen为大神作家 -->
-                                <p class="name" th:title="${session.users[0].getPen()}" th:text="${session.users[0].getPen()}">爱色鬼
+                                <p class="name" th:title="${session.user.pen}" th:text="${session.user.pen}">爱色鬼
 
                                 </p>
                                 <p class="level">
@@ -44,7 +45,7 @@
                                     <span><em style="width:70%">0/0</em></span></p>
                             </dd>
                             <dd class="link"><a href="writerdata.html">作家资料</a></dd>
-                            <dd class="link end"><a href="/jbook/login/emptySession">退出登录</a></dd>
+                            <dd class="link end"><a href="/Login/logout">退出登录</a></dd>
                         </dl>
                     </li>
                 </ul>
@@ -156,8 +157,9 @@
                         <th class="tl">书名</th>
                         <th class="tl" width="100px;">最新章节</th>
                         <th class="center">编辑分组</th>
-                        <th>收藏</th>
-                        <th>状态</th>
+                        <th>点击量</th>
+                        <th>书籍状态</th>
+                        <th>编辑状态</th>
                         <th class="center" width="200px;">操作</th>
                     </tr>
                     </thead>
@@ -286,7 +288,7 @@
 <script type="application/javascript">
     $(function () {
         $.ajax({
-            url:"books/queryByUuid",
+            url:"books/booksAll",
             success:function(data){
                 var str="";
                 for(var i=0;i<data.length;i++){
@@ -294,8 +296,9 @@
                     str+="<td></td>";
                     str+="<td class=\"tl\">";
                     str+="<div class=\"work-photo\">";
+                    //file:///D:/Study/picture/
                     str+="<a href=\"http://chat.yuewen.com/book/13129224804944103\" target=\"_blank\">";
-                    str+="<img src=\"./img/"+data[i].icon+"\" width=\"83\" height=\"108\" alt=\"作品封面\">";
+                    str+="<img src=\"./img/"+data[i].cover+"\" width=\"83\" height=\"108\" alt=\"作品封面\">";
                     str+="</a>";
                     str+="</div>";
                     str+="<p class=\"work-name\">";
@@ -303,33 +306,45 @@
                     str+="</p>";
                     str+="</td>";
                     str+="<td class=\"tl\">";
-                    if(data[i].chapid==undefined){
+                    if(data[i].chapterid==null){
                         str+="<a href=\"javascript:void(0);\">无最新章节</a>";
-                    }else{
-                        str+="<a href=\"javascript:void(0);\">"+data[i].chapname+"</a>"
-                        str+="<br>"
-                        str+="<em class=\"time\">"+jsonDateFormat(data[i].updatetime)+"</em>"
+                    }else{ $.ajax({
+                                url:"books/queryTime",
+                                type:"post",
+                                async:false,
+                                data:{"bookid":data[i].bookid},
+                                success:function (data1) {
+                                    str+="<a href=\"javascript:void(0);\">"+data1.chaptername+"</a>"
+                                    str+="<br>"
+                                    str+="<em class=\"time\">"+jsonDateFormat(data1.updatetime)+"</em>"
+                                }
+                            });
+
                     }
                     str+="</td>";
                     str+="<td>";
-                    str+="<em>"+data[i].btname+"分组</em>";
+                    str+="<em>"+data[i].typename+"</em>";
                     str+="</td>";
                     str+="<td>";
-                    str+="<em class=\"Num\">"+data[i].count+"</em>"
+                    str+="<em class=\"Num\">"+data[i].clicknum+"</em>"
                     str+="</td>";
-                    var state=data[i].bookstate==0?'连载中':'完结';
+                    var putaway=data[i].putaway==0?'连载中':'完结';
+                    str+="<td>"+putaway+"";
+                    str+="</td>";
+                    var state=data[i].state==0?'未上架':'已上架';
                     str+="<td>"+state+"";
                     str+="</td>";
                     str+="<td>";
                     str+="<div class=\"dib-wrap\">";
 
-                    if(data[i].bookstate==0){
-                        str+="<a class=\"button blue\" href=\"javascript:void(0);\" onclick=\"skip("+data[i].bookid+",'chapteradd')\"><span class=\"icon\"></span><i>写新章节</i></a>"
-                        str+="<a class=\"button white\" href=\"javascript:void(0);\" onclick=\"skip("+data[i].bookid+",'chaptersent')\"><span class=\"icon\"></span><i>已发布章节</i></a>";
+                    if(data[i].state==0){
+                        str+="<a class=\"button blue\" href=\"rolls/querybookid?bookname="+data[i].bookname+"\"><span class=\"icon\"></span><i>写新章节</i></a>"
+                        //querybookid
+                        str+="<a class=\"button white\" href=\"javascript:void(0);\" onclick=\"skip0("+data[i].bookid+")\"><span class=\"icon\"></span><i>已发布章节</i></a>";
+                         }else{
                         str+="<a class=\"button blue\" href=\"javascript:void(0);\" onclick=\"bookEnd("+data[i].bookid+")\"><span class=\"icon\"></span><i>完结</i></a>"
-                    }else{
-                        str+="<a class=\"button white\" href=\"javascript:void(0);\"><span class=\"icon\"></span><i>已完结</i></a>";
-                    }
+                        /*str+="<a class=\"button white\" href=\"javascript:void(0);\"><span class=\"icon\"></span><i>已完结</i></a>";
+*/                    }
                     str+="</div>";
                     str+="</td>";
                     str+="</tr>";
@@ -355,7 +370,7 @@
             },
             function(){
                 $.ajax({
-                    url: "books/bookEnd",
+                    url: "books/updBookstate",
                     data:{"bookid":bookid},
                     success: function (data) {
                         window.location.reload();
@@ -364,12 +379,15 @@
             });
 
     }
-    function skip(bookid, url) {
+
+    function skip(bookname) {
         $.ajax({
-            url: "books/workstoaddandsend",
-            data:{"bookid":bookid},
+            url: "",
+            data:{},
+            type:"post",
+            dataType:"JSON",
             success: function (data) {
-                window.location.href=url;
+
             }
         })
     }

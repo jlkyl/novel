@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class EmpService {
@@ -21,5 +22,25 @@ public class EmpService {
 
     public List<Emps> queryEmp(){
         return dao.queryEmp();
+    }
+
+    public int updateP(Emps e){
+         return dao.updateP(e);
+    }
+
+    public int add(Emps e){
+        return dao.add(e);
+    }
+
+    public int update(Emps e){
+        return dao.update(e);
+    }
+
+    public List<Map<String,Object>> queryAll(){
+        return dao.queryAll();
+    }
+
+    public int US(Emps e){
+        return dao.US(e);
     }
 }

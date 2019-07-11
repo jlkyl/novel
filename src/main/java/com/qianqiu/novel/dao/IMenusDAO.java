@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface IMenusDAO {
-    @Select("<script>select * from menus" +
+    @Select("<script>select *,getEmp(operateeid) empname from menus" +
             "<if test=\"offset!=null and pageSize!=null\">\n" +
             "   limit #{offset},#{pageSize}\n" +
             "</if></script>")
@@ -21,4 +21,6 @@ public interface IMenusDAO {
     Integer del(Integer id);
     @Select("select count(*) from menus")
     Integer getCount();
+    @Select("select * from menus where id in (select menuid from role_menu where roleid = #{roleid})")
+    List<Menus> findByRid(Integer roleid);
 }

@@ -29,6 +29,10 @@
         body{
             background: url("../css/1000.jpg") center 0 no-repeat;
         }
+
+        #table p{
+            text-indent: 2em;
+        }
     </style>
     <script>
         // 获取cookie
@@ -128,16 +132,16 @@
                 <ul>
 
                     <li class="line"></li>
-                    <li th:class="${session.users} ? 'sign-out hidden' : 'sign-out'">
+                    <li th:class="${session.user} ? 'sign-out hidden' : 'sign-out'">
                         <a id="pin-login" href="../login.html" target="_blank">登录</a>
                         <a class="reg" href="../register.html" target="_blank">注册</a>
                     </li>
                     <th:block th:if="${session}">
-                        <th:block th:if="${session.users}">
-                            <li th:class="${session.users[0] } ? 'sign-in' : 'sign-in hidden'">
+                        <th:block th:if="${session.user}">
+                            <li th:class="${session.user[0] } ? 'sign-in' : 'sign-in hidden'">
                                 <a href="../personal.html" target="_blank">
-                                    <span id = "uuid" style="display: none" th:text="${session.users[0].uuid}"></span>
-                                    <i id="nav-user-name" th:text="${session.users[0].uname}"></i>
+                                    <span id = "uuid" style="display: none" th:text="${session.user[0].getUserid()}"></span>
+                                    <i id="nav-user-name" th:text="${session.user[0].getUsername()}"></i>
                                     <span></span>
                                 </a>
                                 <div class="dropdown">
@@ -151,7 +155,7 @@
 
                     <li class="line"></li>
                     <li class="book-shelf" id="top-book-shelf">
-                        <a th:href="${session.users} ? '../topup.html' : '../login.html'" target="_blank">
+                        <a th:href="${session.user} ? '../topup.html' : '../login.html'" target="_blank">
                             充值
                         </a>
                     </li>
@@ -169,48 +173,45 @@
         </div></div>
     <div class="crumbs-nav" data-l1="1">
         <a href="/jpbook/booktype/queryAll" data-eid="qd_G01">首页</a>
-        <em class="iconfont icon-xiayige"></em>
+       <!-- <em class="iconfont icon-xiayige"></em>
         <a th:href="@{/showAllBook.html?btid={filename}(filename=${ibc[0].btid})}" target="_blank" th:text="|${ibc[0].btname}频道|"></a>
         <em class="iconfont icon-xiayige"></em>
-        <a th:href="@{/showAllBook.html?btid={filename}(filename=${ibc[0].bookid})}" th:text="${ibc[0].bookname}">人皇在上</a>
+        <a th:href="@{/showAllBook.html?btid={filename}(filename=${ibc[0].bookid})}" th:text="${ibc[0].bookname}">人皇在上</a>-->
     </div>
 
     <div class="read-main-wrap font-family01" style="font-size:18px" id="j_readMainWrap">
         <div id="j_chapterBox" data-l1="3" style="background-color: #e0ce9e;">
 
-
-            <div class="text-wrap" id="j_textWrap" data-cid="421353404">
+            <!--<div class="text-wrap" id="j_textWrap" data-cid="421353404">
                 <div class="read-container">
                     <div class="book-cover-wrap">
                         <div class="book-photo" style="border: #3D495F 1px solid;">
-                            <img  th:src="@{/img/{filename}(filename=${ibc[0].icon})}">
+                            <img  th:src="${list[0].cover}">
                         </div>
-                        <h1  th:text="${ibc[0].bookname}"></h1>
+                        <h1  th:text="${list[0].bookname}"></h1>
 
-                        <h2><a href="https://me.qidian.com/authorIndex.aspx?id=7322536" target="_blank" th:text="${ibc[0].pen}">星之煌</a>著</h2>
+                        <h2><a href="https://me.qidian.com/authorIndex.aspx?id=7322536" target="_blank" th:text="${list[0].pen}">星之煌</a>著</h2>
 
                         <div class="info-list cf">
                             <ul>
-                                <li><p th:text="${ibc[0].btname}"></p><span>类型</span></li>
-                                <li><p>江派书城</p><span>欢饮您</span></li>
-                                <li><p><em  th:text="${ibc[0].count}"></em></p><span>连载（字）</span></li>
+                                <li><p th:text="${list[0].typename}"></p><span>类型</span></li>
+                                <li><p>江派书城</p><span>欢迎您</span></li>
+                                <li><p><em  th:text="${list[0].zi}"></em></p><span>连载（字）</span></li>
                             </ul>
                         </div>
-                        <h3>与书友共同开启《<span th:text="${ibc[0].bookname}"></span>》的<span th:text="${ibc[0].btname}"></span>之旅</h3>
-
-
+                        <h3>与书友共同开启《<span th:text="${list[0].bookname}"></span>》的<span th:text="${list[0].typename}"></span>之旅</h3>
 
                         <h5>本书由江派书城进行电子制作与发行</h5>
 
                         <h6>©版权所有 侵权必究</h6>
                     </div>
                 </div>
-            </div>
+            </div>-->
 
-            <input type="hidden" id="bookid" th:value="${ibc[0].bookid}">
-            <input type="hidden" id="chapid" th:value="${ibc[0].chapid}">
-            <input type="hidden" id="nextchapid" th:value="${ibc[0].nextchapid}">
-            <input type="hidden" id="afterchapid" th:value="${ibc[0].afterchapid}">
+           <!-- <input type="hidden" id="bookid" th:value="${list[0].bookid}">-->
+            <!--<input  id="chapid" th:value="${queryId.chapterid}">-->
+            <!--<input  id="nextchapid" th:value="">
+            <input  id="afterchapid" th:value="${queryId.afterid}">-->
             <div class="text-wrap" id="chapter-421353404" data-cid="421353404" data-purl="//read.qidian.com/chapter/kG2U-blsbgxrNWkNCb7tfg2/zRT-cZrK1vP6ItTi_ILQ7A2" data-nurl="//read.qidian.com/chapter/kG2U-blsbgxrNWkNCb7tfg2/4m2dCiasT_z4p8iEw--PPw2" data-info="0|433970504|421507489|0|0">
                 <div class="main-text-wrap">
                     <div class="text-head">
@@ -219,39 +220,43 @@
                             <p>点击书签前，可收藏每个章节的书签，“阅读进度”可以在个人中心书架里查看</p>
                         </div>
                         <a class="book-mark" href="javascript:" title="书签" data-cid="421353404" data-bid="1012730372" data-auid="7322536" data-eid="qd_R104"></a>
-                        <h3 class="j_chapterName" id="showchapname"></h3>
+                        <h3 class="j_chapterName" id="showchapname" th:text="${queryId.chaptername}"></h3>
                         <div class="text-info cf">
                             <div class="info fl">
-                                <a href="https://book.qidian.com/info/1012730372" target="_blank" data-bid="1012730372" data-auid="7322536" data-eid="qd_R102" th:text="${ibc[0].bookname}"><em class="iconfont"></em></a>
+                                <!--<a href="https://book.qidian.com/info/1012730372" target="_blank" data-bid="1012730372" data-auid="7322536" data-eid="qd_R102" th:text="${session}"><em class="iconfont"></em></a>
 
-                                <a href="https://me.qidian.com/authorIndex.aspx?id=7322536" target="_blank" data-bid="1012730372" data-auid="7322536" data-eid="qd_R103" th:text="${ibc[0].pen}"><em class="iconfont"></em>星之煌</a>
+                                <a href="https://me.qidian.com/authorIndex.aspx?id=7322536" target="_blank" data-bid="1012730372" data-auid="7322536" data-eid="qd_R103" th:text="${session}"><em class="iconfont"></em>星之煌</a>-->
 
-                                <i><em class="iconfont"></em><span class="j_chapterWordCut" id="showchapcount">2003</span>字</i>
-                                <i><em class="iconfont"></em><span class="j_updateTime" id="showupdatetime">2018.07.31 18:07</span></i>
+                                <!--<i><em class="iconfont"></em><span class="j_chapterWordCut" id="showchapcount" ></span>字</i>
+                                <i><em class="iconfont"></em><span class="j_updateTime" id="showupdatetime">2018.07.31 18:07</span></i>-->
                             </div>
                             <!-- end 评论列表 -->
                         </div>
                     </div>
                     <!--小说显示-->
                     <div class="read-content j_readContent" id="bookcontent" style="font-family: YaHei;">
+
+                        <table id="table">
+                            <p th:utext="${str}"></p>
+                        </table>
                     </div>
                     <!--购买-->
-                    <div class="vip-limit-wrap">
+                    <!--<div class="vip-limit-wrap">
                         <h3 class="lang"><i>这是VIP章节</i>需要订阅后才能阅读</h3>
                         <div class="subscribe-btn-wrap dib-wrap ">
                             <a class="all j_subscribeBtn " data-soa="1" href="javascript:subbuyrecord(0)" data-eid="qd_R112"><em>全部订阅</em><span><i>5175</i>起点币</span><cite>订阅章节：共<s class="j_chapterNum">475</s>章</cite></a>
                             <a class="single j_subscribeBtn" data-soa="0" data-uid="175" href="javascript:subbuyrecord(0)" data-eid="qd_R113"><em>订阅本章</em><span><i>16</i>起点币</span></a>
                         </div>
-                    </div>
+                    </div>-->
 
-                    <div class="admire-wrap">
+                    <!--<div class="admire-wrap">
                         <a class="report-btn j_reportBtn" href="javascript:" data-eid="qd_R106"><em class="iconfont"></em>举报</a>
                         <div class="read-btn-box">
                             <a class="admire lang j_admireBtn" href="javascript:rewardClick()" data-showtype="3" data-eid="qd_R105">赞赏<span class="j_admireNum"></span></a>
                         </div>
                         <dl class="user-active cf">
                         </dl>
-                    </div>
+                    </div>-->
                     <script type="text/javascript">
 
                         function rloadmoney() {
@@ -265,14 +270,14 @@
 
                                 }
                             })
-                            $.ajax({
+                            /*$.ajax({
                                 url:"/jpbook/buyrecord/getByChapidAndUuid",
                                 data:{"chapid":$("#chapid").val()},
                                 success:function (data) {
                                     $(".vip-limit-wrap").find(".single").find("i").html(data);
                                     $(".vip-limit-wrap").find(".single").prop("href","javascript:subbuyrecord("+data+",'single')");
                                 }
-                            })
+                            })*/
                         }
                     </script>
                 </div>
@@ -283,9 +288,9 @@
 
         <div class="chapter-control dib-wrap" data-l1="3">
 
-            <a id="j_chapterPrev"  data-eid="qd_R109" >上一章</a><span>|</span>
+            <a id="j_chapterPrev"  data-eid="qd_R109" th:href="@{/chapters/queryId(chapterId=${queryId.chapterid}-1,rollid=${queryId.rollid})}">上一章</a><span>|</span>
             <a href="javascript:void(0)" target="_blank" data-eid="qd_R108"></a><span>|</span>
-            <a id="j_chapterNext"  data-eid="qd_R109" >下一章</a>
+            <a id="j_chapterNext"  data-eid="qd_R109" th:href="@{/chapters/queryId(chapterId=${queryId.chapterid}+1,rollid=${queryId.rollid})}">下一章</a>
         </div>
 
         <div class="la-ball-pulse j_chapterLoad hidden">
@@ -300,20 +305,21 @@
 
         read($("#chapid").val());
     })
-    function read(chapid) {
-        $("#chapid").val(chapid);
-        rloadmoney();
+    function read(chapterid) {
+        $("#chapid").val(chapterid);
+        /*rloadmoney();*/
         $.ajax({
-            url:"/jpbook/chapter/getChapContent",
-            data:{"chapid":chapid},
+            url:"/chapters/queryId",
+            data:{"chapterid":chapterid},
             success:function (data) {
-                $("#j_textWrap").css("display",data[0].afterchapid==-1?"block":"none");
-                $("#j_chapterPrev").prop("href",data[0].afterchapid==-1?"javascript:void(0)":"javascript:read("+data[0].afterchapid+")");
-                $("#j_chapterNext").prop("href",data[0].nextchapid==-1?"javascript:void(0)":"javascript:read("+data[0].nextchapid+")");
-                $("#showchapname").html(data[0].chapname);
-                $("#showchapcount").html(data[0].chapcount);
-                $("#showupdatetime").html(jsonDateFormat(data[0].updatetime));
-                var str="";
+                alert(data);
+               /* $("#j_textWrap").css("display",data[0].afterchapid==-1?"block":"none");*/
+                $("#j_chapterPrev").prop("href",data[0].afterchapid==-1?"javascript:void(0)":"javascript:read("+data[0].afterchapterid+")");
+                $("#j_chapterNext").prop("href",data[0].nextchapid==-1?"javascript:void(0)":"javascript:read("+data[0].nextchapterid+")");
+               /* $("#showchapname").html(data[0].chaptername);
+                $("#showchapcount").html(data[0].url);
+                $("#showupdatetime").html(jsonDateFormat(data[0].updatetime));*/
+                /*var str= "";
                 var chapmoney=parseInt($(".vip-limit-wrap").find(".single").find("i").html());
                 if (chapmoney==0){
                     $(".vip-limit-wrap").css("display","none");
@@ -328,7 +334,8 @@
                         str+="<p>　　"+data[1][i]+"</p>";
                     }
                 }
-                $("#bookcontent").html(str);
+                str = "<p th:text=\"${str}\"></p>"
+                $("#bookcontent").html(str);*/
                 $("#j_floatWrap").find("dd").find(".catalog").css("display","none");
                 $("#j_floatWrap").find("dd").css("background-color","");
                 $("#j_floatWrap").find("dd").prop("class","");
@@ -389,8 +396,8 @@
                     </div>
                 </div>
                 <script type="text/javascript">
-                    $.ajax({
-                        url: "/jpbook/roll/queryAllCatalog",
+                    /*$.ajax({
+                        url: "/books/queryAll",
                         data:{"bookid":$("#bookid").val()},
                         success: function (data) {
                             var str="";
@@ -399,11 +406,11 @@
                                 str+="<div class=\"volume-list\" style=\"margin-left:50px;display: block;\">\n" +
                                     "                                        <ul>\n" +
                                     "\n";
-                                for(var j=0;j<data[i].chapterList.length;j++){
+                                for(var j=0;j<data[i].queryC.length;j++){
 
                                     str+="                                        <li id=\"nav-chapter-429592402\" style='font-size: 10px; margin-bottom: -100px; display: inline-block;width: 30%'>\n" +
                                         "                                        \n" +
-                                        "                                    <a href=\"javascript:read("+data[i].chapterList[j].chapid+")\" style='width: 33%;text-align: center'>"+data[i].chapterList[j].chapname+"</a>\n" +
+                                        "                                    <a href=\"javascript:read("+data[i].queryC[j].chapterid+")\" style='width: 33%;text-align: center'>"+data[i].queryC[j].chaptername+"</a>\n" +
                                         "                                    </li>\n";
                                 }
                                 str+="\n" +
@@ -412,7 +419,7 @@
                             }
                             $("#j_catalogListWrap").html(str);
                         }
-                    })
+                    })*/
                     function mulutab(obj) {
                         $(obj).next().toggle();
                     }
@@ -518,7 +525,7 @@
                 </div>
             </dd>
             <dd data-eid="qd_R84">
-                <a class="add-book" th:href="${ibc[0].brid==-1}?'javascript:addBookrack()':'javascript:void(0)'" data-bookid="1012730372"><i><em class="icon icon-book_icon"></em><br><span th:text="${ibc[0].brid==-1}?'加入书架':'已在书架'" id="bookrackset">书架</span></i></a>
+               <!-- <a class="add-book" th:href="${ibc[0].brid==-1}?'javascript:addBookrack()':'javascript:void(0)'" data-bookid="1012730372"><i><em class="icon icon-book_icon"></em><br><span th:text="${ibc[0].brid==-1}?'加入书架':'已在书架'" id="bookrackset">书架</span></i></a>-->
                 <div class="guide-box">
                     <cite></cite>
                     加入书架
@@ -581,7 +588,7 @@
                 </script>
             </dd>
             <dd data-eid="qd_R85">
-                <a th:href="|/jpbook/books/queryBookById?bookid=${ibc[0].bookid}|" target="_blank"><i><em class="icon icon-yemian"></em><br><span>书页</span></i></a>
+                <a th:href="@{/books/queryAll(bookid=${list[0].bookid})}" target="_blank"><i><em class="icon icon-yemian"></em><br><span>书页</span></i></a>
                 <div class="guide-box">
                     <cite></cite>
                     返回书页
@@ -1112,7 +1119,7 @@
                                 </script>
                             </div>
                             <h4>账户余额<em
-                                    th:text="${session.users==null?0:session.users.get(0).getMoney()}"></em>起点币<i>·</i>本次打赏<em
+                                    th:text="${session}"></em>起点币<i>·</i>本次打赏<em
                                     class="calcReward">500</em>起点币</h4>
                         </div>
                         <div class="popup-btn">

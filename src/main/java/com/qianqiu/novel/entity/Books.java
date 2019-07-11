@@ -33,90 +33,103 @@ public class Books implements Serializable {
 		this.clicknum = clicknum;
 		this.url = url;
 	}
-	public Integer getBookid(){
+
+	public Integer getBookid() {
 		return bookid;
 	}
 
-	public void setBookid(Integer bookid){
-		this.bookid=bookid;
- 	}
-	public String getBookname(){
+	public void setBookid(Integer bookid) {
+		this.bookid = bookid;
+	}
+
+	public String getBookname() {
 		return bookname;
 	}
 
-	public void setBookname(String bookname){
-		this.bookname=bookname;
- 	}
-	public String getCover(){
+	public void setBookname(String bookname) {
+		this.bookname = bookname;
+	}
+
+	public String getCover() {
 		return cover;
 	}
 
-	public void setCover(String cover){
-		this.cover=cover;
- 	}
-	public Integer getUserid(){
+	public void setCover(String cover) {
+		this.cover = cover;
+	}
+
+	public Integer getUserid() {
 		return userid;
 	}
 
-	public void setUserid(Integer userid){
-		this.userid=userid;
- 	}
-	public Integer getTypeid(){
+	public void setUserid(Integer userid) {
+		this.userid = userid;
+	}
+
+	public Integer getTypeid() {
 		return typeid;
 	}
 
-	public void setTypeid(Integer typeid){
-		this.typeid=typeid;
- 	}
-	public Integer getState(){
+	public void setTypeid(Integer typeid) {
+		this.typeid = typeid;
+	}
+
+	public Integer getState() {
 		return state;
 	}
 
-	public void setState(Integer state){
-		this.state=state;
- 	}
-	public Integer getPutaway(){
+	public void setState(Integer state) {
+		this.state = state;
+	}
+
+	public Integer getPutaway() {
 		return putaway;
 	}
 
-	public void setPutaway(Integer putaway){
-		this.putaway=putaway;
- 	}
-	public String getDetails(){
+	public void setPutaway(Integer putaway) {
+		this.putaway = putaway;
+	}
+
+	public String getDetails() {
 		return details;
 	}
 
-	public void setDetails(String details){
-		this.details=details;
- 	}
-	public Date getCreatetime(){
+	public void setDetails(String details) {
+		this.details = details;
+	}
+
+	public Date getCreatetime() {
 		return createtime;
 	}
 
-	public void setCreatetime(Date createtime){
-		this.createtime=createtime;
- 	}
-	public Date getEndtime(){
+	public void setCreatetime(Date createtime) {
+		this.createtime = createtime;
+	}
+
+	public Date getEndtime() {
 		return endtime;
 	}
 
-	public void setEndtime(Date endtime){
-		this.endtime=endtime;
- 	}
-	public Integer getClicknum(){
+	public void setEndtime(Date endtime) {
+		this.endtime = endtime;
+	}
+
+	public Integer getClicknum() {
 		return clicknum;
 	}
 
-	public void setClicknum(Integer clicknum){
-		this.clicknum=clicknum;
- 	}
-	public String getUrl(){
+	public void setClicknum(Integer clicknum) {
+		this.clicknum = clicknum;
+	}
+
+	public String getUrl() {
 		return url;
 	}
 
-	public void setUrl(String url){
-		this.url=url;
- 	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
 	public String toString() {
 		return "Books [bookid="+bookid+", bookname="+bookname+", cover="+cover+", userid="+userid+", typeid="+typeid+", state="+state+", putaway="+putaway+", details="+details+", createtime="+createtime+", endtime="+endtime+", clicknum="+clicknum+", url="+url+"]";
 	}
