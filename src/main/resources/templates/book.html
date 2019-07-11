@@ -488,24 +488,22 @@
                     <script type="text/javascript">
                         $(function () {
                             $.ajax({
-                                url: "/jpbook/bookrack/ckBookrackExist",
+                                url: "/bor/queryF",
                                 data: {"bookid": $("#atbookid").val()},
                                 success: function (data) {
-                                    $("#addBookBtn").prop("href", data == -1 ? "javascript:addBookrack()" : "javascript:void(0)");
-                                    $("#addBookBtn").html(data == -1 ? "加入书架" : "已在书架");
-                                    $("#addBookBtn").prop("class", data == -1 ? "blue-btn add-book" : "add-book in-shelf");
+                                    $("#addBookBtn").prop("href", data == 0 ? "javascript:addBookrack()" : data==-1 ? "/login.html" : "javascript:void(0)");
+                                    $("#addBookBtn").html(data > 0 ? "已在书架" : "加入书架");
+                                    $("#addBookBtn").prop("class", data > 0 ? "add-book in-shelf" : "blue-btn add-book");
                                 }
                             })
                         })
 
                         function addBookrack() {
                             $.ajax({
-                                url: "/jpbook/bookrack/add",
+                                url: "/bor/add",
                                 data: {"bookid": $("#atbookid").val()},
                                 success: function (data) {
-                                    if (data == -1) {
-                                        window.location.href = "/jpbook/login";
-                                    } else {
+                                    if (data > 0) {
                                         $("#addBookBtn").prop("href", "javascript:void(0)");
                                         $("#addBookBtn").html("已在书架");
                                         $("#addBookBtn").prop("class", "add-book in-shelf");
@@ -1279,7 +1277,7 @@
 									<a href="https://my.qidian.com/author/4242192" target="_blank" th:text="${list[0].pen}"></a>
 								</p>
 							</div>
-							<div class="info-wrap" data-l1="9">
+							<!--<div class="info-wrap" data-l1="9">
 								<ul class="work-state cf">
 									<li><span class="book"></span>
 										<p>作品总数</p> <em th:text="${queryUsers[0].bookcount}">2</em></li>
@@ -1288,7 +1286,7 @@
 									<li><span class="coffee"></span>
 										<p>本月更新</p> <em th:text="|${queryUsers[0].days}天|"></em></li>
 								</ul>
-							</div>
+							</div>-->
 
 						</div>
 					</div>
