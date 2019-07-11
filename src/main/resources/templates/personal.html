@@ -1717,16 +1717,17 @@
 	    $("#q1").hide();
 		$("#q2").show();
         $.ajax({
-            url: "bor/queryBr",
+            url: "/bor/queryBr",
 			data:{km:$("#km").val()},
             success: function (data) {
                 var tbo2 = "";
+				$("#shelfAmount").html(data.length+"&nbsp;本书籍");
 				if (data.length == 0){
 				    $("ts").css("height","392");
                     $("#tbo2").hide();
 					$("#rac1").show();
 				}else {
-					$("#shelfAmount").html(data[0].num+"&nbsp;本书籍");
+
                     for (var i=0; i<data.length; i++){
                         tbo2 += "<tr>"+
                             "<td class='col1'><input type='checkbox' class='elWcheckbox' id='chkBookName"+i+"' name='"+data[i].rackid+"' value='bookname' onclick='uncheckAll()' >" +
@@ -1735,8 +1736,8 @@
                             "<span class='shelf-table-name'>"+
                             "<b>"+
                             "<a href='/jpbook/showAllBook.html?btid="+data[i].typeid+"' target='_blank' class='fen-category' style='color: grey'>「"+data[i].typename+"」</a>"+
-                            "<a href='/jpbook/books/queryBookById?bookid="+data[i].bookid+"' target='_blank' title='' data-bid='1013406185' data-eid='qd_M198'>"+data[i].bookname+"</a>&nbsp;&nbsp;"+
-                            "<a href='/jpbook/books/queryBookById?bookid="+data[i].chapterid+"'>"+data[i].chaptername+"</a>" +
+                            "<a href='/books/queryAll?bookid="+data[i].bookid+"' target='_blank' title='' data-bid='1013406185' data-eid='qd_M198'>"+data[i].bookname+"</a>&nbsp;&nbsp;"+
+                            "<a href='/chapters/queryId?chapterId="+data[i].chapterid+"'>"+data[i].chaptername+"</a>" +
 							"</b></span></td>"+
 							"<td class='col3 font12' >"+renderTime(data[i].updatetime).substring(0,16)+"</td>"+
 							"<td class='col4'>"+
@@ -1764,10 +1765,8 @@
 		var rs = true;
 		for(var i=0;i<checkboxs.length;i++){
 			var id = $(checkboxs[i]).attr("name");
-			//alert(id);
 			$.post("bor/delete",{rackid:id},function(data){
 				if(data != 1){
-
 					rs = false;
 				}
 			});
@@ -1775,12 +1774,11 @@
 
 		if(rs){
 			m2();
-			alert("删除成功");
+			swal("删除成功", "", "success");
 		}else{
-			alert("删除失败");
+			swal("删除失败", "", "success");
 		}
 
-		//window.location.href="bor/queryBr";
 	}
     /*function  del() {
         var str = "";

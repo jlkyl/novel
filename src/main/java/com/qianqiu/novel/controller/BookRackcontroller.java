@@ -33,10 +33,23 @@ public class BookRackcontroller {
     public String delete(Integer rackid){
         brs.delete(rackid);
         return "1";
-    }/*
-    if(km==""){
-        km=null;
     }
-        return brs.queryBr(MyUtil.getuserid(session),km);*/
-
+    @RequestMapping("add")
+    @ResponseBody
+    public Integer add(BookRack br,HttpSession session) {
+        br.setUserid(MyUtil.getuserid(session));
+        return brs.add(br);
+    }
+    @RequestMapping("queryF")
+    @ResponseBody
+    public Integer queryF(Integer bookid,HttpSession session){
+        Integer userid = MyUtil.getuserid(session);
+        if(userid == null){
+            return -1;
+        }else{
+            List<BookRack> list = brs.queryF(userid, bookid);
+            return list.size();
+        }
+    }
 }
+

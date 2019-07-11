@@ -20,4 +20,10 @@ public class BookRackService {
     public int delete(Integer rackid){
         return brd.delete(rackid);
     }
+    public Integer add(BookRack br){
+        return brd.add(br);
+    }
+    public List<BookRack> queryF(Integer userid,Integer bookid){
+       return brd.queryF(userid,bookid);
+    }
 }
