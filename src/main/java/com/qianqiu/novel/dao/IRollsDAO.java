@@ -20,4 +20,7 @@ public interface IRollsDAO {
     Integer updvip(Integer isvip,Integer rollid);
     @Select("select * from rolls where rollid=#{rollid}")
     Rolls queryId(@Param("rollid")Integer rollid);
+
+    @Select("select * from rolls where bookid=#{bookid} order by rollid")
+    List<Map<String,Object>> findByBookid001(@Param(("bookid")) Integer bookid);
 }

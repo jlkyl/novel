@@ -9,7 +9,7 @@
     <meta name="description" content="小说阅读,精彩小说尽在创世小说.创世小说提供玄幻小说,武侠小说,原创小说,网游小说,都市小说,言情小说,职场小说,历史小说,军事小说,网游小说,科幻小说,恐怖小说,首发小说最新章节免费小说阅读小说下载txt,精彩尽在创世小说!2013年热门小说:无敌唤灵,无红色权力,无限曙光,余罪,兵临天下,盛唐风月,武帝,大官人,勇闯天涯,机甲天王">
     <meta name="keywords" content="小说,小说网,言情小说,职场小说,玄幻小说,武侠小说,都市小说,历史小说,网络小说,小说下载,小说txt,小说全文阅读,原创网络文学">
     <link rel="shortcut icon" type="image/x-icon" href="https://img1.write.qq.com/writer/p1/contentv2/aa_ico.ico">
-    <title>已发布章节-阅文作家专区</title>
+    <title>审核中章节-阅文作家专区</title>
     <link rel="stylesheet" type="text/css" href="./css/contentv2_base.css"><script src="./css/stats.js.下载" name="MTAH5" sid="500659219"></script><script type="text/javascript" src="./css/contentv2_base.js.下载"></script>    <!-- prevent dom xss -->
     <script type="text/javascript" src="./css/aq_common.js.下载"></script>
     <meta name="__hash__" content="60fe21f420da3bda1daaabfe36d1e069_cdb84422100e5d2974919658065130b8">
@@ -120,14 +120,14 @@
             </div>
 
             <div class="msgBoxTitle">
-                <a class="create button" href="chapteradd"><em class="icon"></em>新建章节</a>
+               <!-- <a class="create button" href="chapteradd"><em class="icon"></em>新建章节</a>
 
-                <a id="createVolumeIconBtn" class="button white" href="javascript:">新建分卷</a>
+                <a id="createVolumeIconBtn" class="button white" href="javascript:">新建分卷</a>-->
                 <div class="tabSwitch cf">
                     <span class="[bookmodify]"><a href="worksSet.html">作品设置</a></span>
                     <span class="[recycle]"><a href="recycle.html">草稿箱</a></span>
-                    <span class="act" id="numero2"><a href="chapterSent.html">已发布章节</a></span>
-                    <span class="[chaptertmp]"><a href="shing.html">待审核章节</a></span>
+                    <span class="[chaptertmp]" id="numero2"><a href="chapterSent.html">已发布章节</a></span>
+                    <span class="act"><a href="shing.html">复审中</a></span>
                     <span class="[chaptertmp]"><a href="drafts.html">回收站</a></span>
                 </div>
             </div>
@@ -137,7 +137,7 @@
                     <div id="chapterListWrap" class="leftListWrap">
                         <div class="titleBox" id="sum">
                             <p>共 2 卷， 3 章
-                                </p>
+                            </p>
                         </div>
                         <span id="rollid" hidden></span>
                         <span id="rollname" hidden></span>
@@ -154,7 +154,7 @@
                     var bookid=$("#bookid").val();
 
                     $.ajax({
-                        url: "chapters/find001",
+                        url: "chapters/find0001",
                         success: function (data) {
                             var str="";
                             var sum=0;
@@ -213,9 +213,9 @@
                         <div class="sectionViewWrap section-pre-view">
                             <div id="portamento_container" style="min-height: 48px; width: 809px;"><div id="viewChapterBtnBox" class="sectionBtnBox cf" data-slide="1" style="top: 0px;">
                                 <div class="titleBtn fr">
-                                    <a id="applyChapterBan" class="button white" style="display:none" href="javascript:">申请解禁</a>
+                                   <!-- <a id="applyChapterBan" class="button white" style="display:none" href="javascript:">申请解禁</a>
                                     <a class="button white" href="javascript:void(0)" onclick="updel()">删除</a>
-                                    <a class="button modify" href="javascript:void(0)" onclick="upopen()">修改</a>
+                                    <a class="button modify" href="javascript:void(0)" onclick="upopen()">修改</a>-->
                                 </div>
                                 <span id=""></span>
                                 <em class="c999">章节类型：</em>
@@ -227,10 +227,10 @@
                             </div>
                             <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 640px;">
                                 <div id="sectionText" class="zwText" style="overflow: hidden; width: auto; height: 640px;">
-                                <h3 id="chapterTitle"></h3>
-                                <textarea id="chapterContent" readonly  style="color: rgb(51, 51, 51);"></textarea>
-                            </div>
-                            <div class="slimScrollBar" style="background: rgb(204, 204, 204); width: 7px; position: absolute; top: 0px; opacity: 1; display: none; border-radius: 0px; z-index: 99; right: 1px; height: 650px;"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(238, 238, 238); opacity: 1; z-index: 90; right: 1px;"></div></div>
+                                    <h3 id="chapterTitle"></h3>
+                                    <textarea id="chapterContent" readonly  style="color: rgb(51, 51, 51);"></textarea>
+                                </div>
+                                <div class="slimScrollBar" style="background: rgb(204, 204, 204); width: 7px; position: absolute; top: 0px; opacity: 1; display: none; border-radius: 0px; z-index: 99; right: 1px; height: 650px;"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(238, 238, 238); opacity: 1; z-index: 90; right: 1px;"></div></div>
 
                             <div class="authorSay">
                                 <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 81px;">
@@ -257,9 +257,9 @@
                             <div id="editChapterBtnBox" class="sectionBtnBox cf">
                                 <div class="titleBtn fr">
                                     <a class="button white" href="javascript:void(0)" onclick="wordcount()">统计字数</a>
-                                    <a class="button save" href="javascript:void(0)" onclick="save()"><span class="icon"></span>保存</a>
+                                    <!--<a class="button save" href="javascript:void(0)" onclick="save()"><span class="icon"></span>保存</a>
                                     <a class="button save" href="javascript:void(0)" onclick="issue()"><span class="icon"></span>直接发布</a>
-                                </div>
+                                --></div>
                                 <em class="c999">章节类型：</em>
                                 <b data-node="chapterTypeName" id="chapterTypeName"></b>
                             </div>
@@ -314,82 +314,6 @@
                         })
                     }
 
-                    function save() {
-
-                    var zhangjieID=$("#chapid").val();
-                    var rollid=$("#rollid").html();
-                    var chapterTitle= $("#chapterTitle").html();
-                    var rollid=$("#rollid").html();
-                    var txt=$("#chapterContentInput").val();
-                    wordcount();
-
-                    if($("#chapterContentInput").val().length<200){
-                        swal("操作失败!", "正文内容字数不能低于200", "warning");
-                        $("#chapterContentInput").focus;
-                    }else {
-                        if($("#chapterTitleInput").val()=="此处输入章节号与章节名。示例：“第十章 天降奇缘”"){
-                            swal("操作失败!", "章节名不能为空", "warning");
-                            $("#chapterTitleInput").focus;
-                        }else if($("#chapterContentInput").val()=="请输入正文。"){
-                            swal("操作失败!", "内容不能为空", "warning");
-                            $("#chapterContentInput").focus;
-                        }else
-                        {
-                            if(zhangjieID == ""){
-
-                                $.ajax({
-                                    url: 'chapters/addChapter', //上传文件的路径
-                                    type: 'post',
-                                    data: {"chaptername": $("#chapterTitle").html(), "wordnum": $("#chapterContentInput").val().length, "rollid":rollid,"txt":txt},
-                                    success: function (data) {
-                                        if (data == false) {
-                                            swal("保存失败!", "章节名称已存在，请修改章节名", "warning");
-                                        } else {
-                                            swal("保存成功", "已保存至草稿箱", "success");
-                                            window.location.href = "/chapteradd.html";
-                                        }
-                                    }
-                                });
-                            }else {
-
-                                $.ajax({
-                                    url:'chapters/updChapterInfo',
-                                    type:'post',
-                                    data:{"chaptername":$("#chapterTitle").html(),"state":0,"chapterid":zhangjieID,"txt":txt,"wordnum":$("#chapterContentInput").val().length},
-                                    success: function (data) {
-                                        if (data == false) {
-                                            swal("保存失败!", "章节信息错误，请重新修改", "warning");
-                                        } else {
-                                            swal("保存成功", "已保存至草稿箱", "success");
-                                            window.location.href = "/chapteradd.html";
-                                        }
-                                    }
-                                } );
-                            }
-
-                        }
-                    }
-
-
-                    }
-
-                    function updel() {
-                        $.ajax({
-                            url:"chapters/updChapDel",
-                            data:{"state":4,"chapterid":$("#chapid").val()},
-                            type:"post",
-                            success:function (data) {
-                                if (data==false){
-                                    swal("删除失败!", "此章节已被购买，无法删除", "warning");
-                                }else {
-                                    swal("删除成功", "请到回收站查看", "success");
-                                    $("#chapterContent").val("");
-                                    $("#chapid").val("");
-                                    window.location.reload();
-                                }
-                            }
-                        })
-                    }
                 </script>
                 <!--查看/编辑分卷-->
                 <div id="volumeContainer" class="mRightContent fl hidden" style="display: none;">

@@ -145,12 +145,13 @@
             </div>
 
             <div class="msgBoxTitle">
-                <a id="createVolumeIconBtn" class="button white" href="javascript:">新建分卷</a>
+                <a id="createVolumeIconBtn" class="button white" href="javascript:void(0)" onclick="addroll()">新建分卷</a>
                 <a class="create button" href="javascript:void(0)" onclick="newZJ()"><em class="icon"></em>新建章节</a>
                 <div class="tabSwitch cf">
                     <span class="[bookmodify]"><a href="worksSet.html">作品设置</a></span>
                     <span class="act"><a href="chapteradd.html">草稿箱</a></span>
                     <span class="[chaptermanage]" id="numero2"><a href="chapterSent.html">已发布章节</a></span>
+                    <span class="[chaptermanage]"><a href="shing.html">待审核章节</a></span>
                     <span class="[chaptermanage]"><a href="drafts.html">回收站</a></span>
                 </div>
             </div>
@@ -162,9 +163,31 @@
                             <p>共<span id="datlength"></span>章<span id="zhangjieID" hidden></span></p>
                         </div>
                         <div class="sectionManage">
-                            <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 740px;"><div class="sectionList" id="sectionList" style="overflow: hidden; width: auto; height: 740px;">
+                            <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 740px;">
+                                <div class="sectionList" id="sectionList" style="overflow: hidden; width: auto; height: 740px;">
                                 <!-- 草稿列表 -->
-                                <ul id="draftList"><li data-node="newDraftItem" class="act"><div class="sectionBox"><p><em>无标题</em></p><p class="f12"><i>&nbsp;</i></p></div></li>
+                                <ul id="draftList">
+                                    <li data-node="newDraftItem" class="act">
+                                   <!-- <div class="sectionBox">
+                                        <p><a onclick="showroll()" href="javascript:void(0)"><em>选择分卷</em></a></p>
+                                        <p class="f12"><i>&nbsp;</i></p>
+                                    </div>
+-->                                   <!--  <em class="c999">选择分卷：</em>
+                                        <div id="volumeBox" class="select-wrap mid">
+                                            <div data-node="selectedItemBox" class="drop-down">
+                                                &lt;!&ndash; 选中项 &ndash;&gt;
+                                                <input type="hidden" id="rollid" name="rollid">
+                                                <span id="rollname01" name="rollname01" data-node="selectedItem" data-volumeid="35362916621017310" data-vipflag="-1"></span>
+                                                <b class="combo-arrow" id="pull-down"></b>
+                                            </div>
+                                            <div data-node="listBox" class="drop-list-box hidden" id="drop-down-box">
+                                                &lt;!&ndash; 卷列表 &ndash;&gt;
+                                                <ul id="rollsel">
+                                                </ul>
+                                            </div>
+
+                                        </div>-->
+                                    </li>
                                 </ul>
                             </div>
                                 <div class="slimScrollBar" style="background: rgb(204, 204, 204); width: 10px; position: absolute; top: 0px; opacity: 1; display: none; border-radius: 0px; z-index: 99; right: -1px; height: 740px;">111</div>
@@ -188,7 +211,7 @@
                                             <a class="button white" href="javascript:void(0)" onclick="save()">保存</a>
                                             <a id="showPublishPopupBtn" class="button green" href="javascript:void(0);" onclick="issue()"><span class="icon "></span>发布</a>
                                         </div>
-                                        <em class="c999">发布至：</em>
+                                        <em class="c999">分卷：</em>
                                         <!-- start 卷 模拟下拉组件-->
                                         <div id="volumeBox" class="select-wrap mid">
                                             <div data-node="selectedItemBox" class="drop-down">
@@ -205,28 +228,44 @@
 
                                         </div>
                                         <script type="text/javascript">
-
-
                                             var bookid=$("#bookid").val();
 
-                                            $.ajax({
-                                                url:"rolls/queryRoll",
-                                                data:{"bookid":bookid},
-                                                success:function (data) {
-                                                    var str="";
 
-                                                    for(var i=0;i<data.length;i++){
+                                                $.ajax({
+                                                    url:"chapters/findAll",
+                                                    data:{"state":1},
+                                                    type:"post",
+                                                    success:function(data){
+                                                        var sst="";
+                                                        $("#datlength").html(data.length);
+                                                        for(var y=0;y<data.length;y++){
+                                                            sst+="<li><a  href=\"javascript:void(0)\"  onclick=\"chapterShow("+data[y].chapterid+",'"+data[y].chaptername+"')\"  class=\"act\"><div class=\"sectionBox\"><p><em>"+data[y].chaptername+"</em></p><p class=\"f12\"><i>&nbsp;</i></p></div></a></li>";
+                                                        }
+                                                        $("#draftList").html(sst);
+                                                        $.ajax({
+                                                            url:"rolls/queryRoll",
+                                                            data:{"bookid":bookid},
+                                                            success:function (data) {
+                                                                var str="";
+                                                                for(var i=0;i<data.length;i++){
 
-                                                        str+="<li><a  href=\"javascript:void(0)\" onclick=\"tabroll("+data[i].rollid+",'"+data[i].rollname+"')\">"+data[i].rollname+"</a></li>";
+                                                                    str+="<li><a  href=\"javascript:void(0)\" onclick=\"tabroll("+data[i].rollid+",'"+data[i].rollname+"')\">"+data[i].rollname+"</a></li>";
+                                                                }
+                                                                $("#rollsel").html(str);
+                                                            }
+                                                        });
                                                     }
-                                                    str+="<a id=\"openCreateVolumePopupBtn\" onclick=\"addroll()\" class=\"create-j blue\" href=\"javascript:void(0)\">+ 新建分卷</a>";
-                                                    $("#rollsel").html(str);
-                                                }
-                                            })
+
+                                                });
+
+
+
+
                                             function tabroll(rollid,rollname) {
                                                 $("#rollid").val(rollid);
                                                 $("#rollname01").html(rollname);
                                                 $("#drop-down-box").toggle();
+                                                $("#draftList").html("");
                                                 $.ajax({
                                                     url:"chapters/queryName",
                                                     data:{"rollid":rollid},
@@ -293,199 +332,14 @@
         <!-- end 隐藏的上传图片按钮 -->
         <!-- 定时发布浮层 -->
 
-        <!-- start 创建角色 弹窗 -->
-        <div class="popup-wrap" id="createRolePopup" style="display: none;">
-            <a class="close icon" href="javascript:" data-node-do-role="close"></a>
-            <div class="popup-title">
-                <h3>创建角色</h3>
-            </div>
-            <div class="popup-content">
-                <div class="create-all-character-wrap">
-                    <div class="avatar-wrap">
-                        <div class="avatar-box" title="仅支持jpg、png格式图片大小不超过5M">
-                            <img src="./css/dafult_photo.png" id="roleImg">
-                            <label class="upload-btn" for="acUpload">修改头像</label>
-                            <input id="acUpload" type="file" hidden="">
-                        </div>
-                    </div>
-                    <div class="character-info">
-                        <ul>
-                            <li>
-                                <div class="character-tag">角色名</div>
-                                <input type="text" name="roleName" id="roleName" placeholder="请输入10个字以内">
-                            </li>
-                            <li>
-                                <div class="character-tag">角色类型</div>
-                                <div class="combo-select"><select name="roletype" id="roletype" tabindex="-1">
-                                    <option value="0" selected="">请选择角色类型</option>
-                                    <option value="4">男主角</option>
-                                    <option value="5">女主角</option>
-                                    <option value="6">男配角</option>
-                                    <option value="7">女配角</option>
-                                    <option value="1">主角</option>
-                                    <option value="2">配角</option>
-                                </select><div class="combo-arrow"></div><dl class="combo-dropdown"><dd class="option-item option-selected" data-index="0" data-value="0">请选择角色类型</dd><dd class="option-item" data-index="1" data-value="4">男主角</dd><dd class="option-item" data-index="2" data-value="5">女主角</dd><dd class="option-item" data-index="3" data-value="6">男配角</dd><dd class="option-item" data-index="4" data-value="7">女配角</dd><dd class="option-item" data-index="5" data-value="1">主角</dd><dd class="option-item" data-index="6" data-value="2">配角</dd></dl><input type="text" value="" class="combo-input text-input"></div>
-                            </li>
-                            <li class="birthday-form" id="birthday_select">
-                                <div class="character-tag">生日</div>
-                                <div class="input-box">
-                                    <div class="combo-select"><select name="birMonth" id="birMonth" tabindex="-1">
 
-                                    </select><div class="combo-arrow"></div><dl class="combo-dropdown"></dl><input type="text" value="" class="combo-input text-input"></div>
-                                    <span>月</span>
-                                    <div class="combo-select"><select name="birDay" id="birDay" tabindex="-1">
-
-                                    </select><div class="combo-arrow"></div><dl class="combo-dropdown"></dl><input type="text" value="" class="combo-input text-input"></div>
-                                    <span>日</span>
-                                    <!-- 选完月和日后自动显示 -->
-                                    <i id="constellation"></i>
-                                </div>
-                            </li>
-                            <li class="birthday-form hidden" id="birthday_text">
-                                <div class="character-tag">生日</div>
-                                <div class="input-box">
-
-                                    <em id="birMonth_em"> </em>
-                                    <span>月</span>
-                                    <em id="birDay_em"> </em>
-                                    <span>日</span>
-                                    <!-- 选完月和日后自动显示 -->
-                                    <i id="constellation_i">白羊座</i>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="character-tag">年龄</div>
-                                <input type="text" name="age" id="age" onkeyup="" placeholder="不超过10个字">
-                            </li>
-                            <li class="relative">
-                                <div class="character-tag">身高</div>
-                                <input type="text" name="height" id="height" onkeyup="" placeholder="不超过10个字">
-                                <cite>cm</cite>
-                            </li>
-                            <li class="relative">
-                                <div class="character-tag">体重</div><!--value=value.replace(/[^\d]/g,&#39;&#39;)-->
-                                <input type="text" name="weight" id="weight" onkeyup="" placeholder="不超过10个字">
-                                <cite>kg</cite>
-                            </li>
-                            <li class="memo">
-                                <div class="character-tag">备注</div>
-                                <textarea name="roleDesc" id="roleDesc" placeholder="请输入50个字以内的角色备注（选填）"></textarea>
-                            </li>
-                            <li>
-                                <input class="check-box" id="roleshowstatus" type="checkbox" value="-1" name="roleshowStatus">
-                                <label for="roleshowstatus">隐藏角色</label>
-                            </li>
-                        </ul>
-
-                    </div>
-                </div>
-            </div>
-            <div class="popup-btn">
-                <a href="javascript:" id="roleCreateCancel" data-node-do-role="close">取消</a>
-                <a href="javascript:" id="roleCreateConfirm">完成</a>
-            </div>
-        </div>
-        <!-- end 创建角色 弹窗 -->
         <script type="text/javascript">
             var default_photo="https://img1.write.qq.com/writer/p1/contentv2/dafult_photo.png";
         </script>
-        <!-- start 角色管理 有数据 -->
-        <div class="popup-wrap character-control" id="roleManagePopup" style="display: none;">
-            <a class="close icon" href="javascript:" data-node-man-role="close"></a>
-            <div class="popup-title">
-                <a class="add-character" href="javascript:">添加角色</a>
-                <h3>角色管理</h3>
-            </div>
-            <div class="popup-content">
-                <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 528px;"><div class="character-list-wrap" id="j-characterList" style="overflow: hidden; width: auto; height: 528px;">
-                    <ul>
 
-                    </ul>
-                </div><div class="slimScrollBar" style="background: rgb(204, 204, 204); width: 8px; position: absolute; top: 0px; opacity: 1; display: block; border-radius: 0px; z-index: 99; right: -1px;"></div><div class="slimScrollRail" style="width: 8px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; background: rgb(238, 238, 238); opacity: 1; z-index: 90; right: -1px;"></div></div>
-            </div>
-            <div class="popup-btn full">
-                <a id="roleManageFinish" href="javascript:" data-node-man-role="close">完成</a>
-            </div>
-        </div>
-        <!-- end 角色管理 有数据 -->
 
-        <!-- start 删除角色二次确认 没有发言过的 -->
-        <div class="popup-tip" id="roleDeletePopup" style="display: none;">
-            <div class="popup-content">
-                <div class="text-content">
-                    <p>是否删除本角色？</p>
-                </div>
-            </div>
-            <div class="popup-btn">
-                <a id="roleDeleteCancel" href="javascript:" data-node-del-role="close">取消</a>
-                <a id="roleDeleteConfirm" href="javascript:">删除</a>
-            </div>
 
-        </div>
-        <!-- end 删除角色二次确认 没有发言过的 -->
 
-        <!-- start 插入链接弹窗 -->
-        <div class="popupWrap w380 hidden" id="j-popupLinkInsert" style="position: fixed;z-index: 10000;left:50%; top:50%; margin: -150px 0 0 -250px"><a class="icon closePopup" data-node="closeBtn" href="javascript:"></a>
-            <h3>插入链接</h3>
-            <div class="popupBody p30">
-                <div class="popupContent">
-                    <form action="https://write.qq.com/booknovels/chaptertmp/CBID/13173713005719804/addType/1.html">
-                        <div class="popup-form-list">
-                            <ul>
-                                <li>
-                                    <input id="linkUrl" type="text" placeholder="输入网址">
-                                    <p class="error" style="display: block">域名只能是qq.com,yuewen.com</p>
-                                </li>
-                                <li>
-                                    <input id="linkText" type="text" placeholder="链接说明">
-                                    <p class="error" style="display: block">请输入链接说明</p>
-                                </li>
-                            </ul>
-                        </div>
-                        <input type="hidden" name="__hash__" value="b9ab203729570dc1978673b5db9aa8bb_731be9e477bdedd81abf81c6a6c16a32"></form>
-                </div>
-                <div class="confirmBtn">
-                    <a class="button full" id="linkSubmitBtn" href="javascript:">确认</a>
-                </div>
-            </div>
-        </div>
-        <!-- end 插入链接弹窗 -->
-        <!-- start 插入视频弹窗 -->
-        <div class="popupWrap w380 hidden" id="j-popupVideoInsert" style="position: fixed;z-index: 10000;left:50%; top:50%; margin: -150px 0 0 -250px"><a class="icon closePopup" data-node="closeBtn" href="javascript:"></a>
-            <h3>插入视频</h3>
-            <div class="popupBody p30">
-                <div class="popupContent">
-                    <form action="https://write.qq.com/booknovels/chaptertmp/CBID/13173713005719804/addType/1.html">
-                        <div class="popup-form-list">
-                            <ul>
-                                <li>
-                                    <input name="videoText" type="text" id="videoText" placeholder="请输入视频网址，仅支持腾讯视频网址">
-                                    <p class="error" id="TXSPerror" style="display: none;">网址格式不符合要求或不是腾讯视频网址</p>
-                                    <p class="error" id="TXSPerrorEmpty" style="display: none;">网址不能为空</p>
-                                </li>
-                            </ul>
-                        </div>
-                        <input type="hidden" name="__hash__" value="b9ab203729570dc1978673b5db9aa8bb_731be9e477bdedd81abf81c6a6c16a32"></form>
-                </div>
-                <div class="confirmBtn">
-                    <a class="button full" id="videoSubmitBtn" href="javascript:">确认</a>
-                </div>
-            </div>
-        </div>
-        <!-- end 插入视频弹窗 -->
-
-        <!--新手引导-->
-        <!--<div id="mask" class="mask" style="display:none;"></div>-->
-        <!--<div id="joyRideTipContent" style="display:none;">-->
-        <!--<ul>-->
-        <!--<li data-id="numero1" data-text="下一步" class="custom">-->
-        <!--<p>草稿箱用来编辑和存储待发布的章节，支持在线编辑。</p>-->
-        <!--</li>-->
-        <!--<li data-id="numero2" data-text="完成">-->
-        <!--<p>已发布章节用来管理分卷和修改正式发布的章节。</p>-->
-        <!--</li>-->
-        <!--</ul>-->
-        <!--</div>-->
         <script src="./css/LBF.js.下载"></script>
         <script type="text/javascript">
             LBF.config({
@@ -607,6 +461,8 @@
         </div>
     </div>
 </div>
+
+
 <script type="text/javascript">
     function wordcount() {
         swal("", "字数统计:"+$("#chapterContentInput").val().length);
@@ -698,7 +554,7 @@
                     $.ajax({
                         url:'chapters/updChapterInfo',
                         type:'post',
-                        data:{"chaptername":chaptername,"state":1,"chapterid":zhangjieID,"txt":txt},
+                        data:{"chaptername":chaptername,"state":1,"chapterid":zhangjieID,"txt":txt,"wordnum":wordnum},
                         success: function (data) {
                             if (data == false) {
                                 swal("保存失败!", "章节信息错误，请重新修改", "warning");

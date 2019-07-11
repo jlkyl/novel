@@ -28,8 +28,7 @@
                 <ul class="cf">
                     <li class="line"></li>
                     <li id="headPhotoBox" class="headPhoto">
-                        <p><em><img th:src="${session.user.head}" width="36" height="36" alt=""></em>
-                            <a class="userName" href="javascript:" th:text="${session.user.pen}">爱色鬼</a></p>
+                        <p><em><img th:src="${session.user.head}" width="36" height="36" alt=""></em><a class="userName" href="javascript:" th:text="${session.user.pen}">爱色鬼</a></p>
                         <dl class="userBox">
                             <cite class="icon whiteSj"></cite>
                             <dd class="userInfo hidden">
@@ -127,8 +126,7 @@
         </div>
 
         <link rel="stylesheet" type="text/css" href="./css/contentv2_book_manage.css"><div class="mainRight fl">
-        <div class="crumbsWrap"><i class="before"><a href="authorWorks"><span>作品管理</span></a></i><em class="same"></em>
-            <i class="current"><span th:text="${session.BOOK.bookname}"></span></i>
+        <div class="crumbsWrap"><i class="before"><a href="authorWorks"><span>作品管理</span></a></i><em class="same"></em> <i class="current"><span th:text="${session.BOOK.bookname}">少年杨帅波</span></i>
             <!--<em class="diff"></em><i-->
             <!--class="current"><span>公章章节管理</span></i>-->
         </div>
@@ -137,10 +135,10 @@
             <a class="create button" href="chapteradd"><em class="icon"></em>新建章节</a>
 
             <div class="tabSwitch cf">
-                <span class="act"><a href="worksSet.html">作品设置</a></span>
-                <span class="[chaptertmp]"><a href="chapteradd.html">草稿箱</a></span>
-                <span class="[chaptermanage]" id="numero2"><a href="chapterSent.html">已发布章节</a></span>
-                <span class="[chaptermanage]"><a href="drafts">回收站</a></span>
+                <span class="act"><a href="worksSet">作品设置</a></span>
+                <span class="[recycle]"><a href="recycle">草稿箱</a></span>
+                <span class="[chaptermanage]" id="numero2"><a href="chapterSent">已发布章节</a></span>
+                <span class="[chaptertmp]"><a href="drafts">回收站</a></span>
             </div>
         </div>
 
@@ -154,10 +152,10 @@
 
                 <div class="fmBox fl">
                     <div class="fm">
-                        <img id="previewImg"  th:src="@{./img/{filename}(filename=${session.BOOK.cover})}" width="114" height="152">
-                                              <div class="modify hidden" style="display: none;">
-                        <input class="hidden" type="file" id="bookpic" name="bookpic">
-                    </div>
+                        <img id="previewImg"  th:src="${session.BOOK.cover}" width="114" height="152">
+                        <div class="modify hidden" style="display: none;">
+                            <input class="hidden" type="file" id="bookpic" name="bookpic">
+                        </div>
                     </div>
                 </div>
 
@@ -167,8 +165,7 @@
                             <p class="saved" style="display: block;" th:text="${session.BOOK.bookname}">                        </p>
                             <input type="hidden" name="oldBookname" th:value="${session.BOOK.bookname}">
                             <div class="modify hidden cf" style="display: none;">
-                                <!--autocomplete="off" class="midInput recTagInput"-->
-                                <input id="bookNameInput" name="bookname" type="text">
+                                <input id="bookNameInput" name="bookname" autocomplete="off" class="midInput recTagInput" th:value="${session.BOOK.bookname}" data-def="少年杨帅波" type="text">
                                 <p data-node="ok" style="display:none;">
                                     <cite class="icon ok"></cite><span class="f12 c999" data-node="text" style="padding-left:5px;"></span>
                                 </p>
@@ -177,95 +174,70 @@
                         </li>
                         <li>
                             <input type="hidden" name="bookid">
-                            <em>书号：</em><b th:text="${session.BOOK.bookid}"></b></li>
+                            <em>书号：</em><b th:text="${session.BOOK.bookid}"></b>
+                        </li>
                         <li><em>作品类型：</em>
+                            <input type="text" id="bname01" name="01show" readonly/>
+                            <script>
+                                $.ajax({
+                                    url:"books/queryTypename",
+                                    type:"post",
+                                    success:function(d){
+                                       $("#bname01").val(d[0].typename);
+                                    }
+                                });
+                            </script>
                             <input type="hidden" id="btid" th:value="${session.BOOK.typeid}">
                             <b id="classificationWorks" class="select-category ">
                                 <span class="saved" style="display: inline;" id="btname"></span>
-                                <select id="novelMainCategorySelect" class="bigClass" style="visibility: visible; display: none; " name="typeid">
+                                <select id="novelMainCategorySelect" class="modify" style="visibility: visible; display: none; " name="btid">
 
                                 </select>
-                                <select class="bigClass" id="novelbyparentidSelect" name="typeid"></select>
                             </b>
                             <script>
-                               /* $.ajax({
-                                    url:"bt/queryByparent",
-                                    success:function (data) {
-                                        if(data!=null) {
-                                            var str = "";
-                                            for (var i = 0; i < data.length; i++) {
-                                                if (data[i].typeid == $("#btid").val()) {
-                                                    $("#btname").html(data[i].typename);
-                                                    $("#btypename").html(data[i].typename + "编辑组");
-                                                    str += "<option value=\"" + data[i].typeid + "\" selected>" + data[i].typename + "</option>";
-                                                } else {
-                                                    str += "<option value=\"" + data[i].typeid + "\" >" + data[i].typename + "</option>";
-                                                }
-
-                                            }
-                                            $("#novelMainCategorySelect").html(str);
-                                        }else {
-                                            $("#novelbyparentidSelect").removeAttr('name');
-                                        }
-                                    }
-                                })*/
-
-
-
                                 $.ajax({
                                     url:"bt/queryParentid",
                                     type:"post",
                                     success:function (data) {
                                         var str="";
-
                                         for(var i=0;i<data.length;i++){
                                             if(data[i].typeid==$("#btid").val()){
                                                 $("#btname").html(data[i].typename);
-                                                $("#btypename").html(data[i].typename+"编辑组");
-
-                                                str+="<option onchange='btParent00(this.value)' value=\""+data[i].typeid+"\">"+data[i].typename+"</option>";
-                                        }else {
-                                                str+="<option onchange='btParent00(this.value)' value=\""+data[i].typeid+"\">"+data[i].typename+"</option>";
+                                                $("#btypename").html(data[i].typename);
+                                                str+="<option value=\""+data[i].typeid+"\" selected>"+data[i].typename+"</option>";
+                                            }else {
+                                                str+="<option value=\""+data[i].typeid+"\" >"+data[i].typename+"</option>";
                                             }
+
                                         }
                                         $("#novelMainCategorySelect").html(str);
                                     }
                                 })
-
-                                function btParent00(typeid) {
-                                    $.ajax({
-                                        url:'bt/queryByparent',
-                                        type:'post',
-                                        data:{'typeid':typeid},
-                                        success:function(data){
-                                            if(data!=null){
-                                                $("#novelMainCategorySelect").removeAttr('name');
-                                                var str="";
-                                                for(var i=0;i<data.length;i++){
-                                                    if(data[i].typeid==$("#btid").val()){
-                                                        $("#btname").html(data[i].typename);
-                                                        $("#btypename").html(data[i].typename+"编辑组");
-                                                    str+="<option  value=\""+data[i].typeid+"\">"+data[i].typename+"</option>";
-                                                }else {
-                                                        str+="<option  value=\""+data[i].typeid+"\">"+data[i].typename+"</option>";
-                                                    }
-                                                }
-                                                $("#novelbyparentidSelect").html(str);
-
-                                            }else{
-                                                $("#novelbyparentidSelect").removeAttr('name');
-                                            }
-                                        }
-                                    });
-                                }
                             </script>
                         </li>
                         <li>
-                        <em>编辑分组：</em>
-                        <p id="btypename"></p>
-                    </li>
+                            <em>编辑分组：</em>
+                            <p id="btypename"></p>
+                            <input type="text" id="lab" name="01show" readonly/>
+                            <script>
+                                $.ajax({
+                                    url:"books/queryLabel",
+                                    type:"post",
+                                    success:function(d){
+                                        if(d.length>0){
+                                            var str ="";
+                                            for(var i=0;i<d.length;i++){
+                                               str+=d[i].labelname+" *";
+                                            }
+                                            $("#lab").val(str);
+                                        }
+
+                                    }
+                                });
+                                </script>
+                        </li>
                         <li>
-                        <em>作品状态：</em>
+                            <em>作品状态：</em>
                             <!-- start 点击修改后saved隐藏 modify显示-->
                             <p class="saved" th:text="${session.BOOK.state==0?'连载中':'已完结'}">
                             </p>
@@ -276,18 +248,18 @@
                         </li>
                         <li><em>作品介绍：</em>
                             <div class="modify hidden" style="display: none;">
-                                <textarea id="introInput" name="details" th:text="${session.BOOK.details}"></textarea>
+                                <textarea id="introInput" name="bookreferral" th:text="${session.BOOK.details}"></textarea>
                                 <p data-node="ok" style="display:none;">
                                     <cite class="icon ok"></cite>
                                 </p>
                                 <p data-node="tip" class="f12 c999">请注意：根据国家相关法律法规要求，切勿上传任何色情、低俗、涉政等违法违规内容。一旦出现，我们将会根据法规进行审核处理。</p>
                                 <p data-node="error" class="error" style="display:none;">
                                 </p></div>
-                            <!--<p class="saved intro" style="display: block;"  th:text="${session.bookpresent.get('bookreferral')}"></p>-->
+                            <p class="saved intro" style="display: block;"  th:text="${session.BOOK.details}"></p>
                         </li>
                     </ul>
                     <p class="dib-wrap saved modify-btn" style="display: block;">
-                        <a id="switchModifyModeBtn" class="button" href="javascript:">修改作品设置</a>
+                        <!--<a id="switchModifyModeBtn" class="button" href="javascript:">修改作品设置</a>-->
                     </p>
 
                     <p class="dib-wrap confirm modify hidden" style="display: none;">
@@ -298,30 +270,26 @@
             </form>
         </div>
         <script type="text/javascript">
+            $("#switchModifyModeBtn").onclick(function(){
+                $("input[name='01show']").hide();
+            });
             function upBook() {
-                //
-                // var form=$("#formModifyBook");
-                // var options = {
-                //     //bookNameInput
-                //
-                // };
-                // form.ajaxSubmit(options);
-                $.ajax({
-                    url:'books/updBookname',//上传文件的路径
-                    data:{"bookname":$("#bookNameInput").val()},
+                $("input[name='01show']").show();
+                var form=$("#formModifyBook");
+                var options = {
+                    url:'books/up', //上传文件的路径
                     type:'post',
                     async :true,
-                    success:function(data) {
-                        if (data == 0) {
+                    success:function(data){
+                        if(data==0){
                             swal("小说名重复!", "请修改小说名", "warning");
-                        } else {
+                        }else{
                             swal("修改成功", "小说名成功修改", "success");
                             window.location.reload();
                         }
                     }
-                });
-
-
+                };
+                form.ajaxSubmit(options);
             }
         </script>
         <input id="rec" type="hidden" value="">

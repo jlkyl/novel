@@ -42,9 +42,10 @@ public class ChaptersService {
 	//根据ID查询章节信息
 	public Chapters queryById(Integer chapterid){return dao.queryById(chapterid);}
 	//保存或者修改章节信息
-	public Integer updChapterInfo(String chaptername, String url,Integer state,Integer chapterid){
-		return dao.updChapterInfo(chaptername,url,state,chapterid);
+	public Integer updChapterInfo(String chaptername, String url,Integer state,Integer chapterid,Integer wordnum){
+		return dao.updChapterInfo(chaptername,url,state,chapterid,wordnum);
 	}
+	public List<Chapters> findAll(Integer bookid,Integer state){return dao.findAll(bookid,state);}
 
 	public Integer updChapDel(Integer state,Integer chapterid){
 		return dao.updChapDel(state,chapterid);
@@ -64,5 +65,11 @@ public class ChaptersService {
 
 	public List<Chapters> upDow(Integer chapterid,Integer rollid){
 		return dao.upDow(chapterid,rollid);
+	}
+	//后台审核查询
+	public List<Map<String,Object>> querybackSH(Integer state){return dao.querybackSH(state);}
+	//后台审核模糊查询
+	public List<Map<String,Object>> querybackSHMH(Integer state,String bookname){
+		return dao.querybackSHMH(state,bookname);
 	}
 }

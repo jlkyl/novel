@@ -9,7 +9,7 @@
     <meta name="description" content="小说阅读,精彩小说尽在创世小说.创世小说提供玄幻小说,武侠小说,原创小说,网游小说,都市小说,言情小说,职场小说,历史小说,军事小说,网游小说,科幻小说,恐怖小说,首发小说最新章节免费小说阅读小说下载txt,精彩尽在创世小说!2013年热门小说:无敌唤灵,无红色权力,无限曙光,余罪,兵临天下,盛唐风月,武帝,大官人,勇闯天涯,机甲天王">
     <meta name="keywords" content="小说,小说网,言情小说,职场小说,玄幻小说,武侠小说,都市小说,历史小说,网络小说,小说下载,小说txt,小说全文阅读,原创网络文学">
     <link rel="shortcut icon" type="image/x-icon" href="https://img1.write.qq.com/writer/p1/contentv2/aa_ico.ico">
-    <title>总收入-阅文作家专区</title>
+    <title>总收入-千秋作家专区</title>
     <link rel="stylesheet" type="text/css" href="./css/contentv2_base.css"><script src="./css/stats.js.下载" name="MTAH5" sid="500659219"></script><script type="text/javascript" src="./css/contentv2_base.js.下载"></script>    <!-- prevent dom xss -->
     <script type="text/javascript" src="./css/aq_common.js.下载"></script>
     <meta name="__hash__" content="a456e0e2d67950aa08444c630ef906e9_f48777b92183314fbbc574cc4a37ff19">
@@ -33,7 +33,7 @@
     </script>-->
 </head>
 
-<body onload="load()">
+<body >
 <div class="wrap">
     <div class="header">
         <div class="headBox pageCenter cf">
@@ -44,12 +44,12 @@
                 <ul class="cf">
                     <li class="line"></li>
                     <li id="headPhotoBox" class="headPhoto">
-                        <p><em><img th:src="${session.users[0].getIcon()}" width="36" height="36" alt=""></em><a class="userName" href="javascript:" th:text="${session.users[0].getPen()}">爱色鬼</a></p>
+                        <p><em><img th:src="${session.user.head}" width="36" height="36" alt=""></em><a class="userName" href="javascript:" th:text="${session.user.pen}">爱色鬼</a></p>
                         <dl class="userBox">
                             <cite class="icon whiteSj"></cite>
                             <dd class="userInfo hidden">
                                 <!-- 增加身份标识"ico-level",silver为白金作家，dashen为大神作家 -->
-                                <p class="name" th:title="${session.users[0].getPen()}" th:text="${session.users[0].getPen()}">爱色鬼
+                                <p class="name" th:title="${session.user.pen}" th:text="${session.user.pen}">爱色鬼
 
                                 </p>
                                 <p class="level">
@@ -57,7 +57,7 @@
                                     <span><em style="width:70%">0/0</em></span></p>
                             </dd>
                             <dd class="link"><a href="writerdata.html">作家资料</a></dd>
-                            <dd class="link end"><a href="/jbook/login/emptySession">退出登录</a></dd>
+                            <dd class="link end"><a href="/Login/logout">退出登录</a></dd>
                         </dl>
                     </li>
                 </ul>
@@ -146,7 +146,7 @@
         <a href="javascript:void(0)" onclick="toptab(this,'income')">总收入</a>
     </span>
             <span>
-        <a href="javascript:void(0)" onclick="toptab(this,'copyright')">版权收入</a>
+        <a href="javascript:void(0)" onclick="toptab(this,'copyright')">周推明细</a>
     </span>
             <span>
         <a href="javascript:void(0)" onclick="toptab(this,'reward')">打赏明细</a>
@@ -162,49 +162,8 @@
         </script>
         <form  class="layui-form">
         <div class="incomeWrap">
-                <div class="layui-input-inline" style="float: left">
-                    <select name="year" id="year"  style="visibility: visible;">
-
-                </select>
-                    <script type="text/javascript">
-                        $(function () {
-                            var myDate = new Date();
-                            //获取当前年
-                            var year=myDate.getFullYear();
-                            var str="";
-                            for(var i=2013;i<=year;i++){
-                                if (i==year){
-                                    str+="<option value=\""+i+"\" selected>"+i+"</option>"
-                                }else {
-                                    str+="<option value=\""+i+"\">"+i+"</option>"
-                                }
-                            }
-                            $("#year").html(str);
-                        })
-                    </script>
-            </div>
-                <div class="layui-input-inline" style="float: left">
-              <select name="month" id="month"  style="visibility: visible;">
-
-                </select>
-                    <script type="text/javascript">
-                        $(function () {
-                            var myDate = new Date();
-                            //获取当前年
-                            var month=myDate.getMonth()+1;
-                            var str="";
-                            for(var i=1;i<=12;i++){
-                                if (i==month){
-                                    str+="<option value=\""+i+"\" selected>"+i+"</option>"
-                                }else {
-                                    str+="<option value=\""+i+"\">"+i+"</option>"
-                                }
-                            }
-                            $("#month").html(str);
-                        })
-                    </script>
-                </div>
-                <a class="button" href="javascript:look();" style="display:inline-block;line-height:30px;width: 50px;height: 30px;" id="searchBtn">查看</a>
+                <!--<input th:type="text" id="bookname"/>
+                <a class="button" href="javascript:look();" style="display:inline-block;line-height:30px;width: 50px;height: 30px;" id="searchBtn">查看</a>-->
             </div>
         </form>
 
@@ -221,7 +180,7 @@
                         <p data-node="sum" id="incomesum">0</p>
                         <h4>（元）</h4>
                         <h3>已提现(元)</h3>
-                        <p data-node="sum" id="withdrawmoney" th:text="${session.users.get(0).getWithdrawmoney()}">0</p>
+                        <p data-node="sum" id="withdrawmoney" th:text="${session.user.money}">0</p>
                         <h4>（元）</h4>
                         <input type="button" onclick="withdraw()" style="border-radius: 5px;width: 100px;height: 40px;background-color: #00ACF5 " th:value="提现">
                     </td>
@@ -275,10 +234,10 @@
         </div>
             <div class="reserveChart mb30 div" id="copyrightdiv" style="display: none">
                 <h3 class="reserveTitle">
-                    <em class="icon reward"></em>版权收入明细
+                    <em class="icon reward"></em>周推明细
                 </h3>
                 <div class="chartWrap">
-                    <h2 id="bookTitle2">2019年2月版权收入<br></h2>
+                    <h2 id="bookTitle2">周推明细<br></h2>
                     <div id="incomeSumBox"  style="margin-top: 50px;margin-left: 50px;">
 
                     </div>
@@ -294,20 +253,23 @@
         <div class="reserveListWrap div" id="rewarddiv" style="display: none;">
             <h3 class="reserveTitle">
                 <em class="icon reward"></em>打赏明细
-                <span class="fr exc-rewards" >合计打赏金额<i id="rewardCount"></i>元</span>
+                <span class="fr exc-rewards" >合计打赏金额<i id="rewardCount"></i></span>
             </h3>
             <div class="detailWrap mb10">
                 <table class="detailTable" width="100%" border="0" cellspacing="0">
                     <colgroup>
                         <col width="33%">
                         <col width="33%">
+                        <col width="13%">
                         <col width="33%">
                     </colgroup>
                     <thead style="background-color: #3A6590;">
                     <tr>
-                        <th>打赏时间</th>
+                        <th>打赏书籍</th>
+                        <th>打赏章节</th>
                         <th>打赏金额(元)</th>
-                        <th>备注</th>
+                        <th>打赏时间</th>
+
                     </tr>
                     </thead>
                     <tbody id="incomeList" incometype="rewards">    <tr>
@@ -327,15 +289,16 @@
             });
             function look() {
                 copyrightsum=0;
-                rewardsum=0;
+
                 getRemuneration();
                 getReward();
             }
             function getRemuneration() {
-                $("#bookTitle2").html($("#year").val()+"年"+$("#month").val()+"月版权收入");
+               // $("#bookTitle2").html($("#year").val()+"年"+$("#month").val()+"月版权收入");
+
                 $.ajax({
-                    url:"users/getRemuneration",
-                    data:{"year":$("#year").val(),"month":$("#month").val()},
+                    url:"books/queryWeek",
+                    type:"post",
                     success:function (data) {
                         if(data==""){
                             $("#noDataBox").css("display",'block');
@@ -347,18 +310,18 @@
                                 "                                    <thead style='background-color: #3A6590;height: 50px;'>\n" +
                                 "                                    <tr>\n" +
                                 "                                    <td>书名</td>\n" +
-                                "                                    <td>卷名</td>\n" +
-                                "                                    <td>章名</td>\n" +
-                                "                                    <td>收入</td>\n" +
+                                "                                    <td>潜力值</td>\n" +
+                                "                                    <td>支付金额</td>\n" +
+                                "                                    <td>周推时间</td>\n" +
                                 "                                    </tr>\n" +
                                 "                                    </thead><tbody>";
 
                             for (var i=0;i<data.length;i++){
                                 str+="<tr style='height: 50px;'>\n" +
                                     "                                        <td>"+data[i].bookname+"</td>\n" +
-                                    "                                        <td>"+data[i].rollname+"</td>\n" +
-                                    "                                        <td>"+data[i].chapname+"</td>\n" +
-                                    "                                        <td>"+data[i].remuneration+"元</td>\n" +
+                                    "                                        <td>"+data[i].potential+"</td>\n" +
+                                    "                                        <td>"+data[i].money+"</td>\n" +
+                                    "                                        <td>"+data[i].pushtime+"</td>\n" +
                                     "                                        </tr>"
                                 copyrightsum+=data[i].remuneration;
                             }
@@ -372,24 +335,26 @@
             }
             function getReward() {
                 $.ajax({
-                    url: "reward/getReward",
-                    data: {"year": $("#year").val(), "month": $("#month").val()},
-                    success: function (data) {
+                    url: "books/queryExpbook02",
+                    type:"post",
+                    data: {"exptypeid":2},
+                    success: function (data01) {
 
-                        if(data==""){
+                        if(data01==""){
                             $("#incomeList").html("<tr>\n" +
                                 "                        <td colspan=\"3\">暂无任何数据</td>\n" +
                                 "                    </tr>")
 
                         }else{
                             var str="";
-                            for(var i=0;i<data.length;i++){
+                            var rewardsum=0;
+                            for(var i=0;i<data01.length;i++){
                                 str+="<tr>\n" +
-                                    "                        <td>"+jsonDateFormat(data[i].rewatime)+"</td><td>"+data[i].rewanum/200+"</td><td>"+data[i].uname+"打赏"+data[i].bookname+"</td>\n" +
+                                    "                        <td>"+data01[i].bookname+"</td><td>"+data01[i].chaptername+"</td><td>"+data01[i].sum+"</td><td>"+jsonDateFormat(data01[i].exptime)+"</td>\n" +
                                     "                    </tr>"
-                                rewardsum+=data[i].rewanum;
+                                rewardsum+=parseInt(data01[i].sum);
                             }
-                            $("#rewardCount").html(rewardsum/200+"元");
+                            $("#rewardCount").html(rewardsum+"书币");
                             $("#incomeList").html(str);
                         }
                     }

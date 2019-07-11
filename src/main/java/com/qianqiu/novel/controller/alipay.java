@@ -19,7 +19,7 @@ import java.io.IOException;
 public class alipay {
 
     @RequestMapping("pay")
-    public void pay(int money, HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws ServletException, IOException {
+    public void pay(Integer choose,Integer money,Integer bookid,Integer potential,  HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws ServletException, IOException {
 
         String app_id = "2016092100565112";
         String sign_type = "RSA2";
@@ -30,7 +30,13 @@ public class alipay {
 
         AlipayClient alipayClient = new DefaultAlipayClient(gatewayUrl, app_id, merchant_private_key, "", charset, alipay_public_key, sign_type); // 获得初始化的AlipayClient
         AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();// 创建API对应的request
-        alipayRequest.setReturnUrl("http://localhost:8080/success?money="+money+"&userid="+ MyUtil.getuserid(httpRequest.getSession()));
+       if(choose ==1) {
+           alipayRequest.setReturnUrl("http://localhost:8080/weekpush/addWeekpush?money=" + money + "&bookid="+bookid+"&potential="+potential);
+       }
+        if(choose ==0) {
+            alipayRequest.setReturnUrl("http://localhost:8080/success?money=" + money + "&userid=" + MyUtil.getuserid(httpRequest.getSession()));
+        }
+
         alipayRequest.setNotifyUrl("http://localhost:8080/index.html");// 在公共参数中设置回跳和通知地址
         alipayRequest.setBizContent("{" + "    \"out_trade_no\":\"2015032001010100" + (int) (Math.random() * 1000) + "\","
                 + "    \"product_code\":\"FAST_INSTANT_TRADE_PAY\"," + "    \"total_amount\":" + money + ","

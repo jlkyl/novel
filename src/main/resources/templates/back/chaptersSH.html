@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <!-- 避免IE使用兼容模式 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <!-- 浏览器标签图片 -->
+    <link rel="shortcut icon" href="../topjui/images/favicon.ico"/>
+    <title>章节审核</title>
+    <script type="text/javascript" src="../easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="../easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../easyui/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../easyui/myvalidate.js"></script>
+    <link rel="stylesheet" type="text/css" href="../easyui/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../easyui/themes/material/easyui.css">
+
+    <script type="text/javascript">
+        $(function(){
+            $("#dl").dialog("close");
+        });
+        function isSeleted(){
+            var row = $("#tb").datagrid("getSelected");
+            if(row == null){
+                $.messager.alert("提示","请选择要操作的数据");
+                return null;
+            }else{
+                return row;
+            }
+        }
+
+        function showDialog(){
+            var row= isSeleted();
+            if(row){
+                $("#dl").dialog("setTitle","审核"+row.chaptername).dialog("open");
+                $("#chapterid").html(row.chapterid);
+                $.ajax({
+                    url:"/chapters/queryTxt",
+                    type:"post",
+                    data:{"chapterid":row.chapterid},
+                    success:function (data) {
+                        $("#chapterContent").html(data);
+                    }
+                })
+            }
+
+        }
+        function SH(str){
+            var chapterid=$("#chapterid").html();
+            if(str == 0){
+               $.ajax({
+                   url:"/chapters/updChapDel",
+                   type:"post",
+                   data:{"state":0,"chapterid":chapterid},
+                   success:function(data){
+                       if(data==true){
+                           window.location.reload();
+                       }
+                   }
+               });
+            }else if(str == 4){
+                $.ajax({
+                    url:"/chapters/updChapDel",
+                    type:"post",
+                    data:{"state":1,"chapterid":chapterid},
+                    success:function(data){
+                        if(data==true){
+                            window.location.reload();
+                        }
+                    }
+                });
+            }
+        }
+        function find(){
+            var bookname=$("#bookname").val();
+
+                $("#tb").datagrid({
+                    url: "/chapters/querybackSHMH?bookname=" + bookname,
+                });
+
+
+        }
+    </script>
+</head>
+<body>
+    <table class="easyui-datagrid" style="width:100%" id="tb"
+           data-options="url:'/chapters/querybackSH',fitColumns:true,toolbar:'#tools',singleSelect:true">
+        <thead>
+        <tr>
+            <th data-options="field:'chapterid',width:70">章节编号</th>
+            <th data-options="field:'bookname',width:70">书名</th>
+            <th data-options="field:'chaptername',width:70">章节名称</th>
+            <th data-options="field:'wordnum',width:70">章节字数</th>
+            <th data-options="field:'updatetime',width:120">操作时间</th>
+        </tr>
+        </thead>
+    </table>
+
+    <div id="tools">
+        <a id="btn1" href="javascript:showDialog()" class="easyui-linkbutton" data-options="iconCls:'icon-add'">审核</a>
+
+            书名: <input class="easyui-textbox" id="bookname">
+            <a href="javascript:find()" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+
+    </div>
+    <div class="easyui-dialog" style="width:550px;height:400px;padding:10px 60px;top:50px;" id="dl" closed="true" buttons="#dlg-buttons" modal="true">
+        <span id="chapterid" hidden></span>
+        <span id="chapterContent" readonly style="width:550px;height:350px;"></span>
+    </div>
+    <div id="dlg-buttons">
+        <a href="javascript:SH(0)" class="easyui-linkbutton" iconCls="icon-ok">通过</a>
+        <a href="javascript:SH(4)" class="easyui-linkbutton" iconCls="icon-cancel">不通过</a>
+    </div>
+</body>
+</html>

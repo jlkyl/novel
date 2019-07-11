@@ -29,12 +29,15 @@ public interface IChaptersDAO {
     @Select("select * from chapters where chapterid=#{chapterid}")
     Chapters queryById(@Param("chapterid") Integer chapterid);
     //修改章节（章节名，文章信息，根据ID）
-    @Update("update chapters set chaptername=#{chaptername},url=#{url},state=#{state} where chapterid=#{chapterid}")
-    Integer updChapterInfo(@Param("chaptername") String chaptername,@Param("url") String url,@Param("state") Integer state,@Param("chapterid") Integer chapterid);
+    @Update("update chapters set chaptername=#{chaptername},url=#{url},state=#{state},wordnum=#{wordnum} where chapterid=#{chapterid}")
+    Integer updChapterInfo(@Param("chaptername") String chaptername,@Param("url") String url,@Param("state") Integer state,@Param("chapterid") Integer chapterid,@Param("wordnum")Integer wordnum);
     @Update("update chapters set state=#{state} where chapterid=#{chapterid}")
     Integer updChapDel(@Param("state") Integer state,@Param("chapterid")Integer chapterid);
-
-
+    @Select("select * from chapters c " +
+            "LEFT JOIN rolls r on c.rollid=r.rollid " +
+            "LEFT JOIN books b on r.bookid=b.bookid " +
+            "where r.bookid=#{bookid} and c.state=#{state}")
+    List<Chapters> findAll(@Param("bookid") Integer bookid,@Param("state") Integer state);
 
     @Select("select c.chapterid,b.bookid, b.details,b.cover,b.bookname,u.pen,bt.typename,r.rollname,c.chaptername,c.chapternum,count(chapternum) num,c.updatetime,SUM(wordnum) zi,b.clicknum,r.rollid from books b LEFT JOIN users u on b.userid = u.userid LEFT JOIN booktype bt on b.typeid = bt.typeid \n" +
             "LEFT JOIN rolls r on b.bookid = r.bookid LEFT JOIN chapters c on r.rollid = c.rollid where b.bookid=#{bookid}")
@@ -61,5 +64,26 @@ public interface IChaptersDAO {
             "            ) and rollid=#{rollid} \n" +
             "            ORDER BY chapterid ASC;")
     List<Chapters> upDow(Integer chapterid,Integer rollid);
+
+    //后台审核查询
+    @Select("select b.bookname,c.chaptername,c.url,c.chapterid,c.updatetime,c.wordnum from chapters c " +
+            "LEFT JOIN rolls r on c.rollid=r.rollid " +
+            "LEFT JOIN books b on r.bookid=b.bookid where c.state=#{state}")
+    List<Map<String,Object>> querybackSH(@Param("state") Integer state);
+    //后台审核模糊查询
+    @Select("<script>" +
+            "select b.bookname,c.chaptername,c.url,c.chapterid,c.updatetime,c.wordnum from chapters c " +
+            "LEFT JOIN rolls r on c.rollid=r.rollid " +
+            "LEFT JOIN books b on r.bookid=b.bookid " +
+            "<where> " +
+            "<if test=\"state!=null\">" +
+            "and c.state=#{state}" +
+            "</if>" +
+            "<if test=\"bookname!=null\">" +
+            " and b.bookname like concat ('%',#{bookname},'%')" +
+            "</if>" +
+            "</where>" +
+            "</script>")
+    List<Map<String,Object>> querybackSHMH(@Param("state") Integer state,@Param("bookname") String bookname);
 
 }
