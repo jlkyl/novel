@@ -774,7 +774,7 @@
 </div>
 </body>
 
-<script type="text/javascript">
+<script type="text/javascript" th:inline="javascript">
     /*jQuery("#s-box").keyup(function () {
         jQuery(".lbf-autocomplete-suggestions").attr("style", "position: absolute; max-height: 384px; z-index: 9999; width: 346px; top: 96px; left: 560.6px; display:block");
         if (jQuery("#s-box").val() != '') {
@@ -850,7 +850,7 @@
 
     $(function () {
         console.log(JSON.stringify(window.location.search));
-        $("#s-box").val(window.location.search.substr(8,9).toString());
+        $("#s-box").val([[${kw}]]);
         read();
 
         $.ajax({
