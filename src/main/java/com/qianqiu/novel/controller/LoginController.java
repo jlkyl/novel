@@ -60,15 +60,15 @@ public class LoginController {
     @RequestMapping("phoneLogin")
     @ResponseBody
     public String phoneLogin(String phone){
-        Users users=u.yzmlogin(phone);
-        if(users!=null){
-            //String returnCode= IndustrySMS.execute(phone);
-            String returnCode="110022";
+        //Users users=u.yzmlogin(phone);
+        //if(users!=null){
+            String returnCode= IndustrySMS.execute(phone);
+            //String returnCode="110022";
             map.put(phone,returnCode);
             return returnCode;
-        }else{
-            return "";
-        }
+        //}else{
+            //return "";
+        //}
     }
     //验证码登录（检查手机号是否存在）
     @RequestMapping("yzmLogin")
@@ -84,16 +84,13 @@ public class LoginController {
     //前台注册
     @RequestMapping("addlogin")
     @ResponseBody
-    public Integer addlogin(String phone,String password,String yzm){
+    public Integer addlogin(String phone,String password,String yzm,HttpSession session){
         Users users=new Users();
         users.setPhone(phone);
         users.setPassword(password);
         users.setUsername("书友"+users.getPhone());
         users.setSex("男");
         users.setAuthor(0);
-        //String returnCode= IndustrySMS.execute(phone);
-        String returnCode="110033";
-        map.put(phone,returnCode);
         if(yzm.equals(map.get(phone))){
            int i= u.addlogin(users);
             if(users ==null){

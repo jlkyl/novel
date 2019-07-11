@@ -191,7 +191,6 @@
                             type:'post',
                             data:{"name":nameValue.value},
                             success:function(data){
-                                alert(data);
                                 if(data==true){
                                     $("#staffNameValueError").css("display", "inline-block");
                                     $("#staffNameValueError").html("笔名已存在！");
@@ -216,7 +215,6 @@
                     type:'post',
                     data:{"name":email},
                     success:function(data){
-                        alert(data);
                         if(data==true){
                             $("#staffEmailError").css("display", "inline-block");
                             $("#staffEmailError").html("邮箱已使用！");
@@ -250,7 +248,6 @@
                             type:'post',
                             data:{"name":realname},
                             success:function(data){
-                                alert(data);
                                 if(data==true){
                                     $("#staffRealnameError").css("display", "inline-block");
                                     $("#staffRealnameError").html("该用户已存在！");
@@ -299,11 +296,8 @@
         var idcard=$("#staffIdcardError").html();
         var realname=$("#staffRealnameError").html();
         var ccheck=$("#agreeCheckbox").prop("checked");
-        alert("pen:"+pen+"___email:"+email)
           if(pen=="" && email=="" && idcard=="" && realname=="" ){
-              alert("格式正确！");
               //var ccheck=$("#agreeCheckbox:checked");
-              alert(ccheck);
               if(ccheck){
                   $("#cche").html("");
                   $.ajax({

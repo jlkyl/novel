@@ -115,7 +115,9 @@
         <link rel="stylesheet" type="text/css" href="./css/contentv2_book_manage.css">
 
         <div class="mainRight pb0 fl">
-            <div class="crumbsWrap"><i class="before"><a href="authorWorks"><span>作品管理</span></a></i><em class="same"></em> <i class="current"><span>少年杨帅波</span></i>
+            <div class="crumbsWrap"><i class="before"><a href="authorWorks"><span>作品管理</span></a></i><em class="same"></em>
+                <i class="current"><span id="bookid" th:value="${session.BOOK.bookid}" th:text="${session.BOOK.bookname}"></span></i>
+
                 <!--<em class="diff"></em><i class="current"><span>章节管理</span></i>-->
             </div>
 
@@ -127,7 +129,7 @@
                     <span class="[bookmodify]"><a href="worksSet.html">作品设置</a></span>
                     <span class="[recycle]"><a href="recycle.html">草稿箱</a></span>
                     <span class="[chaptertmp]" id="numero2"><a href="chapterSent.html">已发布章节</a></span>
-                    <span class="act"><a href="shing.html">复审中</a></span>
+                    <span class="act"><a href="shing.html">待审核章节</a></span>
                     <span class="[chaptertmp]"><a href="drafts.html">回收站</a></span>
                 </div>
             </div>

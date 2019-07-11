@@ -115,7 +115,9 @@
         <link rel="stylesheet" type="text/css" href="./css/contentv2_book_manage.css">
 
         <div class="mainRight pb0 fl">
-            <div class="crumbsWrap"><i class="before"><a href="authorWorks"><span>作品管理</span></a></i><em class="same"></em> <i class="current"><span>少年杨帅波</span></i>
+            <div class="crumbsWrap"><i class="before"><a href="authorWorks"><span>作品管理</span></a></i><em class="same"></em>
+                <i class="current"><span id="bookid" th:value="${session.BOOK.bookid}" th:text="${session.BOOK.bookname}"></span></i>
+
                 <!--<em class="diff"></em><i class="current"><span>章节管理</span></i>-->
             </div>
 

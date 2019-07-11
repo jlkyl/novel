@@ -324,7 +324,7 @@
         }
         if(time == 58){
            $.ajax({
-                url: "reg/yzm",
+                url: "/Login/phoneLogin",
                 data: {"phone":txtphonenumber},
                 type: "post",
                     dataType: "json",
@@ -354,7 +354,7 @@
             count--;
             if (count <= 0) {
                 clearInterval(interval);
-                window.location.href = '/index';
+                window.location.href = '/login.html';
             }
             else {
                 $("#jumpTime").html(count);
