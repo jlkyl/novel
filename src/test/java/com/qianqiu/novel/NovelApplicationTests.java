@@ -4,6 +4,7 @@ import com.qianqiu.novel.entity.*;
 import com.qianqiu.novel.service.*;
 import com.qianqiu.novel.utils.FileUtil;
 import com.qianqiu.novel.utils.GsonUtil;
+import com.qianqiu.novel.utils.PdfUtil;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -21,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -89,6 +91,19 @@ public class NovelApplicationTests {
         }
     }
 
+    @Test
+    public void createPdf() throws Exception {
+        Map<String,Object> book = bs.find(1).get(0);
+        List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+        for(Map<String,Object> map : rs.findByBookid(1)){
+            if(Integer.parseInt(map.get("isvip").toString())==0)
+            map.put("chapters",cs.queryBuy(null,Integer.parseInt(map.get("rollid").toString()),null));
+            list.add(map);
+        }
+        book.put("rolls",list);
+
+    }
+
     public void getBooks(CloseableHttpClient client,String url,Integer userid) throws UnsupportedEncodingException {
         String json = getUrl(client,url);
         System.out.println(json);
@@ -153,12 +168,12 @@ public class NovelApplicationTests {
                         List<Map<String,Object>> list = (List<Map<String,Object>>)((Map<String,Object>)chaptermap.get("mixToc")).get("chapters");
                         //获取书籍最后一卷
                         Integer rollid = null;
-                        List<Rolls> rolls = rs.findByBookid(books.getBookid());
+                        List<Map<String,Object>> rolls = rs.findByBookid(books.getBookid());
                         Chapters chapters = new Chapters();
                         chapters.setState(0);
                         Rolls roll = new Rolls();
                         if(rolls.size()>0){
-                            roll = rolls.get(rolls.size()-1);
+                            roll = (Rolls) rolls.get(rolls.size()-1);
                             chapters.setRollid(roll.getRollid());
                         }
                         for (int i = bs.getChapterNums(books.getBookid()) ; i<list.size() ; i++){

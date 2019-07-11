@@ -23,7 +23,7 @@
     <script type="text/javascript">
         function removeu(){
             $.ajax({
-                url:'/jpbook/login/quit',
+                url:'Login/logout',
                 success:function(data){
                     $(".sign-in").addClass("sign-in hidden");
                     $(".sign-out.hidden").addClass("sign-out");
@@ -71,7 +71,7 @@
                         $(".lbf-button.lbf-combobox-label.lbf-dropdown-on.lbf-combobox-on").attr("class","lbf-button lbf-combobox-label act");
                         $(".lbf-popup.lbf-dropdown.recomm.lbf-combobox-panel").attr("style","width: 50px; min-width: 82px; height: auto; top: 155px; left: 531.4px; display: none; z-index: 73948;");
                         /*重新查询*/
-                        window.location.href = '/jpbook/books/likeBooks?kw='+$("#s-box").val()+'&sort='+$(this).attr("id");
+                        window.location.href = '/books/likeBooks?kw='+$("#s-box").val()+'&sort='+$(this).attr("id");
                     })
                 }else{
                     $("#recomm a").attr("class",'lbf-button lbf-combobox-label ')
@@ -83,7 +83,7 @@
             $(".s").click(function () {
                 if($(this).attr("class") == 's'){
                     $(this).attr("class","act");
-                    window.location.href = '/jpbook/books/likeBooks?kw='+$("#s-box").val()+'&sort='+$(this).attr("id");
+                    window.location.href = '/books/likeBooks?kw='+$("#s-box").val()+'&sort='+$(this).attr("id");
                 }else{
                     $(this).attr("class","s");
                 }
@@ -101,29 +101,28 @@
             <div class="nav-list site-nav fl">
                 <ul>
                     <li class="site"><a class="pin-logo"
-                                        href="/jpbook/booktype/queryAll" style = "font-size: 18px;font-family: 'Courier New', Courier, monospace">江派中文网</a>
+                                        href="/index" style = "font-size: 18px;font-family: 'Courier New', Courier, monospace">千秋小说网</a>
                     </li>
-                    <li><a href="/jpbook/showAllBook.html?btid=1" target="">玄幻</a></li>
-                    <li><a href="/jpbook/showAllBook.html?btid=5" target="">都市</a></li>
-                    <li><a href="/jpbook/showAllBook.html?btid=4" target="">仙侠</a></li>
-                    <li><a href="/jpbook/showAllBook.html?btid=11" target="">科幻</a></li>
-                    <li><a href="/jpbook/showAllBook.html?btid=9" target="">游戏</a></li>
-                    <li><a href="/jpbook/showAllBook.html?btid=8" target="">历史</a></li>
-                    <li><a href="/jpbook/books/rank" target="_blank">排行</a></li>
+                    <li><a href="/showAllBook.html?btid=1" target="_blank">玄幻</a></li>
+                    <li><a href="/showAllBook.html?btid=3" target="_blank">武侠</a></li>
+                    <li><a href="/showAllBook.html?btid=5" target="_blank">都市</a></li>
+                    <li><a href="/showAllBook.html?btid=7" target="_blank">历史</a></li>
+                    <li><a href="/showAllBook.html?btid=9" target="_blank">游戏</a></li>
+                    <li><a href="/showAllBook.html?btid=11" target="_blank">科幻</a></li>
+                    <li><a href="/showAllBook.html?btid=13" target="_blank">同人</a></li>
                     <li class="more">
                         <a href="javascript:" id="top-nav-more" target="">
                             更多<span></span>
                         </a>
                         <div class="dropdown">
-                            <a href="/jpbook/showAllBook.html" target="_blank">全部作品</a>
-                            <a href="/jpbook/showAllBook.html?btid=13" target="_blank">二次元</a>
-                            <a href="/jpbook/showAllBook.html?btid=2" target="_blank">奇幻</a>
-                            <a href="/jpbook/showAllBook.html?btid=3" target="_blank">武侠</a>
-                            <a href="/jpbook/showAllBook.html?btid=12" target="_blank">灵异</a>
-                            <a href="/jpbook/showAllBook.html?btid=7" target="_blank">军事</a>
-                            <a href="/jpbook/showAllBook.html?btid=6" target="_blank">现实</a>
-                            <a href="/jpbook/showAllBook.html?btid=10" target="_blank">体育</a>
-                            <a href="/jpbook/showAllBook.html?btid=14" target="_blank">短篇</a>
+                            <a href="/showAllBook.html" target="_blank">全部作品</a>
+                            <a href="/showAllBook.html?btid=2" target="_blank">奇幻</a>
+                            <a href="/showAllBook.html?btid=4" target="_blank">仙侠</a>
+                            <a href="/showAllBook.html?btid=6" target="_blank">职场</a>
+                            <a href="/showAllBook.html?btid=8" target="_blank">军事</a>
+                            <a href="/showAllBook.html?btid=10" target="_blank">竞技</a>
+                            <a href="/showAllBook.html?btid=12" target="_blank">灵异</a>
+                            <a href="/showAllBook.html?btid=14" target="_blank">轻小说</a>
                         </div>
                     </li>
                 </ul>
@@ -144,7 +143,7 @@
                                     <span></span>
                                 </a>
                                 <div class="dropdown">
-                                    <a href="/jpbook/topup" target="_blank">充值</a>
+                                    <a href="/topup" target="_blank">充值</a>
                                     <a href="../personal.html" target="_blank">个人中心</a>
                                     <a id="exit" href="javascript:void(0);" onclick="removeu()">退出</a>
                                 </div>
@@ -176,7 +175,7 @@
                         <span class="no-data-img"></span>
                     </div>
                     <h3>没有输入有效关键词</h3>
-                    <p>你也可以去<a class="blue" href="/jpbook/showAllBook" target="_blank">全部作品</a>找书</p>
+                    <p>你也可以去<a class="blue" href="/showAllBook.html" target="_blank">全部作品</a>找书</p>
                 </div>
             </th:block>
             <th:block th:if="${listBooks.size()} gt 0">
