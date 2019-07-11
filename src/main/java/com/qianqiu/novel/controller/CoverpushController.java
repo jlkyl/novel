@@ -3,6 +3,7 @@ package com.qianqiu.novel.controller;
 import com.qianqiu.novel.entity.Coverpush;
 import com.qianqiu.novel.service.CoverpushService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -17,15 +18,21 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("Co")
 public class CoverpushController {
 
-
     @Resource
     CoverpushService service;
-
 
     @RequestMapping("query")
     @ResponseBody
     public List<Coverpush> query() {
         return service.query();
+    }
+    @RequestMapping("queryFT")
+
+    public String queryFT(Model m) {
+        System.out.println("sssssssssssssssssssssssss");
+        m.addAttribute("ps",service.queryFT());
+        System.out.println("fffffffffffffffffff");
+        return "coverpush";
     }
     @RequestMapping("queryAll")
     @ResponseBody

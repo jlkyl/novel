@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html   xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>往期封推_千秋小说网</title>
+    <meta name="description" content="小说阅读,精彩小说尽在起点中文网. 起点中文网提供玄幻小说,武侠小说,原创小说,网游小说,都市小说,言情小说,青春小说,历史小说,军事小说,网游小说,科幻小说,恐怖小说,首发小说,最新章节免费.">
+    <meta name="keywords" content="小说,小说网,玄幻小说,武侠小说,都市小说,历史小说,网络小说,言情小说,青春小说,原创网络文学">
+    <meta name="robots" content="all">
+    <meta name="googlebot" content="all">
+    <meta name="baiduspider" content="all">
+    <meta http-equiv="mobile-agent" content="format=wml; url=https://m.qidian.com">
+    <meta http-equiv="mobile-agent" content="format=xhtml; url=https://m.qidian.com">
+    <meta http-equiv="mobile-agent" content="format=html5; url=http://h5.qidian.com/bookstore.html">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit" />
+    <script>
+        document.domain = 'qidian.com';
+    </script>
+    <script>
+        var speedTimer = [],
+            speedZero = new Date().getTime();
+    </script>
+
+    <script>
+        //遇到cookie tf=1的话留在本站，否则跳转移动站
+        if (getCookie('tf') != 1) {
+            //判断是以下设备后跳转到m站
+            if (navigator.userAgent.match(/(iPhone|iPod|Android)/i)) {
+                location.href = "//m.qidian.com"
+            }
+        }else {
+            // M站设置了一年，这里fixed
+            setCookie('tf', 1, 'qidian.com', '/', 0);
+        }
+        // start 防劫持
+        //设置cookie
+        function setCookie(name, value, domain, path, expires) {
+            if(expires){
+                expires = new Date(+new Date() + expires);
+            }
+            var tempcookie = name + '=' + escape(value) +
+                ((expires) ? '; expires=' + expires.toGMTString() : '') +
+                ((path) ? '; path=' + path : '') +
+                ((domain) ? '; domain=' + domain : '');
+            //Ensure the cookie's size is under the limitation
+            if(tempcookie.length < 4096) {
+                document.cookie = tempcookie;
+            }
+        }
+        //获取cookie
+        function getCookie(name) {
+            var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+            if (arr = document.cookie.match(reg))
+                return (arr[2]);
+            else
+                return null;
+        }
+        //创建并发送请求
+        function createSender(url){
+            var img = new Image();
+            img.onload = img.onerror = function(){
+                img = null;
+            };
+            img.src = url;
+        };
+    </script>
+
+    <link data-ignore="true" rel="shortcut icon" type="image/x-icon" href="//qidian.gtimg.com/qd/favicon/qd_icon.c443c.ico">
+    <link data-ignore="true" rel="Bookmark" type="image/x-icon" href="//qidian.gtimg.com/qd/favicon/qd_icon.c443c.ico">
+    <link rel="stylesheet" data-ignore="true" href="//qidian.gtimg.com/c/=/qd/css/reset.ddecf.css,/qd/css/global.d41d8.css,/qd/css/font.6c094.css,/qd/css/module.7c917.css,/qd/css/footer.5ccc0.css,/qd/css/historyImgRec.b5feb.css,/qd/css/layout.5de0f.css,/qd/css/qd_popup.7e65f.css" />
+
+</head>
+<body>
+
+<div class="wrap">
+    <div id="pin-nav" class="pin-nav-wrap need-search" data-l1="40">
+        <div class="box-center cf">
+            <div class="nav-list site-nav fl">
+                <ul>
+                    <li class="site"><a class="pin-logo"
+                                        href="/index" style = "font-size: 18px;font-family: 'Courier New', Courier, monospace">千秋小说网</a>
+                    </li>
+                    <li><a href="/showAllBook.html?btid=1" target="_blank">玄幻</a></li>
+                    <li><a href="/showAllBook.html?btid=3" target="_blank">武侠</a></li>
+                    <li><a href="/showAllBook.html?btid=5" target="_blank">都市</a></li>
+                    <li><a href="/showAllBook.html?btid=7" target="_blank">历史</a></li>
+                    <li><a href="/showAllBook.html?btid=9" target="_blank">游戏</a></li>
+                    <li><a href="/showAllBook.html?btid=11" target="_blank">科幻</a></li>
+                    <li><a href="/showAllBook.html?btid=13" target="_blank">同人</a></li>
+                    <li class="more">
+                        <a href="javascript:" id="top-nav-more" target="">
+                            更多<span></span>
+                        </a>
+                        <div class="dropdown">
+                            <a href="/showAllBook.html" target="_blank">全部作品</a>
+                            <a href="/showAllBook.html?btid=2" target="_blank">奇幻</a>
+                            <a href="/showAllBook.html?btid=4" target="_blank">仙侠</a>
+                            <a href="/showAllBook.html?btid=6" target="_blank">职场</a>
+                            <a href="/showAllBook.html?btid=8" target="_blank">军事</a>
+                            <a href="/showAllBook.html?btid=10" target="_blank">竞技</a>
+                            <a href="/showAllBook.html?btid=12" target="_blank">灵异</a>
+                            <a href="/showAllBook.html?btid=14" target="_blank">轻小说</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="nav-list min-user fr">
+                <ul>
+                    <li class="line"></li>
+                    <li th:class="${session.user} ? 'sign-out hidden' : 'sign-out'">
+                        <a id="pin-login" href="../login.html" target="_blank">登录</a>
+                        <a class="reg" href="../register.html" target="_blank">注册</a>
+                    </li>
+                    <th:block th:if="${session}">
+                        <th:block th:if="${session.user}">
+                            <li th:class="${session.user } ? 'sign-in' : 'sign-in hidden'">
+                                <a href="../personal.html" target="_blank">
+                                    <span id = "uuid" style="display: none" th:text="${session.user.getUserid()}"></span>
+                                    <i id="nav-user-name" th:text="${session.user.getUsername()}"></i>
+                                    <span></span>
+                                </a>
+                                <div class="dropdown">
+                                    <a href="/topup.html" target="_blank">充值</a>
+                                    <a href="../personal.html" target="_blank">个人中心</a>
+                                    <a id="exit" href="javascript:void(0);" onclick="removeu()">退出</a>
+                                </div>
+                            </li>
+                        </th:block>
+                    </th:block>
+
+                    <li class="line"></li>
+                    <li class="book-shelf" id="top-book-shelf">
+                        <a th:href="${session.user} ? '../personal.html?key=i' : '../login.html'" target="_blank">
+                            <em class = "iconfont icon-book_icon"></em>
+                            <i>我的书架</i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="box-center"  data-l1="1">
+        <div class="focus-rec-wrap">
+            <div class="title-wrap cf">
+                <p class="title-links">
+                    <a class="lang act" href="/Co/queryFT">往期封推</a><span class="separator"></span>
+                </p>
+            </div>
+            <ul class="cf">
+                <li th:each="p: ${ps}">
+                    <div class="focus-img">
+                        <a href="https://book.qidian.com/info/1003461122" data-eid="qd_A178" target="_blank"><img th:src="${p.cover}"  alt=""></a>
+                    </div>
+                    <div class="info">
+                        <span th:text="${p.operatedate}"></span>
+                        <p><a href="https://book.qidian.com/info/1003461122" th:title="${p.bookname}" th:text="${p.bookname}" target="_blank"></a></p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <!--<div class="page-box cf" data-l1="1">
+            <div class="pagination fr" data-eid="qd_C44" id="page-container" data-pageMax="20" data-page="1"></div>
+        </div>-->
+    </div>
+    <div class="footer">
+        <div class="box-center cf">
+            <div class="footer-text">
+                <p>上海网警提示：网络刷单是违法 切莫轻信有返利，网上交友套路多 卖惨要钱需当心，电子红包莫轻点 个人信息勿填写，仿冒客服来行骗 官方核实最重要，招工诈骗有套路 预交费用需谨慎，低价充值莫轻信 莫因游戏陷套路，连接WIFI要规范 确认安全再连接，抢购车票有章法 确认订单再付款，白条赊购慎使用 提升额度莫轻信，网购预付有风险 正规渠道很重要 如网民接到962110电话，请立即接听。</p>
+            </div>
+            <div class="friend-link">
+                <em><a class="yuewen" href="//www.yuewen.com" target="_blank">阅文集团</a><cite>旗下网站：</cite></em>
+                <a href="//www.qidian.com">起点中文网</a>
+                <a href="//www.qdmm.com" target="_blank">起点女生网</a>
+                <a href="http://chuangshi.qq.com" target="_blank">创世中文网</a>
+                <a href="http://yunqi.qq.com" target="_blank">云起书院</a>
+                <!--<a href="http://www.rongshuxia.com" target="_blank">榕树下</a>-->
+                <a href="//www.hongxiu.com" target="_blank">红袖添香</a>
+                <a href="//www.readnovel.com" target="_blank">小说阅读网</a>
+                <a href="//www.xs8.cn" target="_blank">言情小说吧</a>
+                <a href="http://www.xxsy.net" target="_blank">潇湘书院</a>
+                <a href="http://www.tingbook.com" target="_blank">天方听书网</a>
+                <a href="http://www.lrts.me" target="_blank">懒人听书</a>
+                <a href="http://yuedu.yuewen.com" target="_blank">阅文悦读</a>
+                <a href="//www.yuewen.com/app.html#appqq" target="_blank">QQ阅读</a>
+                <a href="//www.yuewen.com/app.html#appqd" target="_blank">起点读书</a>
+                <a href="//www.yuewen.com/app.html#appzj" target="_blank">作家助手</a>
+                <a href="//www.webnovel.com" target="_blank" title="Qidian International">起点国际版</a>
+            </div>
+            <div class="footer-menu dib-wrap">
+                <a href="//www.qidian.com/about/intro" target="_blank">关于起点</a>
+                <a href="//www.qidian.com/about/contact" target="_blank">联系我们</a>
+                <a href="//join.yuewen.com" target="_blank">加入我们</a>
+                <a href="//www.qidian.com/help/index/2" target="_blank">帮助中心</a>
+                <a href="#" class="advice" target="_blank">提交建议</a>
+                <!--<a href="http://bbs.qidian.com" target="_blank">起点论坛</a>-->
+                <!--<a href="http://comic.qidian.com" target="_blank">动漫频道</a>-->
+                <a href="//jubao.yuewen.com" target="_blank">举报中心</a>
+            </div>
+            <div class="copy-right">
+                <p><span>Copyright &copy; 2002-2019 www.qidian.com All Rights Reserved</span>版权所有 上海玄霆娱乐信息科技有限公司</p>
+                <p>网站备案/许可证号：<a href="http://beian.miit.gov.cn/publish/query/indexFirst.action" target="_blank">沪B2-20080046-1</a>&nbsp;出版经营许可证：新出发沪批字第 U3718 号&nbsp;网络文化经营许可证：沪网文[2015]0081-031 新出网证（沪）字 010</p>
+                <p>请所有作者发布作品时务必遵守国家互联网信息管理办法规定，我们拒绝任何色情小说，一经发现，即作删除！举报电话：010-59357051</p>
+                <p>本站所收录的作品、社区话题、用户评论、用户上传内容或图片等均属用户个人行为。如前述内容侵害您的权益，欢迎举报投诉，一经核实，立即删除，本站不承担任何责任</p>
+                <p>联系方式 总机 021-61870500 地址：中国（上海）自由贸易试验区碧波路690号6号楼101、201室</p>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<script>
+    // 全局的通用数据都放g_data变量里
+    var g_data = {};
+    // 环境变量，会按照环境选择性打log
+    g_data.envType = 'pro';
+    // 用作统计PV
+    g_data.pageId = 'qd_P_fengtui';
+    //环境域名
+    g_data.domainSearch = 'www.qidian.com/search';
+</script>
+<script data-ignore="true" src="//qidian.gtimg.com/lbf/1.1.0/LBF.js?max_age=31536000"></script>
+<script>
+    // LBF 配置
+    LBF.config({"paths":{"site":"//qidian.gtimg.com/qd/js","qd":"//qidian.gtimg.com/qd","common":"//qidian.gtimg.com/common/1.0.0"},"vars":{"theme":"//qidian.gtimg.com/qd/css"},"combo":true,"debug":false});
+    LBF.use(['lib.jQuery'], function ($) {
+        window.$ = $;
+    });
+</script>
+<script>
+    LBF.use(['monitor.SpeedReport', 'qd/js/component/login.a4de6.js', 'qd/js/index/coverrec.2b29a.js' ], function (SpeedReport, Login, Index) {
+        // 页面逻辑入口
+        if(Login){
+            Login.init().always(function(){
+                Index && typeof Index === 'function' && new Index();
+            })
+        }
+        if(219 && 219 != ''){
+            $(window).on('load.speedReport', function () {
+                // speedTimer[onload]
+                speedTimer.push(new Date().getTime());
+                var f1 = 7718, // china reading limited's ID
+                    f2 = 219, // site ID
+                    f3 = 20; // page ID
+                // chrome & IE9 Performance API
+                SpeedReport.reportPerformance({
+                    flag1: f1,
+                    flag2: f2,
+                    flag3IE: f3,
+                    flag3Chrome: f3,
+                    rate:0.1,
+                    url: '//isdspeed.qidian.com/cgi-bin/r.cgi'
+                });
+                // common speedTimer:['dom ready', 'onload']
+                var speedReport = SpeedReport.create({
+                    flag1: f1,
+                    flag2: f2,
+                    flag3: f3,
+                    start: speedZero,
+                    rate:0.1,
+                    url: '//isdspeed.qidian.com/cgi-bin/r.cgi'
+                });
+                for (var i = 0; i < speedTimer.length; i++) {
+                    speedReport.add(speedTimer[i], i + 20)
+                }
+                speedReport.send();
+            })
+        }
+    });
+    speedTimer.push(new Date().getTime());
+</script>
+</body>
+</html>

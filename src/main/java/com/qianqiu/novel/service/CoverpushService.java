@@ -34,4 +34,7 @@ public class CoverpushService {
         p.setTotal(dao.getCounts());
         return p;
     }
+    public List<Coverpush> queryFT(){
+        return dao.queryFT();
+    }
 }
