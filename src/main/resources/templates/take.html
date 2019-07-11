@@ -27,6 +27,18 @@
     </script>
 
     <script>
+        function removeu(){
+            $.ajax({
+                url:'Login/logout',
+                success:function(data){
+                    $(".sign-in").addClass("sign-in hidden");
+                    $(".sign-out.hidden").addClass("sign-out");
+                    $(".sign-in").removeClass("sign-in");
+                    $(".sign-out.hidden").removeClass("sign-out hidden");
+                    window.location.reload()
+                }
+            });
+        }
         //遇到cookie tf=1的话留在本站，否则跳转移动站
         if (getCookie('tf') != 1) {
             //判断是以下设备后跳转到m站
