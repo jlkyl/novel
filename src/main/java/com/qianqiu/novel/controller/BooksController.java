@@ -49,6 +49,7 @@ public class BooksController {
 	public ModelAndView likebook(String kw){
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("llist",service.likeBook(kw));
+		mv.addObject("kw",kw);
 		mv.setViewName("showAllBook");
 		return mv;
 	}
