@@ -4,7 +4,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     
-	<title>账号注册 | 千秋书城</title>
+	<title>账号注册 | 千秋小说网</title>
 	<link rel="shortcut icon" type="image/x-icon" href="./images/jp_iocn.ico">
 	<link rel="Bookmark" type="image/x-icon" href="./images/jp_iocn.ico">
 
@@ -137,7 +137,7 @@
                 if(data ==true){
                     $("#txtphonenumber").focus();
                     $("#phone").prop("class","top error");
-                    $("#etip").html("该手机号已注册，请尝试直接 <a href='login.html' style=\'color: #00a5e0\'>登录</a>");
+                    $("#etip").html("该手机号已注册，请尝试直接 <a href='/login.html' style=\'color: #00a5e0\'>登录</a>");
                     $("#etip").show();
                     return false;
                 }else {
@@ -354,7 +354,7 @@
             count--;
             if (count <= 0) {
                 clearInterval(interval);
-                window.location.href = '/index.html';
+                window.location.href = '/index';
             }
             else {
                 $("#jumpTime").html(count);

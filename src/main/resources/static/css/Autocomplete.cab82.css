@@ -926,7 +926,7 @@
   width: 22px;
   height: 12px;
   margin-top: 3px;
-  background: url(/qd/images/common/tag.7a994.png) no-repeat 0 -12px
+  background: url(https://qidian.gtimg.com/qd/images/common/tag.7a994.png) no-repeat 0 -12px
 }
 .main-nav li.web .game-dropdown .web-list dd h3 a {
   font-family: PingFangSC-Regular,'-apple-system',Simsun;
@@ -987,7 +987,7 @@
   width: 22px;
   height: 12px;
   margin-top: 3px;
-  background: url(/qd/images/common/tag.7a994.png) no-repeat 0 -12px
+  background: url(https://qidian.gtimg.com/qd/images/common/tag.7a994.png) no-repeat 0 -12px
 }
 .main-nav li.phone .game-dropdown .phone-list dd a {
   font-family: PingFangSC-Regular,'-apple-system',Simsun;
@@ -1101,14 +1101,14 @@
 (min-device-pixel-ratio:1.3),
 (min-resolution:1.3dppx) {
   .logo-wrap .logo a {
-    background: url(/qd/images/logo_2x.78ab6.png) no-repeat;
+    background: url(https://qidian.gtimg.com/qd/images/logo_2x.78ab6.png) no-repeat;
     background-repeat: no-repeat;
     background-size: 217px
   }
   .main-nav li.phone .game-dropdown .phone-list dd span,
   .main-nav li.web .game-dropdown .web-list dd h3 span {
     margin-top: 3px;
-    background-image: url(/qd/images/common/tag_2x.e939e.png);
+    background-image: url(https://qidian.gtimg.com/qd/images/common/tag_2x.e939e.png);
     background-size: 22px
   }
 }@charset 'UTF-8';
@@ -1158,7 +1158,7 @@ h3.wrap-title {
   width: 12px;
   height: 12px;
   vertical-align: middle;
-  background: url(/qd/images/ico/qd_checkbox.4e604.png) no-repeat
+  background: url(https://qidian.gtimg.com/qd/images/ico/qd_checkbox.4e604.png) no-repeat
 }
 .qd-checkbox.disabled {
   background-position: 0 0
@@ -1177,7 +1177,7 @@ h3.wrap-title {
   width: 12px;
   height: 12px;
   vertical-align: middle;
-  background: url(/qd/images/ico/qd_checkbox.4e604.png) no-repeat
+  background: url(https://qidian.gtimg.com/qd/images/ico/qd_checkbox.4e604.png) no-repeat
 }
 .lbf-checkbox.lbf-checkbox-hover {
   background-position: 0 -12px
@@ -1203,7 +1203,7 @@ h3.wrap-title {
   cursor: pointer;
   vertical-align: -1px;
   border: none;
-  background: url(/qd/images/ico/qd_radio.54397.png) no-repeat;
+  background: url(https://qidian.gtimg.com/qd/images/ico/qd_radio.54397.png) no-repeat;
   background-position: 0 -24px
 }
 .lbf-radio.lbf-radio-hover {
@@ -1222,7 +1222,7 @@ h3.wrap-title {
   bottom: 4px;
   width: 24px;
   height: 14px;
-  background: url(/qd/images/common/op_tag.e4c83.png) no-repeat
+  background: url(https://qidian.gtimg.com/qd/images/common/op_tag.e4c83.png) no-repeat
 }
 .share-img {
   overflow: hidden;
@@ -1301,7 +1301,7 @@ embed.embed-fix {
   display: block;
   width: 95px;
   height: 42px;
-  background-image: url(/qd/images/pin_logo_1x.6068b.png);
+  background-image: url(https://qidian.gtimg.com/qd/images/pin_logo_1x.6068b.png);
   background-repeat: no-repeat;
   background-position: 10px 48%
 }
@@ -1532,7 +1532,7 @@ embed.embed-fix {
   margin-top: -4px;
   margin-left: 3px;
   vertical-align: middle;
-  background: url(/qd/images/index/rec.23462.png) no-repeat
+  background: url(https://qidian.gtimg.com/qd/images/index/rec.23462.png) no-repeat
 }
 .classify-list dd a cite .info {
   float: left;
@@ -3017,29 +3017,29 @@ h3.wrap-title .more em.iconfont {
 (min-device-pixel-ratio:1.3),
 (min-resolution:1.3dppx) {
   .pin-nav-wrap .nav-list li.site a.pin-logo {
-    background-image: url(/qd/images/pin_logo_3x.a3710.png);
+    background-image: url(https://qidian.gtimg.com/qd/images/pin_logo_3x.a3710.png);
     background-repeat: no-repeat;
     background-size: 90px
   }
   .focus-wrap .classify-list dd a cite .rec {
-    background: url(/qd/images/index/rec2x.ce0d2.png) no-repeat;
+    background: url(https://qidian.gtimg.com/qd/images/index/rec2x.ce0d2.png) no-repeat;
     background-size: 100%
   }
   .op-tag {
-    background: url(/qd/images/common/op_tag_2x.5ea32.png) no-repeat;
+    background: url(https://qidian.gtimg.com/qd/images/common/op_tag_2x.5ea32.png) no-repeat;
     background-size: 100%
   }
   .lbf-radio {
-    background: url(/qd/images/ico/qd_radio_2x.1f376.png) no-repeat;
+    background: url(https://qidian.gtimg.com/qd/images/ico/qd_radio_2x.1f376.png) no-repeat;
     background-position: 0 -24px;
     background-size: 12px
   }
   .lbf-checkbox {
-    background: url(/qd/images/ico/qd_checkbox_3x.a3471.png) no-repeat;
+    background: url(https://qidian.gtimg.com/qd/images/ico/qd_checkbox_3x.a3471.png) no-repeat;
     background-size: 100%
   }
   .fixedTopGame a {
-    background: url(/qd/images/fixed_top_game_2x.png);
+    background: url(https://qidian.gtimg.com/qd/images/fixed_top_game_2x.png);
     background-size: 100%
   }
 }
@@ -3220,7 +3220,7 @@ body {
   height: 160px;
   transition: box-shadow .5s;
   text-align: center;
-  background: url(/qd/images/index/focus_img_bg.408ba.png) no-repeat center
+  background: url(https://qidian.gtimg.com/qd/images/index/focus_img_bg.408ba.png) no-repeat center
 }
 .focus-wrap .focus-box .focus-img li.middle {
   background: #f7f6f2
@@ -3454,7 +3454,7 @@ body {
   right: -20px;
   width: 17px;
   height: 9px;
-  background: url(/qd/images/common/tag.7a994.png) 0 -24px no-repeat
+  background: url(https://qidian.gtimg.com/qd/images/common/tag.7a994.png) 0 -24px no-repeat
 }
 .edit-rec-wrap {
   width: 708px
@@ -3937,7 +3937,7 @@ body {
   top: -10px;
   right: -1px;
   overflow: hidden;
-  background-image: url(/qd/images/index/hot-classify-tag_1x.bc44f.png)
+  background-image: url(https://qidian.gtimg.com/qd/images/index/hot-classify-tag_1x.bc44f.png)
 }
 .hot-classify-wrap h3.wrap-title .icon-tag.ds {
   top: -8px;
@@ -4434,7 +4434,7 @@ body {
   width: 21px;
   height: 12px;
   margin-top: 9px;
-  background: url(/qd/images/common/tag.7a994.png) no-repeat 0 0
+  background: url(https://qidian.gtimg.com/qd/images/common/tag.7a994.png) no-repeat 0 0
 }
 .update-wrap .update-list-wrap .update-list table td i {
   font: 12px/1 Arial;
@@ -4613,7 +4613,7 @@ body {
 }
 .time-limit-wrap li .free-blue-btn {
   margin: 0 auto;
-  background-image: url(/qd/images/common/blue_btn.182db.png)
+  background-image: url(https://qidian.gtimg.com/qd/images/common/blue_btn.182db.png)
 }
 .time-limit-wrap li .free-blue-btn.disabled {
   cursor: default;
@@ -4728,7 +4728,7 @@ body {
   height: 28px;
   text-align: center;
   color: #3f5a93;
-  background-image: url(/qd/images/common/blue_btn.182db.png);
+  background-image: url(https://qidian.gtimg.com/qd/images/common/blue_btn.182db.png);
   background-repeat: no-repeat;
   background-position: 0 0;
   background-size: cover
@@ -4740,7 +4740,7 @@ body {
   background-position: 0 -29px
 }
 :root .free-blue-btn {
-  background-image: url(/qd/images/common/blue_btn_2x.ecc08.png)
+  background-image: url(https://qidian.gtimg.com/qd/images/common/blue_btn_2x.ecc08.png)
 }
 .read-btn {
   font: 14px/28px PingFangSC-Regular,'-apple-system',Simsun;
@@ -4927,7 +4927,7 @@ em.point span {
   width: 925px;
   height: 136px;
   margin: 0 auto;
-  background-image: url(/qd/images/index/diaocha.2515b.png);
+  background-image: url(https://qidian.gtimg.com/qd/images/index/diaocha.2515b.png);
   background-position: 0 0
 }
 .survey-wrap .survey-box .go-survey {
@@ -4959,7 +4959,7 @@ em.point span {
 (min-resolution:1.3dppx) {
   .hot-classify-wrap h3.wrap-title .icon-tag {
     top: -9px;
-    background-image: url(/qd/images/index/hot-classify-tag_2x.bd056.png);
+    background-image: url(https://qidian.gtimg.com/qd/images/index/hot-classify-tag_2x.bd056.png);
     background-repeat: no-repeat;
     background-size: 57px
   }
@@ -4971,20 +4971,20 @@ em.point span {
     top: -4px
   }
   .survey-btn {
-    background: url(/qd/images/index/survey_btn.fad7b.png) no-repeat;
+    background: url(https://qidian.gtimg.com/qd/images/index/survey_btn.fad7b.png) no-repeat;
     background-size: 100%
   }
   .survey-wrap .survey-box p {
-    background: url(/qd/images/index/survey.ce721.png) no-repeat;
+    background: url(https://qidian.gtimg.com/qd/images/index/survey.ce721.png) no-repeat;
     background-size: 100%
   }
   .update-wrap .update-list-wrap .update-list table td .vip {
     margin-top: 9px;
-    background-image: url(/qd/images/common/tag_2x.e939e.png);
+    background-image: url(https://qidian.gtimg.com/qd/images/common/tag_2x.e939e.png);
     background-size: 22px
   }
   .index-two-wrap .book-list-wrap .book-list li strong .hot {
-    background: url(/qd/images/common/tag_2x.e939e.png) 0 -24px no-repeat;
+    background: url(https://qidian.gtimg.com/qd/images/common/tag_2x.e939e.png) 0 -24px no-repeat;
     background-size: 22px
   }
 }
@@ -5371,7 +5371,7 @@ em.point span {
   right: -15px;
   width: 36px;
   height: 36px;
-  background: url(/qd/images/btn_close.44844.png) no-repeat
+  background: url(https://qidian.gtimg.com/qd/images/btn_close.44844.png) no-repeat
 }
 .popup-wrap.login-popup {
   z-index: 9999999999;
@@ -5591,7 +5591,7 @@ em.point span {
   height: 52px;
   margin-right: 14px;
   border: 1px solid #ededed;
-  background-image: url(/qd/images/foot_site.c7a69.png?max_age=31536000)
+  background-image: url(https://qidian.gtimg.com/qd/images/foot_site.c7a69.png?max_age=31536000)
 }
 .footer .safety-img a.site1 {
   background-position: 0 0

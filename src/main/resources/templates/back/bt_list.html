@@ -13,7 +13,8 @@
     <script type="text/javascript" src="../easyui/myvalidate.js"></script>
     <link rel="stylesheet" type="text/css" href="../easyui/themes/icon.css">
     <link rel="stylesheet" type="text/css" href="../easyui/themes/material/easyui.css">
-
+    <link rel="stylesheet" data-ignore="true" type="text/css" href="../css/Autocomplete.cab82.css">
+    <link rel="stylesheet" href="../css/iconfont.css">
     <script type="text/javascript">
         var action = "";
         $(function(){
@@ -71,7 +72,6 @@
                 if(row){
                     $("#ff").form("load",row);
                     $("#cbb").combobox("select",row.parentid);
-                    $("#cbb2").combobox("select",row.operateeid);
                     $("#dl").dialog("setTitle","修改").dialog("open");
                     action = "/bt/btupdate";
                 }
@@ -93,16 +93,21 @@
                 }
             });
         }
+        function getIcon(value){
+            if(value){
+                return "<em class=\"iconfont\">"+value+"</em>";
+            }
+        }
     </script>
 </head>
 <body>
     <table class="easyui-datagrid" style="width:100%" id="tb"
-           data-options="url:'/bt/btqueryAll',fitColumns:true,toolbar:'#tools',singleSelect:true">
+           data-options="url:'/bt/pageList',fitColumns:true,toolbar:'#tools',singleSelect:true,pagination:true,pageList:[15,30,50],pageSize:15">
         <thead>
             <tr>
                 <th data-options="field:'typeid',width:70">编号</th>
                 <th data-options="field:'typename',width:70">分类名称</th>
-                <th data-options="field:'icon',width:70,align:'right'">图标</th>
+                <th data-options="field:'icon',width:70,align:'right',formatter:getIcon">图标</th>
                 <th data-options="field:'typename1',width:70,align:'right'">上级分类</th>
                 <th data-options="field:'empname',width:70,align:'right'">操作人</th>
                 <th data-options="field:'operatedate',width:120,align:'right'">操作时间</th>
@@ -130,12 +135,7 @@
             </div>
             <div style="margin-bottom:20px">
                 <select class="easyui-combobox" label="上级菜单" style="width:100%"  name="parentid"
-                        data-options="url:'/bt/btqueryAll',valueField:'typeid',textField:'typename',required:true" id="cbb">
-                </select>
-            </div>
-            <div style="margin-bottom:20px">
-                <select class="easyui-combobox" label="操作人" style="width:100%"  name="operateeid"
-                        data-options="url:'/bt/empqueryAll',valueField:'empid',textField:'empname',required:true" id="cbb2">
+                        data-options="url:'/bt/btqueryAll',valueField:'typeid',textField:'typename'" id="cbb">
                 </select>
             </div>
         </form>

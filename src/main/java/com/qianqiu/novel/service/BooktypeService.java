@@ -2,6 +2,7 @@ package com.qianqiu.novel.service;
 
 import com.qianqiu.novel.dao.BooktypeDao;
 import com.qianqiu.novel.entity.Booktype;
+import com.qianqiu.novel.entity.Pages;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -15,7 +16,14 @@ public class BooktypeService {
     BooktypeDao btd;
 
     public List<Map<String,Object>> queryAll(){
-        return btd.queryAll();
+        return btd.queryAll(null,null);
+    }
+
+    public Pages querypage(Integer pageNum, Integer pageSize){
+        Pages pages = new Pages();
+        pages.setRows(btd.queryAll((pageNum-1)*pageSize, pageSize));
+        pages.setTotal(btd.getCount());
+        return pages;
     }
 
     public Booktype queryById(Integer typeid){

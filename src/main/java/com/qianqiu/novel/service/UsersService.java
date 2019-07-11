@@ -34,11 +34,18 @@ public class UsersService {
     public Users findByPen(String pen){
         return u.findByPen(pen);
     }
-    public Pages querypage(Integer pageNum, Integer pageSize){
+    public Pages querypage(Integer pageNum, Integer pageSize,String username,String phone,Integer author){
         Pages pages = new Pages();
-        pages.setRows(u.listAll((pageNum-1)*pageSize, pageSize));
-        pages.setTotal(u.getCount());
+        pages.setRows(u.listAll((pageNum-1)*pageSize, pageSize,username,phone,author));
+        pages.setTotal(u.getCount(username, phone, author));
         return pages;
+    }
+    public int updateUser(Users users){
+        return u.updateUser(users);
+    }
+
+    public int updhead(Users users) {
+        return u.updhead(users);
     }
     public int updUser(Users users){return u.updUser(users);}
     //查询手机号
@@ -58,13 +65,23 @@ public class UsersService {
     public Integer updAuthor(Users users){
         return u.updAuthor(users);
     }
-    public List<Users> query(){
-        return u.query();
-    }
+
     public List<Users> querys(){
         return u.querys();
     }
     public int update(Integer money,Integer ticket,Integer userid){
         return u.update(money,ticket,userid);
+    }
+    public Users findByid(Integer userid){
+        return u.findByid(userid);
+    }
+    public Map<String,Object> getTicket(Integer userid){
+        return u.getTicket(userid);
+    }
+    public Integer updVip(Integer vip,Integer userid){
+        return u.updVip(vip, userid);
+    }
+    public Users queryAuthorById(Integer userid){
+        return u.queryAuthorById(userid);
     }
 }

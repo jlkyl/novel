@@ -103,8 +103,8 @@
         <div class="focus-box fl">
             <div class="focus-slider">
                 <div class="lbf-slides switchable-slides" id="switchable-slides">
+                    <a class="more" href="//www.qidian.com/book/coverrec" target="_blank" data-eid="qd_A173"><i><em></em><em></em><em></em></i></a>
                     <ul>
-
                         <li id="item2">
                             <a href="https://book.qidian.com/info/1012829588" target="_blank">
                                 <img class="load"
@@ -122,8 +122,6 @@
                                 data-eid="qd_A88"><img class="load"
                                                        data-src=" //qidian.qpic.cn/qidian_common/349573/d41e4100abec292ca6aa765ab06f116e/0"
                                                        width="100%"></a></li>
-
-
                     </ul>
                     <div class="thumb lbf-button-group nav" id="thumb">
                         <a href="#item1" class="lbf-button active" style="width:140px;" data-eid="qd_A185"><span></span>学霸也开挂</a>
@@ -138,33 +136,34 @@
             <script type="text/javascript">
                 var index=0;
                 $.ajax({
-                    url:"/jpbook/advertising/queryAllTopFive",
+                    url:"/Co/queryAll",
+                    data:{page:1,rows:5},
                     success:function (data) {
                         var str="";
-                        for (var i=0;i<data.length;i++){
+                        for (var i=0;i<data.rows.length;i++){
                             if(i==0){
                                 str+="<li id=\"item"+i+"\" style=\"display: list-item; transition: transform 300ms linear 0s; transform: translateX(0%); backface-visibility: hidden;\">\n" +
-                                    "                            <a href=\"/jpbook/books/queryBookById?bookid="+data[i].bookid+"\" target=\"_blank\">\n" +
-                                    "                                <img src=\"/jpbook/img/"+data[i].pic+"\"\n" +
+                                    "                            <a href=\"/books/queryAll?bookid="+data.rows[i].bookid+"\" target=\"_blank\">\n" +
+                                    "                                <img src=\""+data.rows[i].cover+"\"\n" +
                                     "                                     width=\"100%\">\n" +
                                     "                            </a>\n" +
                                     "                        </li>";
                             }else{
                                 str+="<li id=\"item"+i+"\" style=\"display: list-item; transition: transform 300ms linear 0s; transform: translateX(100%); backface-visibility: hidden;\"><a\n" +
-                                    "                                href=\"/jpbook/books/queryBookById?bookid="+data[i].bookid+"\"\n" +
+                                    "                                href=\"/books/queryAll?bookid="+data.rows[i].bookid+"\"\n" +
                                     "                                target=\"_blank\" data-eid=\"qd_A89\" data-qd_dd_p1=\"1\"><img  class=\"load\" \n" +
-                                    "                                src=\"/jpbook/img/"+data[i].pic+"\"\n" +
+                                    "                                src=\""+data.rows[i].cover+"\"\n" +
                                     "                                width=\"100%\"></a><span class=\"op-tag\"></span></li>";
                             }
 
                         }
                         $("#switchable-slides").find("ul").html(str);
                         str="";
-                        for(var i=0;i<data.length;i++){
+                        for(var i=0;i<data.rows.length;i++){
                             if(i==0){
-                                str+="<a href=\"javascript:void(0)\" onclick=\"tab(this, "+i+")\" class=\"lbf-button active\" style=\"width:140px;\" data-eid=\"qd_A185\"><span></span>"+data[i].bookname+"</a>";
+                                str+="<a href=\"javascript:void(0)\" onclick=\"tab(this, "+i+")\" class=\"lbf-button active\" data-eid=\"qd_A185\"><span></span>"+data.rows[i].bookname+"</a>";
                             }else{
-                                str+="<a href=\"javascript:void(0)\" onclick=\"tab(this, "+i+")\" class=\"lbf-button\" style=\"width:140px;\" data-eid=\"qd_A185\"><span></span>"+data[i].bookname+"</a>";
+                                str+="<a href=\"javascript:void(0)\" onclick=\"tab(this, "+i+")\" class=\"lbf-button\" data-eid=\"qd_A185\"><span></span>"+data.rows[i].bookname+"</a>";
 
                             }
                         }
@@ -767,7 +766,7 @@
                                     <div class="book-img" th:style="background">
                                         <a th:href="@{/books/queryAll(bookid=${qw.bookid})}" target="_blank">
                                             <img class="lazy" th:src="|${qw.cover}|"
-                                                 th:alt="${qw.bookname}"><span th:text="${qw.score}">9</span></a>
+                                                 th:alt="${qw.bookname}"><span th:text="${#numbers.formatDecimal(qw.score,1,1)}">9</span></a>
                                     </div>
                                     <div class="book-info">
                                         <h3>
@@ -805,7 +804,7 @@
                                                        target="_blank"></a>
                                                 </h4>
                                                 <p class="score"
-                                                   th:utext="|${qj.score}分<cite>&#183;</cite>${qj.wordcount}字|"></p>
+                                                   th:utext="|${#numbers.formatDecimal(qj.score,1,1)}分<cite>&#183;</cite>${qj.wordcount}字|"></p>
                                                 <p class="author">
                                                     <a th:text="${qj.pen}" class="writer"
                                                        th:href="|/jpbook/pc/authorData?bid=${qj.userid}|"
@@ -827,7 +826,7 @@
                                         <a th:text="${qj.bookname}" class="name"
                                            th:href="@{/books/queryAll(bookid=${qj.bookid})}" target="_blank"
                                            th:title="${qj.bookname}"></a>
-                                        <i th:text="|${qj.wordcount}字|"></i>
+                                        <i th:text="|${#numbers.formatDecimal(qj.score,1,1)}分|"></i>
                                     </li>
                                 </th:block>
                             </th:block>
@@ -846,7 +845,7 @@
             </h3>
             <div class="update-rec-list">
                 <ul>
-                    <th:block th:each="r,s : ${updates}">
+                    <th:block th:each="r,s : ${recommend12}">
                         <th:block th:if="${s.index} lt 3">
                             <li>
                                 <div class="book-wrap cf">
@@ -855,7 +854,6 @@
                                             <a th:href="@{/books/queryAll(bookid=${r.bookid})}" target="_blank"
                                                th:text="${r.bookname}">最牛寻宝人</a>
                                         </h4>
-
                                         <p class="author">
                                             <a class="writer"
                                                th:href="|/jpbook/pc/authorData?bid=${r.userid}|"
@@ -882,7 +880,7 @@
                 <div class="update-table all">
                     <table width="100%">
                         <tbody>
-                        <tr th:each="r,s : ${updates}">
+                        <tr th:each="r,s : ${recommend12}">
                             <th:block th:if="${s.index} gt 2 and ${s.index} lt 23">
                                 <td>
                                     <a class="classify" th:href="@{/showAllBook.html(typeid=${r.typeid})}" target="_blank"
@@ -894,7 +892,7 @@
                                 <td><a class="section"
                                        th:href="@{/chapters/queryId(chapterId=${r.chapterid})}"
                                        target="_blank" th:text="${r.chaptername}">第二十六章天降奇兵</a>
-                                    <th:block th:if="${r.isvip} eq 1">
+                                    <th:block th:if="${r.chapvip} eq 1">
                                     <span class="vip"></span>
                                     </th:block>
                                 </td>
@@ -924,7 +922,7 @@
                             <h3><a href="//me.qidian.com/authorIndex.aspx?id=4406509" target="_blank" data-eid="qd_A160" th:text="${a.pen}">净无痕</a></h3>
                             <h4>代表作</h4>
                             <p class="works cf"><a th:href="@{/books/queryAll(bookid=${a.bookid})}" target="_blank" data-eid="qd_A162" data-bid="3446747" th:text="${a.bookname}" >太古神王</a></p>
-                            <p class="intro" th:text="''">阅文集团白金作家，网络文学知名玄幻作家，名校高材生，作品深受读者喜爱。</p>
+                            <p class="intro" th:text="'阅文集团白金作家，作品深受读者喜爱。'"></p>
                         </div>
                     </li>
                 </ul>
@@ -943,7 +941,7 @@
                 </a>
             </div>
             <div class="footer-menu dib-wrap">
-                <a href="//www.qidian.com/about/intro" target="_blank">关于千秋</a><a
+                <a href="//www.qidian.com/about/intro" target="_blank">关于起点</a><a
                     href="//www.qidian.com/about/contact" target="_blank">联系我们</a><a
                     href="//join.yuewen.com" target="_blank">加入我们</a><a
                     href="//www.qidian.com/help/index/2" target="_blank">帮助中心</a><a

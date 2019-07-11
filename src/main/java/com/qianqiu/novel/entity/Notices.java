@@ -11,8 +11,6 @@ public class Notices {
     public String title;
     public String  content;
     public Integer operateeid;
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     public Date opeartedate;
 
     public Integer getNoticeid() {

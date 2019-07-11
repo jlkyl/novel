@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <!-- 避免IE使用兼容模式 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+
+    <!-- 浏览器标签图片 -->
+    <link rel="shortcut icon" href="../topjui//images/favicon.ico"/>
+    <script type="text/javascript" src="../easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="../easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../easyui/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../easyui/myvalidate.js"></script>
+    <link rel="stylesheet" type="text/css" href="../easyui/themes/material/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../easyui/themes/icon.css">
+    <title>Title</title>
+    <script type="text/javascript">
+        $(function(){
+            // 初始化datagrid数据表格
+            $("#tb").datagrid({
+                width: "100%",
+                url: "/books/queryPage",
+                fitColumns: true, // 列宽自适应
+                singleSelect: true,// 当行选中
+                pagination: true,
+                pageList: [5, 10, 15, 20],
+                pageSize: 5,
+                toolbar:'#toolbar',
+                columns: [
+                    [
+                        {field: 'bookname', title: '书名', width: 80},
+                        {field: 'cover', title: '封面', width: 60,
+                            formatter: function(value){
+                                if (value){
+                                    return "<img src='"+value+"' width='60px' height='80px'/>";
+                                } else {
+                                    return value;
+                                }
+                            }
+                        },
+                        {field: 'typename', title: '分类', width: 40},
+                        {field: 'ztypename', title: '子分类', width: 70},
+                        {field: 'pen', title: '作者', width: 70},
+                        {field: 'isvip', title: '属性', width: 40,
+                            formatter:function(value){
+                                if(value=="0"){
+                                    return "免费";
+                                }else{
+                                    return "VIP";
+                                }
+                            }
+                        },
+                        {field: 'state', title: '属性', width: 40,
+                            formatter:function(value){
+                                if(value=="0"){
+                                    return "连载";
+                                }else{
+                                    return "完结";
+                                }
+                            }
+                        },
+                        {field: 'putaway', title: '状态', width: 50,
+                            formatter:function(value){
+                                if(value=="0"){
+                                    return "未上架";
+                                }else if(value=="1"){
+                                    return "已上架";
+                                }else{
+                                    return "已下架";
+                                }
+                            }
+                        },
+                        {field: 'createtime', title: '创建时间', width: 90},
+                        {field: 'chaptnum', title: '章节数', width: 50},
+                        {field: 'wordcount', title: '总字数', width: 60},
+                        {field: 'score', title: '评分', width: 40},
+                        {field: 'clicknum', title: '点击量', width: 40},
+                        {field: 'buymoney', title: '订阅书币', width: 50},
+                        {field: 'givemoney', title: '打赏书币', width: 50},
+                        {field: 'chaptername', title: '最后更新章节', width: 100},
+                        {field: 'updatetime', title: '最后更新时间', width: 100},
+                        {field: 'potential', title: '潜力值', width: 40},
+                        {field: 'comcount', title: '总投诉', width: 40},
+                        {field: 'comnum', title: '投诉成功', width: 40},
+                        {field: 'xxx', title: '操作', width: 50,
+                            formatter:function(value,row,index){
+                                if(row.comcount!=0 && parseInt(row.comcount)>=10 && parseInt(row.comnum)/parseInt(row.comcount)>=0.5 && row.putaway=="1"){
+                                    return "<a id=\"btn\" href=\"javascript:upd(2,"+row.bookid+")\" class=\"easyui-linkbutton\">下架</a>";
+                                }else{
+                                    return "暂无";
+                                }
+                            }
+                        }
+                    ]
+                ]
+            })
+        })
+        function find(){
+            $('#tb').datagrid('load',{
+                bookname: $("#bookname").textbox("getValue"),
+                putaway: $("#putaway").combobox("getValue"),
+                state: $("#state").combobox("getValue")
+            });
+        }
+        function upd(putaway,bookid){
+            $.post("/books/updPutaway",{putaway:putaway,bookid:bookid},function(data){
+                if(data==1){
+                    $.messager.show({
+                        title: '提示',
+                        msg: '操作成功'
+                    });
+                    // 刷新数据表格
+                    $("#tb").datagrid("reload");
+                } else {
+                    $.messager.alert('操作失败！', '未知错误或没有任何修改，请重试！', 'messager-error');
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <table id="tb"></table>
+    <div id="toolbar" style="padding:2px;height:auto">
+        <div style="margin:5px">
+            书名: <input class="easyui-textbox" style="width:150px" id="bookname">
+            状态：<select id="putaway" class="easyui-combobox" style="width:100px" data-options="editable:false">
+                    <option value="10">全部</option>
+                    <option value="0">未上架</option>
+                    <option value="1">已上架</option>
+                    <option value="2">已下架</option>
+                </select>
+            属性：<select id="state" class="easyui-combobox" style="width:100px" data-options="editable:false">
+                    <option value="10">全部</option>
+                    <option value="0">连载</option>
+                    <option value="1">完结</option>
+                </select>
+            <a href="javascript:find()" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+        </div>
+    </div>
+</body>
+</html>

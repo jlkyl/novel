@@ -30,15 +30,14 @@
                 columns: [
                     [
                         {field: 'empid', width: 50, title: '编号'},
-                        {field: 'uname', width: 100, title: '用户名'},
-                        {field: 'pwd', width: 100, title: '密码'},
-                        {field: 'empname', width: 100, title: '姓名'},
+                        {field: 'uname', width: 80, title: '用户名'},
+                        {field: 'empname', width: 80, title: '姓名'},
                         {field: 'phone', width: 100, title: '手机号'},
-                        {field: 'idcard', width: 100, title: '身份证号'},
+                        {field: 'idcard', width: 150, title: '身份证号'},
                         {field: 'rolename', width: 100, title: '角色'},
-                        {field: 'state', width: 100, title: '状态',formatter:fmtState},
-                        {field: 'name', width: 100, title: '操作人'},
-                        {field: 'operatedate', width: 100, title: '操作时间'}
+                        {field: 'state', width: 80, title: '状态',formatter:fmtState},
+                        {field: 'name', width: 80, title: '操作人'},
+                        {field: 'operatedate', width: 120, title: '操作时间'}
                     ]
                 ],
                 toolbar:[{text:"新增",
@@ -140,10 +139,7 @@
             <input class="easyui-textbox" style="width:100%" data-options="label:'用户名：',required:true" name="uname">
         </div>
         <div style="margin-bottom:20px">
-            <input class="easyui-textbox" style="width:100%" data-options="label:'密码：',required:true" name="pwd">
-        </div>
-        <div style="margin-bottom:20px">
-            <input class="easyui-textbox" style="width:100%" data-options="label:'用户：',required:true" name="empname">
+            <input class="easyui-textbox" style="width:100%" data-options="label:'姓名：',required:true" name="empname">
         </div>
         <div style="margin-bottom:20px">
             <input class="easyui-textbox" style="width:100%" data-options="label:'手机号：',required:true" name="phone">

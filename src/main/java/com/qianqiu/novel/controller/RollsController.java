@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("rolls")
@@ -59,7 +60,7 @@ public class RollsController {
 
 	@RequestMapping("queryRoll")
 	@ResponseBody
-	public List<Rolls> queryRoll(HttpSession session){
+	public List<Map<String,Object>> queryRoll(HttpSession session){
 		Books books=(Books) session.getAttribute("BOOK");
 		Integer bookid=books.getBookid();
 		return service.findByBookid(bookid);

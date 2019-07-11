@@ -2,6 +2,7 @@ package com.qianqiu.novel.controller;
 
 import com.qianqiu.novel.entity.Booktype;
 import com.qianqiu.novel.entity.Emps;
+import com.qianqiu.novel.entity.Pages;
 import com.qianqiu.novel.service.BooktypeService;
 import com.qianqiu.novel.service.EmpService;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.awt.print.Book;
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +34,12 @@ public class BooktypeController {
        return bts.queryAll();
     }
 
+    @RequestMapping("pageList")
+    @ResponseBody
+    public Pages pageList(Integer page, Integer rows){
+        return bts.querypage(page,rows);
+    }
+
     @RequestMapping("empqueryAll")
     @ResponseBody
     public List<Emps> queryEmp(){
@@ -39,21 +47,25 @@ public class BooktypeController {
     }
 
     @RequestMapping("btadd")
-    public String btadd(Booktype bt){
+    public String btadd(Booktype bt, HttpSession session){
+        bt.setOperateeid(((Emps)session.getAttribute("emps")).getEmpid());
         bts.add(bt);
         return "redirect:/bt/btqueryAll";
     }
 
     @RequestMapping("btupdate")
-    public String btupdate(Booktype bt){
+    public String btupdate(Booktype bt, HttpSession session){
+        System.out.println("修改");
+        bt.setOperateeid(((Emps)session.getAttribute("emps")).getEmpid());
         bts.update(bt);
         return "redirect:/bt/btqueryAll";
     }
 
     @RequestMapping("btdel")
+    @ResponseBody
     public String btdel(Integer typeids){
         bts.del(typeids);
-        return "redirect:/bt/btqueryAll";
+        return "1";
     }
 
     @RequestMapping("queryParentid")

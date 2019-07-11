@@ -2,17 +2,24 @@ package com.qianqiu.novel.controller;
 
 import com.qianqiu.novel.entity.*;
 import com.qianqiu.novel.service.BooksService;
+import com.qianqiu.novel.service.ChaptersService;
+import com.qianqiu.novel.service.RollsService;
+import com.qianqiu.novel.service.SiteService;
 import com.qianqiu.novel.utils.FileUtil;
 import com.qianqiu.novel.utils.MyUtil;
+import com.qianqiu.novel.utils.PdfUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +29,41 @@ public class BooksController {
 
 	@Resource
 	BooksService service;
+
+	@Resource
+	ChaptersService cs;
+
+	@Resource
+	RollsService rs;
+
+	@Resource
+	SiteService ss;
+
+	@RequestMapping("bookqueryAll")
+	@ResponseBody
+	public List<Map<String,Object>> queryBook(){
+		return service.queryAll();
+	}
+
+	@RequestMapping("likeBooks")
+	public ModelAndView likebook(String kw){
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("llist",service.likeBook(kw));
+		mv.setViewName("showAllBook");
+		return mv;
+	}
+
+	@RequestMapping("typeBooks")
+	@ResponseBody
+	public Pages typebook(Books books, Rolls rolls, String kw, Integer orders,Integer labelid, Integer Index, Integer rows){
+	    return service.typeBook(books,rolls,kw,orders,labelid,Index,rows);
+	}
+
+	@RequestMapping("queryBookById")
+	@ResponseBody
+	public Books queryBookById(Integer bookid){
+		return service.queryBybookid(bookid);
+	}
 
 	@RequestMapping("addBooks")
 	@ResponseBody
@@ -121,26 +163,72 @@ public class BooksController {
 	}
 
 	@RequestMapping("queryAll")
-	public String queryAll(Model m,Integer bookid){
-		m.addAttribute("list",service.queryAll(bookid));
-
+	public String queryAll(Model m,Integer bookid,HttpSession session){
+		Users user = (Users) session.getAttribute("user");
+		if(user!=null && user.getVip()>0) {
+			service.addClick(bookid);
+		}
+		m.addAttribute("list",service.find(bookid));
         m.addAttribute("query",service.queryChapter(bookid));
-
-        m.addAttribute("queryC",service.queryC());
-
+        m.addAttribute("queryC",cs.queryBuy(bookid,null, MyUtil.getuserid(session)));
+        m.addAttribute("pink",service.queryPink(bookid));
+		m.addAttribute("site",ss.findAll());
+		m.addAttribute("label",service.queryLabel(bookid));
         return "book";
 	}
 
-	@RequestMapping("query")
-	public String query(Model m,Integer bookid){
+	@RequestMapping("queryMoney")
+	public String queryMoney(Model m,Integer bookid){
 
 		m.addAttribute("list",service.find(bookid));
 
-		m.addAttribute("str",	FileUtil.read((String) service.find(bookid).get(0).get("url")));
-
-		return "lookBook";
+		return "take";
+	}
+	@RequestMapping("queryMoneyRoll")
+	@ResponseBody
+	public List<Map<String,Object>> queryMoneyRoll(Integer bookid,HttpSession session){
+		List<Map<String,Object>> list = rs.findByBookid(bookid);
+		for(Map<String,Object> map:list){
+			map.put("chaps",cs.queryBuy(null,Integer.parseInt(map.get("rollid").toString()),MyUtil.getuserid(session)));
+		}
+		return list;
 	}
 
+	@RequestMapping("getVoteAndGive")
+	@ResponseBody
+	public Map<String,Object> getVoteAndGive(Integer bookid){
+		return service.find(bookid).get(0);
+	}
+
+	@RequestMapping("download")
+	public void download(Integer bookid, HttpServletResponse response){
+		Map<String,Object> book = service.find(bookid).get(0);
+		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+		for(Map<String,Object> map : rs.findByBookid(bookid)){
+			if(Integer.parseInt(map.get("isvip").toString())==0) {
+				map.put("chapters", cs.queryBuy(null, Integer.parseInt(map.get("rollid").toString()), null));
+				list.add(map);
+			}
+		}
+		book.put("rolls",list);
+
+		try {
+			PdfUtil.writePdf(book,response);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@RequestMapping("queryRollAndChap")
+	@ResponseBody
+	public List<Map<String,Object>> queryRollAndChap(Integer bookid,HttpSession session){
+		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+		for(Map<String,Object> map : rs.findByBookid(bookid)){
+			map.put("chapters", cs.queryBuy(null, Integer.parseInt(map.get("rollid").toString()), MyUtil.getuserid(session)));
+			list.add(map);
+		}
+		return list;
+	}
 	@RequestMapping("queryLabels")
 	@ResponseBody
 	public List<Labels> queryLabels(){
@@ -173,6 +261,11 @@ public class BooksController {
 		return layui;
 	}
 
+	@RequestMapping("queryPage")
+	@ResponseBody
+	public Pages queryPage(Integer page,Integer rows,String bookname,Integer putaway,Integer state){
+		return service.queryPage(page, rows, bookname, putaway, state);
+	}
 	//查询章节金额收入
 
 	@RequestMapping("queryExpmoney")

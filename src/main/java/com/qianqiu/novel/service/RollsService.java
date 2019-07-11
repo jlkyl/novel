@@ -20,7 +20,7 @@ public class RollsService {
 		return dao.add(rolls);
 	}
 
-	public List<Rolls> findByBookid(Integer bookid){
+	public List<Map<String,Object>> findByBookid(Integer bookid){
 		return dao.findByBookid(bookid);
 	}
 	//查询书籍中的书卷名是否存在

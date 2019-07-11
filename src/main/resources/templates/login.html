@@ -268,7 +268,7 @@
                             success: function (data) {
                                 if (data == true) {
                                     $("#et").attr("class","error-tip hidden");
-                                    window.location.href = "/index.html";
+                                    window.location.href = "/index";
                                 }
                                 if(data == false){
                                     $("#et").attr("class","error-tip");
@@ -359,14 +359,28 @@
 								return false;
 							} else if (!regPhone.test(mobilephone)) {
 								$("#et").attr("class", "error-tip");
-								$("#et").text("账号不存在");
+								$("#et").text("手机号格式错误");
 								return false;
+							} else {
+								$.ajax({
+									url: "Login/checkphone",
+									data: {"phone":mobilephone},
+									type: "post",
+									dataType: "json",
+									success: function (data) {
+										if(data ==false){
+											$("#et").attr("class", "error-tip");
+											$("#et").text("账号不存在");
+											return false;
+										}else{
+											if($("#sendPhoneMsg").html() == "发送动态密码") {
+												captchaIns && captchaIns.refresh();
+												captchaIns && captchaIns.popUp();
+											}
+										}
+									}
+								});
 							}
-                            if($("#sendPhoneMsg").html() == "发送动态密码") {
-                                captchaIns && captchaIns.refresh();
-                                captchaIns && captchaIns.popUp();
-                            }
-
 						});
 
                         $("#kaptcha").on('click', function () {
@@ -406,7 +420,7 @@
                                             dataType: "json",
                                             success: function (data) {
                                                 if (data == true) {
-                                                    window.location.href = "/index.html";
+                                                    window.location.href = "/index";
                                                 }
                                                 if(data == false){
                                                     $("#error-tip").attr("class","error-tip");

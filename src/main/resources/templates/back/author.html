@@ -80,7 +80,8 @@
                                 {field: 'email', width: 120, title: '邮箱'},
                                 {field: 'phone', width: 100, title: '手机号'},
                                 {field: 'income', width: 80, title: '收入'},
-                                {field: 'nums', width: 80, title: '作品数量'}
+                                {field: 'nums', width: 80, title: '作品数量'},
+                                {field: 'money', width: 80, title: '总收入'}
                             ]
                         ],
                         toolbar:[{text:"新增",
@@ -196,7 +197,7 @@
                                             handler:function(){
                                                 var rr = $("#book").datagrid("getSelected");
                                                 if(rr!=null){
-                                                    if(rr.putaway=="0"){
+                                                    if(rr.putaway!="1"){
                                                         putaway(1,rr.bookid);
                                                     }
                                                 }else{
@@ -210,26 +211,37 @@
                                                 var rr = $("#book").datagrid("getSelected");
                                                 if(rr!=null){
                                                     if(rr.putaway=="1"){
-                                                        putaway(0,rr.bookid);
+                                                        putaway(2,rr.bookid);
                                                     }
                                                 }else{
                                                     $.messager.alert("提示","请选择要操作的数据！");
                                                 }
                                             }
-                                        }/*,'-',{text:"完结",
+                                        },'-',{text:"完结",
                                             iconCls:"icon-ok",
                                             // 处理
                                             handler:function(){
                                                 var rr = $("#book").datagrid("getSelected");
                                                 if(rr!=null){
                                                     if(rr.state=="0"){
-
+                                                        $.post("/books/updBookstate",{bookid:rr.bookid},function(data){
+                                                            if(data){
+                                                                $.messager.show({
+                                                                    title: '提示',
+                                                                    msg: '操作成功'
+                                                                });
+                                                                // 刷新数据表格
+                                                                $("#book").datagrid("reload");
+                                                            } else {
+                                                                $.messager.alert('操作失败！', '未知错误或没有任何修改，请重试！', 'messager-error');
+                                                            }
+                                                        });
                                                     }
                                                 }else{
                                                     $.messager.alert("提示","请选择要操作的数据！");
                                                 }
                                             }
-                                        }*/],
+                                        }],
                                         onDblClickRow:function(index,row){
                                             $("#roll").datagrid({
                                                 width: "100%",

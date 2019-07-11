@@ -171,12 +171,12 @@ public class AuthorController {
                         List<Map<String,Object>> list = (List<Map<String,Object>>)((Map<String,Object>)chaptermap.get("mixToc")).get("chapters");
                         //获取书籍最后一卷
                         Integer rollid = null;
-                        List<Rolls> rolls = rs.findByBookid(books.getBookid());
+                        List<Map<String,Object>> rolls = rs.findByBookid(books.getBookid());
                         Chapters chapters = new Chapters();
                         chapters.setState(0);
                         Rolls roll = new Rolls();
                         if(rolls.size()>0){
-                            roll = rolls.get(rolls.size()-1);
+                            roll = (Rolls) rolls.get(rolls.size()-1);
                             chapters.setRollid(roll.getRollid());
                         }
                         for (int i = bs.getChapterNums(books.getBookid()) ; i<list.size() ; i++){

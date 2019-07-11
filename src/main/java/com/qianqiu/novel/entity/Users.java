@@ -16,8 +16,8 @@ public class Users {
     private String head;
     private String sign;
     private Integer money;
-    private Double income;
     private Integer ticked;
     private Integer author;
     private Integer siteid;
+    private Integer vip;
 }

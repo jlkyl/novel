@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <!-- 避免IE使用兼容模式 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+
+    <!-- 浏览器标签图片 -->
+    <link rel="shortcut icon" href="../topjui//images/favicon.ico"/>
+    <script type="text/javascript" src="../easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="../easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../easyui/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../easyui/myvalidate.js"></script>
+    <link rel="stylesheet" type="text/css" href="../easyui/themes/material/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../easyui/themes/icon.css">
+    <title>Title</title>
+    <script type="text/javascript">
+        $(function() {
+            $("#dl").dialog("close");
+            // 初始化datagrid数据表格
+            $("#tb").datagrid({
+                width: "100%",
+                url: "/complaint/query?state=0",
+                fitColumns: true, // 列宽自适应
+                singleSelect: true,// 当行选中
+                pagination: true,
+                pageList: [5, 10, 15, 20],
+                pageSize: 5,
+                columns: [
+                    [
+                        {field: 'comid', title: '编号', width: 50},
+                        {field: 'username', title: '举报人', width: 100},
+                        {field: 'chaptername', title: '举报章节', width: 100},
+                        {field: 'bookname', title: '所属作品', width: 80},
+                        {field: 'pen', title: '作者', width: 80},
+                        {field: 'typename', title: '类型', width: 80},
+                        {field: 'content', title: '举报内容', width: 120},
+                        {field: 'comtime', title: '举报时间', width: 100}
+                    ]
+                ],
+                toolbar:[{text:"审核",
+                    iconCls:"icon-add",
+                    // 处理
+                    handler:function(){
+                        var row= isSeleted();
+                        if(row) {
+                            $("#dl").dialog("setTitle", "审核内容");
+                            $("#dl").dialog("open");
+                            $("#comid").html(row.comid);
+                            $.ajax({
+                                url: "/chapters/queryTxt",
+                                type: "post",
+                                data: {"chapterid": row.chaptid},
+                                success: function (data) {
+                                    $("#chapterContent").html(data);
+                                    $("#content").html(data);
+                                }
+                            })
+                        }
+
+                    }
+                }]
+            })
+            // 初始化datagrid数据表格
+            $("#tt").datagrid({
+                title:"审核记录",
+                width: "100%",
+                url: "/complaint/query",
+                fitColumns: true, // 列宽自适应
+                singleSelect: true,// 当行选中
+                pagination: true,
+                pageList: [5, 10, 15, 20],
+                pageSize: 5,
+                columns: [
+                    [
+                        {field: 'comid', title: '编号', width: 50},
+                        {field: 'username', title: '举报人', width: 100},
+                        {field: 'chaptername', title: '举报章节', width: 100},
+                        {field: 'bookname', title: '所属作品', width: 80},
+                        {field: 'pen', title: '作者', width: 80},
+                        {field: 'typename', title: '类型', width: 80},
+                        {field: 'content', title: '举报内容', width: 120},
+                        {field: 'comtime', title: '举报时间', width: 100},
+                        {field: 'state', title: '审核结果', width: 50,formatter:function(value){
+                                if(value=="1"){
+                                    return "通过";
+                                }else{
+                                    return "不通过";
+                                }
+                            }
+                        },
+                        {field: 'empname', title: '操作人', width: 80},
+                        {field: 'operatedate', title: '操作时间', width: 100}
+                    ]
+                ]
+            })
+        })
+        function isSeleted(){
+            var row = $("#tb").datagrid("getSelected");
+            if(row == null){
+                $.messager.alert("提示","请选择要操作的数据");
+                return null;
+            }else{
+                return row;
+            }
+        }
+        function SH(str){
+            var comid=$("#comid").html();
+            $.ajax({
+                url:"/complaint/upd",
+                type:"post",
+                data:{"state":str,"comid":comid},
+                success:function(data){
+                    if(data){
+                        // 关闭窗口
+                        $("#dl").dialog("close");
+                        // 刷新数据表格
+                        $("#tb").datagrid("reload");
+                        $("#tt").datagrid("reload");
+                    }
+                }
+            });
+        }
+
+    </script>
+</head>
+<body>
+    <table id="tb"></table>
+    <table id="tt"></table>
+    <div class="easyui-dialog" style="width:650px;height:400px;padding:10px 60px;top:50px;" id="dl" closed="true" buttons="#dlg-buttons" modal="true">
+        <span id="comid" hidden></span>
+        <span id="chapterContent" readonly style="width:650px;height:350px;"></span>
+        <span id="content" readonly style="width:650px;height:50px;"></span>
+    </div>
+    <div id="dlg-buttons">
+        <a href="javascript:SH(1)" class="easyui-linkbutton" iconCls="icon-ok">通过</a>
+        <a href="javascript:SH(2)" class="easyui-linkbutton" iconCls="icon-cancel">不通过</a>
+    </div>
+
+</body>
+</html>

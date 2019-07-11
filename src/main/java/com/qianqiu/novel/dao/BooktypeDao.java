@@ -9,16 +9,23 @@ import java.util.Map;
 @Mapper
 public interface BooktypeDao {
 
-    @Select("SELECT b.*,b2.typename typename1,e.empname\n" +
+    @Select("<script>" +
+            "SELECT b.*,b2.typename typename1,e.empname\n" +
             "from booktype b\n" +
             "LEFT JOIN\n" +
             "booktype b2\n" +
             "on b.parentid = b2.typeid\n" +
             "left JOIN\n" +
             "emps e\n" +
-            "on b.operateeid = e.empid" +
-            "ORDER BY b.typeid")
-    public List<Map<String,Object>> queryAll();
+            "on b.operateeid = e.empid\n" +
+            "ORDER BY b.typeid\n" +
+            "<if test=\"offset!=null and pageSize!=null\">\n" +
+            "   limit #{offset},#{pageSize}\n" +
+            "</if></script>")
+    public List<Map<String,Object>> queryAll(@Param("offset")Integer offset,@Param("pageSize")Integer pageSize);
+
+    @Select("select count(*) from booktype")
+    Integer getCount();
 
     @Select("select * from booktype where typeid = #{typeid}")
     public Booktype queryById(Integer typeid);
@@ -30,7 +37,7 @@ public interface BooktypeDao {
     @Update("UPDATE `novel`.`booktype` SET `typename`=#{typename}, `icon`=#{icon}, `parentid`=#{parentid}, `operateeid`=#{operateeid}, `operatedate`=NOW() WHERE (`typeid`=#{typeid})")
     public int update(Booktype bt);
 
-    @Delete("delete from booktype where typeid = #{typeid}")
+    @Delete("delete from booktype where typeid = #{typeid};delete from booktype where parentid = #{typeid}")
     public int del(Integer typeid);
 
     @Select("select * from booktype where typename = #{typename}")

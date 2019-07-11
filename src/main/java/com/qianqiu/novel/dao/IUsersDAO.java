@@ -2,12 +2,10 @@ package com.qianqiu.novel.dao;
 
 import com.qianqiu.novel.entity.Users;
 import org.apache.ibatis.annotations.*;
-import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 import java.util.Map;
 
-import java.util.List;
 @Mapper
 public interface IUsersDAO {
 
@@ -27,14 +25,41 @@ public interface IUsersDAO {
     @Select("select * from users where phone=#{phone}")
     public Users yzmlogin(@Param("phone") String phone);
 
-    @Select("select count(*) from users")
-    public Integer getCount();
+    @Select("<script>" +
+            "select count(*) from users" +
+            "<where>" +
+            " and siteid is null" +
+            "<if test=\"username!=null and username!=''\">" +
+            " and username like concat('%',#{username},'%') " +
+            "</if>" +
+            "<if test=\"phone!=null and phone!=''\">" +
+            " and username like concat('%',#{phone},'%') " +
+            "</if>" +
+            "<if test=\"author!=null and author!=10\">" +
+            " and author=#{author} " +
+            "</if>" +
+            "</where>" +
+            "</script>")
+    public Integer getCount(@Param("username")String username,@Param("phone")String phone,@Param("author")Integer author);
 
-    @Select("<script>select * from users" +
+    @Select("<script>select *,(select COALESCE(sum(expmoney),0)/1000*0.5-COALESCE((select sum(expmoney) from expenses where userid=u.userid and exptypeid=4),0) from expenses where bookid in (select bookid from books where userid=u.userid)) expmoney from users u " +
+            "<where>" +
+            " and siteid is null" +
+            "<if test=\"username!=null and username!=''\">" +
+            " and username like concat('%',#{username},'%') " +
+            "</if>" +
+            "<if test=\"phone!=null and phone!=''\">" +
+            " and username like concat('%',#{phone},'%') " +
+            "</if>" +
+            "<if test=\"author!=null and author!=10\">" +
+            " and author=#{author} " +
+            "</if>" +
+            "</where>" +
+            " order by vip desc" +
             "<if test=\"offset!=null and pageSize!=null\">\n" +
             "   limit #{offset},#{pageSize}\n" +
             "</if></script>")
-    public List<Users> listAll(@Param("offset")Integer offset,@Param("pageSize")Integer pageSize);
+    public List<Map<String,Object>> listAll(@Param("offset")Integer offset,@Param("pageSize")Integer pageSize,@Param("username")String username,@Param("phone")String phone,@Param("author")Integer author);
 
     @SelectKey(keyColumn = "userid",keyProperty = "userid",before = false,resultType = Integer.class,statement = "select max(userid) from users")
     @Insert("insert into users (userid,username,phone,password,realname, sex, idcard, email, pen, head, sign, author, siteid) values(null,#{username},#{phone},#{password},#{realname},#{sex},#{idcard},#{email},#{pen},#{head},#{sign},#{author},#{siteid})")
@@ -60,15 +85,39 @@ public interface IUsersDAO {
     @Select("select * from users where idcard=#{idcard}")
     public Integer Sureidcard(@Param("idcard")String username);
 
-    @Select("select u.*,(select count(*) from books where userid=u.userid) nums from users u where author=2 and siteid=#{siteid}")
+    @Select("select u.*,(select count(*) from books where userid=u.userid) nums,(select COALESCE(sum(expmoney),0)/1000*0.5-COALESCE((select sum(expmoney) from expenses where userid=u.userid and exptypeid=4),0) from expenses where bookid in (select bookid from books where userid=u.userid)) expmoney from users u where author=2 and siteid=#{siteid}")
     List<Map<String,Object>> findAuthor(Integer siteid);
 
     @Update("update users set pen=#{pen},email=#{email},realname=#{realname},idcard=#{idcard},phone=#{phone} where userid=#{userid}")
     Integer updAuthor(Users users);
 
-    @Select(value = "select money from users")
-    List<Users> query();
+    @Update("<script>" +
+            "UPDATE `novel`.`users` " +
+            "<set>" +
+            "<if test=\"money!=null\">" +
+            " `money`=#{money}, " +
+            "</if>" +
+            "<if test=\"ticked!=null\">" +
+            " `ticked`=#{ticked}, " +
+            "</if>" +
+            "</set>" +
+            " WHERE (`userid`=#{userid})" +
+            "</script>")
+    int update(@Param("money") Integer money,@Param("ticked") Integer ticked,@Param("userid") Integer userid);
+    @Update("UPDATE `novel`.`users` SET `username`=#{username},`sex`=#{sex},`sign`=#{sign} WHERE (`userid`=#{userid})")
+    public int updateUser(Users users);
 
-    @Update(value = "UPDATE `novel`.`users` SET `money`=#{money},`ticket`=#{ticket} WHERE (`userid`=#{userid})")
-    int update(@Param("money") Integer money,@Param("ticket") Integer ticket,@Param("userid") Integer userid);
+    @Update("UPDATE `novel`.`users` SET `head`=#{head} WHERE (`userid`=#{userid})")
+    public int updhead(Users users);
+
+    @Select("select * from users where userid = #{userid}")
+    Users findByid(Integer userid);
+
+    @Select("select ticked,COALESCE((select sum(nums) from votes where userid=#{userid}),0) voteticket,COALESCE((select sum(nums) from votes where userid=#{userid} and votetime between getMonday(CURDATE()) and getSunday(CURDATE())),0) weekticket from users where userid=#{userid}")
+    Map<String,Object> getTicket(Integer userid);
+    @Update("update users set vip = #{param1} where userid = #{param2}")
+    Integer updVip(Integer vip,Integer userid);
+
+    @Select("select * from users where userid = #{userid}")
+    public Users queryAuthorById (Integer userid);
 }

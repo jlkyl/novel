@@ -17,8 +17,6 @@ public class Site implements Serializable {
 	private String phone;
 	private String email;
 	private Integer operateeid;
-	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	private Date operatedate;
 	private String empname;
 }

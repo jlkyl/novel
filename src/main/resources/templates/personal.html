@@ -77,9 +77,9 @@
 			</ul>
 			<ul class="sideBar-group">
 				<li id="u10" onclick="u10()">
-					<a class="sideBar-list-a" data-eid="qd_M16"><i class="icon icon-jingyan"></i>经验值等级</a>
+					<a class="sideBar-list-a" data-eid="qd_M16"><i class="icon icon-jingyan"></i>会员中心</a>
 				</li>
-				<li id="u8" onclick="u8()">
+				<li id="u8" onclick="updinfo()">
 					<a class="sideBar-list-a" target="_blank" data-eid="qd_M20"><i class="icon icon-shezhi"></i>个人设置</a>
 				</li>
 				<li id="u5">
@@ -93,19 +93,19 @@
 		<div class="qdp-content home-content" data-l1="3" id="s1" >
 			<div class="home-user-wrapper qdp-border" data-l2="1">
 				<div class="home-user-avatar" data-l3="1">
-					<a href="javascript:u8()" class="user-avatar-a">
-						<img class="user-avatar-img" id="icon" src="/jpbook/images/default_user.0.2.png" alt="" data-eid="qd_M24">
+					<a href="javascript:updinfo()" class="user-avatar-a">
+						<img class="user-avatar-img" id="icon" th:src="${session.user.head}" alt="" data-eid="qd_M24">
 					</a>
 				</div>
 				<div class="home-user" data-l3="1">
 					<div class="qdp-button">
 						<a href="javascript:;" id="homeurl" class="qdp-button-a mlr4" target="_blank" data-eid="qd_M23">个人主页</a>
-						<a href="javascript:u8()" class="qdp-button-a qdp-button-icon ml12" data-eid="qd_M22">
+						<a href="javascript:void(0);" onclick="updinfo()" class="qdp-button-a qdp-button-icon ml12" data-eid="qd_M22">
 							<i class="icon icon-shezhi"></i>
 						</a>
 					</div>
 					<h3>
-						<a href="javascript:u8()" data-eid="qd_M25" id="uname" style="color: white"></a>
+						<a href="javascript:updinfo()" data-eid="qd_M25" id="uname" style="color: white"></a>
 						<a href="javascript:u10()" class="home-user-level" data-eid="qd_M26" id="grade">Lv0</a>
 					</h3>
 
@@ -140,15 +140,6 @@
 
 				<li class="home-msg" data-l3="2">
 					<div class="home-msg-title">
-						<i class="icon icon-toupiao green"></i><b>我的月票</b>
-					</div>
-					<div class="home-msg-data">
-						<a href="javascript:u4()" data-eid="qd_M31"><b class="home-msg-b home-msg-num" id="w2">0</b>月票</a>
-					</div>
-					<a class="home-msg-more blue" href="javascript:u4()" data-eid="qd_M31">立即查看</a>
-				</li>
-				<li class="home-msg" data-l3="2">
-					<div class="home-msg-title">
 						<i class="icon icon-toupiao green"></i><b>我的推荐票</b>
 					</div>
 					<div class="home-msg-data">
@@ -157,6 +148,15 @@
 					<a class="home-msg-more blue" href="javascript:u4()" data-eid="qd_M31">立即查看</a>
 				</li>
 
+				<li class="home-msg" data-l3="2">
+					<div class="home-msg-title">
+						<i class="icon icon-jingyan green"></i><b>会员等级</b>
+					</div>
+					<div class="home-msg-data">
+						<a href="javascript:u10()" data-eid="qd_M31">Lv<b class="home-msg-b home-msg-num" id="w2">0</b></a>
+					</div>
+					<a class="home-msg-more blue" href="javascript:u10()" data-eid="qd_M31">立即查看</a>
+				</li>
 			</ul>
 
 			<!-- 猜你喜欢 -->
@@ -229,45 +229,21 @@
 				<h3 class="recom-ticket">推荐票</h3>
 				<div class="recom-boy">
 					<div class="piaojia-title">推荐票</div>
-					<div>本日已获得推荐票<span class="piaojia-count font-archive" id="wtid1">0</span>已使用<span class="piaojia-count font-archive" id="wtid2">0</span>可用<span class="piaojia-aval font-archive" id="wtid3">0</span></div>
-				</div>
-				<h3 class="month-ticket">月票</h3>
-				<div class="recom-girl">
-					<div class="piaojia-title">月票</div>
-					<div>获得月票总数<span class="piaojia-count font-archive" id="wtid4">0</span>已使用<span class="piaojia-count font-archive" id="wtid5">0</span>可用<span class="piaojia-aval font-archive" id="wtid6">0</span></div>
+					<div>总推荐票<span class="piaojia-count font-archive" id="wtid1">0</span>已使用<span class="piaojia-count font-archive" id="wtid2">0</span>可用<span class="piaojia-aval font-archive" id="wtid3">0</span></div>
 				</div>
 				<div class="piaojia-tips">
-					<p>推荐票是根据你的起点经验值等级，由系统每天赠送，月票可通过订阅或打赏获得，具体规则请查看<a href="//www.qidian.com/help/index/12" class="piaojia-rule blue" target="_blank">获票规则»</a></p></p>
+					<p>推荐票可以通过充值书币获取<a href="//www.qidian.com/help/index/12" class="piaojia-rule blue" target="_blank">获票规则»</a></p></p>
 				</div>
 			</div>
 
 
 			<div class="qdp-record piaojia-record" data-l2="3">
 				<div id="tabView5" class="ui-tab-tabs">
-					<a href="javascript:jp_M61();" class="checked" data-rel="tabTarget1" id="jp_M61">投月票记录</a>
-					<a href="javascript:;" class="" data-rel="tabTarget2" id="jp_M62">投推荐票记录</a>
+					<a href="javascript:;" class="checked" data-rel="tabTarget2" id="jp_M62">投推荐票记录</a>
 				</div>
 				<div class="ui-tab-contents">
-					<div id="tabTarget15" class="ui-tab-content checked" data-l3="9">
-						<div class="table-msg">本月累计投出月票<b class="table-outstd" id="outstd1">0</b>次</div>
-						<div id="tableTarget15" class="table-x piaojia-month-table">
-							<table class="ui-table">
-								<thead>
-								<tr>
-									<th scope="col" width="200">投票时间</th>
-									<th scope="col" width="100">票数</th>
-									<th scope="col" width="200">投票小说</th>
-								</tr>
-								</thead>
-								<tbody id="tbody1">
-
-								</tbody>
-							</table>
-							<div class="table-null-x dn" style="display: none;" id="tnx1">目前暂无月票投票记录</div>
-						</div>
-					</div>
-					<div id="tabTarget25" class="ui-tab-content" data-l3="10">
-						<div class="table-msg">最近30天累计投出推荐票<b class="table-outstd" id="outstd2">0</b>次</div>
+					<div id="tabTarget25" class="ui-tab-content checked" data-l3="10">
+						<div class="table-msg">本周累计投出推荐票<b class="table-outstd" id="outstd2">0</b>次</div>
 						<div id="tableTarget25" class="table-x piaojia-rcm-table">
 							<table class="ui-table">
 								<thead>
@@ -338,16 +314,16 @@
 
 		<!--经验值等级-->
 		<div class="qdp-content" data-l1="3" style="display:none;" id="s10" >
-			<h2 class="qdp-title">经验值等级</h2>
+			<h2 class="qdp-title">会员等级</h2>
 			<div class="qdp-border exp-level-bg" data-l2="6" >
-				<h3 class="exp-level-logo">经验值等级</h3>
+				<h3 class="exp-level-logo">会员等级</h3>
 				<div class="exp-level exp-level-border" data-l3="17">
-					<div class="exp-level-title">当前等级&nbsp;·&nbsp;Lv<span id="grade2">1</span></div>
+					<div class="exp-level-title">当前等级&nbsp;·&nbsp;Lv<span id="grade2" th:text="${session.user.getVip()}">1</span></div>
 					<div>
-						<span class="mr12">当前<strong class="dark mlr4" id="exp2">0</strong>经验值</span><span class="ml12" >升到下一级还需<span id="expnext">0</span>经验值</span>
+						<span class="mr12">当前已充值<strong class="dark mlr4" id="exp2">0</strong>元</span><span class="ml12" id="e">升到下一级还需充值<span id="expnext">0</span>元</span>
 					</div>
 
-					<a href="javascript:;" class="exp-level-get blue" id="elTaskButton" data-eid="qd_M82">升级到三级(300经验)</a>
+					<a href="/topup.html" class="exp-level-get blue" id="elTaskButton" data-eid="qd_M82">充值</a>
 
 				</div>
 				<div class="exp-level" data-l3="17">
@@ -357,78 +333,77 @@
 			</div>
 			<div class="qdp-border bg-white mt20" data-l2="6" >
 				<div class="exp-subtitle" data-l3="18">
-					<h3>在线经验值奖励</h3>
+					<h3>在线奖励</h3>
 				</div>
 				<div class="exp-award-task" data-l3="18">
 					<ul id="elTaskWrap">
 						<li class="award-task-item">
 							<div class="award-task-img active">
-								<div class="award-task-num"><span class="award-task-strong" style="margin-top:-5px;color: white">5</span></div>
-								<div class="award-task-title" style="margin-top: -8px">经验值</div>
+								<div class="award-task-num"><span class="award-task-strong" style="margin-top:-5px;color: white" th:text="2*(${session.user.getVip()}+1)">2</span></div>
+								<div class="award-task-title" style="margin-top: -8px">书币</div>
 							</div>
 							<span href="javascript:;" class="award-task-status" data-num="1" data-timeLeft="60" data-vip="0" id="sdf0">1分钟</span>
-							<a href='javascript:addexp(0);' id="showa0" style="display: none" class='ui-button ui-button-small   elIsCurrent' data-num='4' data-timeLeft='5' data-vip='0'>领取</a>
+							<a href='javascript:addexp(0);' id="showa0" style="display: none" class='ui-button ui-button-small   elIsCurrent' data-num='4' data-timeLeft='2' data-vip='0'>领取</a>
 						</li>
 						<li class="award-task-item">
 							<div class="award-task-img active">
-								<div class="award-task-num"><span class="award-task-strong" style="margin-top:-5px;color: white">5</span></div>
-								<div class="award-task-title" style="margin-top: -8px">经验值</div>
+								<div class="award-task-num"><span class="award-task-strong" style="margin-top:-5px;color: white" th:text="2*(${session.user.getVip()}+1)">2</span></div>
+								<div class="award-task-title" style="margin-top: -8px">书币</div>
 							</div>
 							<span href="javascript:;" class="award-task-status" data-num="2" data-timeLeft="300" data-vip="0" id="sdf1">5分钟</span>
-							<a href='javascript:addexp(1);' id="showa1" style="display: none" class='ui-button ui-button-small   elIsCurrent' data-num='4' data-timeLeft='5' data-vip='0'>领取</a>
+							<a href='javascript:addexp(1);' id="showa1" style="display: none" class='ui-button ui-button-small   elIsCurrent' data-num='4' data-timeLeft='2' data-vip='0'>领取</a>
 						</li>
 						<li class="award-task-item">
 							<div class="award-task-img active">
-								<div class="award-task-num"><span class="award-task-strong" style="margin-top:-5px;color: white">5</span></div>
-								<div class="award-task-title" style="margin-top: -8px">经验值</div>
+								<div class="award-task-num"><span class="award-task-strong" style="margin-top:-5px;color: white" th:text="5*(${session.user.getVip()}+1)">5</span></div>
+								<div class="award-task-title" style="margin-top: -8px">书币</div>
 							</div>
 							<span href="javascript:;" class="award-task-status" data-num="3" data-timeLeft="600" data-vip="0" id="sdf2">10分钟</span>
 							<a href='javascript:addexp(2);' id="showa2" style="display: none" class='ui-button ui-button-small   elIsCurrent' data-num='4' data-timeLeft='5' data-vip='0'>领取</a>
 						</li>
 						<li class="award-task-item">
 							<div class="award-task-img active">
-								<div class="award-task-num"><span class="award-task-strong" style="margin-top:-5px;color: white">10</span></div>
-								<div class="award-task-title" style="margin-top: -8px">经验值</div>
+								<div class="award-task-num"><span class="award-task-strong" style="margin-top:-5px;color: white" th:text="10*(${session.user.getVip()}+1)">10</span></div>
+								<div class="award-task-title" style="margin-top: -8px">书币</div>
 							</div>
 							<span href="javascript:;" class="award-task-status" data-num="5" data-timeLeft="1200" data-vip="0" id="sdf3">20分钟</span>
 							<a href='javascript:addexp(3);' id="showa3" style="display: none" class='ui-button ui-button-small   elIsCurrent' data-num='4' data-timeLeft='10' data-vip='0'>领取</a>
 						</li>
 						<li class="award-task-item">
 							<div class="award-task-img active">
-								<div class="award-task-num"><span class="award-task-strong" style="margin-top:-5px;color: white">15</span></div>
-								<div class="award-task-title" style="margin-top: -8px">经验值</div>
+								<div class="award-task-num"><span class="award-task-strong" style="margin-top:-5px;color: white" th:text="15*(${session.user.getVip()}+1)">15</span></div>
+								<div class="award-task-title" style="margin-top: -8px">书币</div>
 							</div>
 							<span href="javascript:;" class="award-task-status" data-num="5" data-timeLeft="1800" data-vip="0" id="sdf4">30分钟</span>
 							<a href='javascript:addexp(4);' id="showa4" style="display: none" class='ui-button ui-button-small   elIsCurrent' data-num='4' data-timeLeft='15' data-vip='0'>领取</a>
 						</li>
 						<li class="award-task-item">
 							<div class="award-task-img active">
-								<div class="award-task-num"><span class="award-task-strong" style="margin-top:-5px;color: white">20</span></div>
-								<div class="award-task-title" style="margin-top: -8px">经验值</div>
+								<div class="award-task-num"><span class="award-task-strong" style="margin-top:-5px;color: white" th:text="20*(${session.user.getVip()}+1)">20</span></div>
+								<div class="award-task-title" style="margin-top: -8px">书币</div>
 							</div>
 							<span href="javascript:;" class="award-task-status" data-num="6" data-timeLeft="3600" data-vip="0" id="sdf5">60分钟</span>
 							<a href='javascript:addexp(5);' id="showa5" style="display: none" class='ui-button ui-button-small   elIsCurrent' data-num='4' data-timeLeft='20' data-vip='0'>领取</a>
 						</li>
 						<li class="award-task-item">
 							<div class="award-task-img active">
-								<div class="award-task-num"><span class="award-task-strong" style="margin-top:-5px;color: white">20</span></div>
-								<div class="award-task-title" style="margin-top: -8px">经验值</div>
+								<div class="award-task-num"><span class="award-task-strong" style="margin-top:-5px;color: white" th:text="1*(${session.user.getVip()}+1)">1</span></div>
+								<div class="award-task-title" style="margin-top: -8px">推荐票</div>
 							</div>
 							<span href="javascript:;" class="award-task-status" data-num="7" data-timeLeft="3600" data-vip="0" id="sdf6">60分钟</span>
-							<a href='javascript:addexp(6);' id="showa6" style="display: none" class='ui-button ui-button-small   elIsCurrent' data-num='4' data-timeLeft='20' data-vip='0'>领取</a>
+							<a href='javascript:addexp(6);' id="showa6" style="display: none" class='ui-button ui-button-small   elIsCurrent' data-num='4' data-timeLeft='1' data-vip='0'>领取</a>
 						</li>
 						<li class="award-task-item">
 							<div class="award-task-img active">
-								<div class="award-task-num"><span class="award-task-strong" style="margin-top:-5px;color: white">20</span></div>
-								<div class="award-task-title" style="margin-top: -8px">经验值</div>
+								<div class="award-task-num"><span class="award-task-strong" style="margin-top:-5px;color: white" th:text="2*(${session.user.getVip()}+1)">2</span></div>
+								<div class="award-task-title" style="margin-top: -8px">推荐票</div>
 							</div>
 							<span href="javascript:;" class="award-task-status" data-num="8" data-timeLeft="3600" data-vip="0" id="sdf7">60分钟</span>
-							<a href='javascript:addexp(7);' id="showa7" style="display: none" class='ui-button ui-button-small   elIsCurrent' data-num='4' data-timeLeft='20' data-vip='0'>领取</a>
+							<a href='javascript:addexp(7);' id="showa7" style="display: none" class='ui-button ui-button-small   elIsCurrent' data-num='4' data-timeLeft='2' data-vip='0'>领取</a>
 						</li>
 					</ul>
 				</div>
 			</div>
-
 		</div>
 
 		<!--财务中心-->
@@ -438,7 +413,7 @@
 			<div class="finance-asset" data-l2="2">
 				<h3 class="asset-title">账户余额（起点币）</h3>
 				<div class="asset-count">
-					<span id="balance">money</span>
+					<span id="balance" th:text="${session.user.money}">money</span>
 					<br><br>
 				</div>
 				<div class="asset-recharge-wrapper">
@@ -502,9 +477,10 @@
 								<table class="ui-table">
 									<thead>
 									<tr>
-										<th scope="col" width="150">订阅书籍</th>
-										<th scope="col" width="150">订阅总章数</th>
-										<th scope="col" width="150">订阅总书币</th>
+										<th scope="col" width="100">订阅书籍</th>
+										<th scope="col" width="150">订阅章节</th>
+										<th scope="col" width="100">订阅书币</th>
+										<th scope="col" width="100">订阅时间</th>
 									</tr>
 									</thead>
 									<tbody id="tab3"></tbody>
@@ -519,58 +495,43 @@
 
 
 		<!--个人信息设置-->
-		<div class="qdp-content" data-l1="3" style="display:none;" id="s8">
+		<div id="s8" class="qdp-content" data-l1="3" style="display:none;">
 			<h2 class="qdp-hometitle"><a href="/index.html">首页</a>&nbsp;&gt;&nbsp;个人信息设置</h2>
 			<div class="qdp-record setting-record" data-l2="9">
 				<div id="tabView9" class="ui-tab-tabs">
 					<a href="javascript:;" class="checked" data-rel="tabTarget1"  data-eid="qd_M134" id="jpbasic">基本设置</a>
 					<a href="javascript:;" class="" data-rel="tabTarget2" data-eid="qd_M135" id="jpicon">头像设置</a>
-
 				</div>
 				<div id="jsTabContents9" class="ui-tab-contents">
 					<div id="tabTarget11" class="ui-tab-content checked" data-l3="24">
 						<div class="qdp-form">
 							<form id="setBasicForm" method="post" novalidate="novalidate">
+								<input type="text" id="uid" hidden="hidden" th:name="userid" th:value="${session.user.userid}"/>
 								<input type="hidden" name="_csrfToken" value="U0tnpJm757WqRHaD7nolPCFcQzCVf5bHSkgQshrH" class="elCsrf">
-								<dl>
-									<dt>起点ID</dt>
-									<dd style="margin-left: -140px" id="uuid">328998246</dd>
-								</dl>
 								<dl>
 									<dt>昵称</dt>
 									<dd style="margin-left: -140px; margin-top: -8px">
-										<input type="text" id="uname2" name="uname" maxlength="12" disabled>
-										<a href="javascript:;" id="btnEditName" class="blue ml8 cur" role="button" data-eid="qd_M138">修改昵称</a>
+										<input type="text" id="uname2" th:name="username" maxlength="12" th:value="${session.user.username}"/>
 									</dd>
 								</dl>
 
 								<dl>
 									<dt>性别</dt>
 									<dd style="margin-left: -140px">
-										<input type="radio" id="radioSex1" name="gender" data-eid="qd_M139" required="" value="0" checked="">
+										<input type="text" hidden="hidden" id="usex" th:value="${session.user.sex}"/>
+										<input type="radio" id="radioSex1" th:name="sex" data-eid="qd_M139" required="">
 										<label for="radioSex1" class="ui-radio mr5"></label><label for="radioSex1" class="mr20">男</label>
-										<input type="radio" id="radioSex2" name="gender" value="1" data-eid="qd_M139" required="">
+										<input type="radio" id="radioSex2" th:name="sex" data-eid="qd_M139" required="">
 										<label for="radioSex2" class="ui-radio ml5 mr5"></label><label for="radioSex2">女</label>
-									</dd>
-								</dl>
-								<dl class="qdp-form-higher">
-									<dt>生日</dt>
-									<dd style="margin-left: -140px">
-										<span class="ui-input ui-date-input">
-											<div class="layui-inline">
-												<input type="text" class="layui-input" name="birthday" id="iptBorth">
-											  	<label for="iptBorth" class="ui-date-arrow"></label>
-											</div>
-										</span>
 									</dd>
 								</dl>
 
 								<dl class="qdp-form-higher">
-									<dt>简介</dt>
+									<dt>个性签名</dt>
 									<dd style="margin-left: -140px">
 										<div class="ui-textarea-x" style="width:324px;">
-											<textarea id="forIntroArea" name="description" maxlength="140" rows="2" placeholder="可以简单的描述自己" data-eid="qd_M140"></textarea>
-											<div class="ui-textarea"></div>
+											<textarea id="forIntroArea" th:name="sign" maxlength="140" rows="2" data-eid="qd_M140"></textarea>
+											<div class="ui-textarea" id="gxqm" th:text="${session.user.sign}" ></div>
 											<label for="forIntroArea" class="ui-textarea-count"></label>
 										</div>
 									</dd>
@@ -590,10 +551,10 @@
 
 					<div id="tabTarget9" class="ui-tab-content setting-avatar" data-l3="24">
 						<form id="frmpic" method="post" enctype="multipart/form-data" >
-							<input type="file" id="fileAvatar" name="photo" class="clip" onchange="checkicon(this)" accept="image/png, image/jpeg, image/gif, image/jpg">
+							<input type="file" id="fileAvatar" name="head" class="clip" onchange="checkicon(this)" accept="image/png, image/jpeg, image/gif, image/jpg">
 						</form>
 						<div id="avatarXChoose" class="avatar-x-choose">  <!--//facepic.qidian.com/qd_face/349573/6495553/100-->
-							<img id="usersicon" class="avatar-show" th:src="@{/images/{icon}(icon = ${session.user.head})}" alt="">
+							<img id="usersicon" class="avatar-show" th:src="${session.user.head}" alt="">
 							<!--<img id="usersicon" class="avatar-show" th:src="@{/images/{icon}(icon = ${session.users.get(0).getIcon()})}" alt="">-->
 							<div class="avatar-text">
 								<p class="gray">支持jpg、gif、png格式图片</p>
@@ -638,14 +599,14 @@
 			<br>
 			<div class="qdp-border table-x shelf-table shelf-recent" data-l3="3" style="background-color: white;" >
 				<div class="table-msg">
-					<h2 class="shelf-title">最近阅读</h2>最多显示最近阅读的<strong class="dark ml5 mr5">100</strong>本书
+					<h2 class="shelf-title">最近阅读</h2>最多显示最近阅读的<strong class="dark ml5 mr5">50</strong>本书
 				</div>
 				<div class="table-size ui-loading-animation" id="tsula" style=" transition: height 200ms ease 0s;">
 					<table id="shelfTable" class="ui-table">
 						<thead>
 						<tr>
-							<th scope="col" width="350">书名/最近更新章节</th>
-							<th scope="col" width="130">更新时间</th>
+							<th scope="col" width="350">书名/最后阅读章节</th>
+							<th scope="col" width="130">阅读时间</th>
 							<th scope="col" width="100">作者</th>
 							<th scope="col" >操作</th>
 
@@ -736,7 +697,7 @@
 <script src="./js/move-top.js"></script>-->
 <script src="./js/jquery.form.js"></script>
 
-<script>
+<script th:inline="javascript" type="text/javascript">
 
     layui.use('laydate', function(){
         var laydate = layui.laydate;
@@ -1034,15 +995,16 @@
         $("#tabTarget21").prop("class","ui-tab-content");
         $("#tabTarget12").prop("class","ui-tab-content checked");
         $.ajax({
-            url: "per/reviewquery",
+            url: "/eva/queryEvaluate",
+			data:{userid:$("#uid").val()},
             success: function (data) {
                 var tbom1="";
                 if(data.length>0){
                     for (var i=0; i<data.length; i++){
                         tbom1 += "<tr>"+
-                        "<td class='col1 wbba'><a href='/jpbook/reviewbook/queryAll?bookid="+data[i].bookid+"' class='blue' target='_blank' data-eid='qd_M76'>"+data[i].revvlue.substring(0,10)+"</a></td>"+
-                        "<td class='col4'>"+renderTime(data[i].commenttime).substring(0,10)+"</td>"+
-                        "<td class='col5 wbba'><a href='/jpbook/reviewbook/queryAll?bookid="+data[i].bookid+"' class='blue' target='_blank' data-eid='qd_M77'>"+data[i].bookname+"</a></td>"+
+                        "<td class='col1 wbba'><a href='/books/queryAll?bookid="+data[i].bookid+"' class='blue' target='_blank' data-eid='qd_M76'>"+data[i].content.substring(0,10)+"</a></td>"+
+                        "<td class='col4'>"+renderTime(data[i].evatime).substring(0,10)+"</td>"+
+                        "<td class='col5 wbba'><a href='/books/queryAll?bookid="+data[i].bookid+"' class='blue' target='_blank' data-eid='qd_M77'>"+data[i].bookname+"</a></td>"+
                         "</tr>";
 					}
 					$("#tbom1").html(tbom1);
@@ -1058,15 +1020,16 @@
         $("#tabTarget12").prop("class","ui-tab-content");
         $("#tabTarget21").prop("class","ui-tab-content checked");
         $.ajax({
-            url: "per/replyquery",
+            url: "/rep/queryReply",
+			data:{userid:$("#uid").val()},
             success: function (data) {
                 var tbom2="";
                 if(data.length>0){
                     for (var i=0; i<data.length; i++){
                         tbom2 += "<tr>"+
-                            "<td class='col1 wbba'><a href='/jpbook/reviewbook/queryAll?bookid="+data[i].bookid+"' class='blue' target='_blank' data-eid='qd_M76'>"+data[i].revvlue.substring(0,10)+"</a></td>"+
-                            "<td class='col2 wbba'>"+data[i].repcontent.substring(0,10)+"</td>"+
-                            "<td class='col3 wbba'><a href='/jpbook/reviewbook/queryAll?bookid="+data[i].bookid+"' class='blue' target='_blank' data-eid='qd_M77'>"+data[i].bookname+"</a></td>"+
+                            "<td class='col1 wbba'><a href='/books/queryAll?bookid="+data[i].bookid+"' class='blue' target='_blank' data-eid='qd_M76'>"+data[i].repcontent.substring(0,10)+"</a></td>"+
+                            "<td class='col2 wbba'>"+data[i].content.substring(0,10)+"</td>"+
+                            "<td class='col3 wbba'><a href='/books/queryAll?bookid="+data[i].bookid+"' class='blue' target='_blank' data-eid='qd_M77'>"+data[i].bookname+"</a></td>"+
                             "</tr>";
                     }
                     $("#tbom2").html(tbom2);
@@ -1087,107 +1050,28 @@
         }
         $("#s4").show();
 
-        var grade = 1;
         $.ajax({
-            url: "per/queryusers",
-            success: function (data) {
-                grade = data[0].grade;
-            }
-        });
-
-        $.ajax({
-            url:"per/wtid1",
+            url:"user/getTicket",
             success:function (data) {
-                if (grade >= 3 && grade < 13){
-					$("#wtid1").text(1);
-					if(data == 0){
-                        $("#wtid2").text(1);
-					}else {
-                        $("#wtid3").text(1);
-					}
-                }else if(grade >= 13 && grade < 23) {
-                    $("#wtid1").text(2);
-                    if(data == 0){
-                        $("#wtid2").text(2);
-                    }else if (data == 1){
-                        $("#wtid2").text(1);
-                        $("#wtid3").text(1);
-                    }else if(data == 2){
-                        $("#wtid3").text(2);
-					}
-                }else if(grade >=23) {
-                    $("#wtid1").text(3);
-                    if(data == 0){
-                        $("#wtid2").text(3);
-                    }else if (data == 1){
-                        $("#wtid2").text(2);
-                        $("#wtid3").text(1);
-                    }else if(data == 2){
-                        $("#wtid2").text(1);
-                        $("#wtid3").text(2);
-                    } else if(data == 3){
-                        $("#wtid3").text(3);
-                    }
-                }else {
-
-				}
-
+				$("#wtid1").text(data.ticked+data.voteticket);
+				$("#wtid2").text(data.voteticket);
+				$("#wtid3").text(data.ticked);
+				$("#outstd2").text(data.weekticket);
             }
         });
-
-        $.ajax({
-            url: "per/wtid2",
-            success: function (data) {
-				if (data.employ == null || data.employ == undefined){
-                    $("#wtid4").text(data.walnum);
-				}else {
-                    $("#wtid4").text(data.walnum+data.employ);
-				}
-                $("#wtid5").text(data.employ);
-                $("#wtid6").text(data.walnum);
-            }
-        });
-        jp_M61();
+        jp_M62();
     }
 
-    function jp_M61(){
-        $("#jp_M62").prop("class","");
-	    $("#jp_M61").prop("class","checked");
-        $("#tabTarget25").prop("class","ui-tab-content");
-        $("#tabTarget15").prop("class","ui-tab-content checked");
-        $.ajax({
-            url:"per/monthlyquery",
-            success:function (data) {
-                var tbody1 = "";
-                if (data.length>0){
-                    $("#outstd1").text(data[0].num);
-                    for (var i=0; i<data.length; i++){
-                        tbody1 += "<tr><td class='col1'>"+renderTime(data[i].votetime).substring(0,10)+"</td><td class='col2'>"+data[i].votenum+"</td>"+
-                            "<td class='col3 wbba'><a href='books/queryBookById?bookid="+data[i].bookid+"' class='blue' target='_blank'>"+data[i].bookname+"</a></td>"+
-                            "</tr>";
-                    }
-                    $("#tbody1").html(tbody1);
-                }else {
-                    $("#tnx1").show();
-                }
-            }
-        });
-	}
-	$("#jp_M62").click(function () {
-        $("#jp_M61").prop("class","");
-        $("#jp_M62").prop("class","checked");
-        $("#tabTarget15").prop("class","ui-tab-content");
-        $("#tabTarget25").prop("class","ui-tab-content checked");
+	function jp_M62() {
 
         $.ajax({
-           url:"per/recquery",
+           url:"expn/voteRecord",
            success:function (data) {
                var tbody2 = "";
                if (data.length>0){
-					$("#outstd2").text(data[0].num);
 					for (var i=0; i<data.length; i++){
-                    	tbody2 += "<tr><td class='col1'>"+renderTime(data[i].votetime).substring(0,10)+"</td><td class='col2'>"+data[i].votenum+"</td>"+
-                        "<td class='col3 wbba'><a href='books/queryBookById?bookid="+data[i].bookid+"' class='blue' target='_blank'>"+data[i].bookname+"</a></td>"+
+                    	tbody2 += "<tr><td class='col1'>"+renderTime(data[i].votetime).substring(0,10)+"</td><td class='col2'>"+data[i].nums+"</td>"+
+                        "<td class='col3 wbba'><a href='/books/queryAll?bookid="+data[i].bookid+"' class='blue' target='_blank'>"+data[i].bookname+"</a></td>"+
                         "</tr>";
 					}
                    $("#tbody2").html(tbody2);
@@ -1197,7 +1081,7 @@
            }
        });
 
-    })
+    }
     
     function u6() {
         for (var i = 1; i <= 10; i++) {
@@ -1209,12 +1093,6 @@
         }
         $("#s6").show();
 
-        $.ajax({
-            url: "/user/query",
-            success: function (data) {
-				$("#balance").text(data[0].money);
-            }
-        });
         record1();
     }
 
@@ -1228,6 +1106,7 @@
 
         $.ajax({
             url: "/expn/querys",
+            data:{exptypeid:1},
             success: function (data) {
                var record1="";
                if (data.length>0){
@@ -1255,14 +1134,15 @@
         $("#record2").prop("class","checked");
 
         $.ajax({
-            url: "expn/querys",
+            url: "/expn/querys",
+            data:{exptypeid:2},
             success: function (data) {
                 var record2="";
                 if (data.length>0){
                     for (var i = 0; i<data.length; i++){
                         record2 += "<tr class='qdp-operate-wrapper'><td class='col1'>"+
-                            "<span class='shelf-table-author font12'>"+data[i].rewanum+"书币</span> </td>"+
-                            "<td class='col1'><span class='shelf-table-author font12'>"+renderTime(data[i].rewatime).substring(0,10)+"</span></td>"+
+                            "<span class='shelf-table-author font12'>"+data[i].expmoney+"书币</span> </td>"+
+                            "<td class='col1'><span class='shelf-table-author font12'>"+renderTime(data[i].exptime).substring(0,10)+"</span></td>"+
                             "<td class='col1'><span class='shelf-table-author font12'>"+data[i].bookname+"</span></td></tr>";
                     }
                     $("#tab2").html(record2);
@@ -1284,15 +1164,17 @@
         $("#record3").prop("class","checked");
 
         $.ajax({
-            url: "per/record3",
+            url: "/expn/querys",
+            data:{exptypeid:3},
             success: function (data) {
                 var record3="";
                 if (data.length>0){
                     for (var i = 0; i<data.length; i++){
                         record3 += "<tr class='qdp-operate-wrapper'><td class='col1'>"+
                             "<span class='shelf-table-author font12'>"+data[i].bookname+"</span> </td>"+
-                            "<td class='col1'><span class='shelf-table-author font12'>"+data[i].count+"</span></td>"+
-                            "<td class='col1'><span class='shelf-table-author font12'>"+data[i].sum+"书币</span></td></tr>";
+                            "<td class='col1'><span class='shelf-table-author font12'>"+data[i].chaptername+"</span></td>"+
+                            "<td class='col1'><span class='shelf-table-author font12'>"+data[i].expmoney+"书币</span></td>" +
+							"<td class='col1'><span class='shelf-table-author font12'>"+renderTime(data[i].exptime).substring(0,10)+"</span></td></tr>";
                     }
                     $("#tab3").html(record3);
                 }else {
@@ -1303,112 +1185,49 @@
         });
     })
 
-    function u8() {
-        for (var i = 1; i <= 10; i++) {
+    function updinfo(){
+		for (var i = 1; i <= 10; i++) {
             $("#u" + i).prop("class", "");
         }
+
         $("#u8").prop("class", "active");
         for (var i = 1; i <= 10; i++) {
             $("#s" + i).hide();
         }
         $("#s8").show();
 
-        $.ajax({
-            url: "per/queryusers",
-            success: function (data) {
-                $("#uuid").text(data[0].uuid);
-                $("#uname2").val(data[0].uname);
-                $("#iptBorth").val(renderTime(data[0].birthday).substring(0,10));
-
-                $("#forIntroArea").val(data[0].self);
-                var sex = data[0].sex;
-                if (sex == 0){
-                    $("#radioSex2").prop("");
-                    $("#radioSex1").prop("checked",true);
-
-				}else {
-                    $("#radioSex1").prop("");
-                    $("#radioSex2").prop("checked",true);
-				}
-
-            }
-        });
+        var usex = $("#usex").val();
+        if(usex == "女"){
+			$("#radioSex1").prop("");
+			$("#radioSex2").prop("checked",true);
+		}else if(usex == "男"){
+			$("#radioSex2").prop("");
+			$("#radioSex1").prop("checked",true);
+		}
     }
 
+    $("#forIntroArea").click(function(){
+    	$("#gxqm").html("");
+	});
+
     $("#dialogMsgSubmit").click(function () {
-        var uname = $("#uname2").val()
-        var birthday = $("#iptBorth").val();
-        var self = $("#forIntroArea").val();
-        var sex = 0;
+        var username = $("#uname2").val();
+        var sex = "";
         if($("#radioSex1").prop("checked")){
-            sex = 0;
-        }else {
-            sex = 1;
+            sex = "男";
+        }else if($("#radioSex2").prop("checked")){
+            sex = "女";
         }
 
-        if ($("#uname2").val() == ""){
-            $("#uname2").focus();
-            $("#uname2").css("border","1px solid red");
-            return false;
-        }
-        $.ajax({
-            url:'per/getuname',
-            data:{"uname":$("#uname2").val()},
-            success:function (data) {
-                if (data > 0){
-                    swal("用户名已存在", "", "error");
-                    return false;
-                }
-                if(birthday > getNowFormatDate()){
-                    swal("生日选择有误", "", "error");
-                    return false;
-                }
-                $.ajax({
-                    url:'per/editusers',
-                    data:{"uname":uname,"birthday":birthday,"self":self,"sex":sex},
-                    success:function (data) {
-                        $("#btnEditName").text("修改昵称");
-                        $("#uname2").css("border","");
-                        $("#uname2").prop("disabled","disabled");
-
-                        u8();
-                        swal("保存信息成功", "", "success");
-                    }
-                })
-
-            }
-        })
-
-    })
-
-    $("#btnEditName").click(function () {
-		if ($("#uname2").val() == ""){
-            $("#uname2").focus();
-            $("#uname2").css("border","1px solid red");
-            return false;
-		}
-
-		if ($("#btnEditName").text() == "修改昵称"){
-            $("#btnEditName").text("保存");
-            $("#uname2").css("border","1px solid lightgray");
-            $("#uname2").prop("disabled","");
-		}else {
-            $.ajax({
-                url:'per/getuname',
-                data:{"uname":$("#uname2").val()},
-                success:function (data) {
-                    if (data > 0){
-                        swal("用户名已存在", "", "error");
-                        return false;
-					}else {
-                        $("#btnEditName").text("修改昵称");
-                        $("#uname2").css("border","");
-                        $("#uname2").prop("disabled","disabled");
-					}
-                }
-            })
-		}
-    })
+		$.ajax({
+			url: "/Login/userupdate",
+			data:{username:$("#uname2").val(),sex:sex,sign:$("#forIntroArea").val(),userid:$("#uid").val()},
+			success: function (data) {
+				console.log(data);
+				swal("信息修改成功", "", "success");
+			}
+		});
+    });
 
     $("#jpbasic").click(function () {
         $("#jpicon").prop("class","");
@@ -1416,10 +1235,27 @@
         $("#tabTarget9").prop("class","ui-tab-content setting-avatar");
         $("#tabTarget11").prop("class","ui-tab-content checked");
 
-        u8();
+		updinfo();
     })
 
-    $("#jpicon").click(function () {
+	function lookImg(){
+		var f = $("#fb").next().find('input[type=file]')[0];
+		/* <![CDATA[ */
+		if (f.files && f.files[0]){
+			$('#addImage').html('');
+			for(var i=0;i<f.files.length;i++){
+				var reader = new FileReader(f.files[i]);
+				reader.onload = function(e){
+					$('#addImage').append("<img src='"+e.target.result+"'width='100px;'/>");
+				};
+				reader.readAsDataURL(f.files[i]);
+			}
+		}
+		/*]]>*/
+	}
+
+
+	$("#jpicon").click(function () {
         $("#jpbasic").prop("class","");
         $("#jpicon").prop("class","checked");
         $("#tabTarget11").prop("class","ui-tab-content");
@@ -1435,6 +1271,7 @@
             alert("图片的格式必须为png或者jpg或者jpeg格式！");
             return;
         }
+
         var isIE = navigator.userAgent.match(/MSIE/) != null,
             isIE6 = navigator.userAgent.match(/MSIE 6.0/) != null;
 
@@ -1469,7 +1306,7 @@
 		}else{
 			var form = $("#frmpic");
 			var options = {
-				url:'per/editicon', //上传文件的路径
+				url:'/Upload/upload', //上传文件的路径
 				type:'post',
 				async :true,
 				success:function(data){
@@ -1479,9 +1316,16 @@
 			};
 			form.ajaxSubmit(options);
 		}
+
     }
-	var indexSecond;
-	var shownum;
+
+	var shownum=0;
+	var indexSecond=$("#sdf" + shownum).attr("data-timeLeft");
+	for (var i = 0; i <= 7; i++) {
+		$("#showa" + i).hide();
+		$("#showa" + shownum).show();
+	}
+	$("#sdf"+ shownum).hide();
     function u10() {
         for (var i = 1; i <= 10; i++) {
             $("#u" + i).prop("class", "");
@@ -1493,164 +1337,83 @@
         $("#s10").show();
 
         $.ajax({
-            url: "per/queryusers",
+            url: "expn/queryMoney",
             success: function (data) {
-				$("#grade2").text(data[0].grade);
-				$("#exp2").text(data[0].exp);
-				$("#expnext").text(100 - data[0].exp%100 == 100 ? 100:100 - data[0].exp%100);
-				if (data[0].grade >= 3 && data[0].grade < 13){
-                    $("#mr12").text("每日赠送推荐票 1张(每天清除不积累)");
-				}else if(data[0].grade >= 13 && data[0].grade < 23) {
-                    $("#mr12").text("每日赠送推荐票 2张(每天清除不积累)");
-				}else if(data[0].grade >=23) {
-                    $("#mr12").text("每日赠送推荐票 3张(每天清除不积累)");
+				var lv = parseInt($("#grade2").text());
+				$("#exp2").text(data);
+				var next = 10;
+				if (lv > 0){
+                    $("#mr12").text("每日赠送书币和推荐票 订阅书籍优惠（"+(10-(lv*2))+"书币/千字）");
+                    if(lv == 1){
+                    	next = 100-data;
+					}else if(lv == 2){
+                    	next = 300-data;
+					}else if(lv == 3){
+                    	next = 500-data;
+					}
                 }else {
                     $("#mr12").text("暂无");
 				}
-
-            }
-        })
-
-        $.ajax({
-            url: "per/signexp",
-            success: function (data) {
-
-                //秒长
-                indexSecond = $("#sdf" + data.num).attr("data-timeLeft") - data.signlong;
-                shownum = data.num;
-
-                //在线时长
-                var onlinetime = data.signlong;
-
-                var num = data.num
-
-                if (num == 0) {
-                    for (var i = 0; i <= 7; i++) {
-                        $("#showa" + i).hide();
-                        $("#showa0").show();
-                    }
-                    $("#sdf0").hide();
-
-                } else if (num == 1) {
-                    for (var j = 0; j < num; j++) {
-                        $("#sdf" + j).text("已领取");
-                        $("#sdf" + j).show();
-                    }
-                    for (var i = 0; i <= 7; i++) {
-                        $("#showa" + i).hide();
-                        $("#showa1").show();
-                    }
-                    $("#sdf1").hide();
-
-                } else if (num == 2) {
-                    for (var j = 0; j < num; j++) {
-                        $("#sdf" + j).text("已领取");
-                        $("#sdf" + j).show();
-                    }
-                    for (var i = 0; i <= 7; i++) {
-                        $("#showa" + i).hide();
-                        $("#showa2").show();
-                    }
-                    $("#sdf2").hide();
-                } else if (num == 3) {
-                    for (var j = 0; j < num; j++) {
-                        $("#sdf" + j).text("已领取");
-                        $("#sdf" + j).show();
-                    }
-                    for (var i = 0; i <= 7; i++) {
-                        $("#showa" + i).hide();
-                        $("#showa3").show();
-                    }
-                    $("#sdf3").hide();
-                }else if (num == 4) {
-                    for (var j = 0; j < num; j++) {
-                        $("#sdf" + j).text("已领取");
-                        $("#sdf" + j).show();
-                    }
-                    for (var i = 0; i <= 7; i++) {
-                        $("#showa" + i).hide();
-                        $("#showa4").show();
-                    }
-                    $("#sdf4").hide();
-                }else if (num == 5) {
-                    for (var j = 0; j < num; j++) {
-                        $("#sdf" + j).text("已领取");
-                        $("#sdf" + j).show();
-                    }
-                    for (var i = 0; i <= 7; i++) {
-                        $("#showa" + i).hide();
-                        $("#showa5").show();
-                    }
-                    $("#sdf5").hide();
-                }else if (num == 6) {
-                    for (var j = 0; j < num; j++) {
-                        $("#sdf" + j).text("已领取");
-                        $("#sdf" + j).show();
-                    }
-                    for (var i = 0; i <= 7; i++) {
-                        $("#showa" + i).hide();
-                        $("#showa6").show();
-                    }
-                    $("#sdf6").hide();
-                }else if (num == 7) {
-                    for (var j = 0; j < num; j++) {
-                        $("#sdf" + j).text("已领取");
-                        $("#sdf" + j).show();
-                    }
-                    for (var i = 0; i <= 7; i++) {
-                        $("#showa" + i).hide();
-                        $("#showa7").show();
-                    }
-                    $("#sdf7").hide();
-                }
-
+				$("#expnext").text(next);
+				if(lv == 4){
+					$("#e").html("已达到最高等级");
+				}
             }
         });
 
     }
 
     function addexp(id) {
-		var exp = $("#showa"+id).attr("data-timeLeft");
-        $.ajax({
-            url:"per/addexp",
-			data:{"exp":exp},
-            success:function (data) {
-                u10();
-                if (data == 1){
-                    swal("领取成功", "", "success");
-                }
-                if (data == 2){
-                    swal("恭喜你升级啦", "", "success");
-                }
-            }
-		});
+		var exp = parseInt($("#showa"+id).attr("data-timeLeft"));
+		var vip = [[${session.user.vip}]];
+		if(id<6){
+			$.ajax({
+				url:"user/addMoney",
+				data:{"money":exp*(parseInt(vip)+1)},
+				success:function(data){
+					success(data);
+				}
+			});
+		}else{
+			$.ajax({
+				url:"user/addMoney",
+				data:{"ticket":exp*(parseInt(vip)+1)},
+				success:function(data){
+					success(data);
+				}
+			});
+		}
     }
+    function success(data){
+		if (data == 1){
+			swal("领取成功", "", "success");
+		}
+		shownum++;
+		indexSecond=$("#sdf"+shownum).attr("data-timeLeft");
+		for (var i = 0; i <= 7; i++) {
+			$("#showa" + i).hide();
+			$("#showa" + shownum).show();
+		}
+		$("#sdf"+ shownum).hide();
+		for (var j = 0; j < shownum; j++) {
+			$("#sdf" + j).text("已领取");
+			$("#sdf" + j).show();
+		}
+	}
 
-    $("#elTaskButton").click(function () {
-        $.ajax({
-            url:"per/exp",
-            data:{"exp":300},
-            success:function (data) {
-                u10();
-				swal("恭喜你升级啦", "", "success");
-            }
-        });
-    })
-
-    //var maxtime = indexSecond; //60 * 60; //一个小时，按秒计算!
     function CountDown() {
         if (indexSecond >= 0) {
-            minutes = Math.floor(indexSecond / 60);
-            seconds = Math.floor(indexSecond % 60);
+            var minutes = Math.floor(indexSecond / 60);
+            var seconds = Math.floor(indexSecond % 60);
             $("#showa"+shownum).text(minutes+":"+seconds);
-            --indexSecond;
+            indexSecond--;
             $("#showa"+shownum).removeAttr("href");
         } else{
 			$("#showa"+shownum).prop("href","javascript:addexp("+shownum+")");
 			$("#showa"+shownum).text("领取");
         }
     }
-    setInterval("CountDown()", 1000);
+    setInterval(CountDown, 1000);
 
 
 	//最近阅读
@@ -1663,11 +1426,11 @@
         $("#q2").hide();
 
         $.ajax({
-            url: "bookrack/read",
+            url: "chapters/queryBrowses",
             success: function (data) {
 				var r1 = "";
 				if (data.length == 0){
-                    $("#tsula").css("height","359");
+                    $("#最近阅读").css("height","359");
                     $("#tnxd1").show();
                     $("#tnxd2").show();
 				}else {
@@ -1675,16 +1438,16 @@
 						r1 += "<tr class='qdp-operate-wrapper'>"+
 							"<td class='col1'>"+
 							"<span class='shelf-table-name'><b>"+
-							"<a href='/jpbook/showAllBook.html?btid="+data[j].btid+"' target='_blank' class='fen-category' style='color: grey'>「"+data[j].btname+"」</a>"+
-							"<a href='/jpbook/books/queryBookById?bookid="+data[j].bookid+"' target='_blank' title=''>"+data[j].bookname+"</a>"+
+							"<a href='/showAllBook.html?typeid="+data[j].typeid+"' target='_blank' class='fen-category' style='color: grey'>「"+data[j].typename+"」</a>"+
+							"<a href='/books/queryAll?bookid="+data[j].bookid+"' target='_blank' title=''>"+data[j].bookname+"</a>"+
 							"</b>&nbsp;&nbsp;"+
-							"<a href='/jpbook/chapter/getInformationByChapid?chapid="+data[j].chapid+"' class='shelf-table-chapter blue' target='_blank' title=''>"+data[j].chapname+"</a>"+
+							"<a href='/chapters/queryId?chapterId="+data[j].chapid+"' class='shelf-table-chapter blue' target='_blank' title=''>"+data[j].chaptername+"</a>"+
 							"</span></td>"+
-							"<td class='col2 font12'>"+renderTime(data[j].chaptime).substring(0,16)+"</td>"+
+							"<td class='col2 font12'>"+renderTime(data[j].browsetime).substring(0,16)+"</td>"+
 							"<td class='col3'>"+
-							"<a href='/jpbook/pc/authorData?bid="+data[j].uuid+"' target='_blank' title='' class='shelf-table-author font12'>"+data[j].pen+"</a>"+
+							"<a href='/pc/authorData?bid="+data[j].authorid+"' target='_blank' title='' class='shelf-table-author font12'>"+data[j].pen+"</a>"+
 							"</td>";
-							if(data[j].brid != -1){
+							if(data[j].israck != 0){
                             	r1 += "<td class='col5 shlef-menu'><a href='javascript:' class='gray icon icon-book_icon jsTips font12 disabled' title='已在书架'></a></td>"+"</tr>";
 							}else{
                                 r1 += "<td class='col5 shlef-menu'><a href='javascript:addBookrack("+data[j].bookid+")' class='blue icon icon-book_icon jsTips elInBookShelf font12' title='加入书架'></a></td>"+"</tr>";
@@ -1699,10 +1462,10 @@
 	//最近阅读加入书架
     function addBookrack(bookid) {
         $.ajax({
-            url: "/jpbook/pc/add",
+            url: "/bor/add",
             data: {"bookid": bookid},
             success: function (data) {
-                swal("已加入书架", "", "success");
+				swal("加入成功", "已加入书架", "success");
                 m1();
 			}
         })
@@ -1744,9 +1507,9 @@
                             "<a href='/jpbook/pc/authorData?bid="+data[i].userid+"' target='_blank' title='' class='shelf-table-author font12' data-eid='qd_M200' >"+data[i].pen+"</a>"+
                             "</td>";
 								if(data[i].state == 0 ){
-                                    tbo2 += "<td class='col5'><a href='/jpbook/books/queryBookById?bookid="+data[i].bookid+"' class='spTips font12 yesReadStatus' target='_blank' title=''>连载中</a></td>";
+                                    tbo2 += "<td class='col5'><a href='/books/queryAll?bookid="+data[i].bookid+"' class='spTips font12 yesReadStatus' target='_blank' title=''>连载中</a></td>";
 								}else {
-                                    tbo2 += "<td class='col5'><a href='/jpbook/books/queryBookById?bookid="+data[i].bookid+"' class='spTips font12 yesReadStatus' target='_blank' title=''>已完本</a></td>";
+                                    tbo2 += "<td class='col5'><a href='/books/queryAll?bookid="+data[i].bookid+"' class='spTips font12 yesReadStatus' target='_blank' title=''>已完本</a></td>";
 								}
 							tbo2 += "<td class='col6 shlef-menu'></td>"+
                             "</tr>";

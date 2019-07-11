@@ -59,12 +59,28 @@ public class ChaptersService {
 		return dao.queryChapter(bookid);
 	}
 
-	public Chapters queryId(Integer chapterId){
-		return  dao.queryId(chapterId);
+	public Map<String,Object> queryId(Integer chapterId,Integer userid){
+		return  dao.queryId(chapterId,userid);
 	}
 
 	public List<Chapters> upDow(Integer chapterid,Integer rollid){
 		return dao.upDow(chapterid,rollid);
+	}
+
+	public List<Map<String,Object>> queryBuy(Integer bookid,Integer rollid,Integer userid){
+		return dao.queryBuy(bookid,rollid, userid);
+	}
+	public List<Map<String,Object>> queryBrowses(Integer userid){
+		return dao.queryBrowses(userid);
+	}
+	public Integer addBrowses(Integer userid,Integer chapid){
+		return dao.addBrowses(userid, chapid);
+	}
+	public Integer updBrowses(Integer userid,Integer chapid){
+		return dao.updBrowses(userid, chapid);
+	}
+	public Integer getChapid(Integer userid,Integer chapid,Integer bookid){
+		return dao.getChapid(userid, chapid, bookid);
 	}
 	//后台审核查询
 	public List<Map<String,Object>> querybackSH(Integer state){return dao.querybackSH(state);}

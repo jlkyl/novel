@@ -34,7 +34,7 @@ public class alipay {
            alipayRequest.setReturnUrl("http://localhost:8080/weekpush/addWeekpush?money=" + money + "&bookid="+bookid+"&potential="+potential);
        }
         if(choose ==0) {
-            alipayRequest.setReturnUrl("http://localhost:8080/success?money=" + money + "&userid=" + MyUtil.getuserid(httpRequest.getSession()));
+            alipayRequest.setReturnUrl("http://localhost:8080/user/recharge?money="+money);
         }
 
         alipayRequest.setNotifyUrl("http://localhost:8080/index.html");// 在公共参数中设置回跳和通知地址
@@ -55,9 +55,4 @@ public class alipay {
         httpResponse.getWriter().close();
     }
 
-    @RequestMapping("success")
-    public String success(int money,int userid) {
-
-        return "redirect:user/update";
-    }
 }

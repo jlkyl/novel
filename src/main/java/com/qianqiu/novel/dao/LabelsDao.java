@@ -15,7 +15,7 @@ public interface LabelsDao {
     int add(Labels l);
     @Update("UPDATE `novel`.`labels` SET  `labelname`=#{labelname}, `operateeid`=#{operateeid}, `operatedate`=now() WHERE (`labelid`=#{labelid});\n")
     int update(Labels l);
-    @Delete("delete from labels where labelid = #{labelid}")
+    @Delete("delete from book_label where labelid=#{labelid};delete from labels where labelid = #{labelid};")
     int del(Integer labelid);
     @Select("select * from labels where labelid = #{labelid}")
     List<Labels> queryId(Integer labelid);

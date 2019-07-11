@@ -33,7 +33,7 @@ public class WebController {
         model.addAttribute("recommend9",bs.query(9,1,null));
         model.addAttribute("recommend10",bs.query(2,1,1));
         model.addAttribute("recommend11",bs.query(10,1,1));
-        model.addAttribute("updates",bs.queryUpdate());
+        model.addAttribute("recommend12",bs.query(11,1,null));
         model.addAttribute("authors",bs.queryAuthor());
         model.addAttribute("site",ss.findAll());
     }

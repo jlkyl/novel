@@ -26,15 +26,15 @@
                 fitColumns:true, // 列宽自适应
                 singleSelect:true,// 当行选中
                 pagination:true,
-                pageList:[2,6,10,15,20],
-                pageSize:2,
+                pageList:[5,10,15,20],
+                pageSize:5,
                 columns:[
                     [
-                        {field: 'pushid', title: '编号', width: 220},
-                        {field: 'bookname', title: '作品', width: 220},
-                        {field: 'cover', title: '封面', width: 220,formatter:getFile},
-                        {field: 'operateeid', title: '操作人', width: 220},
-                        {field: 'operatedate', title: '操作时间', width: 220}
+                        {field: 'pushid', title: '编号', width: 100},
+                        {field: 'bookname', title: '作品', width: 100},
+                        {field: 'cover', title: '封面', width: 200,formatter:getFile},
+                        {field: 'empname', title: '操作人', width: 100},
+                        {field: 'operatedate', title: '操作时间', width: 150}
                     ]
                 ],
                 // toolbar:'#tools',
@@ -62,7 +62,7 @@
                             $.messager.alert("提示","请选择要修改得数据");
                         }
                     }
-                },'-',{text:"删除",
+                }/*,'-',{text:"删除",
                     iconCls:"icon-remove",
                     handler:function(){
                         var row = $("#tb").datagrid("getSelected");
@@ -86,7 +86,7 @@
                             $.messager.alert("提示","请选择要删除得数据");
                         }
                     }
-                }]
+                }*/]
             });
 
             // 隐藏对话框
@@ -116,7 +116,7 @@
 
         function getFile(value){
             if(value){
-                return "<img src='../img/"+value+"' width='100px' height='75px'></img>";
+                return "<img src='"+value+"' width='200px' height='75px'>";
             }
             return null;
         }

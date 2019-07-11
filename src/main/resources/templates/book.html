@@ -37,16 +37,29 @@
     </style>
     <script src="../js/jquery-3.3.1.js"></script>
 	<script src="../js/layui/layui.js"></script>
-    <script type="text/javascript">
+    <script type="text/javascript" th:inline="javascript">
+		$(function(){
+			var putaway=[[${list[0].putaway}]];
+			if(putaway==2){
+				swal({
+					title: "该作品已下架！",
+					type: "warning",
+					closeOnConfirm:false,
+					closeOnCancel:false
+				},function(){
+					window.close();
+				})
+			}
+		})
         function removeu(){
             jQuery.ajax({
-                url:'/jpbook/login/quit',
+                url:'/Login/logout',
                 success:function(data){
                     jQuery(".sign-in").addClass("sign-in hidden");
                     jQuery(".sign-out.hidden").addClass("sign-out");
                     jQuery(".sign-in").removeClass("sign-in");
                     jQuery(".sign-out.hidden").removeClass("sign-out hidden");
-                    window.location.reload()
+                    window.location.reload();
                 }
             });
         }
@@ -65,7 +78,7 @@
         function dianzan(obj,revid){
             var z = parseInt($(obj).children('span').html());
 			$.ajax({
-				url:'/jpbook/books/userExist',
+				url:'/Login/writerManager',
 				type:'post',
 				datatype:'text',
 				success:function(data){
@@ -123,7 +136,7 @@
 		}
 		function faties(bookid){
 			jQuery.ajax({
-				url:'./userExist',
+				url:'./Login/writerManager',
 				success:function(data){
 				    if(0 == data){
                         window.location.href = "../login.html";
@@ -163,7 +176,7 @@
             })
             $("#scoreBtn").mouseout(function () {
                 $.ajax({
-                    url:'./userExist',
+                    url:'/Login/writerManager',
 					success:function (data) {
 						if(0 == data){
                             $(this).children("img").attr("src","../images/star-off.b2a1b.png");
@@ -187,7 +200,7 @@
             $("#scoreBtn > img").click(function () {
                 var len = $(this).prevAll().length;
                 jQuery.ajax({
-                    url:'./userExist',
+                    url:'/Login/writerManager',
                     success:function(data){
                         if(0 == data){
                             /*window.open("../login.html")*/
@@ -253,12 +266,12 @@
 					    len += 1;
 					}
                 })
-                /*alert($("#evaMsgText").val())*/
 				$.ajax({
-					url:'/jpbook/evaluate/add',
-					data:{'bookid':$("#bookid").val(),'evacontent':$("#evaMsgText").val(),"evalv":len},
+					url:'/eva/add',
+					data:{'userid':$("#userid").val(),'bookid':$("#bookid").val(),'content':$("#evaMsgText").val(),"level":len},
 					type:'post',
 					success:function (data) {
+						alert(JSON.stringify(data));
 					    if(data == 1){
                             layui.use('layer', function(){
                                 var layer = layui.layer;
@@ -301,6 +314,53 @@
             });
 
             $(".j_godiscuss").click(function () {
+            	$.ajax({
+					url:'/eva/queryEvaluate',
+					data:{"bookid":$("#bookid").val()},
+					type:'post',
+					success:function (data){
+						var str = "";
+						for (var i = 0; i < data.length; i++) {
+							str += "<li class=\"cf \" data-rid=\"1\">\n" +
+									"<div class=\"user-photo\">\n" +
+									"<a th:href=\"|/jpbook/pc/home?uuid="+data[i].userid+"|\" target=\"_blank\">\n" +
+									"<img src=\""+data[i].head+"\">\n" +
+									"</a>\n" +
+									"</div>\n" +
+									"<div class=\"discuss-info\">\n" +
+									"<p class=\"users\">\n" +
+									"<a class=\"blue\"  th:href=\"|/jpbook/pc/home?uuid="+data[i].userid+"|\" target=\"_blank\">\n" +
+									"<b>"+data[i].pen+"</b>\n" +
+									"</a>\n" +
+									"<span class=\"gray\">发表了评价</span>\n" +
+									"</p>\n" +
+									"<h5 class=\"text\">\n" +
+									"<a class=\"\"  th:href=\"@{/reviewbook/queryById(bookid=${queryBookById[0].bookid},revid="+data[i].evaid+")}\"\n" +
+									"target=\"_blank\" data-eid=\"qd_G37\">"+data[i].content+"\n" +
+									"<i class=\"icon icon-topfix\"></i>\n" +
+									"<i class=\"icon icon-jinghua\"></i>\n" +
+									"</a>\n" +
+									"</h5>\n" +
+									"<p class=\"info dib-wrap\" data-id=\"1244484136\">\n" +
+									"<span class=\"mr20\" th:text=\"|"+data[i].evatime+"发布|\">"+data[i].evatime+"发布</span>\n" +
+									"<a href=\"/eva/queryById?bookid="+data[i].bookid+"&revid="+data[i].evaid+"\"\n" +
+									"class=\"info-tab mr20\" target=\"_blank\">\n" +
+									"<i class=\"iconfont icon-xiaoxi\"></i>\n" +
+									"<span th:text=\"|"+data[i].recount+"条回复|\">|"+data[i].recount+"条回复|</span>\n" +
+									"</a>\n" +
+									"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<a href=\"javascript:;\" th:onclick=\"'javascript:dianzan(this,'+${qr.evaid}+')'\"\n" +
+									"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t   th:class=\"${qr.z} gt -1 ? 'info-tab like-btn act' : 'info-tab like-btn '\">\n" +
+									"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<!--<i class=\"iconfont icon-dianzan\"></i>\n" +
+									"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<span th:text=\"|${qr.zan}赞|\">4赞</span>-->\n" +
+									"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</a>\n" +
+									"</p>\n" +
+									"</div>\n" +
+									"</li>";
+						}
+						console.log(str);
+						$("#showevalate").html(str);
+					}
+				});
 				$(this).addClass("act");
 				$(".j_gocomment").removeClass("act")
                 $("#userCommentWrap").attr("style","display:none");
@@ -319,38 +379,34 @@
 
 </head>
 <body style="zoom: 1;">
-	<div class="share-img">
-		<!--<img src="./《人皇在上》_九州方圆著_玄幻_起点中文网_files/share.6aa92.png" width="300" height="300">-->
-	</div>
 	<div class="wrap">
 		<div id="pin-nav" class="pin-nav-wrap need-search" data-l1="40">
 			<div class="box-center cf">
 				<div class="nav-list site-nav fl">
 					<ul>
 						<li class="site"><a class="pin-logo"
-							href="/jpbook/booktype/queryAll" style = "font-size: 18px;font-family: 'Courier New', Courier, monospace">江派中文网</a>
-						</li>
-						<li><a href="/jpbook/showAllBook.html?btid=1" target="">玄幻</a></li>
-						<li><a href="/jpbook/showAllBook.html?btid=5" target="">都市</a></li>
-						<li><a href="/jpbook/showAllBook.html?btid=4" target="">仙侠</a></li>
-						<li><a href="/jpbook/showAllBook.html?btid=11" target="">科幻</a></li>
-						<li><a href="/jpbook/showAllBook.html?btid=9" target="">游戏</a></li>
-						<li><a href="/jpbook/showAllBook.html?btid=8" target="">历史</a></li>
-						<li><a href="/jpbook/books/rank" target="_blank">排行</a></li>
+												 href="/index" style = "font-size: 18px;font-family: 'Courier New', Courier, monospace">千秋小说网</a>
+					</li>
+						<li><a href="/jpbook/showAllBook.html?btid=1" target="_blank">玄幻</a></li>
+						<li><a href="/jpbook/showAllBook.html?btid=5" target="_blank">武侠</a></li>
+						<li><a href="/jpbook/showAllBook.html?btid=4" target="_blank">都市</a></li>
+						<li><a href="/jpbook/showAllBook.html?btid=11" target="_blank">历史</a></li>
+						<li><a href="/jpbook/showAllBook.html?btid=9" target="_blank">游戏</a></li>
+						<li><a href="/jpbook/showAllBook.html?btid=8" target="_blank">科幻</a></li>
+						<li><a href="/jpbook/showAllBook.html?btid=8" target="_blank">同人</a></li>
 						<li class="more">
 							<a href="javascript:" id="top-nav-more" target="">
 								更多<span></span>
 							</a>
 							<div class="dropdown">
 								<a href="/jpbook/showAllBook.html" target="_blank">全部作品</a>
-								<a href="/jpbook/showAllBook.html?btid=13" target="_blank">二次元</a>
 								<a href="/jpbook/showAllBook.html?btid=2" target="_blank">奇幻</a>
-								<a href="/jpbook/showAllBook.html?btid=3" target="_blank">武侠</a>
-								<a href="/jpbook/showAllBook.html?btid=12" target="_blank">灵异</a>
+								<a href="/jpbook/showAllBook.html?btid=3" target="_blank">仙侠</a>
+								<a href="/jpbook/showAllBook.html?btid=12" target="_blank">职场</a>
 								<a href="/jpbook/showAllBook.html?btid=7" target="_blank">军事</a>
-								<a href="/jpbook/showAllBook.html?btid=6" target="_blank">现实</a>
-								<a href="/jpbook/showAllBook.html?btid=10" target="_blank">体育</a>
-								<a href="/jpbook/showAllBook.html?btid=14" target="_blank">短篇</a>
+								<a href="/jpbook/showAllBook.html?btid=6" target="_blank">竞技</a>
+								<a href="/jpbook/showAllBook.html?btid=10" target="_blank">灵异</a>
+								<a href="/jpbook/showAllBook.html?btid=14" target="_blank">轻小说</a>
 							</div>
 						</li>
 					</ul>
@@ -358,7 +414,7 @@
 				<div class="nav-list min-user fr">
 					<ul>
 						<li class="line"></li>
-						<li th:class="${session.users} ? 'sign-out hidden' : 'sign-out'">
+						<li th:class="${session.user} ? 'sign-out hidden' : 'sign-out'">
 							<a id="pin-login" href="../login.html" target="_blank">登录</a>
 							<a class="reg" href="../register.html" target="_blank">注册</a>
 						</li>
@@ -371,7 +427,7 @@
 										<span></span>
 									</a>
 									<div class="dropdown">
-										<a href="/jpbook/topup" target="_blank">充值</a>
+										<a href="/topup.html" target="_blank">充值</a>
 										<a href="../personal.html" target="_blank">个人中心</a>
 										<a id="exit" href="javascript:void(0);" onclick="removeu()">退出</a>
 									</div>
@@ -399,19 +455,19 @@
 			<a class="close-game-op" id="closeTopGame" href="javascript:">关闭广告</a>
 
 		</div>
-		<!--<div class="top-bg-box " id="j-topBgBox"
+		<div class="top-bg-box " id="j-topBgBox"
 			style="background-image:url(&#39;//qidian.qpic.cn/qidian_common/349573/7f689b6db8ad99e6093bae7db9a7d130/0&#39;)">
-		</div>-->
+		</div>
 		<div class="crumbs-nav center990" data-l1="1">
 
 			<span>
-				<!--<cite class="lt"></cite>
-				<a href="/jpbook/booktype/queryAll" data-eid="qd_G01">首页</a>
+				<cite class="lt"></cite>
+				<a href="/index" data-eid="qd_G01">首页</a>
 				<em class="iconfont icon-xiayige"></em>
-				<a th:href="@{/showAllBook.html?btid={filename}(filename=${queryBookById[0].btid})}" target="_blank" th:text="|${queryBookById[0].btname}频道|"></a>
+				<a th:href="@{/showAllBook.html?typeid={filename}(filename=${list[0].typeid})}" target="_blank" th:text="|${list[0].ztypename}频道|"></a>
 				<em class="iconfont icon-xiayige"></em>
-				<a th:href="@{/showAllBook.html?btid={filename}(filename=${queryBookById[0].bookid})}" th:text="${list[0].bookname}">人皇在上</a>
-				<cite class="rt"></cite>-->
+				<a th:href="@{/books/queryAll?bookid={filename}(filename=${list[0].bookid})}" th:text="${list[0].bookname}">人皇在上</a>
+				<cite class="rt"></cite>
 			</span>
 		</div>
 		<div class="border-shadow ">
@@ -428,6 +484,7 @@
 				<div class="book-info ">
 					<h1>
 						<em th:text="${list[0].bookname}"></em>
+						<!--<input hidden="hidden" th:value="${session.user.userid}" id="userid"/>-->
 						<span>
 							<a class="writer" href="https://me.qidian.com/authorIndex.aspx?id=4242192"
 							target="_blank" th:text="${list[0].pen}"></a> 著</span>
@@ -435,51 +492,53 @@
 					</h1>
 					<p class="tag">
 						<span class="blue" th:text="${list[0].typename}"></span>
+						<span class="blue" th:text="${list[0].ztypename}"></span>
+						<span class="blue" th:text="${list[0].state} eq 0 ? '连载' : '完结'"></span>
+						<span class="blue" th:text="${list[0].isvip} eq 0 ? '免费' : 'VIP'"></span>
 					</p>
 
 					<p class="intro" ></p>
 					<p>
 						<em>
-							<span th:text="${list[0].zi}"></span>
+							<span th:text="${list[0].wordcount}"></span>
 						</em><cite>字</cite><i>|</i>
 						<em>
-						<span th:text="${list[0].num}"></span>
+						<span th:text="${list[0].clicknum}"></span>
 						</em>
-						<cite>阅文总点击</cite><i>|</i>
+						<cite>会员点击量</cite><i>|</i>
 						<em>
-							<span th:text="${list[0].clicknum}"></span>
+							<span th:text="${list[0].votecount}"></span>
 						</em>
-						<cite>总推荐</cite><i>|</i>
+						<cite>总推荐量</cite><i>|</i>
+						<em>
+							<span th:text="${list[0].votenum}"></span>
+						</em>
+						<cite>周推荐量</cite>
 
 					</p>
 
                 <p>
-                    <input type="hidden" id="atbookid" th:value="${list.get(0).get('bookid')}">
+                    <input type="hidden" id="atbookid" th:value="${list[0].bookid}">
 
-					<th:block th:if="${list[0].clicknum} eq 0">
-						<a class="red-btn J-getJumpUrl">暂无章节</a>
-					</th:block>
-					<th:block th:if="${list[0].clicknum} ne 0">
-						<a class="red-btn J-getJumpUrl "
-                           th:href="@{/books/query(bookid=${list[0].bookid})}"
-						   id="readBtn">免费试读</a>
-					</th:block>
+					<a class="red-btn J-getJumpUrl "
+					   th:href="@{/chapters/queryId(chapterId=${queryC[0].chapterid})}"
+					   id="readBtn">免费试读</a>
 
                     <script type="text/javascript">
                         $(function () {
                             $.ajax({
-                                url: "/jpbook/browse/getChapidByUUid",
+                                url: "/chapters/getChapid",
                                 data: {"bookid": $("#atbookid").val()},
                                 success: function (data) {
-                                    if (data == -1) {
+                                    if (!data) {
                                         return;
                                     } else {
-                                        /*$("#readBtn").attr("href", "/jpbook/chapter/getInformationByChapid?chapid=" + data);*/
+                                        $("#readBtn").attr("href", "/chapters/queryId?chapterId=" + data);
                                         $("#readBtn").html("继续阅读");
                                     }
                                 }
-                            })
-                        })
+                            });
+                        });
                     </script>
 
                     <a
@@ -495,8 +554,8 @@
                                     $("#addBookBtn").html(data > 0 ? "已在书架" : "加入书架");
                                     $("#addBookBtn").prop("class", data > 0 ? "add-book in-shelf" : "blue-btn add-book");
                                 }
-                            })
-                        })
+                            });
+                        });
 
                         function addBookrack() {
                             $.ajax({
@@ -511,7 +570,7 @@
                                     }
 
                                 }
-                            })
+                            });
                         }
                     </script>
 
@@ -529,26 +588,27 @@
 
 						<div class="j_getData hidden" style="display: block;">
 							<h4 id="j_bookScore">
-								<span><cite id="score1" th:text="${list[0].clicknum}"></cite><i id = "score2">分</i></span>
+								<span><cite id="score1" th:text="${#numbers.formatDecimal(list[0].score,1,1)}"></cite><i id = "score2">分</i></span>
 							</h4>
 							<p id="j_userCount">
-								<span th:text="${list[0].clicknum}"></span>人评价
+								<span th:text="${list[0].evanum}"></span>人评价
 							</p>
 						</div>
 					</div>
+					<th:block th:if="${session.user} ne null">
 					<h5>我要评价</h5>
 					<div class="score-mid" id="scoreBtn" style="cursor: pointer; width: 116px;">
-						<th:block th:if="${list[0].clicknum} eq null">
+
 							<img src="../images/star-off.b2a1b.png" alt="1" title="不知所云">&nbsp;
 							<img src="../images/star-off.b2a1b.png" alt="2" title="随便看看">&nbsp;
 							<img src="../images/star-off.b2a1b.png" alt="3" title="值得一读">&nbsp;
 							<img src="../images/star-off.b2a1b.png" alt="4" title="不容错过">&nbsp;
 							<img src="../images/star-off.b2a1b.png" alt="5" title="经典必读">
 							<input type="hidden" name="score">
-						</th:block>
-						<th:block th:if="${session.user} ne null">
+
+						<!--<th:block th:if="${session.user} ne null">
 							<th:block th:each="k,s : ${#numbers.sequence(0,5)}">
-								<th:block th:if="${s.index} ">
+								<th:block th:if="${s.index} lt ${queryByUuid.getEvalv()}">
 									<th:block th:if="${s.index} eq 0">
 										<img src="../images/star-on.02731.png" th:alt="${s.index+1}" title="不知所云">&nbsp;
 									</th:block>
@@ -565,7 +625,7 @@
 										<img src="../images/star-on.02731.png" th:alt="${s.index+1}" title="经典必读">&nbsp;
 									</th:block>
 								</th:block>
-								<th:block th:if="${s.index}">
+								<th:block th:if="${s.index} gt ${queryByUuid.getEvalv()-1}">
 									<th:block th:if="${s.index} eq 0">
 										<img src="../images/star-off.b2a1b.png" th:alt="${s.index+1}" title="不知所云">&nbsp;
 									</th:block>
@@ -583,43 +643,20 @@
 									</th:block>
 								</th:block>
 							</th:block>
-						</th:block>
+						</th:block>-->
 					</div>
+					</th:block>
 				</div>
 				<div class="take-wrap">
-
-                <a class="blue" id="subscribe" th:href="${list[0].bookid}" data-eid="qd_G13"><em
-                        class="iconfont icon-dingyue"></em>订阅</a> <i></i> <a class="blue download"
-                                                                             id="download" th:href="${list[0].bookid}"
-                                                                             data-eid="qd_G14"><em
+				<th:block th:if="${list[0].isvip} eq 1">
+                	<a class="blue" id="subscribe" th:href="${session.user} ? '/books/queryMoney?bookid='+${list[0].bookid} : '/login.html'" data-eid="qd_G13">
+					<em class="iconfont icon-dingyue"></em>订阅</a>
+					<i></i>
+				</th:block>
+					<a class="blue download" id="download" th:href="@{/books/download?bookid={filename}(filename=${list[0].bookid})}" data-eid="qd_G14"><em
                     class="iconfont icon-xiazai-xue"></em>下载 </a>
             </div>
         </div>
-		<script type="text/javascript">
-			function download() {
-                swal({
-                        title: "确定下载吗?",
-                        text: "下载免费章节以及已购买章节",
-                        type: "warning",
-                        showCancelButton: true,
-						cancelButtonText:"取消",
-                        confirmButtonColor: "#DD6B55",
-                        confirmButtonText: "确定!"
-                    },
-                    function(){
-                        $.ajax({
-                            url:"/jpbook/books/download",
-                            data:{"bookid":$("#atbookid").val()},
-                            success:function (data) {
-                                if(data==''){
-                                    swal("下载失败", "没有可下载的章节", "warning")
-                                }
-                            }
-                        })
-                    });
-
-            }
-		</script>
         <div class="content-nav-wrap cf" data-l1="3">
             <div class="nav-wrap fl">
                 <ul>
@@ -629,14 +666,14 @@
                     <li class="j_catalog_block" onclick="showChapter(this)">
                         <a class="lang" href="javascript:" id="catalogPage">
                             目录<i>
-                            <span id="J-catalogCount" th:text="|(${list[0].num}章)|"></span>
+                            <span id="J-catalogCount" th:text="|(${list[0].chaptnum}章)|"></span>
                         </i>
                         </a>
                     </li>
                     <li class="j_discussion_block">
                         <a class="lang" th:href="${list[0].bookid}" target="_blank">作品讨论
                             <i>
-                                <span id="J-discusCount" th:text="|(${list[0].clicknum}条)|">(301条)</span>
+                                <span id="J-discusCount" th:text="|(${list[0].evanum}条)|">(301条)</span>
                             </i>
                         </a>
                     </li>
@@ -645,12 +682,12 @@
 				</div>
 			</div>
 			<div class="catalog-content-wrap hidden" id="catalogWrap">
-				<div class="go-top">
+				<!--<div class="go-top">
 					<div class="go-top-wrap">
 						<a href="https://book.qidian.com/info/1013432619#"
 							class="icon-go-top"><em class="iconfont" data-eid="qd_G72"></em></a>
 					</div>
-				</div>
+				</div>-->
 
                 <th:block th:if="${query[0].rollid} ne 0">
                     <!--章节页面-->
@@ -664,7 +701,7 @@
 										<!--<a class="subscri j_subscribe" href="javascript:" target="_blank">
                                             <em class="btn"><b class="iconfont"></b>订阅本卷</em></a>-->
 										<i th:utext="|${q.rollname}<i>·</i>共${q.num}章|"></i>
-										<span th:class="${q.isvip}" th:text="${q.isvip} eq 1 ? '免费' : 'VIP'">免费</span>
+										<span th:class="${q.isvip} eq 0 ? 'free' : 'vip'" th:text="${q.isvip} eq 0 ? '免费' : 'VIP'">免费</span>
 										<em class="count" th:utext="|本卷共<cite>${q.zi}</cite>字 |">
 
 										</em>
@@ -680,7 +717,7 @@
 										<!--<a class="subscri j_subscribe" href="javascript:" target="_blank">
                                             <em class="btn"><b class="iconfont"></b>订阅本卷</em></a>-->
 										<i th:utext="|${q.rollname}<i>·</i>共${q.num}章|"></i>
-										<span th:class="${q.isvip}" th:text="${q.isvip} eq 1 ? '免费' : 'VIP'">免费</span>
+										<span th:class="${q.isvip} eq 0 ? 'free' : 'vip'" th:text="${q.isvip} eq 0 ? '免费' : 'VIP'">免费</span>
 										<em class="count" th:utext="|本卷共<cite>${q.zi}</cite>字 |">
 										</em>
 									</h3>
@@ -690,13 +727,13 @@
 													<li>
 														<!--title="首发时间：2018-12-07 12:08:13 章节字数：2514"-->
 														<a  target="_blank"
-														   th:title="|首发时间：${qc.updatetime} 章节字数:${qc.wordnum}|" th:text="${qc.chaptername}" th:href="@{/chapters/queryId(chapterId=${qc.chapterid})}">
+														   th:title="|首发时间：${qc.updatetime} 章节字数:${qc.wordnum}|" th:text="|${qc.chapternum}、${qc.chaptername}|" th:href="@{/chapters/queryId(chapterId=${qc.chapterid})}">
 															第七十三章没架打真的好无聊啊（求订阅，求支持，拜谢各位）
 														</a>
-														<th:block th:if="${q.isvip} eq '收费'">
-															<span th:text="${q.isvip} eq 0 ? '收费':'已购买'" style = "float:right;background: linear-gradient(to right, red, blue);-webkit-background-clip: text;color: transparent;"></span>
+														<th:block th:if="${qc.isvip} eq 1">
+															<span th:text="${qc.isbuy} eq 0 ? '收费':'已购买'" style = "float:right;background: linear-gradient(to right, red, blue);-webkit-background-clip: text;color: transparent;"></span>
 														</th:block>
-														<em class="iconfont icon-jiesuo"></em>
+														<!--<em class="iconfont icon-jiesuo"></em>-->
 													</li>
 												</th:block>
 											</th:block>
@@ -721,19 +758,26 @@
 						</div>
 						<div class="book-state" data-l1="4">
 							<ul>
+								<li>
+									<b>作者自定义标签</b>
+									<div class="detail">
+										<p class="tag-wrap" data-l1="4">
+											<th:block  th:each="l:${label}">
+											<a class="tags" data-eid="qd_G70" th:text="${l.labelname}">学生</a>
+											</th:block>
+										</p>
+									</div>
+								</li>
 								<li class="update">
 									<b>最近更新</b>
 									<div class="detail">
 										<p class="cf">
-                                            <th:block th:if="${list[0].num} gt 1">
-                                               <!-- <a class="blue" th:href="|/jpbook/chapter/getInformationByChapid?chapid=${qc.chapid}|" target="_blank"
-                                                   th:title="|第${queryBookById[0].chapnum}章  ${queryBookById[0].chapname}|"
-                                                   th:text="|第${queryBookById[0].chapnum}章  ${queryBookById[0].chapname}|">
-                                                </a>-->
-                                                <i>·</i>
-                                                <em class="time" th:text="|更新时间:${list[0].updatetime}|"></em>
-                                            </th:block>
-
+											<a class="blue" th:href="|/chapters/queryId?chapterId=${list[0].chapterid}|" target="_blank"
+											   th:title="|${list[0].chaptername}|"
+											   th:text="|${list[0].chaptername}|">
+											</a>
+											<i>·</i>
+											<em class="time" th:text="|更新时间:${list[0].updatetime}|"></em>
 										</p>
 									</div></li>
 							</ul>
@@ -745,41 +789,12 @@
 							<dl>
 								<dd>
 									<h4 id="ticket-Tab">
-
-										<a class="lang act" href="javascript:walletTab('qd_G20', 'month-ticket')" data-eid="qd_G20">月票</a><em>|</em>
-
-										<a class="lang " href="javascript:walletTab('qd_G21', 'rec-ticket')" data-eid="qd_G21">推荐票
-
+                                        <span class="lang act">推荐票</span>
                                     </a>
                                 </h4>
-                                <script type="text/javascript">
-                                    function walletTab(obj, classname) {
-                                        $("#ticket-Tab").find("a").removeClass("act");
-                                        $("#ticket-Tab").find("a[data-eid=" + obj + "]").addClass("act");
-                                        $("#ticket-wrap").find(".ticket").addClass("hidden");
-                                        $("#ticket-wrap").find("." + classname).removeClass("hidden");
-                                    }
-                                </script>
                                 <div class="action-wrap" id="ticket-wrap">
 
-										<div class="ticket month-ticket">
-											<p>本月票数</p>
-											<p class="num">
-												<i id="monthCount">4</i>
-											</p>
-
-											<p>
-												排名1995<i>·</i>还差<em> 0 </em>票追上前一名
-											</p>
-
-											<div class="icon-box month">
-												<span></span> <b></b>
-											</div>
-											<a class="red-radius-btn" id="monthBtn" href="javascript:"
-												data-showtype="1" data-eid="qd_G22"><em class="iconfont"></em>投月票</a>
-										</div>
-
-										<div class="ticket rec-ticket hidden">
+										<div class="ticket rec-ticket">
 											<p>本周票数</p>
 											<p class="num">
 												<i id="recCount">467</i>
@@ -798,60 +813,45 @@
                                     <script type="text/javascript">
                                         $(function () {
                                             getMonthAndRecAndReward();
-                                        })
+                                        });
                                         function getMonthAndRecAndReward() {
                                             $.ajax({
-                                                url: "/jpbook/books/getMonthAndRecAndReward",
+                                                url: "/books/getVoteAndGive",
                                                 data: {"bookid": $("#atbookid").val()},
                                                 success: function (data) {
-                                                    $("#ticket-wrap").find(".month-ticket").html("<p>本月票数</p>\n" +
+                                                    $("#ticket-wrap").find(".rec-ticket").html("<p>总获票数</p>\n" +
                                                         "\t\t\t\t\t\t\t\t\t\t\t<p class=\"num\">\n" +
-                                                        "\t\t\t\t\t\t\t\t\t\t\t\t<i id=\"monthCount\">" + data.votemonth + "</i>\n" +
+                                                        "\t\t\t\t\t\t\t\t\t\t\t\t<i id=\"recCount\">" + data.votecount + "</i>\n" +
                                                         "\t\t\t\t\t\t\t\t\t\t\t</p>\n" +
                                                         "\n" +
                                                         "\t\t\t\t\t\t\t\t\t\t\t<p>\n" +
-                                                        "\t\t\t\t\t\t\t\t\t\t\t\t今日获票<em> " + data.todaymonth + " </em>张\n" +
-                                                        "\t\t\t\t\t\t\t\t\t\t\t</p>\n" +
-                                                        "\n" +
-                                                        "\t\t\t\t\t\t\t\t\t\t\t<div class=\"icon-box month\">\n" +
-                                                        "\t\t\t\t\t\t\t\t\t\t\t\t<span></span> <b></b>\n" +
-                                                        "\t\t\t\t\t\t\t\t\t\t\t</div>\n" +
-                                                        "\t\t\t\t\t\t\t\t\t\t\t<a class=\"red-radius-btn\" id=\"monthBtn\" href=\"javascript:monthClick()\"\n" +
-                                                        "\t\t\t\t\t\t\t\t\t\t\t\tdata-showtype=\"1\" data-eid=\"qd_G22\"><em class=\"iconfont\"></em>投月票</a>\n" +
-                                                        "\t\t\t\t\t\t\t\t\t\t\t<p class=\"tip\">\n" +
-                                                        "\t\t\t\t\t\t\t\t\t\t\t</p>");
-                                                    $("#ticket-wrap").find(".rec-ticket").html("<p>本周票数</p>\n" +
-                                                        "\t\t\t\t\t\t\t\t\t\t\t<p class=\"num\">\n" +
-                                                        "\t\t\t\t\t\t\t\t\t\t\t\t<i id=\"recCount\">" + data.voterec + "</i>\n" +
-                                                        "\t\t\t\t\t\t\t\t\t\t\t</p>\n" +
-                                                        "\n" +
-                                                        "\t\t\t\t\t\t\t\t\t\t\t<p>\n" +
-                                                        "\t\t\t\t\t\t\t\t\t\t\t\t今日获票<em> " + data.todayrec + " </em>张\n" +
+                                                        "\t\t\t\t\t\t\t\t\t\t\t\t本周获票<em> " + data.votenum + " </em>张\n" +
                                                         "\t\t\t\t\t\t\t\t\t\t\t</p>\n" +
                                                         "\n" +
                                                         "\t\t\t\t\t\t\t\t\t\t\t<div class=\"icon-box rec\">\n" +
                                                         "\t\t\t\t\t\t\t\t\t\t\t\t<span></span> <b></b>\n" +
                                                         "\t\t\t\t\t\t\t\t\t\t\t</div>\n" +
                                                         "\t\t\t\t\t\t\t\t\t\t\t<a class=\"red-radius-btn\" id=\"recBtn\" href=\"javascript:recClick()\"\n" +
-                                                        "\t\t\t\t\t\t\t\t\t\t\t\tdata-showtype=\"2\" data-eid=\"qd_G23\"><em class=\"iconfont\"></em>投推荐票</a>");
-                                                    $("#reward").html("<p>本周打赏人数</p>\n" +
+                                                        "\t\t\t\t\t\t\t\t\t\t\t\tdata-showtype=\"2\" data-eid=\"qd_G23\">投推荐票</a>");
+                                                    $("#reward").html("<p>总打赏人数</p>\n" +
                                                         "\t\t\t\t\t\t\t\t\t\t\t<p class=\"num\">\n" +
-                                                        "\t\t\t\t\t\t\t\t\t\t\t\t<i class=\"rewardNum\" id=\"rewardNum\">" + data.rewanumrec + "</i>\n" +
+                                                        "\t\t\t\t\t\t\t\t\t\t\t\t<i class=\"rewardNum\" id=\"rewardNum\">" + data.givecount + "</i>\n" +
                                                         "\t\t\t\t\t\t\t\t\t\t\t</p>\n" +
                                                         "\n" +
                                                         "\t\t\t\t\t\t\t\t\t\t\t<p>\n" +
-                                                        "\t\t\t\t\t\t\t\t\t\t\t\t今日<em id=\"todayNum\">" + data.rewanumtoday + "</em>人打赏\n" +
+                                                        "\t\t\t\t\t\t\t\t\t\t\t\t本周<em id=\"todayNum\">" + data.givenum + "</em>人打赏\n" +
                                                         "\t\t\t\t\t\t\t\t\t\t\t</p>\n" +
                                                         "\n" +
                                                         "\t\t\t\t\t\t\t\t\t\t\t<div class=\"icon-box money\">\n" +
                                                         "\t\t\t\t\t\t\t\t\t\t\t\t<span></span> <b></b>\n" +
                                                         "\t\t\t\t\t\t\t\t\t\t\t</div>\n" +
                                                         "\t\t\t\t\t\t\t\t\t\t\t<a class=\"red-radius-btn\" id=\"rewardBtn\" href=\"javascript:rewardClick()\"\n" +
-                                                        "\t\t\t\t\t\t\t\t\t\t\t\tdata-showtype=\"3\" data-eid=\"qd_G24\"><em class=\"iconfont\"></em>打赏作者</a>\n" +
+                                                        "\t\t\t\t\t\t\t\t\t\t\t\tdata-showtype=\"3\" data-eid=\"qd_G24\">打赏作者</a>\n" +
                                                         "\t\t\t\t\t\t\t\t\t\t\t<p class=\"tip\">\n" +
+														"<cite>100</cite>起点币=<cite>100</cite>点粉丝值" +
                                                         "\t\t\t\t\t\t\t\t\t\t\t</p>");
                                                 }
-                                            })
+                                            });
                                         }
                                     </script>
                                 </div>
@@ -898,95 +898,48 @@
                                                         target="_blank" data-eid=""
                                                         title="章雨0509">章雨0509</a><span>打赏</span>100起点币
                                                 </li>
-                                                <li data-rid="1" class=""><em class="month"></em><a
-                                                        href="https://me.qidian.com/friendIndex.aspx?id=135621843"
-                                                        target="_blank" data-eid=""
-                                                        title="爱玩双色球">爱玩双色球</a><span>投了</span>1张月票
-                                                </li>
-                                                <li data-rid="2" class=""><em class="rec"></em><a
-                                                        href="https://me.qidian.com/friendIndex.aspx?id=135621843"
-                                                        target="_blank" data-eid=""
-                                                        title="爱玩双色球">爱玩双色球</a><span>投了</span>6张推荐票
-                                                </li>
-                                                <li data-rid="3" class=""><em class="rec"></em><a
-                                                        href="https://me.qidian.com/friendIndex.aspx?id=123407473"
-                                                        target="_blank" data-eid=""
-                                                        title="五子-未央">五子-未央</a><span>投了</span>10张推荐票
-                                                </li>
-                                                <li data-rid="4" class=""><em class="month"></em><a
-                                                        href="https://me.qidian.com/friendIndex.aspx?id=123407473"
-                                                        target="_blank" data-eid=""
-                                                        title="五子-未央">五子-未央</a><span>投了</span>2张月票
-                                                </li>
-                                                <li data-rid="5" class=""><em class="rec"></em><a
-                                                        href="https://me.qidian.com/friendIndex.aspx?id=202658079"
-                                                        target="_blank" data-eid=""
-                                                        title="别惹老子!">别惹老子!</a><span>投了</span>6张推荐票
-                                                </li>
-                                                <li data-rid="6" class=""><em class="month"></em><a
-                                                        href="https://me.qidian.com/friendIndex.aspx?id=202658079"
-                                                        target="_blank" data-eid=""
-                                                        title="别惹老子!">别惹老子!</a><span>投了</span>2张月票
-                                                </li>
-                                                <li data-rid="7" class=""><em class="rec"></em><a
-                                                        href="https://me.qidian.com/friendIndex.aspx?id=305304695"
-                                                        target="_blank" data-eid="" title="书友20170715231537371">书友20170715231537371</a><span>投了</span>1张推荐票
-                                                </li>
-                                                <li data-rid="8" class=""><em class="money"></em><a
-                                                        href="https://me.qidian.com/friendIndex.aspx?id=305304695"
-                                                        target="_blank" data-eid="" title="书友20170715231537371">书友20170715231537371</a><span>打赏</span>100起点币
-                                                </li>
-                                                <li data-rid="9" class=""><em class="rec"></em><a
-                                                        href="https://me.qidian.com/friendIndex.aspx?id=301346563"
-                                                        target="_blank" data-eid="" title="有妖汽">有妖汽</a><span>投了</span>2张推荐票
-                                                </li>
-                                                <li data-rid="10" class=""><em class="money"></em><a
-                                                        href="https://me.qidian.com/friendIndex.aspx?id=324706334"
-                                                        target="_blank" data-eid=""
-                                                        title="乾为天潜龙勿用">乾为天潜龙勿用</a><span>打赏</span>100起点币
-                                                </li>
-                                                <li data-rid="11" class=""><em class="money"></em><a
-                                                        href="https://me.qidian.com/friendIndex.aspx?id=313452685"
-                                                        target="_blank" data-eid=""
-                                                        title="太空叫我外星人">太空叫我外星人</a><span>打赏</span>100起点币
-                                                </li>
-                                                <li data-rid="12" class=""><em class="money"></em><a
-                                                        href="https://me.qidian.com/friendIndex.aspx?id=223237466"
-                                                        target="_blank" data-eid="" title="书友160925090700268">书友160925090700268</a><span>打赏</span>100起点币
-                                                </li>
                                             </ul>
                                         </div>
                                     </div>
                                     <script type="text/javascript">
-                                        $.ajax({
-                                            url: "/jpbook/books/queryMonthAndRecAndReward",
-                                            data: {"bookid": $("#atbookid").val()},
-                                            success: function (data) {
-                                                var str = "";
-                                                for (var i = 0; i < data.length; i++) {
-                                                    if (data[i].type == 1) {
+                                        dongtai();
+                                        function dongtai(){
+                                            var str = "";
+                                            $.ajax({
+                                                url: "/expn/queryVote",
+                                                data: {"bookid": $("#atbookid").val()},
+                                                success: function (data) {
+                                                    for (var i = 0; i < data.length; i++) {
                                                         str += "<li data-rid=\"" + (i + 1) + "\" class=\"\"><em class=\"rec\"></em><a\n" +
                                                             "\t\t\t\t\t\t\t\t\t\t\t\t\t\thref=\"javascript:void(0)\"\n" +
-                                                            "\t\t\t\t\t\t\t\t\t\t\t\t\t\ttarget=\"_blank\" data-eid=\"\" title=\"" + data[i].uname + "\">" + data[i].uname + "</a><span>投了</span>" + data[i].num + "张" + data[i].name + "票\n" +
-                                                            "\t\t\t\t\t\t\t\t\t\t\t\t\t</li>";
-                                                    } else {
-                                                        str += "<li data-rid=\"" + (i + 1) + "\" class=\"\"><em class=\"money\"></em><a\n" +
-                                                            "\t\t\t\t\t\t\t\t\t\t\t\t\t\thref=\"https://me.qidian.com/friendIndex.aspx?id=223237466\"\n" +
-                                                            "\t\t\t\t\t\t\t\t\t\t\t\t\t\ttarget=\"_blank\" data-eid=\"\" title=\"" + data[i].uname + "\">" + data[i].uname + "</a><span>打赏</span>" + data[i].num + "起点币\n" +
+                                                            "\t\t\t\t\t\t\t\t\t\t\t\t\t\ttarget=\"_blank\" data-eid=\"\" title=\"" + data[i].username + "\">" + data[i].username + "</a><span>投了</span>" + data[i].nums + "张推荐票\n" +
                                                             "\t\t\t\t\t\t\t\t\t\t\t\t\t</li>";
                                                     }
-
-                                                }
-                                                $("#scrollDiv").find("ul").html(str);
-                                            }
-                                        })
+                                                },
+                                                async:false
+                                            });
+                                            $.ajax({
+                                                url: "/expn/queryGive",
+                                                data: {"bookid": $("#atbookid").val()},
+                                                success: function (data) {
+                                                    for (var i = 0; i < data.length; i++) {
+                                                        str += "<li data-rid=\"" + (i + 1) + "\" class=\"\"><em class=\"money\"></em><a\n" +
+                                                            "\t\t\t\t\t\t\t\t\t\t\t\t\t\thref=\"https://me.qidian.com/friendIndex.aspx?id=223237466\"\n" +
+                                                            "\t\t\t\t\t\t\t\t\t\t\t\t\t\ttarget=\"_blank\" data-eid=\"\" title=\"" + data[i].username + "\">" + data[i].username + "</a><span>打赏</span>" + data[i].expmoney + "起点币\n" +
+                                                            "\t\t\t\t\t\t\t\t\t\t\t\t\t</li>";
+                                                    }
+                                                },
+                                                async:false
+                                            });
+                                            $("#scrollDiv").find("ul").html(str);
+                                        }
 
                                         function noticeUp(obj, top, time) {
                                             $(obj).animate({
                                                 marginTop: top
                                             }, time, function () {
                                                 $(this).css({marginTop: "0"}).find(":first").appendTo(this);
-                                            })
+                                            });
                                         };
 
                                         $(function () {
@@ -999,125 +952,18 @@
                     </div>
                 </div>
 
-                <!--喜欢这本书的还喜欢-->
-                <!--<div class="like-more mb30 cf" data-l1="6">
-                    <h3 class="lang">喜欢这本书的人还喜欢</h3>
-                    <div class="like-more-list">
-                        <ul class="cf">
 
-                            <li data-rid="1">
-                                <div class="book-img" title="天一客栈">
-                                    <a href="https://book.qidian.com/info/1013353624"
-                                       target="_blank" data-eid="qd_G30" data-bid="1013353624"><img
-                                            class="lazy" src="./《人皇在上》_九州方圆著_玄幻_起点中文网_files/90"
-                                            data-original="//bookcover.yuewen.com/qdbimg/349573/1013353624/90"
-                                            alt="天一客栈" style="display: inline;"></a>
-                                </div>
-                                <h4>
-                                    <a href="https://book.qidian.com/info/1013353624"
-                                       target="_blank" title="天一客栈" data-eid="qd_G29"
-                                       data-bid="1013353624">天一客栈</a>
-                                </h4>
-                                <p>50%的用户读过</p>
-                            </li>
-
-                            <li data-rid="2">
-                                <div class="book-img" title="雷惊乾坤">
-                                    <a href="https://book.qidian.com/info/1013302063"
-                                       target="_blank" data-eid="qd_G30" data-bid="1013302063"><img
-                                            class="lazy" src="./《人皇在上》_九州方圆著_玄幻_起点中文网_files/90(1)"
-                                            data-original="//bookcover.yuewen.com/qdbimg/349573/1013302063/90"
-                                            alt="雷惊乾坤" style="display: inline;"></a>
-                                </div>
-                                <h4>
-                                    <a href="https://book.qidian.com/info/1013302063"
-                                       target="_blank" title="雷惊乾坤" data-eid="qd_G29"
-                                       data-bid="1013302063">雷惊乾坤</a>
-                                </h4>
-                                <p>50%的用户读过</p>
-                            </li>
-
-                            <li data-rid="3">
-                                <div class="book-img" title="末世当大佬">
-                                    <a href="https://book.qidian.com/info/1013435520"
-                                       target="_blank" data-eid="qd_G30" data-bid="1013435520"><img
-                                            class="lazy" src="./《人皇在上》_九州方圆著_玄幻_起点中文网_files/90(2)"
-                                            data-original="//bookcover.yuewen.com/qdbimg/349573/1013435520/90"
-                                            alt="末世当大佬" style="display: inline;"></a>
-                                </div>
-                                <h4>
-                                    <a href="https://book.qidian.com/info/1013435520"
-                                       target="_blank" title="末世当大佬" data-eid="qd_G29"
-                                       data-bid="1013435520">末世当大佬</a>
-                                </h4>
-                                <p></p>
-                            </li>
-
-                            <li data-rid="4">
-                                <div class="book-img" title="我的食戟直播间系统">
-                                    <a href="https://book.qidian.com/info/1013258316"
-                                       target="_blank" data-eid="qd_G30" data-bid="1013258316"><img
-                                            class="lazy" src="./《人皇在上》_九州方圆著_玄幻_起点中文网_files/90(3)"
-                                            data-original="//bookcover.yuewen.com/qdbimg/349573/1013258316/90"
-                                            alt="我的食戟直播间系统" style="display: inline;"></a>
-                                </div>
-                                <h4>
-                                    <a href="https://book.qidian.com/info/1013258316"
-                                       target="_blank" title="我的食戟直播间系统" data-eid="qd_G29"
-                                       data-bid="1013258316">我的食戟直播间系统</a>
-                                </h4>
-                                <p></p>
-                            </li>
-
-                            <li data-rid="5">
-                                <div class="book-img" title="唐刺">
-                                    <a href="https://book.qidian.com/info/1012240760"
-                                       target="_blank" data-eid="qd_G30" data-bid="1012240760"><img
-                                            class="lazy" src="./《人皇在上》_九州方圆著_玄幻_起点中文网_files/90(4)"
-                                            data-original="//bookcover.yuewen.com/qdbimg/349573/1012240760/90"
-                                            alt="唐刺" style="display: inline;"></a>
-                                </div>
-                                <h4>
-                                    <a href="https://book.qidian.com/info/1012240760"
-                                       target="_blank" title="唐刺" data-eid="qd_G29"
-                                       data-bid="1012240760">唐刺</a>
-                                </h4>
-                                <p></p>
-                            </li>
-
-                            <li data-rid="6">
-                                <div class="book-img" title="血肉皇权">
-                                    <a href="https://book.qidian.com/info/1012015101"
-                                       target="_blank" data-eid="qd_G30" data-bid="1012015101"><img
-                                            class="lazy" src="./《人皇在上》_九州方圆著_玄幻_起点中文网_files/90(5)"
-                                            data-original="//bookcover.yuewen.com/qdbimg/349573/1012015101/90"
-                                            alt="血肉皇权" style="display: inline;"></a>
-                                </div>
-                                <h4>
-                                    <a href="https://book.qidian.com/info/1012015101"
-                                       target="_blank" title="血肉皇权" data-eid="qd_G29"
-                                       data-bid="1012015101">血肉皇权</a>
-                                </h4>
-                                <p></p>
-                            </li>
-
-                        </ul>
-                    </div>
-                </div>-->
 					<!--作品讨论区-->
 					<div class="user-commentWrap" data-l1="8">
 						<div class="user-comment-wrap book-friend">
 							<div class="comment-head cf">
 								<h3 class="lang"><!--@{/books/fatie(retype=1,bookid=${queryBookById[0].bookid})}-->
-									<a class="send blue j_forumBtn" href = "javascript:void(0);" th:onclick="|faties(${list[0].bookid})|">我要发帖
+									<a class="send blue j_forumBtn" href = "javascript:void(0);" onclick="faties(${list[0].bookid})">我要发帖
 									</a>
 									<a class="comment-btn blue j_commentBtn hidden" id="goComment"
 										href="javascript:">我要评价
 									</a>
 									<span class="j_godiscuss act">
-										作品讨论区
-									</span><i class="grey">|</i>
-									<span class="j_gocomment">
 										书友评价
 									</span>
 								</h3>
@@ -1196,54 +1042,54 @@
 								<div class="book-discuss-wrap">
 									<div class="discuss-list">
 										<!-- start 有数据状态 -->
-										<ul>
+										<ul id="showevalate">
 											<!--start 置顶广告-->
 											<!--end 置顶广告-->
 											<!-- 置顶帖  两个 -->
-                                            <th:block th:each="qr,status:${queryReviewbook}">
+                                            <!--<th:block th:each="qr,status:${queryReviewbook}">
                                                 <th:bolock th:if="${status.index lt 14}">
                                                     <li class="cf " data-rid="1">
                                                         <div class="user-photo">
-                                                            <a th:href="|/jpbook/pc/home?uuid=${qr.uuid}|" target="_blank">
-                                                                <img th:src="@{/images/{filename}(filename=${qr.icon})}">
+                                                            <a th:href="|/jpbook/pc/home?uuid=${qr.userid}|" target="_blank">
+                                                                <img th:src="@{/images/{filename}(filename=${qr.head})}">
                                                             </a>
                                                         </div>
                                                         <div class="discuss-info">
                                                             <p class="users">
-                                                                <a class="blue"  th:href="|/jpbook/pc/home?uuid=${qr.uuid}|" target="_blank">
-                                                                    <b th:text="${qr.uname}">浮生盼有钱</b>
+                                                                <a class="blue"  th:href="|/jpbook/pc/home?uuid=${qr.userid}|" target="_blank">
+                                                                    <b th:text="${qr.pen}">浮生盼有钱</b>
                                                                 </a>
                                                                 <span class="gray">发表了帖子</span>
                                                             </p>
                                                             <h5 class="text">
-                                                                <a class=""  th:href="@{/reviewbook/queryById(bookid=${queryBookById[0].bookid},revid=${qr.revid})}"
-                                                                   target="_blank" data-eid="qd_G37" th:utext="${qr.revvlue}">
+                                                                <a class=""  th:href="@{/reviewbook/queryById(bookid=${queryBookById[0].bookid},revid=${qr.evaid})}"
+                                                                   target="_blank" data-eid="qd_G37" th:utext="${qr.content}">
                                                                     <i class="icon icon-topfix"></i>
                                                                     <i class="icon icon-jinghua"></i>
                                                                     书只看了几章，请问一下，九品等级是：九品力士八品勇士七品下甲士六品上甲士五品武士，四到一品
                                                                 </a>
                                                             </h5>
                                                             <p class="info dib-wrap" data-id="1244484136">
-                                                                <span class="mr20" th:text="|${qr.commenttime}发布|">2019-02-15发布</span>
-                                                                <a th:href="@{/reviewbook/queryById(bookid=${queryBookById[0].bookid},revid=${qr.revid})}"
+                                                                <span class="mr20" th:text="|${qr.evatime}发布|">2019-02-15发布</span>
+                                                                <a th:href="@{/reviewbook/queryById(bookid=${queryBookById[0].bookid},revid=${qr.evaid})}"
                                                                    class="info-tab mr20" target="_blank">
                                                                     <i class="iconfont icon-xiaoxi"></i>
                                                                     <span th:text="|${qr.rqcount}条回复|"></span>
                                                                 </a>
-																<a href="javascript:;" th:onclick="'javascript:dianzan(this,'+${qr.revid}+')'"
+																<a href="javascript:;" th:onclick="'javascript:dianzan(this,'+${qr.evaid}+')'"
 																   th:class="${qr.z} gt -1 ? 'info-tab like-btn act' : 'info-tab like-btn '">
-																	<i class="iconfont icon-dianzan"></i>
-																	<span th:text="|${qr.zan}赞|">4赞</span>
+																	&lt;!&ndash;<i class="iconfont icon-dianzan"></i>
+																	<span th:text="|${qr.zan}赞|">4赞</span>&ndash;&gt;
 																</a>
                                                             </p>
                                                         </div>
                                                     </li>
                                                 </th:bolock>
-                                            </th:block>
+                                            </th:block>-->
 											<!-- 置顶帖 end -->
 										</ul>
 										<!--如果还有数据就跳转页面查看更多的评论-->
-                                        <th:block th:if="${list[0].num} gt 15">
+                                        <th:block th:if="${list[0].evanum} gt 15">
                                             <p class="go-discuss">
                                                 <a class="blue" th:href="@{/books/queryBookById(bookid=${list[0].bookid})}"
                                                    target="_blank">
@@ -1266,27 +1112,26 @@
 					<div class="author-state mb10">
 						<div class="author-info">
 							<div class="info-wrap nobt" data-l1="9">
-								<!--<div class="author-photo" id="authorId" data-authorid="4242192">
-									<a th:href="@{/pc/authorData?bid={filename}(filename=${queryUsers[0].uuid})}" target="_blank"
+								<div class="author-photo" id="authorId" data-authorid="4242192">
+									<a th:href="@{/pc/authorData?bid={filename}(filename=${list[0].userid})}" target="_blank"
 										data-eid="qd_G38">
-										<img th:src="@{/images/{filename}(filename=${queryUsers[0].icon})}">
+										<img src="/images/author.png">
 									</a>
-									<span class="lv" th:text="|Lv.${queryUsers[0].grade}|">Lv.1</span>
-								</div>-->
+								</div>
 								<p>
 									<a href="https://my.qidian.com/author/4242192" target="_blank" th:text="${list[0].pen}"></a>
 								</p>
 							</div>
-							<!--<div class="info-wrap" data-l1="9">
+							<div class="info-wrap" data-l1="9">
 								<ul class="work-state cf">
 									<li><span class="book"></span>
-										<p>作品总数</p> <em th:text="${queryUsers[0].bookcount}">2</em></li>
+										<p>作品总数</p> <em th:text="${list[0].booknum}">2</em></li>
 									<li><span class="word"></span>
-										<p>累计字数</p> <em th:text="|${queryUsers[0].chaptercount}万|">279.02万</em></li>
+										<p>累计字数</p> <em th:text="|${list[0].writenum}|">279.02万</em></li>
 									<li><span class="coffee"></span>
-										<p>本月更新</p> <em th:text="|${queryUsers[0].days}天|"></em></li>
+										<p>创作天数</p> <em th:text="|${list[0].writeday}天|"></em></li>
 								</ul>
-							</div>-->
+							</div>
 
 						</div>
 					</div>
@@ -1299,43 +1144,43 @@
 								<h3 class="wrap-title lang">
 									粉丝排行榜
 								</h3>
-								<!--<div class="book-list">
+								<div class="book-list">
 									<ul >
-										<th:block th:each="q,s : ${queryFansByBookid}">
+										<th:block th:each="q,s : ${pink}">
 											<th:block th:if="${s.index} lt 10">
-												<th:block th:if="${s.index} lt 3 and ${q.sums} ne 0">
+												<th:block th:if="${s.index} lt 3">
 												<li class="top">
 													<div class="num-box">
 														<span th:class="|num${s.index+1}|" th:text="${s.index+1}">1</span>
 													</div>
 													<div class="top-name-box">
 														<h4>
-															<a th:href="|/jpbook/pc/home?uuid=${q.uuid}|"
+															<a th:href="|/pc/home?userid=${q.userid}|"
 															   class="name" target="_blank"
-															   th:title="${q.uname}" th:text="${q.uname}">独走一匹猫</a>
+															   th:title="${q.username}" th:text="${q.username}">独走一匹猫</a>
 														</h4>
 														<p>
-															<span th:text="${q.sums}">70000</span>粉丝值
+															<span th:text="${q.expmoney}">70000</span>粉丝值
 														</p>
 													</div>
 
 														<div class="fans-img">
-															<a th:href="|/jpbook/pc/home?uuid=${q.uuid}|"
+															<a th:href="|/pc/home?userid=${q.userid}|"
 															   target="_blank">
-																<img th:src="@{/images/{filename}(filename=${q.icon})}"></a>
+																<img src="/images/default_user.0.2.png"></a>
 															<span class="user-level lv9"></span>
 														</div>
 													</th:block>
-													<th:block th:if="${s.index} gt 2 and ${q.sums} ne 0">
+													<th:block th:if="${s.index} gt 2">
 														<li data-rid="4">
 															<div class="num-box">
 																<span th:class="|num${s.index+1}|" th:text="${s.index+1}">4</span>
 															</div>
 															<div class="name-box">
 																<a class="name"
-																   th:href="|/jpbook/pc/home?uuid=${q.uuid}|"
-																   target="_blank" th:title="${q.uname}" th:text="${q.uname}">飞在天中的鱼</a>
-																<i class="total" th:text="${q.sums}">4220</i>
+																   th:href="|/pc/home?userid=${q.userid}|"
+																   target="_blank" th:title="${q.username}" th:text="${q.username}">飞在天中的鱼</a>
+																<i class="total" th:text="${q.expmoney}">4220</i>
 															</div>
 														</li>
 													</th:block>
@@ -1343,7 +1188,7 @@
 											</th:block>
 										</th:block>
 									</ul>
-								</div>-->
+								</div>
 							</div>
 						</div>
 					</div>
@@ -1355,25 +1200,13 @@
 		<div class="footer">
 			<div class="box-center cf">
 				<div class="friend-link">
-					<em><a class="yuewen" href="https://www.yuewen.com/"
-						target="_blank">阅文集团</a><cite>旗下网站：</cite></em> <a
-						href="https://www.qidian.com/">起点中文网</a> <a
-						href="https://www.qdmm.com/" target="_blank">起点女生网</a> <a
-						href="http://chuangshi.qq.com/" target="_blank">创世中文网</a> <a
-						href="http://yunqi.qq.com/" target="_blank">云起书院</a>
-					<!--<a href="http://www.rongshuxia.com" target="_blank">榕树下</a>-->
-					<a href="https://www.hongxiu.com/" target="_blank">红袖添香</a> <a
-						href="https://www.readnovel.com/" target="_blank">小说阅读网</a> <a
-						href="https://www.xs8.cn/" target="_blank">言情小说吧</a> <a
-						href="http://www.xxsy.net/" target="_blank">潇湘书院</a> <a
-						href="http://www.tingbook.com/" target="_blank">天方听书网</a> <a
-						href="http://www.lrts.me/" target="_blank">懒人听书</a> <a
-						href="http://yuedu.yuewen.com/" target="_blank">阅文悦读</a> <a
-						href="https://www.yuewen.com/app.html#appqq" target="_blank">QQ阅读</a>
-					<a href="https://www.yuewen.com/app.html#appqd" target="_blank">起点读书</a>
-					<a href="https://www.yuewen.com/app.html#appzj" target="_blank">作家助手</a>
-					<a href="https://www.webnovel.com/" target="_blank"
-						title="Qidian International">起点国际版</a>
+					<em><cite>合作网站：</cite></em>
+					<th:block th:each="s : ${site}">
+						<a th:href="@{${s.siteurl}}" target="_blank" th:text="${s.sitename}"></a>
+					</th:block>
+					<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=1685854575&site=qq&menu=yes">
+						<img border="0" src="http://wpa.qq.com/pa?p=2:1685854575:51" alt="点击这里给我发消息" title="点击这里给我发消息"/>
+					</a>
 				</div>
 				<div class="footer-menu dib-wrap">
 					<a href="https://www.qidian.com/about/intro" target="_blank">关于起点</a>
@@ -1382,8 +1215,6 @@
 						href="https://www.qidian.com/help/index/2" target="_blank">帮助中心</a>
 					<a href="http://123.206.70.240/online/?cid=0&amp;uid=10&amp;code=0"
 						class="advice" target="_blank">提交建议</a>
-					<!--<a href="http://bbs.qidian.com" target="_blank">起点论坛</a>-->
-					<!--<a href="http://comic.qidian.com" target="_blank">动漫频道</a>-->
 					<a href="https://jubao.yuewen.com/" target="_blank">举报中心</a>
 				</div>
 				<div class="copy-right">
@@ -1425,8 +1256,6 @@
             <div class="popup-tab" id="popupTab">
                 <!-- EJS注释，如果作品是非VIP，看不到投月票Tab -->
 
-                <a class="lang" href="javascript:monthClick()" id="monthTab">投月票<em></em></a>
-
                 <a class="lang act" href="javascript:recClick()" id="recTab">投推荐票<em></em></a>
 
                 <a class="lang" href="javascript:rewardClick()" id="rewardTab">打赏</a>
@@ -1439,150 +1268,15 @@
                     $("#" + obj).addClass("act");
                     $("#voteWrap").find(".hidden").css("display", "none");
                     $("#" + id).css("display", "block");
-                    $("#" + id).css("display", "block");
                 }
             </script>
             <!-- start 弹窗互动内容 -->
             <div class="vote-popup-wrap" id="voteWrap">
-                <!-- start 投月票 -->
-                <!-- EJS注释，如果作品是非VIP，看不到投月票的弹窗 -->
-
-                <div class="popup-content month hidden" id="monthPopup" data-l2="1">
-                    <div class="limit-wrap" style="display:none;">
-                        <div class="null no-ticket"></div>
-                        <h3>无投票资格</h3>
-                        <!-- <h4><a class="blue" href="http://vip.qidian.com/My.php" target="_blank">提升会员等级</a>可获得投票资格</h4> -->
-                        <h4>消费书币可获得月票</h4>
-                        <p class="bottom"><a
-                                href="http://wwwploy.qidian.com/HelpCenter/default.aspx?type=0&amp;categoryid=46&amp;parentid=21"
-                                target="_blank">投月票规则</a></p>
-                    </div>
-                    <div class="no-limit-wrap" style="display: none">
-                        <h3>剩余月票数<span>1</span>张<i>·</i>当前最多能投<span id="monthSurplus">1</span>张</h3>
-                        <div class="vote-form-wrap">
-                            <h4>投票数量</h4>
-                            <div class="vote-wrap mb160 cf">
-
-                                <a class="subtract disabled" id="subMonth" href="javascript:monthAlter('sub')"
-                                   data-eid="qd_G110"><span></span></a>
-                                <div class="ticket-num fl"> <span class="month-ticket" id="monthTicket">
-
-
-
-                    <b></b></span><input id="monthNum" maxlength="3" value="1"></div>
-                                <a class="add" id="addMonth" href="javascript:monthAlter('add')"
-                                   data-eid="qd_G111"><span><em></em></span></a>
-                            </div>
-                            <script type="text/javascript">
-                                $("#monthNum").change(function () {
-                                    if($("#monthNum").val()>$("#monthPopup").find(".no-limit-wrap").find("h3").find("span").html()){
-                                        $("#monthNum").val($("#monthPopup").find(".no-limit-wrap").find("h3").find("span").html());
-                                    }
-                                    var str="";
-                                    for(var i=0;i<$("#monthNum").val();i++){
-                                        str+="<b></b>";
-                                    }
-                                    $("#monthTicket").html(str);
-                                })
-                                function monthAlter(obj) {
-                                    if(obj=="add"){
-                                        $("#monthNum").val($("#monthNum").val()-1+2);
-                                    }else{
-                                        $("#monthNum").val($("#monthNum").val()-1);
-                                    }
-                                    $("#addMonth").removeClass("disabled");
-                                    $("#subMonth").removeClass("disabled");
-                                    if($("#monthNum").val()<=1){
-                                        $("#subMonth").addClass("disabled");
-                                    }
-                                    if($("#monthNum").val()==$("#monthPopup").find(".no-limit-wrap").find("h3").find("span").html()){
-                                        $("#addMonth").addClass("disabled");
-                                    }
-                                    if($("#monthNum").val()>$("#monthPopup").find(".no-limit-wrap").find("h3").find("span").html()){
-                                        $("#monthNum").val($("#monthPopup").find(".no-limit-wrap").find("h3").find("span").html());
-                                    }
-                                    var str="";
-                                    for(var i=0;i<$("#monthNum").val();i++){
-                                        str+="<b></b>";
-                                    }
-                                    $("#monthTicket").html(str);
-                                }
-                            </script>
-                            <!--<h4>留言鼓励</h4>
-                            <div class="message-wrap">
-                                <textarea id="recMsgText">这本书太棒了，犒劳一下，希望后续更加精彩！</textarea>
-                            </div>-->
-                        </div>
-                        <div class="popup-btn">
-                            <a class="red-btn" id="voteMonth" href="javascript:voteMonth()" data-eid="qd_G58">立即投票</a>
-                        </div>
-                    </div>
-                    <div class="vote-complete">
-                        <div class="complete-img month-img"></div>
-                        <h3 class="mb50">已投出<span class="post-num"></span>张月票</h3>
-                        <div class="popup-btn">
-                            <a class="red-btn closeBtn" href="javascript:closePanel()" data-eid="">关闭</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- end 投月票 -->
-                <script type="text/javascript">
-                    function voteMonth() {
-                        $.ajax({
-                            url:"/jpbook/vote/voteMonth",
-                            data:{
-                                "bookid":$("#atbookid").val(),
-                                "votenum":$("#monthNum").val()
-                            },
-                            success:function (data) {
-                                $("#monthPopup > div").css("display","none");
-                                $("#monthPopup").find(".vote-complete").css("display","block");
-                                $("#monthPopup").find(".vote-complete > h3 > span").html($("#monthNum").val());
-                                getMonthAndRecAndReward();
-                            }
-                        })
-
-                    }
-                    function monthClick() {
-                        $.ajax({
-                            url: "/jpbook/users/ckSession",
-                            data: {"name": 'users'},
-                            type: "post",
-                            success: function (data) {
-                                if (data == 0) {
-                                    window.location.href = "/jpbook/login";
-                                } else {
-                                    $(".lbf-panel").css("display", "block");
-                                    $(".lbf-overlay").css("display", "block");
-                                    $.ajax({
-                                        url: "/jpbook/wallet/getSurplusMonth",
-                                        success: function (data) {
-                                            $("#monthPopup > div").css("display", "none");
-                                            if (data > 0) {
-                                                $("#monthPopup").find(".no-limit-wrap").css("display", "block");
-                                                $("#monthPopup").find(".no-limit-wrap").find("h3").find("span").html(data);
-                                                if(data==1){
-                                                    $("#addMonth").addClass("disabled");
-                                                }
-                                            } else {
-                                                $("#monthPopup").find(".limit-wrap").css("display", "block");
-                                            }
-                                            $("#monthNum").val(1);
-                                            voteTab('monthTab', 'monthPopup');
-                                        }
-                                    })
-                                }
-                            }
-                        })
-
-                    }
-                </script>
                 <!-- start 投推荐票 -->
                 <div class="popup-content rec hidden" id="recPopup" data-l2="2" style="display: none;">
                     <!--投票-->
                     <div class="no-limit-wrap" style="display: none">
-                        <h3>剩余推荐票数<span>1</span>张<i>·</i>当前最多能投<span id="recSurplus">1</span>张</h3>
+                        <h3>剩余推荐票数<span></span>张<i>·</i>当前最多能投<span id="recSurplus"></span>张</h3>
                         <div class="vote-form-wrap">
                             <h4>投票数量</h4>
                             <div class="vote-wrap mb160 cf">
@@ -1597,17 +1291,8 @@
                                    data-eid="qd_G111"><span><em></em></span></a>
                             </div>
                             <script type="text/javascript">
-                                $("#recNum").change(function () {
-                                    if($("#recNum").val()>$("#recPopup").find(".no-limit-wrap").find("h3").find("span").html()){
-                                        $("#recNum").val($("#recPopup").find(".no-limit-wrap").find("h3").find("span").html());
-                                    }
-                                    var str="";
-                                    for(var i=0;i<$("#recNum").val();i++){
-                                        str+="<b></b>";
-                                    }
-                                    $("#recTicket").html(str);
-                                })
                                 function recAlter(obj) {
+                                    var vote = parseInt($("#recPopup").find(".no-limit-wrap").find("h3").find("span").html());
                                     if(obj=="add"){
                                         $("#recNum").val($("#recNum").val()-1+2);
                                     }else{
@@ -1617,12 +1302,11 @@
                                     $("#subRec").removeClass("disabled");
                                     if($("#recNum").val()<=1){
                                         $("#subRec").addClass("disabled");
+                                        $("#recNum").val(1);
                                     }
-                                    if($("#recNum").val()==$("#recPopup").find(".no-limit-wrap").find("h3").find("span").html()){
+                                    if($("#recNum").val()>=vote){
                                         $("#addRec").addClass("disabled");
-                                    }
-                                    if($("#recNum").val()>$("#recPopup").find(".no-limit-wrap").find("h3").find("span").html()){
-                                        $("#recNum").val($("#recPopup").find(".no-limit-wrap").find("h3").find("span").html());
+                                        $("#recNum").val(vote);
                                     }
                                     var str="";
                                     for(var i=0;i<$("#recNum").val();i++){
@@ -1632,16 +1316,17 @@
                                 }
                                 function voteRec() {
                                     $.ajax({
-                                        url:"/jpbook/vote/voteRec",
+                                        url:"/user/vote",
                                         data:{
                                             "bookid":$("#atbookid").val(),
-                                            "votenum":$("#recNum").val()
+                                            "nums":$("#recNum").val()
                                         },
                                         success:function (data) {
                                             $("#recPopup > div").css("display","none");
                                             $("#recPopup").find(".vote-complete").css("display","block");
                                             $("#recPopup").find(".vote-complete > h3 > span").html($("#recNum").val());
                                             getMonthAndRecAndReward();
+                                            dongtai();
                                         }
                                     })
                                 }
@@ -1661,35 +1346,13 @@
                         <h3>无投票资格</h3>
                         <h4><a class="blue"
                                href="http://wwwploy.qidian.com/HelpCenter/default.aspx?type=0&amp;categoryid=114&amp;parentid=20"
-                               target="_blank">增加经验值可获得投票资格</a></h4>
+                               target="_blank">每充值十元可获得一张推荐票</a></h4>
                         <p class="bottom"><a
                                 href="http://wwwploy.qidian.com/HelpCenter/default.aspx?type=0&amp;categoryid=35&amp;parentid=20"
                                 target="_blank">投推荐票规则</a></p>
+						<p class="popup-btn"><a class="blue-btn j_charge" href="/topup.html" target="_blank" data-eid="qd_G62">去充值</a></p>
                     </div>
                     <!-- end 无投票资格 -->
-
-                    <!-- start 无投票资格 -->
-                    <div class="limit-wrap hidden" id="noPrivilege">
-                        <div class="null no-ticket"></div>
-                        <h3>无投票资格</h3>
-                        <h4><a class="blue"
-                               href="http://wwwploy.qidian.com/HelpCenter/default.aspx?type=0&amp;categoryid=114&amp;parentid=20"
-                               target="_blank">增加经验值可获得投票资格</a></h4>
-                        <p class="bottom"><a
-                                href="http://wwwploy.qidian.com/HelpCenter/default.aspx?type=0&amp;categoryid=35&amp;parentid=20"
-                                target="_blank">投推荐票规则</a></p>
-                    </div>
-                    <!-- end 无投票资格 -->
-
-                    <!-- start post后判断限额用完 -->
-                    <div class="limit-wrap hidden" id="outOfRecLimit">
-                        <div class="null no-ticket"></div>
-                        <h3>今日<span></span>张限额已用完</h3>
-                        <p class="bottom"><a
-                                href="http://wwwploy.qidian.com/HelpCenter/default.aspx?type=0&amp;categoryid=35&amp;parentid=20"
-                                target="_blank">投推荐票规则</a></p>
-                    </div>
-                    <!-- end post后判断限额用完 -->
 
                     <!-- start 投完推荐票显示的动态 -->
                     <div class="vote-complete">
@@ -1711,32 +1374,26 @@
                 <script type="text/javascript">
                     function recClick() {
                         $.ajax({
-                            url: "/jpbook/users/ckSession",
-                            data: {"name": 'users'},
+                            url: "/user/ckSession",
                             type: "post",
                             success: function (data) {
-                                if (data == 0) {
-                                    window.location.href = "/jpbook/login";
-                                } else {
+                                if (data) {
                                     $(".lbf-panel").css("display", "block");
                                     $(".lbf-overlay").css("display", "block");
-                                    $.ajax({
-                                        url: "/jpbook/wallet/getSurplusRec",
-                                        success: function (data) {
-                                            $("#recPopup > div").css("display", "none");
-                                            if (data > 0) {
-                                                $("#recPopup").find(".no-limit-wrap").css("display", "block");
-                                                $("#recPopup").find(".no-limit-wrap").find("h3").find("span").html(data);
-                                                if(data==1){
-                                                    $("#addRec").addClass("disabled");
-                                                }
-                                            } else {
-                                                $("#recPopup").find(".limit-wrap").css("display", "block");
-                                            }
-                                            $("#recNum").val(1);
-                                            voteTab('recTab', 'recPopup');
+                                    $("#recPopup > div").css("display", "none");
+                                    if (data.ticked > 0) {
+                                        $("#recPopup").find(".no-limit-wrap").css("display", "block");
+                                        $("#recPopup").find(".no-limit-wrap").find("h3").find("span").html(data.ticked);
+                                        if(data.ticked==1){
+                                            $("#addRec").addClass("disabled");
                                         }
-                                    })
+                                    } else {
+                                        $("#recPopup").find(".limit-wrap").css("display", "block");
+                                    }
+                                    $("#recNum").val(1);
+                                    voteTab('recTab', 'recPopup');
+                                }else{
+                                    window.location.href = "/login.html";
                                 }
                             }
                         })
@@ -1752,10 +1409,7 @@
                         <h3>账户余额不足</h3>
                         <h4>本次打赏<em class="calcReward">500</em>起点币</h4>
                         <h5>账户余额 <span id="balance"></span> 起点币<i>·</i>还差<em class="f14" id="differ"></em>起点币</h5>
-                        <p class="popup-btn"><!--<a class="red-btn j_quickPay" href="javascript:"
-                                                data-eid="qd_G61">快捷支付打赏</a>--><a class="blue-btn j_charge"
-                                                                               href="/jpbook/topup" target="_blank"
-                                                                               data-eid="qd_G62">去充值</a></p>
+                        <p class="popup-btn"><a class="blue-btn j_charge" href="/topup.html" target="_blank" data-eid="qd_G62">去充值</a></p>
                     </div>
                     <!-- end 有限制不可以打赏 余额不足 -->
 
@@ -1773,14 +1427,21 @@
                         <div class="vote-form-wrap">
                             <div class="reward-list cf" id="rewardList">
                                 <ul>
-                                    <li data-reward="100">
+                                    <li class="act" data-reward="100" id="defaultreward">
                                         <div class="price">
                                             <p class="lang">100点</p>
                                         </div>
                                         <i></i>
                                         <cite></cite>
                                     </li>
-                                    <li class="act" data-reward="500" id="defaultreward">
+                                    <li data-reward="300">
+                                        <div class="price">
+                                            <p class="lang">300点</p>
+                                        </div>
+                                        <i></i>
+                                        <cite></cite>
+                                    </li>
+                                    <li data-reward="500">
                                         <div class="price">
                                             <p class="lang">500点</p>
                                         </div>
@@ -1801,10 +1462,23 @@
                                         <i></i>
                                         <cite></cite>
                                     </li>
+                                    <li data-reward="3000">
+                                        <div class="price">
+                                            <p class="lang">3000点</p>
+                                        </div>
+                                        <i></i>
+                                        <cite></cite>
+                                    </li>
+                                    <li data-reward="5000">
+                                        <div class="price">
+                                            <p class="lang">5000点</p>
+                                        </div>
+                                        <i></i>
+                                        <cite></cite>
+                                    </li>
                                     <li data-reward="10000">
                                         <div class="price">
                                             <p class="lang">1万点</p>
-                                            <span class="">赠1张月票</span>
                                         </div>
                                         <i></i>
                                         <cite></cite>
@@ -1812,31 +1486,6 @@
                                     <li data-reward="50000">
                                         <div class="price">
                                             <p class="lang">5万点</p>
-                                            <span class="">赠5张月票</span>
-                                        </div>
-                                        <i></i>
-                                        <cite></cite>
-                                    </li>
-                                    <li data-reward="100000">
-                                        <div class="price">
-                                            <p class="lang">10万点</p>
-                                            <span class="">赠10张月票</span>
-                                        </div>
-                                        <i></i>
-                                        <cite></cite>
-                                    </li>
-                                    <li data-reward="1000000">
-                                        <div class="price">
-                                            <p class="lang">100万点</p>
-                                            <span class="">赠100张月票</span>
-                                        </div>
-                                        <i></i>
-                                        <cite></cite>
-                                    </li>
-                                    <li data-reward="10000000">
-                                        <div class="price">
-                                            <p class="lang">1000万点</p>
-                                            <span class="">赠1000张月票</span>
                                         </div>
                                         <i></i>
                                         <cite></cite>
@@ -1851,53 +1500,28 @@
 
                                     function rewardClick() {
                                         $.ajax({
-                                            url: "/jpbook/users/ckSession",
-                                            data: {"name": 'users'},
+                                            url: "/user/ckSession",
                                             type: "post",
                                             success: function (data) {
-                                                if (data == 0) {
-                                                    window.location.href = "/jpbook/login";
-                                                } else {
+                                                if (data) {
                                                     $(".lbf-panel").css("display", "block");
                                                     $(".lbf-overlay").css("display", "block");
-                                                    $.ajax({
-                                                        url: "/jpbook/users/getNewMoney",
-                                                        success: function (data) {
-                                                            if (data > 0) {
-                                                                $("#rewardPopup").find(".no-limit-wrap").find("h4 > em").html(data);
-                                                            } else {
-                                                                $("#rewardPopup").find(".no-limit-wrap").find("h4 > em").html(0);
-                                                            }
-                                                            $(".calcReward").html(500);
-                                                            $("#rewardPopup").find(".no-limit-wrap").css("display","block");
-                                                            voteTab('rewardTab', 'rewardPopup');
-                                                        }
-                                                    })
-                                                }
-                                            }
-                                        })
-                                    }
-
-                                    function ckSession(name) {
-                                        $.ajax({
-                                            url: "/jpbook/users/ckSession",
-                                            data: {"name": name},
-                                            type: "post",
-                                            success: function (data) {
-                                                if (data == 0) {
-                                                    window.location.href = "/jpbook/login";
-                                                    return false;
-                                                } else {
-                                                    return true;
+                                                    $("#rewardPopup").find(".no-limit-wrap").find("h4 > em").html(data.money);
+                                                    $(".calcReward").html(100);
+                                                    $("#balance").html(data.money);
+                                                    $("#rewardPopup").find(".no-limit-wrap").css("display","block");
+                                                    voteTab('rewardTab', 'rewardPopup');
+                                                }else{
+                                                    window.location.href = "/login.html";
                                                 }
                                             }
                                         })
                                     }
                                 </script>
                             </div>
-                            <!--<h4>账户余额<em
-                                    th:text="${session.users==null?0:session.users.get(0).getMoney()}"></em>起点币<i>·</i>本次打赏<em
-                                    class="calcReward">500</em>起点币</h4>-->
+                            <h4>账户余额<em
+                                    ></em>起点币<i>·</i>本次打赏<em
+                                    class="calcReward">500</em>起点币</h4>
                         </div>
                         <div class="popup-btn">
                             <a class="red-btn" id="voteReward" href="javascript:reward()" data-eid="qd_G59">确认打赏</a>
@@ -1922,7 +1546,7 @@
                 function reward() {
                     $("#rewardPopup > .no-limit-wrap").css("display","none");
                     var money=$("#rewardPopup").find(".no-limit-wrap").find("h4 > em").html();
-                    var reward=$(".calcReward").html();
+                    var reward=$(".calcReward:eq(0)").html();
                     $("#rewardList").find("li").removeClass("act");
                     $("#rewardList").find("#defaultreward").addClass("act");
                     if(parseInt(money)<parseInt(reward)){
@@ -1931,15 +1555,17 @@
                         $("#noMoney").css("display","block");
                     }else{
                         $.ajax({
-                            url:"/jpbook/reward/rewardNew",
+                            url:"/user/give",
                             data:{
                                 "bookid":$("#atbookid").val(),
-                                "rewanum":reward
+                                "expmoney":reward
                             },
                             success:function (data) {
                                 $("#rewardPopup > .vote-complete").css("display","block");
                                 $("#rewardPopup > .vote-complete > h3 > span").html($(".calcReward").html());
+                                $("#rewardPopup > .vote-complete > p > em").html($(".calcReward").html());
                                 getMonthAndRecAndReward();
+                                dongtai();
                             }
                         })
                     }
@@ -1987,17 +1613,21 @@
 					<div class="eva-box">
 						<h4>给个评分</h4>
 						<div class="star-big">
-							<span id="starBig" style="cursor: pointer; width: 210px;">
-								<img src="../images/star-off.b2a1b.png" alt="1" title="不知所云" class="">&nbsp;<img src="../images/star-off.b2a1b.png" alt="2" title="随便看看" class="">&nbsp;<img src="../images/star-off.b2a1b.png" alt="3" title="值得一读" class="">&nbsp;<img src="../images/star-off.b2a1b.png" alt="4" title="不容错过" class="">&nbsp;<img src="../images/star-off.b2a1b.png" alt="5" title="经典必读" class=""><input type="hidden" name="score" value="5"></span><em id="hint">经典必读</em>
+							<span id="starBig" style="cursor: pointer; width: 250px;">
+								<img src="../images/star-off.b2a1b.png" alt="1" title="不知所云" class="">&nbsp;
+								<img src="../images/star-off.b2a1b.png" alt="2" title="随便看看" class="">&nbsp;
+								<img src="../images/star-off.b2a1b.png" alt="3" title="值得一读" class="">&nbsp;
+								<img src="../images/star-off.b2a1b.png" alt="4" title="不容错过" class="">&nbsp;
+								<img src="../images/star-off.b2a1b.png" alt="5" title="经典必读" class="">
+								<input type="hidden" name="score" value="5">
+							</span><em id="hint">经典必读</em>
 						</div>
 						<h4>简短评价</h4>
 						<input type = "hidden" id = "bookid" th:value="${list[0].bookid}">
 						<div class="count-text">
 							<span class="count"><em id="evaCounter">0</em>/350</span>
-							<textarea class="gray" id="evaMsgText" maxlength="350" placeholder="撰写高质量书评的建议：
-	1、喜欢不喜欢本书的原因；
-	2、与同类书籍的比较：故事风格、人物形象、环境描写；
-	3、可以从不同角度描述；"></textarea>
+							<textarea class="gray" id="evaMsgText" maxlength="350" placeholder="撰写高质量书评的建议：1、喜欢不喜欢本书的原因；2、与同类书籍的比较：故事风格、人物形象、环境描写；3、可以从不同角度描述；">
+							</textarea>
 						</div>
 					</div>
 					<!-- start 弹窗按钮 -->

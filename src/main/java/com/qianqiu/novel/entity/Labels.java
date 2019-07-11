@@ -1,48 +1,16 @@
 package com.qianqiu.novel.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
+@Data
 public class Labels {
 
   private Integer labelid;
   private String labelname;
   private Integer operateeid;
   private Date operatedate;
-
-
-  public Integer getLabelid() {
-    return labelid;
-  }
-
-  public void setLabelid(Integer labelid) {
-    this.labelid = labelid;
-  }
-
-
-  public String getLabelname() {
-    return labelname;
-  }
-
-  public void setLabelname(String labelname) {
-    this.labelname = labelname;
-  }
-
-
-  public Integer getOperateeid() {
-    return operateeid;
-  }
-
-  public void setOperateeid(Integer operateeid) {
-    this.operateeid = operateeid;
-  }
-
-
-  public Date getOperatedate() {
-    return operatedate;
-  }
-
-  public void setOperatedate(Date operatedate) {
-    this.operatedate = operatedate;
-  }
-
 }

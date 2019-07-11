@@ -12,8 +12,6 @@ public class Roles implements Serializable {
 	private Integer roleid;
 	private String rolename;
 	private Integer operateeid;
-	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	private Date operatedate;
 	private String empname;
 	private List<Menus> menus = new ArrayList<Menus>();

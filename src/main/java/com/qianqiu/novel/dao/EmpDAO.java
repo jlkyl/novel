@@ -8,14 +8,14 @@ import java.util.Map;
 
 @Mapper
 public interface EmpDAO {
-    @Select("select * from emps where uname=#{uname} and pwd=#{pwd}")
+    @Select("select * from emps where uname=#{uname} and pwd=#{pwd} and state=0")
     public Emps loginB(@Param("uname" )String uname, @Param("pwd")String pwd);
 
     @Select("select * from emps")
     List<Emps> queryEmp();
 
     @Insert("INSERT INTO `novel`.`emps` (`empid`, `uname`, `pwd`, `empname`, `phone`, `idcard`, `roleid`, `state`, `operateeid`, `operatedate`) VALUES " +
-            "( null,#{uname}, #{pwd}, #{empname}, #{phone}, #{idcard}, #{roleid}, 0, #{operateeid}, now());\n")
+            "( null,#{uname}, '123456', #{empname}, #{phone}, #{idcard}, #{roleid}, 0, #{operateeid}, now());\n")
     int add(Emps e);
 
     @Update("UPDATE `novel`.`emps` SET  `uname`=#{uname}, `empname`=#{empname}, `phone`=#{phone}, `idcard`=#{idcard}, `roleid`=#{roleid}, `operateeid`=#{operateeid}, `operatedate`=now() WHERE (`empid`=#{empid});\n")

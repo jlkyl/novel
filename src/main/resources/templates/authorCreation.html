@@ -413,6 +413,30 @@
         }
 
 
+        function btParent00(typeid) {
+            $.ajax({
+                url:'bt/queryByparent',
+                type:'post',
+                data:{'typeid':typeid},
+                success:function(data){
+                    if(data!=null){
+                        $("#novelMainCategorySelect").removeAttr('name');
+                        var str="";
+                        str+="<option value=\"-1\">请选择</option>";
+                        for(var i=0;i<data.length;i++){
+                            str+="<option  value=\""+data[i].typeid+"\">"+data[i].typename+"</option>";
+                        }
+                        $("#novelbyparentidSelect").html(str);
+
+                    }else{
+                        $("#novelbyparentidSelect").removeAttr('name');
+                    }
+                }
+            });
+        }
+
+
+
     $("#createNovelBtn").click(function () {
         var form = $("#createBookForm");
         var options = {

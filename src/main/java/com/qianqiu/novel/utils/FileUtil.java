@@ -12,9 +12,9 @@ import java.util.UUID;
 
 public class FileUtil {
     //图书存放路径
-    public static final String path="D:\\Study\\Writerread\\";
+    public static final String path="F:\\books\\";
     //图片存放路径
-    public static final String imgpath="D:\\Study\\S3\\IDEA_idea\\novel\\src\\main\\resources\\static\\img\\";
+    public static final String imgpath="D:\\Workspace\\IdeaProjects\\novel\\src\\main\\resources\\static\\img\\";
     /**
      * 创建文件夹
      * @param file
@@ -50,7 +50,7 @@ public class FileUtil {
     public static String  read(String files){
         String str="";
         try {
-            String pathname = "D:\\Study\\Writerread\\"+files; // 绝对路径或相对路径都可以，这里是绝对路径，写入文件时演示相对路径
+            String pathname = path+files; // 绝对路径或相对路径都可以，这里是绝对路径，写入文件时演示相对路径
             File filename = new File(pathname); // 要读取以上路径的input。txt文件
             InputStreamReader reader = new InputStreamReader(
                     new FileInputStream(filename)); // 建立一个输入流对象reader
@@ -149,20 +149,12 @@ public class FileUtil {
         System.out.println(file);
         file.delete();
     }
-    public  void upPaperName(String oldName,String newName){
-        System.out.println(oldName+"\n"+newName);
-        System.out.println(222);
-        System.out.println(oldName+"\n"+newName);
+    public static void upPaperName(String oldName,String newName){
         File f=new File(path+oldName+".txt");
-        String c=f.getParent();
-        System.out.println(c);
         File mm=new File(path+newName+".txt");
-        if(f.renameTo(mm))
-        {
+        if(f.renameTo(mm)){
             System.out.println("修改成功!");
-        }
-        else
-        {
+        }else{
             System.out.println("修改失败");
         }
     }

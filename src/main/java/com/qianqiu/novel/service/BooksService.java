@@ -6,6 +6,8 @@ import java.util.Map;
 import com.qianqiu.novel.entity.Booktype;
 import com.qianqiu.novel.entity.Chapters;
 import com.qianqiu.novel.entity.Labels;
+import com.qianqiu.novel.entity.Pages;
+import com.qianqiu.novel.entity.Rolls;
 import org.springframework.stereotype.Service;
 
 import com.qianqiu.novel.dao.IBooksDAO;
@@ -19,6 +21,13 @@ public class BooksService {
 	@Resource
 	IBooksDAO dao;
 
+	public List<Map<String,Object>> queryAll(){
+		return dao.queryBook();
+	}
+
+	public List<Map<String,Object>> likeBook(String kw){
+		return dao.likeBook(kw);
+	}
 	public List<Books> queryB(){
 		return dao.queryB();
 	}
@@ -53,19 +62,21 @@ public class BooksService {
 		return dao.updPutaway(putaway,bookid);
 	}
 
-	public List<Map<String,Object>> query(Integer choose,Integer putaway,Integer state){return dao.query(choose,putaway,state);}
-
-	public List<Map<String,Object>> queryUpdate(){
-		return dao.queryUpdate();
+	public List<Map<String,Object>> query(Integer choose,Integer putaway,Integer state){
+		return dao.query(choose,putaway,state,null);
 	}
+
+    /*public List<Map<String,Object>> queryUpdate(){
+        return dao.queryUpdate();
+    }*/
 
 	public List<Map<String,Object>> queryAuthor(){
 		return dao.queryAuthor();
 	}
 
-	public List<Map<String,Object>> queryAll(Integer bookid){
-		return dao.queryAll(bookid);
-	}
+	/*public List<Map<String,Object>> queryAll(Integer bookid){
+		return dao.query(null,null,null,bookid);
+	}*/
 
     public List<Map<String,Object>> queryChapter(Integer bookid){
         return dao.queryChapter(bookid);
@@ -76,8 +87,20 @@ public class BooksService {
     }
 
 	public List<Map<String,Object>> find(Integer bookid){
-		return dao.queryAll(bookid);
+		return dao.query(null,null,null,bookid);
 	}
+
+	public Pages typeBook(Books books, Rolls rolls, String kw,Integer orders,Integer labelid,Integer pageNum, Integer pageSize){
+        Pages pages = new Pages();
+        pages.setRows(dao.typeBook(books,rolls,kw,orders,labelid,(pageNum-1)*pageSize,pageSize));
+        pages.setTotal(dao.getC());
+        return pages;
+	}
+
+    public Books queryBybookid(Integer bookid){
+	    return dao.queryBybookid(bookid);
+    }
+
 	//作品修改
 	public Integer updBookname(Books b){
 		return dao.updBookname(b);
@@ -116,5 +139,18 @@ public class BooksService {
 	//根据作家查询周推
 	public List<Map<String,Object>> queryWeek(Integer userid){
 		return dao.queryWeek(userid);
+	}
+
+	public Integer addClick(Integer bookid){
+    	return dao.addClick(bookid);
+	}
+	public List<Map<String,Object>> queryPink(Integer bookid){
+    	return dao.queryPink(bookid);
+	}
+	public Pages queryPage(Integer pageNum,Integer pageSize,String bookname,Integer putaway,Integer state){
+    	Pages pages = new Pages();
+    	pages.setTotal(dao.getCount(bookname, putaway, state));
+    	pages.setRows(dao.queryPage((pageNum-1)*pageSize, pageSize, bookname, putaway, state));
+    	return pages;
 	}
 }

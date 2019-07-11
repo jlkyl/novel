@@ -73,9 +73,9 @@ public class LoginController {
     //验证码登录（检查手机号是否存在）
     @RequestMapping("yzmLogin")
     @ResponseBody
-    public boolean yzmLogin(String phone,String yzm){
-        System.out.println(map.get(phone));
+    public boolean yzmLogin(String phone,String yzm,HttpSession session){
         if(yzm.equals(map.get(phone))){
+            session.setAttribute("user",u.yzmlogin(phone));
             return true;
         }else{
             return false;
@@ -108,6 +108,7 @@ public class LoginController {
     }
     //检查手机号是否存在
     @RequestMapping("checkphone")
+    @ResponseBody
     public boolean checkphone(String phone){
         Users user=u.yzmlogin(phone);
         if(user ==null){
@@ -213,5 +214,14 @@ public class LoginController {
         }else {
             return false;
         }
+    }
+
+    @RequestMapping("userupdate")
+    @ResponseBody
+    public String updateUser(Users user) {
+        System.out.println("修改");
+        u.updateUser(user);
+        System.out.println(user);
+        return "1";
     }
 }

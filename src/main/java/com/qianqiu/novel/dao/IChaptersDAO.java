@@ -46,10 +46,30 @@ public interface IChaptersDAO {
     @Select("select r.isvip,COUNT(chaptername) num,r.rollid,r.rollname,SUM(c.wordnum) zi from chapters c LEFT JOIN rolls r on c.rollid = r.rollid where r.bookid = #{bookid} GROUP BY r.rollid ")
     List<Map<String,Object>> queryChapter(Integer bookid);
 
-    @Select("select * from chapters where chapterid = #{chapterid}")
-    Chapters queryId(Integer chapterid);
+    @Select("<script>" +
+            "select c.*,b.bookid,b.bookname,b.userid,b.putaway,\n" +
+            "(select pen from users where userid=b.userid) pen,\n" +
+            "COALESCE((select chapterid from chapters where chapternum=c.chapternum-1 and rollid in (select rollid from rolls where bookid = b.bookid)),0) beforeid,\n" +
+            "COALESCE((select chapterid from chapters where chapternum=c.chapternum+1 and rollid in (select rollid from rolls where bookid = b.bookid)),0) nextid," +
+            "(select isvip from rolls where rollid=c.rollid) isvip," +
+            "<if test=\"userid!=null\">" +
+            "(select count(*) from bookrack where bookid=b.bookid and userid=#{userid}) israck,\n" +
+            "(select count(*) from expenses where chapid=c.chapterid and userid=#{userid}) isbuy\n" +
+            "</if>" +
+            "<if test=\"userid==null\">" +
+            "(select 0) israck,\n" +
+            "(select 0) isbuy\n" +
+            "</if>" +
+            "from chapters c\n" +
+            "LEFT JOIN rolls r\n" +
+            "on c.rollid=r.rollid\n" +
+            "LEFT JOIN books b\n" +
+            "on r.bookid=b.bookid\n" +
+            "where chapterid=#{chapterid}" +
+            "</script>")
+    Map<String,Object> queryId(@Param("chapterid") Integer chapterid,@Param("userid") Integer userid);
 
-    @Select(" SELECT * FROM chapters WHERE chapterid IN (SELECT CASE\n" +
+    @Select(" SELECT * FROM chapters WHERE state=0 and chapterid IN (SELECT CASE\n" +
             "            WHEN SIGN(chapterid - #{chapterid}) > 0 THEN MIN(chapterid)\n" +
             "            WHEN SIGN(chapterid - #{chapterid}) < 0 THEN MAX(chapterid)\n" +
             "            ELSE\n" +
@@ -65,6 +85,54 @@ public interface IChaptersDAO {
             "            ORDER BY chapterid ASC;")
     List<Chapters> upDow(Integer chapterid,Integer rollid);
 
+    @Select("<script>" +
+            "select *," +
+            "(select isvip from rolls where rollid = c.rollid) isvip," +
+            "<if test=\"userid==null\">" +
+            "(select 0) isbuy " +
+            "</if>" +
+            "<if test=\"userid!=null\">" +
+            "(select count(*) from expenses where chapid=c.chapterid and exptypeid=3 and userid=#{userid}) isbuy " +
+            "</if>" +
+            "from chapters c " +
+            "where state=0" +
+            "<if test=\"bookid!=null\">" +
+            "and c.rollid in (select rollid from rolls where bookid=#{bookid}) " +
+            "</if>" +
+            "<if test=\"rollid!=null\">" +
+            "and c.rollid = #{rollid} " +
+            "</if>" +
+            "order by chapternum" +
+            "</script>")
+    List<Map<String,Object>> queryBuy(@Param("bookid") Integer bookid,@Param("rollid") Integer rollid,@Param("userid") Integer userid);
+
+    @Insert("insert into browses VALUES(NULL,#{param1},(select bookid from rolls where rollid = (select rollid from chapters where chapterid=#{param2})),#{param2},now())")
+    Integer addBrowses(Integer userid,Integer chapid);
+
+    @Update("update browses\n" +
+            "set chapid=#{param2}\n" +
+            "where userid=#{param1} and bookid=(select bookid from rolls where rollid = (select rollid from chapters where chapterid=#{param2}))")
+    Integer updBrowses(Integer userid,Integer chapid);
+
+    @Select("SELECT b.*,bookname,o.userid authorid,typeid," +
+            "(select chaptername from chapters where chapterid=b.chapid) chaptername," +
+            "(select typename from booktype where typeid=o.typeid) typename," +
+            "(select pen from users where userid = o.userid) pen," +
+            "(select count(*) from bookrack where bookid=b.bookid and userid=b.userid) israck " +
+            "FROM `browses` b LEFT JOIN books o on b.bookid=o.bookid " +
+            "where b.userid=#{userid} ORDER BY browsetime DESC LIMIT 50")
+    List<Map<String,Object>> queryBrowses(Integer userid);
+
+    @Select("<script>select chapid from browses " +
+            "where userid=#{param1} and bookid=" +
+            "<if test=\"param2!=null\">" +
+            "(select bookid from rolls where rollid = (select rollid from chapters where chapterid=#{param2}))" +
+            "</if>" +
+            "<if test=\"param3!=null\">" +
+            "#{param3}"+
+            "</if>" +
+            "</script>")
+    Integer getChapid(Integer userid,Integer chapid,Integer bookid);
     //后台审核查询
     @Select("select b.bookname,c.chaptername,c.url,c.chapterid,c.updatetime,c.wordnum from chapters c " +
             "LEFT JOIN rolls r on c.rollid=r.rollid " +

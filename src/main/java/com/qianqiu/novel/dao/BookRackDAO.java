@@ -11,7 +11,7 @@ import java.util.Map;
 @Mapper
 public interface BookRackDAO {
     @Select("<script>select * from\n" +
-            "(select br.*,bs.bookname,bs.state,bs.putaway,updatetime,isvip,chaptername,\n" +
+            "(select br.*,bs.bookname,bs.state,bs.putaway,updatetime,isvip,chapterid,chaptername,\n" +
             "(select pen from users where userid=bs.userid) pen,(select count(*) from bookrack where userid=#{userid}) num, \n" +
             "(select typename from booktype where typeid = bs.typeid) typename from bookrack br\n" +
             "LEFT JOIN books bs on bs.bookid = br.bookid\n" +

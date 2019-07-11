@@ -11,8 +11,6 @@
     <link rel="stylesheet" type="text/css" href="../easyui/themes/icon.css">
 
     <script type="text/javascript">
-        var action = "";
-
         $(function() {
             // 初始化datagrid数据表格
             $("#tb").datagrid({
@@ -21,55 +19,63 @@
                 fitColumns: true, // 列宽自适应
                 singleSelect: true,// 当行选中
                 pagination:true,
-                pageList:[1,50,100],
-                pageSize:1,
-
+                pageList: [5, 10, 15, 20],
+                pageSize: 5,
+                toolbar:'#toolbar',
                 columns: [
                     [
-                        {field: 'userid', width: 20, title: '编号'},
-                        {field: 'username', width: 20, title: '用户'},
-                        {field: 'password', width: 20, title: '密码'},
-                        {field: 'realname', width: 20, title: '真实姓名'},
-                        {field: 'sex', width: 10, title: '性别'},
-                        {field: 'email', width: 20, title: '邮箱'},
-                        {field: 'phone', width: 30, title: '手机号'},
-                        {field: 'pen', width: 30, title: '笔名'},
-                        {
-                            field: 'head',
-                            width: 20,
-                            title: '头像',
-                            formatter:function(value,row){
-                                //var str = "";
-                                if(value!="" || value!=null){
-                                   // str = "<img style=\"height: 50px;width: 80px;\" src=\""+value+"\"/>";
-                                    return "<img style=\"height: 50px;width: 80px;\" src=\""+value+"\"/>";
-                                }
-                            }},
+                        {field: 'userid', width: 50, title: '编号'},
+                        {field: 'username', width: 100, title: '用户名'},
+                        {field: 'sex', width: 50, title: '性别'},
+                        {field: 'phone', width: 80, title: '手机号'},
+                        {field: 'money', width: 50, title: '余额'},
+                        {field: 'ticked', width: 50, title: '票数'},
+                        {field: 'vip', width: 50, title: 'VIP等级'},
+                        {field: 'sign', width: 80, title: '签名'},
                         {
                             field: 'author',
-                            width: 20,
-                            title : '作家',
+                            width: 60,
+                            title : '身份',
                             formatter : function(value,row,index){
                                 if(value=='1'){
-                                    return '作者'
+                                    return '作家'
                                 }
                                 else if(value=='0'){
                                     return '普通用户'
                                 }
                             }
-                        }
-                        /* {field: 'sign', width: 10, title: '签名'},
-                         {field: 'money', width: 10, title: '余额'},
-                         {field: 'income', width: 20, title: '收入'},
-                        {field: 'ticked', width: 10, title: '票数'},
-                        {field: 'idcard', width: 30, title: '身份证'},*/
+                        },
+                        {field: 'pen', width: 80, title: '笔名'},
+                        {field: 'realname', width: 60, title: '真实姓名'},
+                        {field: 'email', width: 120, title: '邮箱'},
+                        {field: 'idcard', width: 120, title: '身份证号'},
+                        {field: 'expmoney', width: 50, title: '收入'}
                     ]
                 ]
             });
         });
+        function find(){
+            $('#tb').datagrid('load',{
+                username: $("#username").textbox("getValue"),
+                phone: $("#phone").textbox("getValue"),
+                author: $("#author").combobox("getValue")
+            });
+        }
     </script>
 </head>
 <body>
     <table id="tb"></table>
+    <div id="toolbar" style="padding:2px;height:auto">
+        <div style="margin:5px">
+            用户名: <input class="easyui-textbox" style="width:150px" id="username">
+            手机号: <input class="easyui-textbox" style="width:150px" id="phone">
+            身份：<select id="author" class="easyui-combobox" style="width:100px" data-options="editable:false">
+                    <option value="10">全部</option>
+                    <option value="0">普通用户</option>
+                    <option value="1">作家</option>
+                </select>
+            <a href="javascript:find()" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+        </div>
+    </div>
 </body>
 </html>

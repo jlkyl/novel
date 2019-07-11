@@ -12,8 +12,6 @@ public class Coverpush {
     public Integer bookid;
     public String cover;
     public Integer operateeid;
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     public Date operatedate;
 
     public String bookname;

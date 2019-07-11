@@ -1,6 +1,5 @@
 package com.qianqiu.novel.controller;
 
-import com.miaodiyun.httpApiDemo.common.HttpUtil;
 import com.qianqiu.novel.entity.Books;
 import com.qianqiu.novel.entity.Chapters;
 import com.qianqiu.novel.service.BooksService;
@@ -9,6 +8,7 @@ import com.qianqiu.novel.service.ChaptersService;
 import com.qianqiu.novel.utils.AudioUtil;
 import com.qianqiu.novel.utils.FileUtil;
 import com.qianqiu.novel.service.RollsService;
+import com.qianqiu.novel.utils.MyUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,19 +38,37 @@ public class ChaptersController {
 	}
 
 	@RequestMapping("queryId")
-	public String queryId(Model m,Integer chapterId){
+	public String queryId(Model m,Integer chapterId,HttpSession session){
 
-		m.addAttribute("queryId",service.queryId(chapterId));
+		Map<String,Object> map = service.queryId(chapterId,MyUtil.getuserid(session));
+		m.addAttribute("queryId",map);
 
-		String read = 	FileUtil.read(service.queryId(chapterId).getUrl());
+		String read = 	FileUtil.read(map.get("url").toString());
 
 		read = read.replaceAll("(\r\n|\n)","</p><p>");
 
 		m.addAttribute("str",	read);
 
-		System.out.println(read);
-
+		Integer userid = MyUtil.getuserid(session);
+		if(userid!=null) {
+			if(service.getChapid(userid,chapterId,null)==null) {
+				service.addBrowses(userid, chapterId);
+			}else{
+				service.updBrowses(userid,chapterId);
+			}
+		}
 		return "lookBook";
+	}
+
+	@RequestMapping("getChapid")
+	@ResponseBody
+	public Integer getChapid(Integer bookid,HttpSession session){
+		Integer chapid = null;
+		Integer userid = MyUtil.getuserid(session);
+		if(userid!=null) {
+			chapid = service.getChapid(userid,null,bookid);
+		}
+		return chapid;
 	}
 
 
@@ -63,14 +81,10 @@ public class ChaptersController {
 	@RequestMapping("addChapter")
 	@ResponseBody
 	public boolean addChapter(Chapters chapters,String txt, HttpSession session){
-		String result = HttpUtil.post("https://aip.baidubce.com/rest/2.0/antispam/v2/spam", "24.1f83f6c85e3a6d1e15ae45f8e0b61cef.2592000.1564648881.282335-16695955");
-
-
 		Books books=(Books) session.getAttribute("BOOK");
 		Integer bookid=books.getBookid();
 		String bookname=booksService.querybyId(bookid).getBookname();
 		Rolls rolls = rollsService.queryId(chapters.getRollid());
-		System.out.println("rolls:_(～￣▽￣)～"+rolls);
 		String rollname=rolls.getRollname();
 		Integer num=service.getOrder(bookid);
 		chapters.setChapternum(num+1);
@@ -162,47 +176,46 @@ public class ChaptersController {
 
 	@RequestMapping("updChapterInfo")
 	@ResponseBody
-	public boolean updChapterInfo(String chaptername,Integer chapterid,Integer state,String txt,Integer wordnum,HttpSession session){
+	public boolean updChapterInfo(String chaptername,Integer chapterid,Integer state,String txt,Integer wordnum,HttpSession session) {
 		//书名
-		Books books=(Books) session.getAttribute("BOOK");
-		Integer bookid=books.getBookid();
-		String bookname=booksService.querybyId(bookid).getBookname();
+		Books books = (Books) session.getAttribute("BOOK");
+		Integer bookid = books.getBookid();
+		String bookname = booksService.querybyId(bookid).getBookname();
 
-		Chapters chapters=service.queryById(chapterid);
+		Chapters chapters = service.queryById(chapterid);
 		//卷名
-		Rolls rolls=rollsService.queryId(chapters.getRollid());
-		System.out.println("1111111111"+rolls);
-		String rollname=rolls.getRollname();
-		String oldChaptername=chapters.getUrl();
-		FileUtil.upFileName(oldChaptername,bookname+"\\"+rollname+"\\"+chaptername+".txt");
-		FileUtil.write(bookname+"\\"+rollname+"\\"+chaptername+".txt",txt);
-		String urll=bookname+"\\"+rollname+"\\"+chaptername+".txt";
+		Rolls rolls = rollsService.queryId(chapters.getRollid());
+		System.out.println("1111111111" + rolls);
+		String rollname = rolls.getRollname();
+		String oldChaptername = chapters.getUrl();
+		FileUtil.upFileName(oldChaptername, bookname + "\\" + rollname + "\\" + chaptername + ".txt");
+		FileUtil.write(bookname + "\\" + rollname + "\\" + chaptername + ".txt", txt);
+		String urll = bookname + "\\" + rollname + "\\" + chaptername + ".txt";
 		//如果要发布，则进行审核
-		if(state==0){
-			int a= AudioUtil.audioTxt(txt);
+		if (state == 0) {
+			int a = AudioUtil.audioTxt(txt);
 			int stat;
-			if(a==0){
-				stat=0;//审核通过
-			}else if(a==2){
-				stat=2;//进入复审
-			}else{
-				stat=1;//审核不通过
+			if (a == 0) {
+				stat = 0;//审核通过
+			} else if (a == 2) {
+				stat = 2;//进入复审
+			} else {
+				stat = 1;//审核不通过
 			}
-			Integer ii=service.updChapterInfo(chaptername,urll,stat,chapterid,wordnum);
-			if(ii!=null){
+			Integer ii = service.updChapterInfo(chaptername, urll, stat, chapterid, wordnum);
+			if (ii != null) {
 				return true;
-			}else {
+			} else {
 				return false;
 			}
-		}else {
-			Integer i=service.updChapterInfo(chaptername,urll,state,chapterid,wordnum);
-			if(i!=null){
+		} else {
+			Integer i = service.updChapterInfo(chaptername, urll, state, chapterid, wordnum);
+			if (i != null) {
 				return true;
-			}else {
+			} else {
 				return false;
 			}
 		}
-
 	}
 
 	@RequestMapping("updChapDel")
@@ -210,6 +223,11 @@ public class ChaptersController {
 	public boolean  updChapDel(Integer state,Integer chapterid){
 		Integer i=service.updChapDel(state,chapterid);
 		return true;
+	}
+	@RequestMapping("queryBrowses")
+	@ResponseBody
+	public List<Map<String,Object>> queryBrowses(HttpSession session){
+		return service.queryBrowses(MyUtil.getuserid(session));
 	}
 
 	@RequestMapping("querybackSH")

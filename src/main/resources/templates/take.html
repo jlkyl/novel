@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 
-    <title>江派中文网</title>
+    <title>千秋小说网</title>
     <meta name="keywords" content="我才不要恋爱游戏">
     <meta name="description"
           content="我才不要恋爱游戏，我才不要恋爱游戏小说阅读。二次元小说我才不要恋爱游戏由作家尺间萤火创作，起点小说提供我才不要恋爱游戏首发最新章节及章节列表，我才不要恋爱游戏最新更新尽在起点中文网">
@@ -106,29 +106,28 @@
             <div class="nav-list site-nav fl">
                 <ul>
                     <li class="site"><a class="pin-logo"
-                                        href="/jpbook/booktype/queryAll" style = "font-size: 18px;font-family: 'Courier New', Courier, monospace">江派中文网</a>
+                                        href="/index" style = "font-size: 18px;font-family: 'Courier New', Courier, monospace">千秋小说网</a>
                     </li>
-                    <li><a href="/jpbook/showAllBook.html?btid=1" target="">玄幻</a></li>
-                    <li><a href="/jpbook/showAllBook.html?btid=5" target="">都市</a></li>
-                    <li><a href="/jpbook/showAllBook.html?btid=4" target="">仙侠</a></li>
-                    <li><a href="/jpbook/showAllBook.html?btid=11" target="">科幻</a></li>
-                    <li><a href="/jpbook/showAllBook.html?btid=9" target="">游戏</a></li>
-                    <li><a href="/jpbook/showAllBook.html?btid=8" target="">历史</a></li>
-                    <li><a href="/jpbook/books/rank" target="_blank">排行</a></li>
+                    <li><a href="/jpbook/showAllBook.html?btid=1" target="_blank">玄幻</a></li>
+                    <li><a href="/jpbook/showAllBook.html?btid=5" target="_blank">武侠</a></li>
+                    <li><a href="/jpbook/showAllBook.html?btid=4" target="_blank">都市</a></li>
+                    <li><a href="/jpbook/showAllBook.html?btid=11" target="_blank">历史</a></li>
+                    <li><a href="/jpbook/showAllBook.html?btid=9" target="_blank">游戏</a></li>
+                    <li><a href="/jpbook/showAllBook.html?btid=8" target="_blank">科幻</a></li>
+                    <li><a href="/jpbook/showAllBook.html?btid=8" target="_blank">同人</a></li>
                     <li class="more">
                         <a href="javascript:" id="top-nav-more" target="">
                             更多<span></span>
                         </a>
                         <div class="dropdown">
                             <a href="/jpbook/showAllBook.html" target="_blank">全部作品</a>
-                            <a href="/jpbook/showAllBook.html?btid=13" target="">二次元</a>
-                            <a href="/jpbook/showAllBook.html?btid=2" target="">奇幻</a>
-                            <a href="/jpbook/showAllBook.html?btid=3" target="">武侠</a>
-                            <a href="/jpbook/showAllBook.html?btid=12" target="">灵异</a>
-                            <a href="/jpbook/showAllBook.html?btid=7" target="">军事</a>
-                            <a href="/jpbook/showAllBook.html?btid=6" target="">现实</a>
-                            <a href="/jpbook/showAllBook.html?btid=10" target="">体育</a>
-                            <a href="/jpbook/showAllBook.html?btid=14" target="">短篇</a>
+                            <a href="/jpbook/showAllBook.html?btid=2" target="_blank">奇幻</a>
+                            <a href="/jpbook/showAllBook.html?btid=3" target="_blank">仙侠</a>
+                            <a href="/jpbook/showAllBook.html?btid=12" target="_blank">职场</a>
+                            <a href="/jpbook/showAllBook.html?btid=7" target="_blank">军事</a>
+                            <a href="/jpbook/showAllBook.html?btid=6" target="_blank">竞技</a>
+                            <a href="/jpbook/showAllBook.html?btid=10" target="_blank">灵异</a>
+                            <a href="/jpbook/showAllBook.html?btid=14" target="_blank">轻小说</a>
                         </div>
                     </li>
                 </ul>
@@ -136,16 +135,16 @@
             <div class="nav-list min-user fr">
                 <ul>
                     <li class="line"></li>
-                    <li th:class="${session.users} ? 'sign-out hidden' : 'sign-out'">
+                    <li th:class="${session.user} ? 'sign-out hidden' : 'sign-out'">
                         <a id="pin-login" href="../login.html" target="_blank">登录</a>
                         <a class="reg" href="../register.html" target="_blank">注册</a>
                     </li>
                     <th:block th:if="${session}">
-                        <th:block th:if="${session.users}">
-                            <li th:class="${session.users[0] } ? 'sign-in' : 'sign-in hidden'">
+                        <th:block th:if="${session.user}">
+                            <li th:class="${session.user } ? 'sign-in' : 'sign-in hidden'">
                                 <a href="../personal.html" target="_blank">
-                                    <span id = "uuid" style="display: none" th:text="${session.users[0].uuid}"></span>
-                                    <i id="nav-user-name" th:text="${session.users[0].uname}"></i>
+                                    <span id = "uuid" style="display: none" th:text="${session.user.getUserid()}"></span>
+                                    <i id="nav-user-name" th:text="${session.user.getUsername()}"></i>
                                     <span></span>
                                 </a>
                                 <div class="dropdown">
@@ -157,23 +156,13 @@
                         </th:block>
                     </th:block>
 
-                    <li class="sign-in">
-                        <a href="https://me.qidian.com/Index.aspx" target="_blank" data-eid="qd_A65"><i
-                                id="nav-user-name">书友20180218153427385</i><span></span></a>
-                        <div class="dropdown">
-                            <a href="https://me.qidian.com/msg/lists.aspx?page=1" target="_blank"
-                               data-eid="qd_A66">消息(<i id="top-msg">0</i>)</a>
-                            <a href="https://www.qidian.com/charge/meRedirect" target="_blank" data-eid="qd_A67">充值</a>
-                            <a href="https://me.qidian.com/Index.aspx" target="_blank" data-eid="qd_A68">个人中心</a>
-                            <a href="https://www.qidian.com/help/kf" target="_blank" data-eid="qd_A69">客服中心</a>
-                            <a id="exit" href="javascript:" data-eid="qd_A70">退出</a>
-                        </div>
-                    </li>
                     <li class="line"></li>
                     <li class="book-shelf" id="top-book-shelf">
-                        <a href="https://me.qidian.com/bookCase/bookCase.aspx" target="_blank" data-eid="qd_A63"><em
-                                class="iconfont"></em><i>我的书架
-                        </i></a></li>
+                        <a th:href="${session.user} ? '../personal.html?key=i' : '../login.html'" target="_blank">
+                            <em class = "iconfont icon-book_icon"></em>
+                            <i>我的书架</i>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -185,16 +174,17 @@
 
     <div class="crumbs-nav center990  " data-l1="1">
 
-    <span>
-        <cite class="lt"></cite>
+        <span>
+            <cite class="lt"></cite>
+            <a href="/index" data-eid="qd_G01">首页</a>
+            <em class="iconfont icon-xiayige"></em>
+            <a th:href="@{/showAllBook.html?typeid={filename}(filename=${list[0].typeid})}" target="_blank" th:text="|${list[0].ztypename}频道|"></a>
+            <em class="iconfont icon-xiayige"></em>
+            <a th:href="@{/books/queryAll?bookid={filename}(filename=${list[0].bookid})}" th:text="${list[0].bookname}">人皇在上</a>
+            <cite class="rt"></cite>
+        </span>
+        <input type="text" th:value="${list[0].bookid}" id="bookid" hidden>
 
-    <a href="https://www.qidian.com/" data-eid="qd_G01">首页</a><em class="iconfont"></em>
-
-        <a href="https://www.qidian.com/2cy" target="_blank" data-eid="qd_G02" th:text="|${queryBookById[0].btname}频道|">二次元频道</a><em class="iconfont"></em>
-    <input type="text" th:value="${queryBookById[0].bookid}" id="bookid">
-    <a href="https://book.qidian.com/info/1013013477"  th:text="${queryBookById[0].bookname}">我才不要恋爱游戏</a>
-        <cite class="rt"></cite>
-    </span>
     </div>
     <div class="border-shadow ">
         <span></span>
@@ -209,58 +199,56 @@
             <div class="book-img">
                 <a class="J-getJumpUrl" id="bookImg" href="javascript:void(0)"
                    data-eid="qd_G09" data-bid="1013013477" data-firstchapterjumpurl="">
-                    <th:block th:if="${queryBookById[0].icon} eq ''">
-                        <img src=".../images/0.jpg"/>
-                    </th:block>
-                    <th:block th:if="${queryBookById[0].icon} neq ''">
-                        <img th:src="@{/img/{filename}(filename=${queryBookById[0].icon})}"/>
-                    </th:block>
+                    <img th:src="@{${list[0].cover}}"/>
                 </a>
             </div>
 
             <div class="book-info differ">
                 <h1>
 
-                    <em th:text="${queryBookById[0].bookname}">我才不要恋爱游戏</em>
-                    <span><a class="writer" href="https://me.qidian.com/authorIndex.aspx?id=402393294" target="_blank"
-                             data-eid="qd_G08" th:text="${queryBookById[0].pen}">尺间萤火</a> 著</span>
+                    <em th:text="${list[0].bookname}"></em>
+                    <span>
+							<a class="writer" href="https://me.qidian.com/authorIndex.aspx?id=4242192"
+                               target="_blank" th:text="${list[0].pen}"></a> 著</span>
 
                 </h1>
-                <p class="tag"><span class="blue" th:text="${queryBookById[0].bookstate}">连载</span>
-                    <a href="https://www.qidian.com/2cy" class="red" target="_blank" data-eid="qd_G10" th:text="${queryBookById[0].btname}">二次元</a>
+                <p class="tag">
+                    <span class="blue" th:text="${list[0].typename}"></span>
+                    <span class="blue" th:text="${list[0].ztypename}"></span>
+                    <span class="blue" th:text="${list[0].state} eq 0 ? '连载' : '完结'"></span>
                 </p>
 
-                <p><em>
-                    <span th:text="${queryBookById[0].chapcount}"></span>
-                </em><cite>字</cite><i>|</i>
+                <p>
                     <em>
-                        <span th:text="${queryBookById[0].cnum}"></span>
+                        <span th:text="${list[0].wordcount}"></span>
+                    </em><cite>字</cite><i>|</i>
+                    <em>
+                        <span th:text="${list[0].clicknum}"></span>
                     </em>
-                    <cite>阅文总点击</cite><i>|</i>
+                    <cite>会员点击量</cite><i>|</i>
                     <em>
-                        <span class="EpImtlYe"></span>
+                        <span th:text="${list[0].votecount}"></span>
                     </em>
-
+                    <cite>总推荐量</cite><i>|</i>
                     <em>
-                        <span th:text="${queryBookById[0].zvote}"></span>
+                        <span th:text="${list[0].votenum}"></span>
                     </em>
-                    <cite>总推荐</cite><i>|</i>
-                    <em>
-                        <span th:text="${queryBookById[0].mvote}"></span>
-                    </em><cite>月推荐</cite></p>
+                    <cite>周推荐量</cite>
+                </p>
 
             </div>
 
             <div class="price-wrap">
                 <div class="price">
-                    <h6><em>5</em><cite>起点币</cite></h6>
+                    <h6>
+                        <em th:text="10-(2*${session.user.getVip()})" id="m">5</em>
+                        <cite>起点币</cite>
+                    </h6>
                     <b></b>
                     <span>千字</span>
                 </div>
                 <div class="user-state">
-                    <p>普通用户</p>
-                   <!-- <p><a class="blue" href="https://vip.qidian.com/My.php" target="_blank">升级成VIP用户</a><i>·</i>享受更多折扣
-                    </p>-->
+                    <p th:text="${session.user.getVip()}==0 ? '普通用户' : '会员Lv'+${session.user.getVip()}">普通用户</p>
                 </div>
             </div>
 
@@ -316,15 +304,17 @@
                 </div>
                 <script type="text/javascript">
                     $.ajax({
-                        url: "/jpbook/roll/queryMoneyRoll",
+                        url: "/books/queryMoneyRoll",
                         data: {"bookid": $("#bookid").val()},
                         success: function (data) {
                             var str = "";
+                            var m = parseInt($("#m").text());
                             for (var i = 0; i < data.length; i++) {
+                                if(data[i].isvip==1){
                                 str += "<div class=\"chapter\">\n" +
                                     "                        <h3>\n" +
                                     "                            <input class=\"chapter-checkbox\" id=\"vol-" + data[i].rollid + "\" type=\"checkbox\" volume-num=\"" + data[i].rollid + "\" volume-wordscnt=\"669567\" chapter-price=\"0\" chapter-wordscnt=\"0\" volume-chaptercnt=\"293\" num=\"0\" volume-id=\"74526111\" volume-price=\"3257\" onchange=\"selCheckbo(this)\">\n" +
-                                    "                            <label class=\"ui-checkbox\" for=\"vol-" + data[i].rollid + "\" data-eid=\"qd_G84\"></label><label for=\"vol-" + data[i].rollid + "\">" + data[i].rollname + "<i>·</i>共" + data[i].count + "章<span class=\"vip\">VIP</span><em class=\"count\">本卷共<cite>" + data[i].sum + "</cite>字</em></label></h3>\n" +
+                                    "                            <label class=\"ui-checkbox\" for=\"vol-" + data[i].rollid + "\" data-eid=\"qd_G84\"></label><label for=\"vol-" + data[i].rollid + "\">" + data[i].rollname + "<i>·</i>共" + data[i].chaps.length + "章<span class=\"vip\">VIP</span><em class=\"count\">本卷共<cite>" + data[i].wordnum + "</cite>字</em></label></h3>\n" +
                                     "                    </div>\n" +
                                     "                    <div class=\"chapter-list-wrap cf\" id=\"chapterList" + data[i].rollid + "\">\n" +
                                     "                        <div class=\"cover\"></div>\n" +
@@ -332,15 +322,16 @@
                                     "                        <h3><span>章节名称</span><label>时间</label><em>字数</em><cite>价格(起点币)</cite>\n" +
                                     "                        </h3>\n" +
                                     "                        <ul class=\"cf j_vol1\" chapter-max=\"296\" volume-num=\"" + data[i].rollid + "\">";
-                                for (var j = 0; j < data[i].chaps.length; j++) {
-                                    if (data[i].chaps[j].buyid == 0) {
-                                        str += "<li>\n" +
-                                            "                                <input class=\"chapter-checkbox\" onchange='checkboxTab(this)' data-eid=\"qd_G84\" name='chapid' value='" + data[i].chaps[j].chapid + "'  type=\"checkbox\" chapter-id=\"458413157\" chapter-price=\"" + data[i].chaps[j].money + "\" chapter-wordscnt=\"" + data[i].chaps[j].chapcount + "\" num=\"1\" chapter-uid=\"440\"><label for=\"vol1-chap296\" class=\"ui-checkbox\"></label><label for=\"vol1-chap296\"><b>" + data[i].chaps[j].chapname + "</b><em class=\"update-time\">" + jsonDateFormat(data[i].chaps[j].chaptime) + "</em><em>" + data[i].chaps[j].chapcount + "</em><strong>" + data[i].chaps[j].money + "</strong></label>\n" +
-                                            "                            </li>";
-                                    } else {
-                                        str += "<li class='disabled'>\n" +
-                                            "                                &nbsp;<label for=\"vol1-chap296\" class=\"ui-checkbox\"></label><label for=\"vol1-chap296\"><b>" + data[i].chaps[j].chapname + "</b><em class=\"update-time\">" + jsonDateFormat(data[i].chaps[j].chaptime) + "</em><em>" + data[i].chaps[j].chapcount + "</em><strong>已购买</strong></label>\n" +
-                                            "                            </li>";
+                                    for (var j = 0; j < data[i].chaps.length; j++) {
+                                        if (data[i].chaps[j].isbuy == 0) {
+                                            str += "<li>\n" +
+                                                "                                <input class=\"chapter-checkbox\" onchange='checkboxTab(this)' data-eid=\"qd_G84\" name='chapid' value='" + data[i].chaps[j].chapterid + "'  type=\"checkbox\" chapter-id=\"458413157\" chapter-price=\"" + parseInt(data[i].chaps[j].wordnum/1000*m) + "\" chapter-wordscnt=\"" + data[i].chaps[j].wordnum + "\" num=\"1\" chapter-uid=\"440\"><label for=\"vol1-chap296\" class=\"ui-checkbox\"></label><label for=\"vol1-chap296\"><b>" + data[i].chaps[j].chaptername + "</b><em class=\"update-time\">" + jsonDateFormat(data[i].chaps[j].updatetime) + "</em><em>" + data[i].chaps[j].wordnum + "</em><strong>" + parseInt(data[i].chaps[j].wordnum/1000*m) + "</strong></label>\n" +
+                                                "                            </li>";
+                                        } else {
+                                            str += "<li class='disabled'>\n" +
+                                                "                                &nbsp;<label for=\"vol1-chap296\" class=\"ui-checkbox\"></label><label for=\"vol1-chap296\"><b>" + data[i].chaps[j].chaptername + "</b><em class=\"update-time\">" + jsonDateFormat(data[i].chaps[j].updatetime) + "</em><em>" + data[i].chaps[j].wordnum + "</em><strong>已购买</strong></label>\n" +
+                                                "                            </li>";
+                                        }
                                     }
                                 }
                                 str += "</ul>\n" +
@@ -358,12 +349,6 @@
         </div>
     </div>
 </div>
-<div class="go-top" data-l1="3">
-    <div class="go-top-wrap">
-        <a href="https://book.qidian.com/subscribe/1013013477#" class="icon-go-top" data-eid="qd_G97"><em
-                class="iconfont"></em></a>
-    </div>
-</div>
 <div class="subscribe-wrap" data-l1="3">
     <div class="center990 cf">
         <div class="left-box fl">
@@ -379,7 +364,7 @@
                 <div class="box">
                     <div class="table">
                         <div class="table-cell">
-                            <p class="price-sum">账户余额<span class="j_balance">0</span><b>·</b>本次订阅<em
+                            <p class="price-sum">账户余额<span class="j_balance" th:text="${session.user.getMoney()}">0</span><b>·</b>本次订阅<em
                                     data-price="0">0</em>起点币</p>
                         </div>
                     </div>
@@ -401,10 +386,10 @@
             <div class="sub-content" data-l2="4">
                 <div class="tip">
                     <h4>本次订阅将消耗<span class="current-price">1191</span>起点币</h4>
-                    <p>当前余额为<em class="current-balance">90</em>起点币<i>·</i>还需支付<span class="diff">1101</span>起点币</p>
+                    <p>当前余额为<em class="current-balance" th:utext="${session.user.getMoney()}">90</em>起点币<i>·</i>还需支付<span class="diff">1101</span>起点币</p>
                     <div class="popup-btn">
                         <!--<a class="red-btn j_quickpay" href="javascript:" data-eid="qd_G92">快捷支付</a>-->
-                        <a class="blue-btn j_charge" href="/jpbook/topup" data-eid="qd_G93" target="_blank">去充值</a>
+                        <a class="blue-btn j_charge" href="/topup.html" data-eid="qd_G93" target="_blank">去充值</a>
                     </div>
                 </div>
             </div>
@@ -418,7 +403,7 @@
             <div class="sub-content" data-l2="4">
                 <div class="tip">
                     <h4>本次订阅将消耗<span>10</span>起点币</h4>
-                    <p>当前余额为<em>90</em>起点币</p>
+                    <p>当前余额为<em th:utext="${session.user.getMoney()}"></em>起点币</p>
                     <div class="popup-btn">
                         <a class="red-btn j_paynow" href="javascript:buyrecordChap()" data-eid="qd_G90">立即支付</a>
                     </div>
@@ -440,7 +425,7 @@
 <div class="lbf-overlay"
      style="background-color: black; opacity: 0.3; z-index: 19374; width: 1366px; height: 20527px;display: none;"></div>
 <script type="text/javascript">
-    $.ajax({
+    /*$.ajax({
         url: "/jpbook/users/ckSession",
         data: {"name": 'users'},
         type: "post",
@@ -464,7 +449,7 @@
                 })
             }
         }
-    })
+    })*/
 
     function selCheckbo(obj) {
         $("#chapterList" + $(obj).attr("volume-num")).find("input[type='checkbox']").prop("checked", $(obj).prop("checked"));
@@ -527,19 +512,22 @@
 
     function buyrecordChap() {
         var checkID = [];
+        var expmoney = [];
         $("input[name='chapid']:checked").each(function (i) {
+            expmoney[i] = $(this).next().next().find("strong").html();
             checkID[i] = $(this).val();
         });
         $.ajax({
-            url: "/jpbook/buyrecord/buyrecordChap",
-            data: {"chapid": checkID,"money":$(".current-price").html()},
+            url: "/user/buyrecord",
+            data: {"bookid":$("#bookid").val(),"chapid": checkID,"expmoney":expmoney,"money":$(".current-price").html()},
             success: function (data) {
                 swal("订阅成功", "共订阅了" + data + "章");
                 closePanl();
                 window.location.reload();
-            }, type: "post",
+            },
+            type: "post",
             traditional: true
-        })
+        });
     }
     function subbuyrecord() {
         $("#subscribePopup").css("display","none");
