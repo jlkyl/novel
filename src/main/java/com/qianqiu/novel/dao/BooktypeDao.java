@@ -49,4 +49,17 @@ public interface BooktypeDao {
 
     @Select("select * from booktype where parentid=#{parentid}")
     public List<Map<String,Object>> queryByparentid(@Param("parentid") Integer parentid);
+
+    @Select(value = "SELECT b.bookname,b.cover,bk.typename,b.state,u.pen,u.sign,b.details,(SELECT SUM(wordnum) from chapters)  mo\n" +
+            ",(SELECT TIMESTAMPDIFF(DAY,b.createtime,NOW())) ks,\n" +
+            "(SELECT chapterid from chapters where state =0 AND rollid in (SELECT rollid from roles WHERE b.bookid = b.bookid)order by\n" +
+            "chapternum desc LIMIT 1 ) chapterid,(SELECT chaptername from chapters where state =0 AND rollid in\n" +
+            "(SELECT rollid from roles WHERE b.bookid = b.bookid)order by chapternum desc LIMIT 1 ) from users u\n" +
+            "JOIN bookrack bs\n" +
+            "on bs.userid = u.userid\n" +
+            "JOIN books b\n" +
+            "on b.userid = u.userid\n" +
+            "JOIN booktype bk\n" +
+            "on b.typeid = bk.typeid")
+    List<Map<String,Object>> querybytu();
 }

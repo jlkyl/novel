@@ -9,10 +9,19 @@ import java.util.Map;
 @Mapper
 public interface IUsersDAO {
 
-    @Select(value = "SELECT u.pen,u.sign,COUNT(bookid) as kd ,(SELECT SUM(wordnum) from chapters) as mo,(SELECT TIMESTAMPDIFF(DAY,b.createtime,NOW())) as ks from users u\n" +
-            "   join books b " +
-            "   on b.userid = u.userid")
-    List<Users> querys();
+    @Select(value = "SELECT a.attentuser,b.bookname,b.cover,bk.typename,b.state,COALESCE(u.head,0) head,u.author,u.pen,u.sign,b.details,COUNT(bookid) as kd ,\n" +
+            "(SELECT SUM(wordnum) from chapters) as mo,(SELECT TIMESTAMPDIFF(DAY,b.createtime,NOW())) as ks,\n" +
+            "(SELECT chapterid from chapters where state =0 AND rollid in (SELECT rollid from roles WHERE bookid = b.bookid)order by \n" +
+            "chapternum desc LIMIT 1 ) chapterid,(SELECT chaptername from chapters where state =0 AND rollid in\n" +
+            "(SELECT rollid from roles WHERE bookid = b.bookid)order by chapternum desc LIMIT 1 ) chaptername from users u \n" +
+            "join books b \n" +
+            "on b.userid = u.userid \n" +
+            "JOIN booktype bk\n" +
+            "on b.typeid = bk.typeid\n" +
+            "join attention a\n" +
+            "ON a.userid = u.userid")
+    List<Map<Users,Object>> querys();
+
     @Select("select * from users where username=#{username} and password=#{password}")
     public Users unamelogin(@Param("username") String username, @Param("password") String password);
 

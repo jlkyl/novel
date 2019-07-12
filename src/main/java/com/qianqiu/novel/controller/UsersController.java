@@ -3,6 +3,8 @@ package com.qianqiu.novel.controller;
 import com.qianqiu.novel.entity.Expnses;
 import com.qianqiu.novel.entity.Pages;
 import com.qianqiu.novel.entity.Users;
+import com.qianqiu.novel.service.AttentionService;
+import com.qianqiu.novel.service.BooktypeService;
 import com.qianqiu.novel.service.ExpnsesService;
 import com.qianqiu.novel.service.UsersService;
 import com.qianqiu.novel.utils.MyUtil;
@@ -25,6 +27,22 @@ public class UsersController {
     @Resource
     ExpnsesService eservice;
 
+    @Resource
+    AttentionService aservice;
+
+    @Resource
+    BooktypeService bservice;
+
+
+    @RequestMapping(value="queryst")
+    public String queryst(HttpSession session,Model u,Integer attentuser){
+        List<Map<String,Object>> list = aservice.queryst(MyUtil.getuserid(session),attentuser);
+        List<Map<String,Object>> qd = bservice.querybytu();
+        u.addAttribute("list",list);
+        u.addAttribute("qd",qd);
+        return "homepage";
+    }
+
     @RequestMapping("pageList")
     @ResponseBody
     public Pages pageList(Integer page, Integer rows,String username,String phone,Integer author) {
@@ -34,7 +52,8 @@ public class UsersController {
 
     @RequestMapping(value="querys")
     public String querys(Model u){
-        List<Users> list = service.querys();
+        List<Map<Users,Object>> list = service.querys();
+        System.out.println(list);
         u.addAttribute("list",list);
         return "author_details";
     }
