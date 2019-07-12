@@ -173,7 +173,6 @@
 			<h2 class="qdp-hometitle"><a href="/jpbook/queryAll">首页</a>&nbsp;&gt;&nbsp;好友</h2>
 			<div class="qdp-record friend-record" data-l2="11">
 				<div id="tabView" class="ui-tab-tabs">
-					<a href="javascript:qd_M157();" class="checked" data-rel="tabTarget1" id="qd_M157">互为关注(<span class="w_followeach">0</span>)</a>
 					<a href="javascript:qd_M158();" class="" data-rel="tabTarget2" id="qd_M158">我的关注(<span class="w_following">0</span>)</a>
 					<a href="javascript:qd_M159();" class="" data-rel="tabTarget3" id="qd_M159">我的粉丝(<span class="w_myfans">0</span>)</a>
 					<!--<a href="javascript:;" class="" data-rel="tabTarget4" id="qd_M160">黑名单(<span class="w_blacklist">0</span>)</a>-->
@@ -808,51 +807,9 @@
         $("#s2").show();
         qd_M159();
         qd_M158();
-        qd_M157();
     })
 
-	function qd_M157() {
-        $("#qd_M158").prop("class","");
-        $("#qd_M159").prop("class","");
-        $("#qd_M157").prop("class","checked");
-        $("#tabTarget2").prop("class","ui-tab-content");
-        $("#tabTarget3").prop("class","ui-tab-content");
-        $("#tabTarget1").prop("class","ui-tab-content checked");
 
-        $.ajax({
-            url: "per/mutualquery",
-            success: function (data) {
-				var t1 = "";
-               if (data.length > 0){
-                   $(".w_followeach").text(data.length);
-                   for (var i=0; i<data.length; i++){
-					   t1+="<tr class='qdp-operate-wrapper'>"+
-                       "<td width='300'>"+
-                       "<a href='pc/home?uuid="+data[i].uuid+"' class='friend-avatar' target='_blank' data-eid='qd_M162'>"+
-                       "<img src='/jpbook/images/"+data[i].icon+"'>"+
-                       "</a>"+
-                       "<div class='friend-wrapper'>"+
-                       "<div class='friend-name'><a href='pc/home?uuid="+data[i].uuid+"' target='_blank'>"+data[i].uname+"</a>"+
-                       "<i class='icon icon-boy'></i>"+
-                       "</div>"+
-                       "</div>"+
-                       "</td>"+
-                       "<td width='80' class='friend-add'></td>"+
-                       "<td>"+
-                       /*"<a href='javascript:;' class='ui-button jsSendMsg' role='button' data-image='images/ico/default_user.0.2.png' data-name='书友20180218153427385'>发私信</a>"+*/
-                       "<a href='javascript:canceleye("+data[i].uuid+",1);' class='qdp-operate ui-button ui-button-default jsUnfollow' data-id='313853460' role='button'>取消关注</a>"+
-                       "</td></tr>"	;
-                   }
-                   $("#t1").html(t1);
-                   $("#tx1").hide();
-			   }else {
-                   $(".w_followeach").text(0);
-                   $("#t1").html("");
-				   $("#tx1").show();
-			   }
-            }
-        });
-    }
     function qd_M158() {
         $("#qd_M157").prop("class","");
         $("#qd_M159").prop("class","");
@@ -862,7 +819,7 @@
         $("#tabTarget2").prop("class","ui-tab-content checked");
 
         $.ajax({
-            url: "per/eyequery",
+            url: "att/queryas",
             success: function (data) {
                 var t2 = "";
                 if (data.length > 0){
@@ -870,11 +827,11 @@
                     for (var i=0; i<data.length; i++){
                         t2+="<tr class='qdp-operate-wrapper'>"+
                             "<td width='300'>"+
-                            "<a href='pc/home?uuid="+data[i].uuid+"' class='friend-avatar' target='_blank' data-eid='qd_M162'>"+
+                            "<a href='user/queryst?userid="+data[i].userid+"' class='friend-avatar' target='_blank' data-eid='qd_M162'>"+
                             "<img src='/jpbook/images/"+data[i].icon+"'>"+
                             "</a>"+
                             "<div class='friend-wrapper'>"+
-                            "<div class='friend-name'><a href='pc/home?uuid="+data[i].uuid+"' target='_blank'>"+data[i].uname+"</a>"+
+                            "<div class='friend-name'><a href='user/queryst?attentuser="+data[i].attentuser+"' target='_blank'>"+data[i].username+"</a>"+
                             "<i class='icon icon-boy'></i>"+
                             "</div>"+
                             "</div>"+
@@ -882,7 +839,7 @@
                             "<td width='80' class='friend-add'></td>"+
                             "<td>"+
                             /*"<a href='javascript:;' class='ui-button jsSendMsg' role='button' data-image='images/ico/default_user.0.2.png' data-name='书友20180218153427385'>发私信</a>"+*/
-                            "<a href='javascript:canceleye("+data[i].uuid+",2);' class='qdp-operate ui-button ui-button-default jsUnfollow' data-id='313853460' role='button'>取消关注</a>"+
+                            "<a href='javascript:canceleye("+data[i].attentuser+",2);' class='qdp-operate ui-button ui-button-default jsUnfollow' data-id='313853460' role='button'>取消关注</a>"+
                             "</td></tr>"	;
                     }
                     $("#t2").html(t2);
@@ -904,7 +861,7 @@
         $("#tabTarget2").prop("class","ui-tab-content");
         $("#tabTarget3").prop("class","ui-tab-content checked");
         $.ajax({
-            url: "per/fansquery",
+            url: "att/queryasd",
             success: function (data) {
                 var t3 = "";
                 if (data.length > 0){
@@ -912,11 +869,11 @@
                     for (var i=0; i<data.length; i++){
                         t3+="<tr class='qdp-operate-wrapper'>"+
                             "<td width='300'>"+
-                            "<a href='pc/home?uuid="+data[i].uuid+"' class='friend-avatar' target='_blank' data-eid='qd_M162'>"+
+                            "<a href='user/queryst?userid="+data[i].userid+"' class='friend-avatar' target='_blank' data-eid='qd_M162'>"+
                             "<img src='/jpbook/images/"+data[i].icon+"'>"+
                             "</a>"+
                             "<div class='friend-wrapper'>"+
-                            "<div class='friend-name'><a href='pc/home?uuid="+data[i].uuid+"' target='_blank'>"+data[i].uname+"</a>"+
+                            "<div class='friend-name'><a href='user/queryst?userid="+data[i].userid+"' target='_blank'>"+data[i].username+"</a>"+
                             "<i class='icon icon-boy'></i>"+
                             "</div>"+
                             "</div>"+
@@ -924,10 +881,11 @@
                             "<td width='80' class='friend-add'></td>"+
                             "<td>";
                             /*"<a href='javascript:;' class='ui-button jsSendMsg' role='button' data-image='images/ico/default_user.0.2.png' data-name='书友20180218153427385'>发私信</a>";*/
-                        	if(data[i].sta == -1){
-								t3+="<a href='javascript:fansadd("+data[i].uuid+");' class='ui-button ui-button-default jsFollow' role='button' data-eid='qd_M165'>关注</a>";
+                            /*t3+="<a href='javascript:fansadd("+data[i].userid+");' class='ui-button ui-button-default jsFollow' role='button' data-eid='qd_M165'>关注</a>";*/
+                            if(data[i].state == 0){
+								t3+="<a href='javascript:fansadd("+data[i].userid+");' class='ui-button ui-button-default jsFollow' role='button' data-eid='qd_M165'>关注</a>";
 							}else {
-                                t3+= "<a href='javascript:canceleye("+data[i].uuid+",3);' class='qdp-operate ui-button ui-button-default jsUnfollow' data-id='313853460' role='button'>取消关注</a>";
+                                t3+= "<a href='javascript:canceleye("+data[i].userid+",3);' class='qdp-operate ui-button ui-button-default jsUnfollow' data-id='313853460' role='button'>取消关注</a>";
 							}
                             "</td></tr>"	;
                     }
@@ -942,35 +900,27 @@
         });
     }
     
-    function canceleye(buuid,state) {
+    function canceleye(attentuser,state) {
         $.ajax({
-            url: "pc/delFans",
-			data:{"buuid":buuid},
+            url: "/att/del",
+			data:{"attentuser":attentuser},
             success: function (data) {
+                alert(data);
                 swal("取消关注成功", "", "success");
-                if (state == 1){
+
                     qd_M159();
                     qd_M158();
-                    qd_M157();
-				}else if(state == 2){
-                    qd_M157();
-                    qd_M159();
-                    qd_M158();
-				}else if(state == 3){
-                    qd_M157();
-                    qd_M158();
-                    qd_M159();
-				}
+
             }
         });
     }
-	function fansadd(buuid) {
+	function fansadd(attentuser) {
 		$.ajax({
-			url: "pc/fansAdd",
-			data: {"buuid":buuid},
+			url: "/att/add",
+			data: {"attentuser":attentuser},
 			success: function (data) {
+			    alert("添加："+data);
 				swal("关注成功", "", "success");
-                qd_M157();
                 qd_M158();
 				qd_M159();
 			}

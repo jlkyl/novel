@@ -124,23 +124,22 @@
     </div>
 
     <div class="author-header" data-l1="2">
-        <div class="author-header-wrapper">
+        <div class="author-header-wrapper" th:each="l:${list}">
             <div class="header-avatar">
-                <!--<img class="header-avatar-img" th:src="@{/images/{icon}(icon = ${author.icon})}"  th:alt="|${author.pen}的头像|">-->
-                <img class="header-avatar-img"  th:src="@{/images/{icon}(icon = ${session.user})}" th:alt="|${session.user}的头像|">
+                <img class="header-avatar-img" th:src="${l.head}==0 ? '/images/author.png' : ${l.head}"  th:alt="|${l.pen}的头像|">
                 <span class="header-avatar-vip "></span>
             </div>
             <div class="header-msg" >
-
-               <!-- <a th:href="@{/pc/home?uuid={uuid}(uuid=${author.uuid})}" class="header-msg-tosingle" target="_blank">个人主页</a>-->
-                 <a href="http://localhost:8080/homepage.html" class="header-msg-tosingle" target="_blank">个人主页</a>
-
-                <h3 th:text="${session.user}">笔名</h3>
+               <!-- <a href="/user/239910" class="header-msg-tosingle" target="_blank">个人主页</a>-->
+                <th:block th:if="${l.author} eq 1">
+                 <a th:href="'/user/queryst?attentuser='+${l.attentuser}" class="header-msg-tosingle" target="_blank">个人主页</a>
+                </th:block>
+                 <h3 th:text="${l.pen}">笔名</h3>
                 <div class="header-msg-desc"></div>
                 <div class="header-msg-data">
-                    <span class="mr12">作品总数<strong class="header-msg-strong" th:text="${session.user}">0</strong></span>
-                    <span class="ml12 mr12">累计字数<strong class="header-msg-strong" th:text="${session.user}">0</strong>万</span>
-                    <span class="ml12 mr12">创作天数<strong class="header-msg-strong" th:text="${session.user}">0</strong>天</span>
+                    <span class="mr12">作品总数<strong class="header-msg-strong" th:text="${l.kd}">0</strong></span>
+                    <span class="ml12 mr12">累计字数<strong class="header-msg-strong" th:text="${l.mo}">0</strong>万</span>
+                    <span class="ml12 mr12">创作天数<strong class="header-msg-strong" th:text="${l.ks}">0</strong>天</span>
                 </div>
             </div>
         </div>
@@ -149,22 +148,42 @@
 
     <div class="author-content-wrapper" data-l1="2">
         <div class="author-content">
-            <h2 class="author-title">火热连载</h2>
+            <h2 class="author-title">全部作品(<span th:text="${list.size()}"></span>)</h2>
             <ul class="author-hot" data-l2="9">
-                <li class="author-item">
-                    <a  target="_blank" class='author-item-book' data-eid="qd_M268"><img class='author-item-img'></a>
+                <li class="author-item" th:each="l:${list}">
+                <!--th:href="'/jpbook/books/queryBookById?bookid='+${q.bookid}"-->
+                <a  target="_blank" class='author-item-book' data-eid="qd_M268">
+                <img th:src="${l.cover}" class='author-item-img'>
+                </a>
                     <div class="author-item-msg">
-                        <div class="author-item-title"><a  target="_blank" data-eid="qd_M269" data-bid="1013406185" >书名</a></div>
+                        <div class="author-item-title">
+                            <a  target="_blank" data-eid="qd_M269" data-bid="1013406185" th:text="${l.bookname}">书名</a>
+                        </div>
                         <div class="author-item-exp">
-                            <a  target="_blank" >类型</a>
+                            <!--th:href="'/jpbook/showAllBook.html?btid='+${q.bid}"-->
+                            <a  target="_blank">
+                                <span th:text="${l.typename}">类型</span>
+                            </a>
+                            <i class="author-item-line"></i>
+                            <a target="_blank">
+                                <span th:text="${l.state == 0 ? '连载':'完本'}">状态</span>
+                            </a>
+                            <i class="author-item-line"></i>
+                            <span th:text="${l.mo}">0</span>万字
+                            <!--<a  target="_blank" >类型</a>
                             <i class="author-item-line"></i>
                             <a target="_blank" >状态</a>
-                            <i class="author-item-line"></i><span >0</span>万字
+                            <i class="author-item-line"></i><span >0</span>万字-->
                         </div>
-                        <div class="author-item-content" >简介</div>
+                        <div class="author-item-content" th:text="${l.details}">简介</div>
                         <div class="author-item-update">
-                            <a class="blue" target="_blank" >最近更新&nbsp;<b></b></a>
-                            <span>&nbsp;&nbsp;·&nbsp;&nbsp;<i></i></span>
+                            <!--th:href="'/jpbook/chapter/getInformationByChapid?chapid='+${q.chapid}"-->
+                            <a  class="blue" target="_blank" th:title="${l.chaptername}">最近更新&nbsp;
+                                <b th:text="${l.chaptername}"></b>
+                            </a>
+                            <span>&nbsp;&nbsp;·&nbsp;&nbsp;
+                                <i th:text="${#strings.substring(l.chaptername,0,19)}"></i>
+                            </span>
                         </div>
 
                         <div class="author-item-button">
@@ -179,6 +198,7 @@
                     </div>
                 </li>
             </ul>
+        </div>
 
           <!--  <h2 class="author-title">全部作品(<span th:text="${list.size()}"></span>)</h2>-->
             <ul class="author-work" data-l2="9">

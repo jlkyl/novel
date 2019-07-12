@@ -85,7 +85,7 @@
                 <th:block th:if="${session}">
                     <th:block th:if="${session.user}">
                         <li class="mheader-nav-li mheader-login">
-                            <a href="/jpbook/personal" target="_blank" class="mheader-nav-a"><span class="elNickName" th:text="${session.user}">Joselyn</span><span class="mheader-arrow"></span></a>
+                            <a href="/jpbook/personal" target="_blank" class="mheader-nav-a"><span class="elNickName" th:text="${session.user.getUsername()}">Joselyn</span><span class="mheader-arrow"></span></a>
                             <ul class="mheader-drop">
                                 <li>
                                     <a href="/jpbook/topup.html" target="_blank" data-guid="854009794986" class="elNewToPay">充值</a>
@@ -116,7 +116,7 @@
                 <li class="mheader-nav-li line"></li>
 
                 <li class="mheader-nav-li">
-                    <a th:href="${session.user} ? '../personal.html?key=i' : '../login'" class="mheader-nav-a mheader-shelf-a"><i class="icon icon-book_icon"></i>&nbsp;我的书架</a>
+                    <!--<a th:href="${} ? '../personal.html?key=i' : '../login'" class="mheader-nav-a mheader-shelf-a"><i class="icon icon-book_icon"></i>&nbsp;我的书架</a>-->
                 </li>
 
             </ul>
@@ -127,22 +127,27 @@
 
 <div class="">
     <div class="user-header" data-l1="2">
-        <div class="user-header-wrapper">
+        <div class="user-header-wrapper" th:each="l:${list}">
             <div class="header-avatar">
                <!-- <a th:href="@{/pc/home?uuid={uuid}(uuid=${h.uuid})}"><img class="header-avatar-img" th:src="@{/images/{icon}(icon = ${h.icon})}"  th:alt="|${h.uname}的头像|"></a>-->
+
+                    <img class="header-avatar-img" th:src="${l.head}==0 ? '/images/default_user.0.2.png' : ${l.head}"  th:alt="|${l.pen}的头像|">
+
+                    <!--<img class="header-avatar-img" src="/images/default_user.0.2.png"  th:alt="|${l.pen}的头像|">-->
+
             </div>
             <div class="header-msg">
                 <h3 id="elUidWrap" data-id="265554">
-                    <a th:text="${session.user}">昵称</a>
+                    <a th:text="${l.username}">昵称</a>
                     <!--<a class="header-msg-level" target="_blank">Lv<span th:text="${h.grade}"></span></a>-->
                 </h3>
                 <div class="header-msg-title"></div>
-               <!-- <div class="header-msg-desc" th:text="${h.sex == 0 ? '男':'女'}">男</div>-->
+                <div class="header-msg-desc" th:text="${l.sex}">男</div>
                 <div class="header-msg-title"></div>
 
                 <div class="header-msg-data">
-                   <!-- <span class="mr8">关注<strong class="header-msg-strong" th:text="${h.eye}">关注</strong></span>
-                    <span class="ml12 mr8">粉丝<strong class="header-msg-strong" th:text="${h.fans}">粉丝</strong></span>-->
+                    <span class="mr8">关注<strong class="header-msg-strong" th:text="${l.aten}">关注</strong></span>
+                    <span class="ml12 mr8">粉丝<strong class="header-msg-strong" th:text="${l.states}">粉丝</strong></span>
                 </div>
 
                 <div class="qdp-button" data-l2="1">
@@ -150,15 +155,17 @@
                     <input type="hidden" th:value="${fansState}" id="fansState">
                     <input type="hidden" th:value="${session.users==null}?'-1':${session.users.get(0).getUuid()}" id="uuid">-->
 
-
+                    <th:block th:if="${l.states} eq -1">
                     <a href="javascript:;" class="ui-button ui-button-small" id="elToFollow">关注</a>
+                    </th:block>
+                    <th:block>
                     <a href="javascript:;" class="ui-button ui-button-small" id="elFollowing">已关注</a>
-
+                    </th:block>
                     <!--<a href="javascript:;" class="qdp-button-a mlr4" id="elSendMsg" data-image="//facepic.qidian.com" data-name="唐家三少" data-id="265554" data-guid="119090278789" data-eid="qd_M246">私信</a>-->
 
-                    <!--<th:block th:if="${h.sta} ne -1">
-                        <a th:href="@{/pc/authorData?bid={uuid}(uuid=${h.uuid})}" class="qdp-button-a mlr4" target="_blank">作家页</a>
-                    </th:block>-->
+                    <th:block th:if="${l.author} ne 0">
+                        <a th:href="'/user/querys?userid='+${l.userid}" class="qdp-button-a mlr4" target="_blank">作家页</a>
+                    </th:block>
 
                 </div>
 
@@ -173,43 +180,67 @@
             <div class="user-sidebar-wrapper">
                 <h3 class="user-sidebar-title">足迹</h3>
                 <ul class="user-sidebar-list ui-loading ui-loading-animation" id="elHistoryWrap" style="height: 150px; transition: height 200ms ease 0s;">
-                    <!--<li class="user-sidebar-item">书架藏书: <span th:text="${userbooks.size()}"></span>本</li>
-                    <li class="user-sidebar-item">订阅过作品: <span th:text="${q2}"></span>本</li>
-                    <li class="user-sidebar-item">打赏作品: <span th:text="${q3}"></span>本</li>
-                    <li class="user-sidebar-item">投月票: <span th:text="${q1.num2}"></span>张</li>
-                    <li class="user-sidebar-item">投推荐票: <span th:text="${q1.num1}"></span>张</li>-->
+                    <li class="user-sidebar-item">书架藏书: <span th:text="${qd.size()}"></span>本</li>
+                    <!--<li class="user-sidebar-item">订阅过作品: <span th:text="${q2}"></span>本</li>-->
+                    <!--<li class="user-sidebar-item">打赏作品: <span th:text="${q3}"></span>本</li>-->
+                    <!--<li class="user-sidebar-item">投月票: <span th:text="${q1.num2}"></span>张</li>-->
+                    <!--<li class="user-sidebar-item">投推荐票: <span th:text="${q1.num1}"></span>张</li>-->
                 </ul>
             </div>
         </div>
 
+
         <div class="author-content" style="margin-top: -5px">
 
-            <!--<h2 class="author-title">书架藏书(<span th:text="${userbooks.size()}"></span>)</h2>-->
+            <h2 class="author-title">书架藏书(<span th:text="${qd.size()}"></span>)</h2>
             <ul class="author-work" data-l2="9">
 
-                <li class="author-work-line"></li>
-
-                <!--<li class="author-item" th:each="q:${userbooks}">
-                    <div class="author-item-time">
-                        <span th:text="${#strings.substring(q.createtime,0,4)}"></span>
-                        ~
-                        <th:block th:if="${q.overtime} ne -1">
-                            <span th:text="${#strings.substring(q.overtime,0,4)}">开始</span>
-                        </th:block>
-                        <th:block th:if="${q.overtime} eq -1">
-                            <span>至今</span>
-                        </th:block>
-                    </div>
-                    <a th:href="'/jpbook/books/queryBookById?bookid='+${q.bookid}" target="_blank" class='author-item-book' data-eid="qd_M268"><img th:src="@{/img/{icon}(icon = ${q.icon})}" class='author-item-img'></a>
+                <li class="author-item" th:each="l:${qd}">
+                    <!--th:href="'/jpbook/books/queryBookById?bookid='+${q.bookid}"-->
+                    <a  target="_blank" class='author-item-book' data-eid="qd_M268">
+                        <img th:src="${l.cover}" class='author-item-img'>
+                    </a>
                     <div class="author-item-msg">
-                        <div class="author-item-title"><a th:href="'/jpbook/books/queryBookById?bookid='+${q.bookid}" target="_blank" data-eid="qd_M269" data-bid="8361" th:text="${q.bookname}">书名</a></div>
-                        <div class="author-item-exp"><a th:href="'/jpbook/showAllBook.html?btid='+${q.btid}" target="_blank"><span th:text="${q.btname}">类型</span></a><i class="author-item-line"></i><a target="_blank"><span th:text="${q.bookstate == 0 ? '连载':'完本'}">状态</span></a><i class="author-item-line"></i><span th:text="${q.num}">0</span>万字</div>
-                        <div class="author-item-content" th:text="${q.bookreferral}">简介</div>
-                        <div class="author-item-update">
-                            <a th:href="'/jpbook/chapter/getInformationByChapid?chapid='+${q.chapid}" class="blue" target="_blank" th:title="${q.chapname}">最近更新&nbsp;<b th:text="${q.chapname}"></b></a>
-                            <span>&nbsp;&nbsp;·&nbsp;&nbsp;<i th:text="${#strings.substring(q.chaptime,0,19)}"></i></span>
+                        <div class="author-item-title">
+                            <a  target="_blank" data-eid="qd_M269" data-bid="1013406185" th:text="${l.bookname}">书名</a>
                         </div>
+                        <div class="author-item-exp">
+                            <!--th:href="'/jpbook/showAllBook.html?btid='+${q.bid}"-->
+                            <a  target="_blank">
+                                <span th:text="${l.typename}">类型</span>
+                            </a>
+                            <i class="author-item-line"></i>
+                            <a target="_blank">
+                                <span th:text="${l.state == 0 ? '连载':'完本'}">状态</span>
+                            </a>
+                            <i class="author-item-line"></i>
+                            <span th:text="${l.mo}">0</span>万字
+                            <!--<a  target="_blank" >类型</a>
+                            <i class="author-item-line"></i>
+                            <a target="_blank" >状态</a>
+                            <i class="author-item-line"></i><span >0</span>万字-->
+                        </div>
+                        <div class="author-item-content" th:text="${l.details}">简介</div>
+                        <div class="author-item-update">
+                            <!--th:href="'/jpbook/chapter/getInformationByChapid?chapid='+${q.chapid}"-->
+                            <a  class="blue" target="_blank" th:title="${l.chaptername}">最近更新&nbsp;
+                                <b th:text="${l.chaptername}"></b>
+                            </a>
+                            <span>&nbsp;&nbsp;·&nbsp;&nbsp;
+                                <i th:text="${#strings.substring(l.chaptername,0,19)}"></i>
+                            </span>
+                        </div>
+
                         <div class="author-item-button">
+                            <a  target="_blank" class="ui-button" data-eid="qd_M270">书籍详情</a>
+                            <th:block >
+                                <a  class="ui-button ui-button-default elAddShelf">加入书架</a>
+                            </th:block>
+                            <th:block >
+                                <span class="ui-button ui-button-default disabled">已在书架</span>
+                            </th:block>
+                        </div>
+                        <!--<div class="author-item-button">
                             <a th:href="'/jpbook/books/queryBookById?bookid='+${q.bookid}" target="_blank" class="ui-button" data-eid="qd_M270" data-bid="8361">书籍详情</a>
                             <th:block th:if="${q.sta} eq -1">
                                 <a th:href="|javascript:addBookrack(${q.bookid});|" class="ui-button ui-button-default elAddShelf">加入书架</a>
@@ -217,9 +248,9 @@
                             <th:block th:if="${q.sta} ne -1">
                                 <span class="ui-button ui-button-default disabled">已在书架</span>
                             </th:block>
-                        </div>
+                        </div>-->
                     </div>
-                </li>-->
+                </li>
 
             </ul>
         </div>
@@ -296,11 +327,11 @@
         //关注
         $("#elToFollow").click(function () {
             $.ajax({
-                url: "fansAdd",
-                data: {"buuid":$("#buuid").val()},
+                url: "att/add",
+                data: {"attentuser":$("#attentuser").val()},
                 success: function (data) {
                     if(data == -1){
-                        window.location.href = "/jpbook/login.html";
+                        window.location.href = "/att/queryst";
                     }else {
                         swal("关注成功", "", "success");
                         setTimeout(function(){ window.location.reload();},1000);
@@ -311,11 +342,11 @@
         // 取关
         $("#elFollowing").click(function () {
             $.ajax({
-                url: "delFans",
-                data: {"buuid":$("#buuid").val()},
+                url: "/att/del",
+                data: {"attentuser":$("#attentuser").val()},
                 success: function (data) {
                     if(data == -1){
-                        window.location.href = "/jpbook/login.html";
+                        window.location.href = "/att/queryst";
                     }else {
                         swal("取消关注成功", "", "success");
                         setTimeout(function(){ window.location.reload();},1000);
