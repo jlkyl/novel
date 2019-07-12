@@ -181,11 +181,9 @@ public class ChaptersController {
 		Books books = (Books) session.getAttribute("BOOK");
 		Integer bookid = books.getBookid();
 		String bookname = booksService.querybyId(bookid).getBookname();
-
 		Chapters chapters = service.queryById(chapterid);
 		//卷名
 		Rolls rolls = rollsService.queryId(chapters.getRollid());
-		System.out.println("1111111111" + rolls);
 		String rollname = rolls.getRollname();
 		String oldChaptername = chapters.getUrl();
 		FileUtil.upFileName(oldChaptername, bookname + "\\" + rollname + "\\" + chaptername + ".txt");
@@ -194,20 +192,8 @@ public class ChaptersController {
 		//如果要发布，则进行审核
 		if (state == 0) {
 			int a = AudioUtil.audioTxt(txt);
-			int stat;
-			if (a == 0) {
-				stat = 0;//审核通过
-			} else if (a == 2) {
-				stat = 2;//进入复审
-			} else {
-				stat = 1;//审核不通过
-			}
-			Integer ii = service.updChapterInfo(chaptername, urll, stat, chapterid, wordnum);
-			if (ii != null) {
-				return stat;
-			} else {
-				return stat;
-			}
+			Integer ii = service.updChapterInfo(chaptername, urll, a, chapterid, wordnum);
+			return a;
 		} else {
 			Integer i = service.updChapterInfo(chaptername, urll, state, chapterid, wordnum);
 			if (i != null) {

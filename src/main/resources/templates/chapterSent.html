@@ -122,10 +122,11 @@
             </div>
 
             <div class="msgBoxTitle">
+                <a id="createVolumeIconBtn" class="button white" href="javascript:void(0)" onclick="addroll()">新建分卷</a>
+
                 <a class="create button" href="chapteradd"><em class="icon"></em>新建章节</a>
 
-                <a id="createVolumeIconBtn" class="button white" href="javascript:">新建分卷</a>
-                <div class="tabSwitch cf">
+               <div class="tabSwitch cf">
                     <span class="[bookmodify]"><a href="worksSet.html">作品设置</a></span>
                     <span class="[recycle]"><a href="recycle.html">草稿箱</a></span>
                     <span class="act" id="numero2"><a href="chapterSent.html">已发布章节</a></span>
@@ -260,7 +261,6 @@
                                 <div class="titleBtn fr">
                                     <a class="button white" href="javascript:void(0)" onclick="wordcount()">统计字数</a>
                                     <a class="button save" href="javascript:void(0)" onclick="save()"><span class="icon"></span>保存</a>
-                                    <a class="button save" href="javascript:void(0)" onclick="issue()"><span class="icon"></span>直接发布</a>
                                 </div>
                                 <em class="c999">章节类型：</em>
                                 <b data-node="chapterTypeName" id="chapterTypeName"></b>
@@ -323,7 +323,6 @@
                     var chapterTitle= $("#chapterTitle").html();
                     var rollid=$("#rollid").html();
                     var txt=$("#chapterContentInput").val();
-                    wordcount();
 
                     if($("#chapterContentInput").val().length<200){
                         swal("操作失败!", "正文内容字数不能低于200", "warning");
@@ -338,7 +337,6 @@
                         }else
                         {
                             if(zhangjieID == ""){
-
                                 $.ajax({
                                     url: 'chapters/addChapter', //上传文件的路径
                                     type: 'post',
@@ -353,19 +351,21 @@
                                     }
                                 });
                             }else {
-
+                                alert("章节名称"+$("#chapterTitleInput").val());
                                 $.ajax({
                                     url:'chapters/updChapterInfo',
                                     type:'post',
-                                    data:{"chaptername":$("#chapterTitle").html(),"state":0,"chapterid":zhangjieID,"txt":txt,"wordnum":$("#chapterContentInput").val().length},
+                                    data:{"chaptername":$("#chapterTitleInput").val(),"state":0,"chapterid":zhangjieID,"txt":txt,"wordnum":$("#chapterContentInput").val().length},
                                     success: function (data) {
                                         if (data == 1) {
                                             swal("上传失败!", "章节审核不通过，请重新修改", "warning");
-                                        }else if(data==2){
-                                            swal("上传失败!", "章节审核中.....", "warning");
+                                            window.location.href = "/chapteradd.html";
+                                        } else if(data==2){
+                                            swal("上传成功!", "章节审核中.....", "warning");
+                                            window.location.href = "/shing.html";
                                         } else {
                                             swal("发布成功", "已存至发布章节中", "success");
-                                            window.location.href = "/chapteradd.html";
+                                            window.location.href = "/chapterSent.html";
                                         }
                                     }
                                 } );
@@ -561,6 +561,29 @@
     });
 </script>
 <!-- 数据统计 -->
+<div class="maskUI" id="addroll" style="z-index: 1000001; position: fixed; left: 484.5px; top: 30px;display: none">
+    <div id="createVolumePopup" class="popupWrap w380 hidden" style="display: block;">
+        <a data-node="close" class="icon closePopup" href="javascript:void(0)" onclick="addroll()" title="关闭"></a>
+        <h3 data-node="volumeSort">新建分卷</h3>
+        <div class="popupBody p30"><div class="popupContent select">
+            <p>分卷名称</p>
+            <p class="mb20"><input data-node="volumeTitleInput" class="longInput" type="text" id="rollname"></p>
+        </div>
+            <div>
+                <p>是否VIP</p>
+                <p class="mb20">
+                    <input type="radio" name="rollmoney" value="0" checked>免费
+                    <input type="radio" name="rollmoney" value="1">VIP
+                </p>
+            </div>
+            <div class="confirmBtn">
+                <a data-node="confirm" class="button full" href="javascript:void(0)" onclick="ajaxaddroll()">确定</a>
+                <div></div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script type="text/javascript">
     var _mtac = {};
