@@ -3,6 +3,7 @@ package com.qianqiu.novel.service;
 import java.util.List;
 import java.util.Map;
 
+import com.qianqiu.novel.entity.Pages;
 import org.springframework.stereotype.Service;
 
 import com.qianqiu.novel.dao.IChaptersDAO;
@@ -90,5 +91,12 @@ public class ChaptersService {
 	}
 	public  List<Map<String,Object>> cxsy(){
 		return  dao.cxsy();
+	}
+
+	public Pages querypage(Integer bookid,Integer pageNum, Integer pageSize){
+		Pages pages = new Pages();
+		pages.setRows(dao.queryByBookid(bookid ,(pageNum-1)*pageSize, pageSize));
+		pages.setTotal(dao.getCount(bookid));
+		return pages;
 	}
 }

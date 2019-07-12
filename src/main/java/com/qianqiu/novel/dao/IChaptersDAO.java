@@ -160,4 +160,28 @@ public interface IChaptersDAO {
             "       (select count(bookid) from books) booknum,\n" +
             "       (select count(comid) from complaint where state=0) comnum,count(empid) empnum from emps")
     List<Map<String,Object>> cxsy();
+
+    @Select("<script>" +
+            "select c.*,r.isvip\n" +
+            "from chapters c\n" +
+            "left join rolls r\n" +
+            "on c.rollid = r.rollid\n" +
+            "left join books b\n" +
+            "on r.bookid = b.bookid\n" +
+            "where b.bookid = #{bookid}\n" +
+            "order by c.chapternum\n"+
+            "<if test=\"offset!=null and pageSize!=null\">\n" +
+            "   limit #{offset},#{pageSize}\n" +
+            "</if>" +
+            "</script>")
+    public List<Map<String,Object>> queryByBookid(@Param("bookid") Integer bookid,@Param("offset")Integer offset,@Param("pageSize")Integer pageSize);
+
+    @Select("select count(c.chapterid) allcount\n" +
+            "from chapters c\n" +
+            "left join rolls r\n" +
+            "on c.rollid = r.rollid\n" +
+            "left join books b\n" +
+            "on r.bookid = b.bookid\n" +
+            "where b.bookid = #{bookid}")
+    Integer getCount(@Param("bookid") Integer bookid);
 }

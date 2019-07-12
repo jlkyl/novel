@@ -23,9 +23,10 @@ public interface ReplyDao {
             "ON r.userid = u.userid\n" +
             "<where>" +
             "<if test=\'evaid != null\'>e.evaid = #{evaid}</if>" +
+            "<if test=\'userid != null\'>r.userid = #{userid}</if>" +
             "</where>" +
             "</script>")
-    public List<Map<String,Object>> queryReply(@Param("evaid") Integer evaid);
+    public List<Map<String,Object>> queryReply(@Param("evaid") Integer evaid,@Param("userid") Integer userid);
 
     @Insert("INSERT INTO `novel`.`reply` (`replyid`, `userid`, `evaid`, `content`, `replytime`) VALUES (NULL, #{userid}, #{evaid}, #{content}, NOW())")
     public int add(Reply r);

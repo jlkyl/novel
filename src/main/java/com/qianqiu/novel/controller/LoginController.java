@@ -215,9 +215,10 @@ public class LoginController {
 
     @RequestMapping("userupdate")
     @ResponseBody
-    public String updateUser(Users user) {
+    public String updateUser(Users user,HttpSession session) {
         System.out.println("修改");
         u.updateUser(user);
+        session.setAttribute("user",u.findByid(user.getUserid()));
         System.out.println(user);
         return "1";
     }

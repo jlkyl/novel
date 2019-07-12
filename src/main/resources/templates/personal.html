@@ -707,6 +707,17 @@
         });
     });
 
+    $(function(){
+    	$.ajax({
+			url:'/bor/queryCount',
+			data:{'userid':$("#uid").val()},
+			type:'post',
+			success:function(data){
+				$("#shelves").html(data);
+			}
+		})
+	});
+
     $("#h1").click(function () {
         $(".header-nav-a").prop("class","");
         $("#h1 a").prop("class","header-nav-a active");

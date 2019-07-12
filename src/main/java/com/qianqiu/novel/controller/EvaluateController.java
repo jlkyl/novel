@@ -37,7 +37,10 @@ public class EvaluateController {
     @RequestMapping("add")
     @ResponseBody
     public Integer add(Evaluate e){
-        List<Evaluate> list = es.queryByUserid(e.getUserid(),e.getBookid());
+        int userid = e.getUserid();
+        int bookid = e.getBookid();
+        List<Evaluate> list = es.queryByUserid(userid,bookid);
+        System.out.println("list.size():"+list.size());
         if(list.size() == 0){
             return es.add(e);
         }

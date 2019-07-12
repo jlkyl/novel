@@ -2,6 +2,7 @@ package com.qianqiu.novel.controller;
 
 import com.qianqiu.novel.entity.Books;
 import com.qianqiu.novel.entity.Chapters;
+import com.qianqiu.novel.entity.Pages;
 import com.qianqiu.novel.service.BooksService;
 import com.qianqiu.novel.entity.Rolls;
 import com.qianqiu.novel.service.ChaptersService;
@@ -249,4 +250,11 @@ public class ChaptersController {
 	public  List<Map<String,Object>> cxsy(){
 		return service.cxsy();
 	}
+
+	@RequestMapping("pageList")
+	@ResponseBody
+	public Pages pageList(Integer bookid,Integer page, Integer rows){
+		return service.querypage(bookid,page,rows);
+	}
+
 }

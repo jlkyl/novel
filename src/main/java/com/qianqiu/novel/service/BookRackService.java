@@ -26,4 +26,7 @@ public class BookRackService {
     public List<BookRack> queryF(Integer userid,Integer bookid){
        return brd.queryF(userid,bookid);
     }
+    public Integer queryCount(Integer userid){
+        return brd.queryCount(userid);
+    }
 }

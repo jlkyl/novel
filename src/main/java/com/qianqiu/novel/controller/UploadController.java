@@ -41,6 +41,7 @@ public class UploadController {
             /*user.setHead(saveFilePath);*/
             user.setHead("../images/"+newFileName);
             us.updhead(user);
+            session.setAttribute("user",us.findByid(user.getUserid()));
             // 3.保存文件:另存为
             head.transferTo(new File(saveFilePath));
 

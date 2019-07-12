@@ -51,5 +51,11 @@ public class BookRackcontroller {
             return list.size();
         }
     }
+
+    @RequestMapping("queryCount")
+    @ResponseBody
+    public Integer queryCount(Integer userid){
+        return brs.queryCount(userid);
+    }
 }
 

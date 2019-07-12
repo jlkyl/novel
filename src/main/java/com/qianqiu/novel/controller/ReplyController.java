@@ -19,8 +19,8 @@ public class ReplyController {
 
     @RequestMapping("queryReply")
     @ResponseBody
-    public List<Map<String,Object>> queryReply(Integer evaid){
-        return rs.queryReply(evaid);
+    public List<Map<String,Object>> queryReply(Integer evaid,Integer userid){
+        return rs.queryReply(evaid,userid);
     }
 
     @RequestMapping("add")

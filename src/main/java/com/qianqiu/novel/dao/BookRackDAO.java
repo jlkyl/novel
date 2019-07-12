@@ -28,4 +28,7 @@ public interface BookRackDAO {
     public Integer add(BookRack br);
     @Select("select * from bookrack where userid=#{userid} and bookid=#{bookid}")
     public List<BookRack> queryF(Integer userid,Integer bookid);
+
+    @Select("select count(*) shelvescount from bookrack where userid = #{userid}")
+    public Integer queryCount(@Param("userid") Integer userid);
 }

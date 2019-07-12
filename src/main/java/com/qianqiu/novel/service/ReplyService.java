@@ -14,8 +14,8 @@ public class ReplyService {
     @Resource
     ReplyDao rd;
 
-    public List<Map<String,Object>> queryReply(Integer evaid){
-        return rd.queryReply(evaid);
+    public List<Map<String,Object>> queryReply(Integer evaid,Integer userid){
+        return rd.queryReply(evaid,userid);
     }
 
     public int add(Reply r){
