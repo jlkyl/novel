@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:validType="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -136,16 +136,16 @@
 <div class="easyui-dialog" style="width:500px;height:300px;padding:10px 60px;" id="dl">
     <form id="ff" method="post">
         <div style="margin-bottom:20px">
-            <input class="easyui-textbox" style="width:100%" data-options="label:'用户名：',required:true" name="uname">
+            <input class="easyui-textbox" style="width:100%" data-options="label:'用户名：',required:true,validType:'username'" name="uname" >
         </div>
         <div style="margin-bottom:20px">
-            <input class="easyui-textbox" style="width:100%" data-options="label:'姓名：',required:true" name="empname">
+            <input class="easyui-textbox" style="width:100%" data-options="label:'姓名：',required:true,validType:'name'" name="empname">
         </div>
         <div style="margin-bottom:20px">
-            <input class="easyui-textbox" style="width:100%" data-options="label:'手机号：',required:true" name="phone">
+            <input class="easyui-textbox" style="width:100%" data-options="label:'手机号：',required:true,validType:'mobile'" name="phone">
         </div>
         <div style="margin-bottom:20px">
-            <input class="easyui-textbox" style="width:100%" data-options="label:'身份证号：',required:true" name="idcard">
+            <input class="easyui-textbox" style="width:100%" data-options="label:'身份证号：',required:true,validType:'idcard'" name="idcard">
         </div>
         <div style="margin-bottom:20px">
             <select class="easyui-combobox" label="角色:" style="width:100%"  name="roleid"
