@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:validType="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -67,9 +67,9 @@
     <table id="tb"></table>
     <div id="toolbar" style="padding:2px;height:auto">
         <div style="margin:5px">
-            用户名: <input class="easyui-textbox" style="width:150px" id="username">
-            手机号: <input class="easyui-textbox" style="width:150px" id="phone">
-            身份：<select id="author" class="easyui-combobox" style="width:100px" data-options="editable:false">
+            用户名: <input class="easyui-textbox" style="width:150px" id="username" data-options="validType:'username'">
+            手机号: <input class="easyui-textbox" style="width:150px" id="phone" data-options="validType:'mobile'">
+            身份：<select id="author" class="easyui-combobox" style="width:100px" data-options="editable:false,validType:'idcard'">
                     <option value="10">全部</option>
                     <option value="0">普通用户</option>
                     <option value="1">作家</option>
