@@ -83,7 +83,7 @@
 					<a class="sideBar-list-a" target="_blank" data-eid="qd_M20"><i class="icon icon-shezhi"></i>个人设置</a>
 				</li>
 				<li id="u5">
-					<a href="/jpbook/users/openwriter" class="sideBar-list-a" target="_blank" data-eid="qd_M21"><i class="icon icon-37"></i>作家专区</a>
+					<a href="/Login/writerManager" class="sideBar-list-a" target="_blank" data-eid="qd_M21"><i class="icon icon-37"></i>作家专区</a>
 				</li >
 			</ul>
 
@@ -105,8 +105,8 @@
 						</a>
 					</div>
 					<h3>
-						<a href="javascript:updinfo()" data-eid="qd_M25" id="uname" style="color: white"></a>
-						<a href="javascript:u10()" class="home-user-level" data-eid="qd_M26" id="grade">Lv0</a>
+						<a href="javascript:updinfo()" data-eid="qd_M25" id="uname" style="color: white" th:text="${session.user.getUsername()}"></a>
+						<a href="javascript:u10()" class="home-user-level" data-eid="qd_M26" id="grade" th:text="'Lv'+${session.user.getVip()}">Lv0</a>
 					</h3>
 
 					<div class="home-user-data">
@@ -123,7 +123,7 @@
 						<i class="icon icon-yue"></i><b>账户余额</b>
 					</div>
 					<div class="home-msg-data">
-						<a href="javascript:u6()" data-eid="qd_M30"><b class="home-msg-b" id="money">0</b>起点币</a>
+						<a href="javascript:u6()" data-eid="qd_M30"><b class="home-msg-b" id="money" th:text="${session.user.getMoney()}">0</b>起点币</a>
 					</div> 
 					<a class="home-msg-more blue elPayBtn" href="topup.html" target="_blank" data-eid="qd_M30">充值</a>
 				</li>
@@ -143,7 +143,7 @@
 						<i class="icon icon-toupiao green"></i><b>我的推荐票</b>
 					</div>
 					<div class="home-msg-data">
-						<a href="javascript:u4()" data-eid="qd_M31"><b class="home-msg-b home-msg-num" id="w1">0</b>推荐票</a>
+						<a href="javascript:u4()" data-eid="qd_M31"><b class="home-msg-b home-msg-num" id="w1" th:text="${session.user.getTicked()}">0</b>推荐票</a>
 					</div>
 					<a class="home-msg-more blue" href="javascript:u4()" data-eid="qd_M31">立即查看</a>
 				</li>
@@ -153,7 +153,7 @@
 						<i class="icon icon-jingyan green"></i><b>会员等级</b>
 					</div>
 					<div class="home-msg-data">
-						<a href="javascript:u10()" data-eid="qd_M31">Lv<b class="home-msg-b home-msg-num" id="w2">0</b></a>
+						<a href="javascript:u10()" data-eid="qd_M31">Lv<b class="home-msg-b home-msg-num" id="w2" th:text="${session.user.getVip()}">0</b></a>
 					</div>
 					<a class="home-msg-more blue" href="javascript:u10()" data-eid="qd_M31">立即查看</a>
 				</li>
@@ -742,42 +742,30 @@
 		}
         $("#s1").show();
 
-        $.ajax({
+        /*$.ajax({
             url: "per/fansByeye",
             data: {},
             success: function (data) {
                 $("#homeurl").prop("href","pc/home?uuid="+data[0].uuid);
-
-				$("#icon").prop("src","/jpbook/images/"+data[0].icon);
-
-				$("#headerLog").text(data[0].uname);
-                $("#uname").text(data[0].uname);
-                $("#grade").text("Lv"+data[0].grade);
                 $("#eye").text(data[0].fans);
                 $("#fans").text(data[0].eye);
-                if(data[0].money > 10000){
-                    $("#money").text((data[0].money/10000)+"w");
-				}else{
-                    $("#money").text(data[0].money);
-				}
                 $("#shelves").text(data[0].shelves);
                 $("#w1").text(data[0].w1);
                 $("#w2").text(data[0].w2);
             }
-        });
+        });*/
 
         $.ajax({
-            url: "per/guess",
-            data: {},
+            url: "/books/queryPage?choose=2&page=1&rows=6&putaway=1",
             success: function (data) {
                 var yemian = "";
-                if (data.length > 0){
-                    for (var i=0; i<data.length; i++){
+                if (data.rows.length > 0){
+                    for (var i=0; i<data.rows.length; i++){
                         yemian+="<li class='recmd-list-item' style='margin-left: 15px'>"+
-                            "<a href='/jpbook/books/queryBookById?bookid="+data[i].bookid+"' target='_blank' class='recmd-list-a' data-eid='qd_M42' data-bid='1004895204'>" +
-                            "<div class='recmd-commet'>"+data[i].bookreferral.substring(0,30)+"</div>" +
-                            "<img src='/jpbook/img/"+data[i].icon+"' alt='' class='recmd-list-img'>" +
-                            "<div class='recmd-list-title' data-eid='qd_M42' data-bid='1004895204'>"+data[i].bookname+"</div>" +
+                            "<a href='/books/queryAll?bookid="+data.rows[i].bookid+"' target='_blank' class='recmd-list-a' data-eid='qd_M42' data-bid='1004895204'>" +
+                            "<div class='recmd-commet'>"+data.rows[i].details.substring(0,30)+"</div>" +
+                            "<img src='"+data.rows[i].cover+"' alt='' class='recmd-list-img'>" +
+                            "<div class='recmd-list-title' data-eid='qd_M42' data-bid='1004895204'>"+data.rows[i].bookname+"</div>" +
                             "</a><div class='recmd-list-data' title='猜你喜欢'>猜你喜欢</div></li>";
                     }
 				}

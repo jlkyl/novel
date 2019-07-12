@@ -84,4 +84,7 @@ public class UsersService {
     public Users queryAuthorById(Integer userid){
         return u.queryAuthorById(userid);
     }
+    public Map<String,Object> queryIncome(Integer userid){
+        return u.queryIncome(userid);
+    }
 }

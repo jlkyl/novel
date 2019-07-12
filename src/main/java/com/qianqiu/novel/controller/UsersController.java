@@ -148,4 +148,16 @@ public class UsersController {
         }
         return users;
     }
+    @RequestMapping(value="queryIncome")
+    @ResponseBody
+    public Map<String,Object> queryIncome(HttpSession session){
+        return service.queryIncome(MyUtil.getuserid(session));
+    }
+    @RequestMapping(value="getIncome")
+    @ResponseBody
+    public Integer getIncome(Expnses e,HttpSession session){
+        e.setUserid(MyUtil.getuserid(session));
+        e.setExptypeid(4);
+        return eservice.add(e);
+    }
 }

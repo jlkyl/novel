@@ -47,13 +47,14 @@
                             $("#dl").dialog("setTitle", "审核内容");
                             $("#dl").dialog("open");
                             $("#comid").html(row.comid);
+                            $("#chapid").html(row.chapid);
                             $.ajax({
                                 url: "/chapters/queryTxt",
                                 type: "post",
-                                data: {"chapterid": row.chaptid},
+                                data: {"chapterid": row.chapid},
                                 success: function (data) {
                                     $("#chapterContent").html(data);
-                                    $("#content").html(data);
+                                    $("#content").html(row.content);
                                 }
                             })
                         }
@@ -106,17 +107,29 @@
         }
         function SH(str){
             var comid=$("#comid").html();
+            var chapid=$("#chapid").html();
             $.ajax({
                 url:"/complaint/upd",
                 type:"post",
                 data:{"state":str,"comid":comid},
                 success:function(data){
                     if(data){
-                        // 关闭窗口
-                        $("#dl").dialog("close");
-                        // 刷新数据表格
-                        $("#tb").datagrid("reload");
-                        $("#tt").datagrid("reload");
+                        if(parseInt(str)==1){
+                            $.ajax({
+                                url:"/chapters/updChapDel",
+                                type:"post",
+                                data:{"state":1,"chapterid":chapid},
+                                success:function(data){
+                                    if(data==true){
+                                        // 关闭窗口
+                                        $("#dl").dialog("close");
+                                        // 刷新数据表格
+                                        $("#tb").datagrid("reload");
+                                        $("#tt").datagrid("reload");
+                                    }
+                                }
+                            });
+                        }
                     }
                 }
             });
@@ -129,6 +142,7 @@
     <table id="tt"></table>
     <div class="easyui-dialog" style="width:650px;height:400px;padding:10px 60px;top:50px;" id="dl" closed="true" buttons="#dlg-buttons" modal="true">
         <span id="comid" hidden></span>
+        <span id="chapid" hidden></span>
         <span id="chapterContent" readonly style="width:650px;height:350px;"></span>
         <span id="content" readonly style="width:650px;height:50px;"></span>
     </div>

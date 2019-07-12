@@ -208,10 +208,15 @@ public interface IBooksDAO {
             " and state=#{state} " +
             "</if>" +
             "</where>" +
+            "<if test=\"choose==1\">" +
             "ORDER BY comcount desc " +
+            "</if>" +
+            "<if test=\"choose==2\">" +
+            "ORDER BY potential desc " +
+            "</if>" +
             "limit #{offset},#{pageSize}" +
             "</script>")
-    List<Map<String,Object>> queryPage(@Param("offset") Integer offset,@Param("pageSize") Integer pageSize,@Param("bookname") String bookname,@Param("putaway") Integer putaway,@Param("state") Integer state);
+    List<Map<String,Object>> queryPage(@Param("offset") Integer offset,@Param("pageSize") Integer pageSize,@Param("bookname") String bookname,@Param("putaway") Integer putaway,@Param("state") Integer state,@Param("choose") Integer choose);
 
     @Select("<script>" +
             "select count(*) from books" +

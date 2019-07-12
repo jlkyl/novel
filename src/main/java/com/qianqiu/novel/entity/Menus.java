@@ -14,6 +14,8 @@ public class Menus implements Serializable {
 	private String url;
 	private Integer parentId;
 	private Integer operateeid;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date operatedate;
 	private String iconCls;
 	private String empname;

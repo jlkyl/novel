@@ -14,7 +14,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
     <meta name="renderer" content="webkit" />
     <script>
-        document.domain = 'qidian.com';
+        //document.domain = 'qidian.com';
     </script>
     <script>
         var speedTimer = [],
@@ -150,11 +150,11 @@
             <ul class="cf">
                 <li th:each="p: ${ps}">
                     <div class="focus-img">
-                        <a href="https://book.qidian.com/info/1003461122" data-eid="qd_A178" target="_blank"><img th:src="${p.cover}"  alt=""></a>
+                        <a th:href="'/books/queryAll?bookid='+${p.bookid}" data-eid="qd_A178" target="_blank"><img th:src="${p.cover}"  alt=""></a>
                     </div>
                     <div class="info">
-                        <span th:text="${p.operatedate}"></span>
-                        <p><a href="https://book.qidian.com/info/1003461122" th:title="${p.bookname}" th:text="${p.bookname}" target="_blank"></a></p>
+                        <span th:text="${#dates.format(p.operatedate, 'yyyy-MM-dd')}"></span>
+                        <p><a th:href="'/books/queryAll?bookid='+${p.bookid}" th:title="${p.bookname}" th:text="${p.bookname}" target="_blank"></a></p>
                     </div>
                 </li>
             </ul>

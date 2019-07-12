@@ -942,6 +942,7 @@
 
 
 					<!--作品讨论区-->
+					<th:block th:if="${session.user}">
 					<div class="user-commentWrap" data-l1="8">
 						<div class="user-comment-wrap book-friend">
 							<div class="comment-head cf">
@@ -954,128 +955,15 @@
 									</span>
 								</h3>
 							</div>
-							<div class="userCommentWrap" id="userCommentWrap">
 
-								<!-- start 书友评价 -->
-								<div id="commentList">
-									<!-- start 热门评论数据 -->
-									<div class="comment-list">
-										<!-- start 有数据状态 -->
-										<dl>
-											<!--<dd th:each="q,s : ${queryAllByBookid}">
-												<div class="user-photo">
-													<a th:href="|/jpbook/pc/home?uuid=${q.uuid}|" target="_blank">
-														<img th:src="|../images/${q.icon}|">
-													</a>
-												</div>
-												<div class="comment-info">
-													<h6>
-														<a class="blue" th:href="|/jpbook/pc/home?uuid=${q.uuid}|"
-															target="_blank" th:text="${q.uname}">古道西风笑</a>
-														<i>评</i>
-														<span th:class="|score-min star${q.evalv}|"></span>
-													</h6>
-
-													<p class="normal" th:utext="|${q.evacontent}<cite class='iconfont blue j_unfold' title='展开评论'></cite>|">
-
-													</p>
-													<p th:text="${q.evatime}">2019-02-18 15:01</p>
-
-													<th:block th:if="${session} ne null">
-														<th:block th:if="${session.users} ne null">
-															<th:block th:if="${q.uuid} eq ${session.users[0].uuid}">
-																<div class="icon-my-comment"></div>
-															</th:block>
-														</th:block>
-													</th:block>
-												</div>
-											</dd>-->
-
-										</dl>
-										<!-- end 有数据状态 -->
-
-										<!-- start 分页 -->
-										<!--<div class="page-box cf">
-											<div class="pagination fr" id="page-container">
-												<div class="lbf-pagination">
-													<ul class="lbf-pagination-item-list">
-														<li class="lbf-pagination-item">&lt;!&ndash;可用lbf-pagination-prev&ndash;&gt;
-															<a th:href="${page} ne 1 ? './queryById?bookid='+${books[0].bookid}+'&page='+${page-1}+'&revid='+${queryByRevid[0].revid} : 'javascript:;'" th:class="${page} ne 1 ? 'lbf-pagination-prev' : 'lbf-pageination-next lbf-pagination-disabled'">上一页</a>
-														</li>
-														<li class="lbf-pagination-item">
-															<a th:href="${page eq pagecount} ? 'javascript:;' : './queryById?bookid='+${books[0].bookid}+'&page='+${page+1}+'&revid='+${queryByRevid[0].revid}" th:class="${page eq pagecount} ? 'lbf-pagination-prev  lbf-pagination-disabled' : 'lbf-pageination-next'">下一页</a>
-														</li>
-														<li class="lbf-pagination-item">
-															<a href="javascript:;" id = "pagecount" class="lbf-pageination-next lbf-pagination-disabled" th:text="|第${page}页/共${pagecount}页|"></a>
-														</li>
-													</ul>
-													<div class="lbf-pagination-jump">
-														<input type="text" style="border: 1px solid gray;width:25px;text-align: center;" class="lbf-pagination-input" value="1" th:max="${pagecount}">
-														<a href="javascript:;" class="lbf-pagination-go">GO</a>
-													</div>
-												</div>
-											</div>
-										</div>-->
-										<!-- end 热门分页 -->
-
-									</div>
-									<!-- end 热门评论数据 -->
-
-								</div>
-								<!-- end 书友评价 -->
-							</div>
 							<div class="user-discuss" id="userDiscuss">
 								<div class="book-discuss-wrap">
 									<div class="discuss-list">
 										<!-- start 有数据状态 -->
 										<ul id="showevalate">
-											<!--start 置顶广告-->
-											<!--end 置顶广告-->
-											<!-- 置顶帖  两个 -->
-                                            <!--<th:block th:each="qr,status:${queryReviewbook}">
-                                                <th:bolock th:if="${status.index lt 14}">
-                                                    <li class="cf " data-rid="1">
-                                                        <div class="user-photo">
-                                                            <a th:href="|/jpbook/pc/home?uuid=${qr.userid}|" target="_blank">
-                                                                <img th:src="@{/images/{filename}(filename=${qr.head})}">
-                                                            </a>
-                                                        </div>
-                                                        <div class="discuss-info">
-                                                            <p class="users">
-                                                                <a class="blue"  th:href="|/jpbook/pc/home?uuid=${qr.userid}|" target="_blank">
-                                                                    <b th:text="${qr.pen}">浮生盼有钱</b>
-                                                                </a>
-                                                                <span class="gray">发表了帖子</span>
-                                                            </p>
-                                                            <h5 class="text">
-                                                                <a class=""  th:href="@{/reviewbook/queryById(bookid=${queryBookById[0].bookid},revid=${qr.evaid})}"
-                                                                   target="_blank" data-eid="qd_G37" th:utext="${qr.content}">
-                                                                    <i class="icon icon-topfix"></i>
-                                                                    <i class="icon icon-jinghua"></i>
-                                                                    书只看了几章，请问一下，九品等级是：九品力士八品勇士七品下甲士六品上甲士五品武士，四到一品
-                                                                </a>
-                                                            </h5>
-                                                            <p class="info dib-wrap" data-id="1244484136">
-                                                                <span class="mr20" th:text="|${qr.evatime}发布|">2019-02-15发布</span>
-                                                                <a th:href="@{/reviewbook/queryById(bookid=${queryBookById[0].bookid},revid=${qr.evaid})}"
-                                                                   class="info-tab mr20" target="_blank">
-                                                                    <i class="iconfont icon-xiaoxi"></i>
-                                                                    <span th:text="|${qr.rqcount}条回复|"></span>
-                                                                </a>
-																<a href="javascript:;" th:onclick="'javascript:dianzan(this,'+${qr.evaid}+')'"
-																   th:class="${qr.z} gt -1 ? 'info-tab like-btn act' : 'info-tab like-btn '">
-																	&lt;!&ndash;<i class="iconfont icon-dianzan"></i>
-																	<span th:text="|${qr.zan}赞|">4赞</span>&ndash;&gt;
-																</a>
-                                                            </p>
-                                                        </div>
-                                                    </li>
-                                                </th:bolock>
-                                            </th:block>-->
-											<!-- 置顶帖 end -->
 										</ul>
 										<!--如果还有数据就跳转页面查看更多的评论-->
-                                        <th:block th:if="${list[0].evanum} gt 15">
+                                        <!--<th:block th:if="${list[0].evanum} gt 15">
                                             <p class="go-discuss">
                                                 <a class="blue" th:href="@{/books/queryBookById(bookid=${list[0].bookid})}"
                                                    target="_blank">
@@ -1083,7 +971,7 @@
                                                     <em class="iconfont icon-xiayige"></em>
                                                 </a>
                                             </p>
-                                        </th:block>
+                                        </th:block>-->
 										<!-- end 有数据状态 -->
 									</div>
 
@@ -1091,7 +979,7 @@
 							</div>
 						</div>
 					</div>
-
+					</th:block>
 				</div>
 				<div class="right-wrap fr">
 

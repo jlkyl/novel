@@ -264,8 +264,8 @@ public class BooksController {
 
 	@RequestMapping("queryPage")
 	@ResponseBody
-	public Pages queryPage(Integer page,Integer rows,String bookname,Integer putaway,Integer state){
-		return service.queryPage(page, rows, bookname, putaway, state);
+	public Pages queryPage(Integer page,Integer rows,String bookname,Integer putaway,Integer state,Integer choose){
+		return service.queryPage(page, rows, bookname, putaway, state,choose);
 	}
 	//查询章节金额收入
 

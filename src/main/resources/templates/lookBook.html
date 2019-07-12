@@ -264,9 +264,20 @@
 <script type="text/javascript">
     $(function(){
         var putaway=[[${queryId.putaway}]];
+        var state=[[${queryId.state}]];
         if(putaway==2){
             swal({
                 title: "该作品已下架！",
+                type: "warning",
+                closeOnConfirm:false,
+                closeOnCancel:false
+            },function(){
+                window.close();
+            })
+        }
+        if(state!=0){
+            swal({
+                title: "该章节正在整改！",
                 type: "warning",
                 closeOnConfirm:false,
                 closeOnCancel:false

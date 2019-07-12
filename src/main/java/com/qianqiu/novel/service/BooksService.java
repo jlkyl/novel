@@ -147,10 +147,10 @@ public class BooksService {
 	public List<Map<String,Object>> queryPink(Integer bookid){
     	return dao.queryPink(bookid);
 	}
-	public Pages queryPage(Integer pageNum,Integer pageSize,String bookname,Integer putaway,Integer state){
+	public Pages queryPage(Integer pageNum,Integer pageSize,String bookname,Integer putaway,Integer state,Integer choose){
     	Pages pages = new Pages();
     	pages.setTotal(dao.getCount(bookname, putaway, state));
-    	pages.setRows(dao.queryPage((pageNum-1)*pageSize, pageSize, bookname, putaway, state));
+    	pages.setRows(dao.queryPage((pageNum-1)*pageSize, pageSize, bookname, putaway, state,choose));
     	return pages;
 	}
 }

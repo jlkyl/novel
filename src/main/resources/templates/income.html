@@ -190,18 +190,18 @@
                         });
                         function getSummoenyAndWithdrawmoney() {
                             $.ajax({
-                                url:"/jpbook/users/getSummoenyAndWithdrawmoney",
+                                url:"/user/queryIncome",
                                 success:function (data) {
-                                    $("#withdrawmoney").html(data.withdrawmoney);
-                                    $("#incomesum").html(data.summoney);
+                                    $("#withdrawmoney").html(data.expmoney);
+                                    $("#incomesum").html(data.money);
                                 }
                             })
                         }
                         function withdraw() {
                             var money=$("#incomesum").html();
                             var money2=$("#withdrawmoney").html();
-                            if((parseFloat(money)-parseFloat(money2))<=0){
-                                swal("操作失败!", "无收入，无法提现！", "warning");
+                            if((parseFloat(money)-parseFloat(money2))<100){
+                                swal("操作失败!", "收入不足100，无法提现！", "warning");
                             }else{
                                 swal({
                                     title: "确定操作吗？",
@@ -214,10 +214,10 @@
                                 },
                                 function(){
                                     $.ajax({
-                                        url:"/jpbook/users/withdraw",
-                                        data:{"money":(parseFloat(money)-parseFloat(money2))},
+                                        url:"/user/getIncome",
+                                        data:{"expmoney":(parseFloat(money)-parseFloat(money2))},
                                         success:function (data) {
-                                            $("#incomesum").html(0);
+                                            $("#withdrawmoney").html(money);
                                             swal("提现成功!", "成功提现"+(parseFloat(money)-parseFloat(money2))+"元,请注意查收！", "success");
                                             getSummoenyAndWithdrawmoney();
                                         }
