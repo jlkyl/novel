@@ -22,4 +22,7 @@ public interface CoverpushDao {
     List<Coverpush> queryPage(@Param("offset") Integer offset ,@Param("pageSize") Integer pageSize);
     @Select(value = "select count(pushid) from coverpush ")
     Integer getCounts();
+    @Select("select c.*, b.bookname  from coverpush c join books b on b.bookid = c.bookid")
+    List<Coverpush> queryFT();
+
 }
