@@ -154,4 +154,10 @@ public interface IChaptersDAO {
             "</script>")
     List<Map<String,Object>> querybackSHMH(@Param("state") Integer state,@Param("bookname") String bookname);
 
+    @Select("select (select count(userid) from users) usernum,\n" +
+            "       (select count(userid) from users where AUTHOR=1) authornum,\n" +
+            "       (select count(chapterid) from chapters where state=2) shchap,\n" +
+            "       (select count(bookid) from books) booknum,\n" +
+            "       (select count(comid) from complaint where state=0) comnum,count(empid) empnum from emps")
+    List<Map<String,Object>> cxsy();
 }

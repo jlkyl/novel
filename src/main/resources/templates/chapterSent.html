@@ -359,10 +359,12 @@
                                     type:'post',
                                     data:{"chaptername":$("#chapterTitle").html(),"state":0,"chapterid":zhangjieID,"txt":txt,"wordnum":$("#chapterContentInput").val().length},
                                     success: function (data) {
-                                        if (data == false) {
-                                            swal("保存失败!", "章节信息错误，请重新修改", "warning");
+                                        if (data == 1) {
+                                            swal("上传失败!", "章节审核不通过，请重新修改", "warning");
+                                        }else if(data==2){
+                                            swal("上传失败!", "章节审核中.....", "warning");
                                         } else {
-                                            swal("保存成功", "已保存至草稿箱", "success");
+                                            swal("发布成功", "已存至发布章节中", "success");
                                             window.location.href = "/chapteradd.html";
                                         }
                                     }

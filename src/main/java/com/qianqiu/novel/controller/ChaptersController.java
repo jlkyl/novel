@@ -176,7 +176,7 @@ public class ChaptersController {
 
 	@RequestMapping("updChapterInfo")
 	@ResponseBody
-	public boolean updChapterInfo(String chaptername,Integer chapterid,Integer state,String txt,Integer wordnum,HttpSession session) {
+	public int updChapterInfo(String chaptername,Integer chapterid,Integer state,String txt,Integer wordnum,HttpSession session) {
 		//书名
 		Books books = (Books) session.getAttribute("BOOK");
 		Integer bookid = books.getBookid();
@@ -204,16 +204,16 @@ public class ChaptersController {
 			}
 			Integer ii = service.updChapterInfo(chaptername, urll, stat, chapterid, wordnum);
 			if (ii != null) {
-				return true;
+				return stat;
 			} else {
-				return false;
+				return stat;
 			}
 		} else {
 			Integer i = service.updChapterInfo(chaptername, urll, state, chapterid, wordnum);
 			if (i != null) {
-				return true;
+				return 11;
 			} else {
-				return false;
+				return 00;
 			}
 		}
 	}
@@ -242,5 +242,11 @@ public class ChaptersController {
 	public List<Map<String,Object>> querybackSHMH(String bookname){
 		List<Map<String,Object>> list=service.querybackSHMH(2,bookname);
 		return list;
+	}
+
+	@RequestMapping("cxsy")
+	@ResponseBody
+	public  List<Map<String,Object>> cxsy(){
+		return service.cxsy();
 	}
 }

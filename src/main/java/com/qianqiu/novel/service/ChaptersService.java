@@ -88,4 +88,7 @@ public class ChaptersService {
 	public List<Map<String,Object>> querybackSHMH(Integer state,String bookname){
 		return dao.querybackSHMH(state,bookname);
 	}
+	public  List<Map<String,Object>> cxsy(){
+		return  dao.cxsy();
+	}
 }

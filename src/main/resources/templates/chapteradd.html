@@ -498,7 +498,7 @@
                         type:'post',
                         data:{"chaptername":chaptername,"state":1,"chapterid":zhangjieID,"txt":txt,"wordnum":wordnum},
                         success: function (data) {
-                            if (data == false) {
+                            if (data == 0) {
                                 swal("保存失败!", "章节信息错误，请重新修改", "warning");
                             } else {
                                 swal("保存成功", "已保存至草稿箱", "success");
@@ -544,11 +544,13 @@
                     type:'post',
                     data:{"chaptername":chaptername,"state":0,"chapterid":zhangjieID,"txt":txt,"wordnum":wordnum},
                     success: function (data) {
-                        if (data == false) {
-                            swal("保存失败!", "章节信息错误，请重新修改", "warning");
+                        if (data == 1) {
+                            swal("上传失败!", "章节审核不通过，请重新修改", "warning");
+                        }else if(data==2){
+                            swal("上传失败!", "章节审核中.....", "warning");
                         } else {
-                            swal("上传成功", "已上传到书籍信息", "success");
-                            window.location.href = "/chapteradd";
+                            swal("发布成功", "已存至发布章节中", "success");
+                            window.location.href = "/chapteradd.html";
                         }
                     }
                 });

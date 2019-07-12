@@ -16,6 +16,21 @@
     <link type="text/css" href="../../static/public/css/main.css" rel="stylesheet"/>
     <!-- jQuery相关引用 -->
     <script type="text/javascript" src="../../static/plugins/jquery/jquery.min.js"></script>
+
+    <script type="text/javascript">
+        $.ajax({
+            url:"/chapters/cxsy",
+            type:"post",
+            success:function (data) {
+                $("#empnum").html(data[0].empnum);
+                $("#usernum").html(data[0].usernum);
+                $("#comnum").html(data[0].comnum);
+                $("#booknum").html(data[0].booknum);
+                $("#shchap").html(data[0].shchap);
+                $("#authornum").html(data[0].authornum);
+            }
+        });
+    </script>
     <script type="text/javascript" src="../../static/plugins/jquery/jquery.cookie.js"></script>
     <!-- TopJUI框架配置 -->
     <script type="text/javascript" src="../../static/public/js/topjui.config.js"></script>
@@ -68,8 +83,8 @@
                     <i class="layui-icon" data-icon=""></i>
                 </div>
                 <div class="panel_word newMessage">
-                    <span>5</span>
-                    <cite>新消息</cite>
+                    <span id="empnum"></span>
+                    <cite>员工人数</cite>
                 </div>
             </a>
         </div>
@@ -80,7 +95,7 @@
                     <i class="layui-icon" data-icon=""></i>
                 </div>
                 <div class="panel_word userAll">
-                    <span>3</span>
+                    <span id="usernum"></span>
                     <cite>用户总数</cite>
                 </div>
             </a>
@@ -91,7 +106,7 @@
                     <i class="iconfont icon-dongtaifensishu" data-icon="icon-dongtaifensishu"></i>
                 </div>
                 <div class="panel_word userAll">
-                    <span>3</span>
+                    <span id="authornum"></span>
                     <cite>作者总数</cite>
                 </div>
             </a>
@@ -102,7 +117,7 @@
                     <i class="iconfont icon-wenben" data-icon="icon-wenben"></i>
                 </div>
                 <div class="panel_word imgAll">
-                    <span>31</span>
+                    <span id="comnum"></span>
                     <cite>待审核投诉</cite>
                 </div>
             </a>
@@ -113,7 +128,7 @@
                     <i class="iconfont icon-wenben" data-icon="icon-wenben"></i>
                 </div>
                 <div class="panel_word waitNews">
-                    <span>13</span>
+                    <span id="shchap"></span>
                     <cite>待审核文章</cite>
                 </div>
             </a>
@@ -124,7 +139,7 @@
                     <i class="iconfont icon-text" data-icon="icon-text"></i>
                 </div>
                 <div class="panel_word allNews">
-                    <span>30</span>
+                    <span id="booknum"></span>
                     <em>作品总数</em>
                     <cite>文章列表</cite>
                 </div>
@@ -142,7 +157,6 @@
     </div>
 
 </div>
-
 <script type="text/javascript" src="../../static/plugins/echarts/echarts.min.js"></script>
 </body>
 </html>
