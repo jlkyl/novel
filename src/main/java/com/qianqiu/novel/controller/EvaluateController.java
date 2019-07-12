@@ -28,6 +28,7 @@ public class EvaluateController {
     @RequestMapping("queryById")
     public String queryById(Integer bookid,Integer evaid, Model m){
         m.addAttribute("elist",es.queryEvaluate(bookid,evaid));
+        m.addAttribute("evaid",evaid);
         return "remark";
     }
 

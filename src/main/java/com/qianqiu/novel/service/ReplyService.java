@@ -1,6 +1,7 @@
 package com.qianqiu.novel.service;
 
 import com.qianqiu.novel.dao.ReplyDao;
+import com.qianqiu.novel.entity.Reply;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -13,7 +14,11 @@ public class ReplyService {
     @Resource
     ReplyDao rd;
 
-    public List<Map<String,Object>> queryReply(Integer userid){
-        return rd.queryReply(userid);
+    public List<Map<String,Object>> queryReply(Integer evaid){
+        return rd.queryReply(evaid);
+    }
+
+    public int add(Reply r){
+        return rd.add(r);
     }
 }

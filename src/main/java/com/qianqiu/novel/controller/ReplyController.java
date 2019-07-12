@@ -1,5 +1,6 @@
 package com.qianqiu.novel.controller;
 
+import com.qianqiu.novel.entity.Reply;
 import com.qianqiu.novel.service.ReplyService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +19,13 @@ public class ReplyController {
 
     @RequestMapping("queryReply")
     @ResponseBody
-    public List<Map<String,Object>> queryReply(Integer userid){
-        return rs.queryReply(userid);
+    public List<Map<String,Object>> queryReply(Integer evaid){
+        return rs.queryReply(evaid);
+    }
+
+    @RequestMapping("add")
+    @ResponseBody
+    public Integer add(Reply r){
+        return rs.add(r);
     }
 }

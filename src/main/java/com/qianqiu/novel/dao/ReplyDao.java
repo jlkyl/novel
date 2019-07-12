@@ -1,5 +1,7 @@
 package com.qianqiu.novel.dao;
 
+import com.qianqiu.novel.entity.Reply;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -11,7 +13,7 @@ import java.util.Map;
 public interface ReplyDao {
 
     @Select("<script>" +
-            "SELECT r.*,b.bookname,e.content repcontent,r.content\n" +
+            "SELECT r.*,b.bookname,e.content repcontent,r.content,u.head,u.username\n" +
             "FROM reply r\n" +
             "LEFT JOIN evaluate e\n" +
             "ON r.evaid = e.evaid\n" +
@@ -20,8 +22,11 @@ public interface ReplyDao {
             "LEFT JOIN users u\n" +
             "ON r.userid = u.userid\n" +
             "<where>" +
-            "<if test=\'userid != null\'>r.userid = #{userid}</if>" +
+            "<if test=\'evaid != null\'>e.evaid = #{evaid}</if>" +
             "</where>" +
             "</script>")
-    public List<Map<String,Object>> queryReply(@Param("userid") Integer userid);
+    public List<Map<String,Object>> queryReply(@Param("evaid") Integer evaid);
+
+    @Insert("INSERT INTO `novel`.`reply` (`replyid`, `userid`, `evaid`, `content`, `replytime`) VALUES (NULL, #{userid}, #{evaid}, #{content}, NOW())")
+    public int add(Reply r);
 }
