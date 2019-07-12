@@ -2,26 +2,23 @@
 <!-- saved from url=(0039)https://book.qidian.com/info/1013432619 -->
 <html lang="en"  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<title>书籍详情</title>
+	<title>书籍详情</title>
 
-<script src="../js/stats.js" name="MTAH5" sid="500451537"></script>
-<script src="../js/push.js"></script>
-
-
-
-<link data-ignore="true" rel="shortcut icon" type="image/x-icon" href="https://qidian.gtimg.com/qd/favicon/qd_icon.c443c.ico">
-<link data-ignore="true" rel="Bookmark" type="image/x-icon" href="https://qidian.gtimg.com/qd/favicon/qd_icon.c443c.ico">
-<link rel="stylesheet" data-ignore="true" href="../css/emoji.c4e81.css">
-<link data-ignore="true" rel="stylesheet" href="../css/module.e710a.css">
-<link data-ignore="true" rel="stylesheet" href="../css/layout.5de0f.css">
-<link data-ignore="true" rel="stylesheet" href="../css/book_details.1baf2.css">
-<link data-ignore="true" rel="stylesheet" href="../css/Panel.css">
-<link data-ignore="true" rel="stylesheet" href="../css/LightTip.css">
-<link data-ignore="true" rel="stylesheet" href="../css/Popup.css">
-<link data-ignore="true" rel="stylesheet" href="../css/Drag.css">
-<link rel="stylesheet" data-ignore="true" href="../css/iconfont.css">
+	<script src="../js/stats.js" name="MTAH5" sid="500451537"></script>
+	<script src="../js/push.js"></script>
+	<link data-ignore="true" rel="shortcut icon" type="image/x-icon" href="https://qidian.gtimg.com/qd/favicon/qd_icon.c443c.ico">
+	<link data-ignore="true" rel="Bookmark" type="image/x-icon" href="https://qidian.gtimg.com/qd/favicon/qd_icon.c443c.ico">
+	<link rel="stylesheet" data-ignore="true" href="../css/emoji.c4e81.css">
+	<link data-ignore="true" rel="stylesheet" href="../css/module.e710a.css">
+	<link data-ignore="true" rel="stylesheet" href="../css/layout.5de0f.css">
+	<link data-ignore="true" rel="stylesheet" href="../css/book_details.1baf2.css">
+	<link data-ignore="true" rel="stylesheet" href="../css/Panel.css">
+	<link data-ignore="true" rel="stylesheet" href="../css/LightTip.css">
+	<link data-ignore="true" rel="stylesheet" href="../css/Popup.css">
+	<link data-ignore="true" rel="stylesheet" href="../css/Drag.css">
+	<link rel="stylesheet" data-ignore="true" href="../css/iconfont.css">
     <link rel="stylesheet" href="../js/layui/css/modules/layer/default/layer.css">
     <link rel="stylesheet" data-ignore="true" href="../css/iconfont.css">
     <script src="../js/jquery-3.3.1.js" type="text/javascript" charset="utf-8"></script>
@@ -50,7 +47,60 @@
 					window.close();
 				})
 			}
-		})
+
+			$.ajax({
+				url:'/eva/queryEvaluate',
+				data:{"bookid":$("#bookid").val()},
+				type:'post',
+				success:function (data){
+					var str = "";
+					for (var i = 0; i < data.length; i++) {
+						str += "<li class=\"cf \" data-rid=\"1\">\n" +
+								"<div class=\"user-photo\">\n" +
+								"<a th:href=\"|/jpbook/pc/home?uuid="+data[i].userid+"|\" target=\"_blank\">\n" +
+								"<img src=\""+data[i].head+"\">\n" +
+								"</a>\n" +
+								"</div>\n" +
+								"<div class=\"discuss-info\">\n" +
+								"<p class=\"users\">\n" +
+								"<a class=\"blue\"  th:href=\"|/jpbook/pc/home?uuid="+data[i].userid+"|\" target=\"_blank\">\n" +
+								"<b>"+data[i].username+"</b>\n" +
+								"</a>\n" +
+								"<span class=\"gray\">发表了评价</span>\n" +
+								"</p>\n" +
+								"<h5 class=\"text\">\n" +
+								"<a class=\"\"  th:href=\"@{/reviewbook/queryById(bookid=${queryBookById[0].bookid},revid="+data[i].evaid+")}\"\n" +
+								"target=\"_blank\" data-eid=\"qd_G37\">"+data[i].content+"\n" +
+								"<i class=\"icon icon-topfix\"></i>\n" +
+								"<i class=\"icon icon-jinghua\"></i>\n" +
+								"</a>\n" +
+								"</h5>\n" +
+								"<p class=\"info dib-wrap\" data-id=\"1244484136\">\n" +
+								"<span class=\"mr20\" th:text=\"|"+data[i].evatime+"发布|\">"+data[i].evatime+"发布</span>\n" +
+								"<a href=\"/eva/queryById?bookid="+data[i].bookid+"&evaid="+data[i].evaid+"\"\n" +
+								"class=\"info-tab mr20\" target=\"_blank\">\n" +
+								"<i class=\"iconfont icon-xiaoxi\"></i>\n" +
+								"<span th:text=\"|"+data[i].recount+"条回复|\">|"+data[i].recount+"条回复|</span>\n" +
+								"</a>\n" +
+								"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<a href=\"javascript:;\" th:onclick=\"'javascript:dianzan(this,'+${qr.evaid}+')'\"\n" +
+								"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t   th:class=\"${qr.z} gt -1 ? 'info-tab like-btn act' : 'info-tab like-btn '\">\n" +
+								"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<!--<i class=\"iconfont icon-dianzan\"></i>\n" +
+								"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<span th:text=\"|${qr.zan}赞|\">4赞</span>-->\n" +
+								"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</a>\n" +
+								"</p>\n" +
+								"</div>\n" +
+								"</li>";
+					}
+					console.log(str);
+					$("#showevalate").html(str);
+				}
+			});
+			$(this).addClass("act");
+			$(".j_gocomment").removeClass("act")
+			$("#userCommentWrap").attr("style","display:none");
+			$("#userDiscuss").attr("style","display:block");
+
+		});
         function removeu(){
             jQuery.ajax({
                 url:'/Login/logout',
@@ -271,7 +321,6 @@
 					data:{'userid':$("#userid").val(),'bookid':$("#bookid").val(),'content':$("#evaMsgText").val(),"level":len},
 					type:'post',
 					success:function (data) {
-						alert(JSON.stringify(data));
 					    if(data == 1){
                             layui.use('layer', function(){
                                 var layer = layui.layer;
@@ -312,67 +361,6 @@
                     });
 				}
             });
-
-            $(".j_godiscuss").click(function () {
-            	$.ajax({
-					url:'/eva/queryEvaluate',
-					data:{"bookid":$("#bookid").val()},
-					type:'post',
-					success:function (data){
-						var str = "";
-						for (var i = 0; i < data.length; i++) {
-							str += "<li class=\"cf \" data-rid=\"1\">\n" +
-									"<div class=\"user-photo\">\n" +
-									"<a th:href=\"|/jpbook/pc/home?uuid="+data[i].userid+"|\" target=\"_blank\">\n" +
-									"<img src=\""+data[i].head+"\">\n" +
-									"</a>\n" +
-									"</div>\n" +
-									"<div class=\"discuss-info\">\n" +
-									"<p class=\"users\">\n" +
-									"<a class=\"blue\"  th:href=\"|/jpbook/pc/home?uuid="+data[i].userid+"|\" target=\"_blank\">\n" +
-									"<b>"+data[i].pen+"</b>\n" +
-									"</a>\n" +
-									"<span class=\"gray\">发表了评价</span>\n" +
-									"</p>\n" +
-									"<h5 class=\"text\">\n" +
-									"<a class=\"\"  th:href=\"@{/reviewbook/queryById(bookid=${queryBookById[0].bookid},revid="+data[i].evaid+")}\"\n" +
-									"target=\"_blank\" data-eid=\"qd_G37\">"+data[i].content+"\n" +
-									"<i class=\"icon icon-topfix\"></i>\n" +
-									"<i class=\"icon icon-jinghua\"></i>\n" +
-									"</a>\n" +
-									"</h5>\n" +
-									"<p class=\"info dib-wrap\" data-id=\"1244484136\">\n" +
-									"<span class=\"mr20\" th:text=\"|"+data[i].evatime+"发布|\">"+data[i].evatime+"发布</span>\n" +
-									"<a href=\"/eva/queryById?bookid="+data[i].bookid+"&revid="+data[i].evaid+"\"\n" +
-									"class=\"info-tab mr20\" target=\"_blank\">\n" +
-									"<i class=\"iconfont icon-xiaoxi\"></i>\n" +
-									"<span th:text=\"|"+data[i].recount+"条回复|\">|"+data[i].recount+"条回复|</span>\n" +
-									"</a>\n" +
-									"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<a href=\"javascript:;\" th:onclick=\"'javascript:dianzan(this,'+${qr.evaid}+')'\"\n" +
-									"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t   th:class=\"${qr.z} gt -1 ? 'info-tab like-btn act' : 'info-tab like-btn '\">\n" +
-									"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<!--<i class=\"iconfont icon-dianzan\"></i>\n" +
-									"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<span th:text=\"|${qr.zan}赞|\">4赞</span>-->\n" +
-									"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</a>\n" +
-									"</p>\n" +
-									"</div>\n" +
-									"</li>";
-						}
-						console.log(str);
-						$("#showevalate").html(str);
-					}
-				});
-				$(this).addClass("act");
-				$(".j_gocomment").removeClass("act")
-                $("#userCommentWrap").attr("style","display:none");
-                $("#userDiscuss").attr("style","display:block");
-            })
-            $(".j_gocomment").click(function () {
-                $(this).addClass("act");
-                $(".j_godiscuss").removeClass("act")
-				$("#userDiscuss").attr("style","display:none");
-				$("#userCommentWrap").attr("style","display:block");
-            })
-
         });
     </script>
 
@@ -958,8 +946,6 @@
 						<div class="user-comment-wrap book-friend">
 							<div class="comment-head cf">
 								<h3 class="lang"><!--@{/books/fatie(retype=1,bookid=${queryBookById[0].bookid})}-->
-									<a class="send blue j_forumBtn" href = "javascript:void(0);" onclick="faties(${list[0].bookid})">我要发帖
-									</a>
 									<a class="comment-btn blue j_commentBtn hidden" id="goComment"
 										href="javascript:">我要评价
 									</a>
@@ -1624,6 +1610,7 @@
 						</div>
 						<h4>简短评价</h4>
 						<input type = "hidden" id = "bookid" th:value="${list[0].bookid}">
+						<input type = "hidden" id="userid" th:value="${session.user.userid}">
 						<div class="count-text">
 							<span class="count"><em id="evaCounter">0</em>/350</span>
 							<textarea class="gray" id="evaMsgText" maxlength="350" placeholder="撰写高质量书评的建议：1、喜欢不喜欢本书的原因；2、与同类书籍的比较：故事风格、人物形象、环境描写；3、可以从不同角度描述；">
