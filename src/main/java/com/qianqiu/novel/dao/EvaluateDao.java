@@ -13,7 +13,7 @@ import java.util.Map;
 public interface EvaluateDao {
 
     @Select("<script>" +
-            "SELECT e.*,b.bookname,u.pen,u.head,\n" +
+            "SELECT e.*,b.bookname,u.username,u.head,\n" +
             "(select count(r.replyid) from reply r where evaid in (select evaid from evaluate where evaid = e.evaid)) recount \n" +
             "FROM evaluate e\n" +
             "LEFT JOIN books b\n" +
@@ -28,7 +28,7 @@ public interface EvaluateDao {
     public List<Map<String,Object>> queryEvaluate(@Param("userid") Integer userid,@Param("bookid") Integer bookid);
 
     @Select("<script>" +
-            "SELECT e.*,b.bookname,u.pen,u.head,\n" +
+            "SELECT e.*,b.bookname,u.username,u.head,\n" +
             "(select count(r.replyid) from reply r where evaid in (select evaid from evaluate where evaid = e.evaid)) recount \n" +
             "FROM evaluate e\n" +
             "LEFT JOIN books b\n" +
