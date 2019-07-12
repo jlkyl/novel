@@ -297,12 +297,12 @@
                     str+="<td class=\"tl\">";
                     str+="<div class=\"work-photo\">";
                     //file:///D:/Study/picture/
-                    str+="<a href=\"http://chat.yuewen.com/book/13129224804944103\" target=\"_blank\">";
+                 /*   str+="<a href=\"rolls/querybookid?bookname="+data[i].bookname+"\">";*/
                     str+="<img src=\""+data[i].cover+"\" width=\"83\" height=\"108\" alt=\"作品封面\">";
-                    str+="</a>";
+                  /*  str+="</a>";*/
                     str+="</div>";
                     str+="<p class=\"work-name\">";
-                    str+="<a href=\"http://chat.yuewen.com/book/13129224804944103\" target=\"_blank\">"+data[i].bookname+"</a>";
+                    str+=data[i].bookname;
                     str+="</p>";
                     str+="</td>";
                     str+="<td class=\"tl\">";

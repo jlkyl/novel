@@ -1,6 +1,8 @@
 <!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <!-- saved from url=(0052)https://write.qq.com/Contentv2/Booknovels/createsite -->
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
     <!-- 360安全游览器使用webkit极速核 -->
     <meta name="renderer" content="webkit">
@@ -38,20 +40,24 @@
                     </li>
                     <li class="line"></li>
                     <li id="headPhotoBox" class="headPhoto">
-                        <p><em><img src="./css/photo_default.png" width="36" height="36" alt=""></em><a class="userName" href="javascript:">爱色鬼</a></p>
+                        <p><em><img src="./css/photo_default.png" width="36" height="36" alt=""></em>
+                            <a class="userName" href="javascript:">
+                                <span th:text="${session.user.username}"></span>
+                            </a>
+                        </p>
                         <dl class="userBox">
                             <cite class="icon whiteSj"></cite>
                             <dd class="userInfo hidden">
                                 <!-- 增加身份标识"ico-level",silver为白金作家，dashen为大神作家 -->
-                                <p class="name" title="爱色鬼">爱色鬼
-
+                                <p class="name">
+                                    <span th:text="${session.user.username}"></span>
                                 </p>
                                 <p class="level">
 
                                     <span><em style="width:70%">0/0</em></span></p>
                             </dd>
-                            <dd class="link"><a href="writerdata.html">作家资料</a></dd>
-                            <dd class="link end"><a href="/jbook/login/emptySession">退出登录</a></dd>
+                            <dd class="link"><a href="/writerdata.html">作家资料</a></dd>
+                            <dd class="link end"><a href="javascript:removeu()">退出登录</a></dd>
                         </dl>
                     </li>
                 </ul>
@@ -346,6 +352,14 @@
 </script>
 <script type="text/javascript" src="./js/jquery.form.js"></script>
 <script type="text/javascript">
+    function removeu(){
+        jQuery.ajax({
+            url:'/Login/logout',
+            success:function(data){
+                window.location.href="/index";
+            }
+        });
+    }
     function downone(){
         $("#one").css("display","none");
         $("#two").css("display","block");

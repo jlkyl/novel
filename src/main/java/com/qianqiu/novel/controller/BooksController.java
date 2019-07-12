@@ -95,7 +95,6 @@ public class BooksController {
 	@RequestMapping(value="queryB")
     @ResponseBody
 	public List<Books> queryB(){
-
 		return service.queryB();
 	}
 
@@ -103,7 +102,6 @@ public class BooksController {
 	@ResponseBody
 	public List<Map<String,Object>> booksAll(Integer userid,HttpSession session){
 		Users u=(Users) session.getAttribute("user");
-
 		return service.booksAll(u.getUserid());
 	}
 

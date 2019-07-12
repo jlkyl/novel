@@ -168,25 +168,7 @@
                                 <!-- 草稿列表 -->
                                 <ul id="draftList">
                                     <li data-node="newDraftItem" class="act">
-                                   <!-- <div class="sectionBox">
-                                        <p><a onclick="showroll()" href="javascript:void(0)"><em>选择分卷</em></a></p>
-                                        <p class="f12"><i>&nbsp;</i></p>
-                                    </div>
--->                                   <!--  <em class="c999">选择分卷：</em>
-                                        <div id="volumeBox" class="select-wrap mid">
-                                            <div data-node="selectedItemBox" class="drop-down">
-                                                &lt;!&ndash; 选中项 &ndash;&gt;
-                                                <input type="hidden" id="rollid" name="rollid">
-                                                <span id="rollname01" name="rollname01" data-node="selectedItem" data-volumeid="35362916621017310" data-vipflag="-1"></span>
-                                                <b class="combo-arrow" id="pull-down"></b>
-                                            </div>
-                                            <div data-node="listBox" class="drop-list-box hidden" id="drop-down-box">
-                                                &lt;!&ndash; 卷列表 &ndash;&gt;
-                                                <ul id="rollsel">
-                                                </ul>
-                                            </div>
 
-                                        </div>-->
                                     </li>
                                 </ul>
                             </div>
@@ -504,12 +486,9 @@
         $.getScript("https://tajs.qq.com/stats?sId=51056771");
     });
     function save() {
-        $("#wordnum").val($("#chapterContentInput").val().length);
         var chaptername = $("#chapterTitleInput").val();
-        var wordnum = $("#wordnum").html();
         var rollid = $("#rollid").val();
         var txt=$("#chapterContentInput").val();
-        wordcount();
 
         if($("#chapterContentInput").val().length<200){
             swal("操作失败!", "正文内容字数不能低于200", "warning");
@@ -523,45 +502,36 @@
                 $("#chapterContentInput").focus;
             }else
             {
-                /*$.ajax({
-                    url:'https://aip.baidubce.com/rest/2.0/antispam/v2/spam?access_token=24.1f83f6c85e3a6d1e15ae45f8e0b61cef.2592000.1564648881.282335-16695955',
-                    data:{"context":txt},
-                    type:'post',
-                    headers:{"Content-Type":"application/x-www-form-urlencoded"},
-                    success:function(data){
-                        alert("审核结果："+data);
-                    }
-                });*/
-
-                //$("#zhangjieID")
                 var zhangjieID=$("#zhangjieID").html();
                 if(zhangjieID == ""){
 
                     $.ajax({
                         url: 'chapters/addChapter', //上传文件的路径
                         type: 'post',
-                        data: {"chaptername": chaptername, "wordnum": wordnum, "rollid": rollid,"txt":txt},
+                        data: {"chaptername": chaptername, "wordnum":$("#chapterContentInput").val().length, "rollid": rollid,"txt":txt},
                         success: function (data) {
                             if (data == false) {
                                 swal("保存失败!", "章节名称已存在，请修改章节名", "warning");
                             } else {
                                 swal("保存成功", "已保存至草稿箱", "success");
-                                window.location.href = "/chapteradd";
+
                             }
+                            window.location.href = "/recycle";
                         }
                     });
                 }else {
                     $.ajax({
                         url:'chapters/updChapterInfo',
                         type:'post',
-                        data:{"chaptername":chaptername,"state":1,"chapterid":zhangjieID,"txt":txt,"wordnum":wordnum},
+                        data:{"chaptername":chaptername,"state":1,"chapterid":zhangjieID,"txt":txt,"wordnum":$("#chapterContentInput").val().length},
                         success: function (data) {
                             if (data == 00) {
                                 swal("保存失败!", "章节信息错误，请重新修改", "warning");
                             } else {
                                 swal("保存成功", "已保存至草稿箱", "success");
-                                window.location.href = "/chapteradd";
+
                             }
+                            window.location.href = "/recycle";
                         }
                     } );
                 }
@@ -572,8 +542,6 @@
 
     }
     function issue() {
-        wordcount();
-
         if($("#chapterContentInput").val().length<200){
             swal("操作失败!", "正文内容字数不能低于200", "warning");
             $("#chapterContentInput").focus;
@@ -600,13 +568,17 @@
                 $.ajax({
                     url:'chapters/updChapterInfo',
                     type:'post',
-                    data:{"chaptername":chaptername,"state":0,"chapterid":zhangjieID,"txt":txt},
+                    data:{"chaptername":chaptername,"state":0,"chapterid":zhangjieID,"txt":txt,"wordnum":$("#chapterContentInput").val().length},
                     success: function (data) {
-                        if (data == false) {
-                            swal("保存失败!", "章节信息错误，请重新修改", "warning");
+                        if (data == 1) {
+                            swal("上传失败!", "章节审核不通过，请重新修改", "warning");
+                            window.location.href = "/chapteradd.html";
+                        } else if(data==2){
+                            swal("上传成功!", "章节审核中.....", "warning");
+                            window.location.href = "/shing.html";
                         } else {
-                            swal("上传成功", "已上传到书籍信息", "success");
-                            window.location.href = "/chapteradd";
+                            swal("发布成功", "已存至发布章节中", "success");
+                            window.location.href = "/chapterSent.html";
                         }
                     }
                 });
