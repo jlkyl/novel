@@ -25,4 +25,8 @@ public class EvaluateService {
     public int add(Evaluate e){
         return ed.add(e);
     }
+
+    public List<Evaluate> queryByUserid(Integer userid,Integer bookid){
+        return ed.queryByUserid(userid,bookid);
+    }
 }

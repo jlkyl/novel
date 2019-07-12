@@ -1,6 +1,7 @@
 package com.qianqiu.novel.controller;
 
 import com.qianqiu.novel.entity.Evaluate;
+import com.qianqiu.novel.entity.Users;
 import com.qianqiu.novel.service.EvaluateService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +37,11 @@ public class EvaluateController {
     @RequestMapping("add")
     @ResponseBody
     public Integer add(Evaluate e){
-        return es.add(e);
+        List<Evaluate> list = es.queryByUserid(e.getUserid(),e.getBookid());
+        if(list.size() == 0){
+            return es.add(e);
+        }
+        return 0;
     }
+
 }

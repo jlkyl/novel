@@ -12,9 +12,9 @@ import java.util.UUID;
 
 public class FileUtil {
     //图书存放路径
-    public static final String path="F:\\books\\";
+    public static final String path="D:\\STUDY\\S3\\小说项目\\books\\";
     //图片存放路径
-    public static final String imgpath="D:\\Workspace\\IdeaProjects\\novel\\src\\main\\resources\\static\\img\\";
+    public static final String imgpath="C:\\_idea\\novel\\src\\main\\resources\\static\\img";
     /**
      * 创建文件夹
      * @param file

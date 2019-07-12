@@ -44,4 +44,7 @@ public interface EvaluateDao {
 
     @Insert("INSERT INTO `novel`.`evaluate` (`evaid`, `userid`, `bookid`, `content`, `level`, `evatime`) VALUES (NULL, #{userid}, #{bookid}, #{content}, #{level}, NOW())")
     public int add(Evaluate e);
+
+    @Select("select * from evaluate where userid = #{bookid} and bookid = #{bookid}")
+    public List<Evaluate> queryByUserid(@Param("userid") Integer userid,@Param("bookid") Integer bookid);
 }

@@ -331,20 +331,10 @@
                             setTimeout(function () {
                                 window.location.reload()
                             },2000)
-						}else if(data == 2){
-                            layui.use('layer', function(){
-                                var layer = layui.layer;
-                                layer.alert('修改评价成功，感谢您的参与！', {time: 2000,title: false,closeBtn: false,btn:false});
-                            });
-                            $(".lbf-overlay").addClass("hidden");
-                            $(".lbf-panel").addClass("hidden");
-                            setTimeout(function () {
-                                window.location.reload()
-                            },2000)
-						}else if(data == 3){
+						}else if(data == 0){
 							//不可以评论
 							/*$(".lbf-panel-head").attr("style","display:block")*/
-							$("#evaStarWrap").append("<div class=\"warning-tip\" style=\"top: 0px;\">评论过于频繁，请稍后再试</div>");
+							$("#evaStarWrap").append("<div class=\"warning-tip\" style=\"top: 0px;\">已评论,不能多次评论</div>");
 					    }else{
                             $("#evaStarWrap").append("<div class=\"warning-tip\" style=\"top: 0px;\">书籍没有书架中，请加入书籍再进行操作</div>");
 						}
