@@ -10,25 +10,59 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
     <meta name="renderer" content="webkit">
 
-<link data-ignore="true" rel="shortcut icon" type="image/x-icon" href="https://qidian.gtimg.com/qd/favicon/qd_icon.c443c.ico">
-<link data-ignore="true" rel="Bookmark" type="image/x-icon" href="https://qidian.gtimg.com/qd/favicon/qd_icon.c443c.ico">
+    <link data-ignore="true" rel="shortcut icon" type="image/x-icon" href="https://qidian.gtimg.com/qd/favicon/qd_icon.c443c.ico">
+    <link data-ignore="true" rel="Bookmark" type="image/x-icon" href="https://qidian.gtimg.com/qd/favicon/qd_icon.c443c.ico">
 
-    
-<link rel="stylesheet" data-ignore="true" href="../css/common.62506.css">
-
-<link data-ignore="true" rel="stylesheet" href="../css/index.26508.css">
-<link charset="utf-8" rel="stylesheet" href="../css/Panel.css">
-<link charset="utf-8" rel="stylesheet" href="../css/LightTip.css">
-<link charset="utf-8" rel="stylesheet" href="../css/Popup.css">
-<link charset="utf-8" rel="stylesheet" href="../css/Drag.css">
+    <link rel="stylesheet" data-ignore="true" href="../css/common.62506.css">
+    <link data-ignore="true" rel="stylesheet" href="../css/index.26508.css">
+    <link charset="utf-8" rel="stylesheet" href="../css/Panel.css">
+    <link charset="utf-8" rel="stylesheet" href="../css/LightTip.css">
+    <link charset="utf-8" rel="stylesheet" href="../css/Popup.css">
+    <link charset="utf-8" rel="stylesheet" href="../css/Drag.css">
     <link charset="utf-8" rel="stylesheet" href="../css/iconfont.css">
+    <link data-ignore="true" rel="shortcut icon" type="image/x-icon" href="https://qidian.gtimg.com/qd/favicon/qd_icon.c443c.ico">
+    <link data-ignore="true" rel="Bookmark" type="image/x-icon" href="https://qidian.gtimg.com/qd/favicon/qd_icon.c443c.ico">
+    <link rel="stylesheet" data-ignore="true" href="../css/emoji.c4e81.css">
+    <link data-ignore="true" rel="stylesheet" href="../css/module.e710a.css">
+    <link data-ignore="true" rel="stylesheet" href="../css/layout.5de0f.css">
+    <link data-ignore="true" rel="stylesheet" href="../css/book_details.1baf2.css">
+    <link data-ignore="true" rel="stylesheet" href="../css/Panel.css">
+    <link data-ignore="true" rel="stylesheet" href="../css/LightTip.css">
+    <link data-ignore="true" rel="stylesheet" href="../css/Popup.css">
+    <link data-ignore="true" rel="stylesheet" href="../css/Drag.css">
+    <link rel="stylesheet" data-ignore="true" href="../css/iconfont.css">
+    <link rel="stylesheet" href="../js/layui/css/modules/layer/default/layer.css">
+    <script src="../js/stats.js" name="MTAH5" sid="500451537"></script>
+    <script src="../js/push.js"></script>
     <script src="../js/jquery-3.3.1.js"></script>
-<style name="lbf-overlay">.lbf-overlay { position:fixed; top:0; left:0;}</style>
-    <script type="text/javascript">
+    <script src="../js/layui/layui.js"></script>
+    <style name="lbf-overlay">.lbf-overlay { position:fixed; top:0; left:0;}</style>
+    <script type="text/javascript" th:inline="javascript">
+       function sendComment(){
+            $.ajax({
+                url:'/rep/add',
+                data:{'userid':$("#userid").val(),'evaid':[[${evaid}]],'content':$("#evaMsgText").val()},
+                type:'post',
+                success:function (data) {
+                    if(data == 1){
+                        layui.use('layer', function(){
+                            var layer = layui.layer;
+                            layer.alert('回复成功，感谢您的参与！', {time: 2000,title: false,closeBtn: false,btn:false});
+                        });
+                        $(".lbf-overlay").addClass("hidden");
+                        $(".lbf-panel").addClass("hidden");
+                        setTimeout(function () {
+                            window.location.reload();
+                        },2000)
+                    }
+                }
+            });
+        };
+
         function dianzan(obj,revid){
             var z = parseInt($(obj).children('span').html());
             $.ajax({
-                url:'/jpbook/books/userExist',
+                url:'/Login/writerManager',
                 type:'post',
                 datatype:'text',
                 success:function(data){
@@ -86,11 +120,12 @@
         }
         function faties(bookid){
             jQuery.ajax({
-                url:'/jpbook/books/userExist',
+                url:'./Login/writerManager',
                 success:function(data){
                     if(0 == data){
-                        window.open("../login.html");
+                        window.location.href = "../login.html";
                     }else{
+                        /*window.close();*/
                         window.open("/jpbook/books/queryBookByFatie?retype=1"+"&bookid="+bookid);
                     }
                 }
@@ -139,40 +174,72 @@
                 }
             })
         });
+
+        $(function(){
+           $.ajax({
+              url:'/rep/queryReply',
+              data:{"evaid":[[${evaid}]]},
+              type:'post',
+              success:function(data){
+                  var str = "";
+                  for (var i = 0; i < data.length; i++) {
+                      str += "<li class=\"post-wrap\">\n" +
+                          "<div class=\"card-wrap fl\">\n" +
+                          "<a target=\"_blank\" th:href=\"|/jpbook/pc/home?uuid=${q.uuid}|\">\n" +
+                          "<img class=\"head-img\" th:src=\"|"+data[i].head+"|\" alt=\"无人拾得我\">\n" +
+                          "</a>\n" +
+                          "</div>\n" +
+                          "<div class=\"post\">\n" +
+                          "<p class=\"post-auther\">\n" +
+                          "<a target=\"_blank\" th:href=\"|/jpbook/pc/home?uuid=${q.uuid}|\" class=\"blue mr4 b\">"+data[i].username+"</a>\n" +
+                          "<span class=\"gray\">发表了回复</span>\n" +
+                          "</p>\n" +
+                          "\n" +
+                          "<p class=\"post-body\">\n" +
+                          "<a target=\"_blank\" th:text=\"${q.revvlue}\" th:href=\"@{/reviewbook/queryById(bookid=${books[0].bookid},revid=${q.revid})}\" class=\"black\">"+data[i].content+"</a>\n" +
+                          "</p>\n" +
+                          "\n" +
+                          "<p class=\"post-info dib-wrap\" data-id=\"325314867072598016\">\n" +
+                          "<span class=\"mr20\">"+data[i].replytime+"</span>\n" +
+                          "</p>\n" +
+                          "</div>\n" +
+                          "</li>";
+                  }
+                  console.log(str);
+                  $("#showreply").html(str);
+              }
+           });
+        });
     </script>
 </head>
 <body data-dynamic="false" style="zoom: 1;">
-
-
-    
 <div id="pin-nav" class="pin-nav-wrap need-search" data-l1="40">
     <div class="box-center cf">
         <div class="nav-list site-nav fl">
             <ul>
                 <li class="site"><a class="pin-logo"
-                                    href="/jpbook/booktype/queryAll" style = "font-size: 18px;font-family: 'Courier New', Courier, monospace">江派中文网</a>
+                                    href="/index" style = "font-size: 18px;font-family: 'Courier New', Courier, monospace">千秋小说网</a>
                 </li>
-                <li><a href="/jpbook/showAllBook.html?btid=1" target="">玄幻</a></li>
-                <li><a href="/jpbook/showAllBook.html?btid=5" target="">都市</a></li>
-                <li><a href="/jpbook/showAllBook.html?btid=4" target="">仙侠</a></li>
-                <li><a href="/jpbook/showAllBook.html?btid=11" target="">科幻</a></li>
-                <li><a href="/jpbook/showAllBook.html?btid=9" target="">游戏</a></li>
-                <li><a href="/jpbook/showAllBook.html?btid=8" target="">历史</a></li>
-                <li><a href="/jpbook/books/rank" target="_blank">排行</a></li>
+                <li><a href="/showAllBook.html?btid=1" target="_blank">玄幻</a></li>
+                <li><a href="/showAllBook.html?btid=3" target="_blank">武侠</a></li>
+                <li><a href="/showAllBook.html?btid=5" target="_blank">都市</a></li>
+                <li><a href="/showAllBook.html?btid=7" target="_blank">历史</a></li>
+                <li><a href="/showAllBook.html?btid=9" target="_blank">游戏</a></li>
+                <li><a href="/showAllBook.html?btid=11" target="_blank">科幻</a></li>
+                <li><a href="/showAllBook.html?btid=13" target="_blank">同人</a></li>
                 <li class="more">
                     <a href="javascript:" id="top-nav-more" target="">
                         更多<span></span>
                     </a>
                     <div class="dropdown">
-                        <a href="/jpbook/showAllBook.html" target="_blank">全部作品</a>
-                        <a href="/jpbook/showAllBook.html?btid=13" target="">二次元</a>
-                        <a href="/jpbook/showAllBook.html?btid=2" target="">奇幻</a>
-                        <a href="/jpbook/showAllBook.html?btid=3" target="">武侠</a>
-                        <a href="/jpbook/showAllBook.html?btid=12" target="">灵异</a>
-                        <a href="/jpbook/showAllBook.html?btid=7" target="">军事</a>
-                        <a href="/jpbook/showAllBook.html?btid=6" target="">现实</a>
-                        <a href="/jpbook/showAllBook.html?btid=10" target="">体育</a>
-                        <a href="/jpbook/showAllBook.html?btid=14" target="">短篇</a>
+                        <a href="/showAllBook.html" target="_blank">全部作品</a>
+                        <a href="/showAllBook.html?btid=2" target="_blank">奇幻</a>
+                        <a href="/showAllBook.html?btid=4" target="_blank">仙侠</a>
+                        <a href="/showAllBook.html?btid=6" target="_blank">职场</a>
+                        <a href="/showAllBook.html?btid=8" target="_blank">军事</a>
+                        <a href="/showAllBook.html?btid=10" target="_blank">竞技</a>
+                        <a href="/showAllBook.html?btid=12" target="_blank">灵异</a>
+                        <a href="/showAllBook.html?btid=14" target="_blank">轻小说</a>
                     </div>
                 </li>
             </ul>
@@ -180,101 +247,70 @@
         <div class="nav-list min-user fr">
             <ul>
                 <li class="line"></li>
-                <li th:class="${session.users} ? 'sign-out hidden' : 'sign-out'">
+                <li th:class="${session.user} ? 'sign-out hidden' : 'sign-out'">
                     <a id="pin-login" href="../login.html" target="_blank">登录</a>
                     <a class="reg" href="../register.html" target="_blank">注册</a>
                 </li>
                 <th:block th:if="${session}">
-                    <th:block th:if="${session.users}">
-                        <li th:class="${session.users[0] } ? 'sign-in' : 'sign-in hidden'">
+                    <th:block th:if="${session.user}">
+                        <li th:class="${session.user } ? 'sign-in' : 'sign-in hidden'">
                             <a href="../personal.html" target="_blank">
-                                <span id = "uuid" style="display: none" th:text="${session.users[0].uuid}"></span>
-                                <i id="nav-user-name" th:text="${session.users[0].uname}"></i>
+                                <span id = "uuid" style="display: none" th:text="${session.user.getUserid()}"></span>
+                                <i id="nav-user-name" th:text="${session.user.getUsername()}"></i>
                                 <span></span>
                             </a>
                             <div class="dropdown">
-                                <a href="/jpbook/topup" target="_blank">充值</a>
+                                <a href="/topup.html" target="_blank">充值</a>
                                 <a href="../personal.html" target="_blank">个人中心</a>
                                 <a id="exit" href="javascript:void(0);" onclick="removeu()">退出</a>
                             </div>
                         </li>
                     </th:block>
                 </th:block>
+
                 <li class="line"></li>
                 <li class="book-shelf" id="top-book-shelf">
-                    <a th:href="${session.users} ? '../personal.html?key=i' : '../login.html'" target="_blank">
-                        <em class="iconfont"></em><i>我的书架
-                    </i></a>
+                    <a th:href="${session.user} ? '../personal.html?key=i' : '../login.html'" target="_blank">
+                        <em class = "iconfont icon-book_icon"></em>
+                        <i>我的书架</i>
+                    </a>
                 </li>
             </ul>
         </div>
     </div>
 </div>
     <div class="main-header">
-        <h1 th:id="${books[0].bookid}">作品讨论区<a target="_blank" th:href="@{/books/queryBookById(bookid=${books[0].bookid})}" th:utext="|《${books[0].bookname}》|"></a></h1>
+        <h1>作品讨论区<!--<a target="_blank" th:href="@{/books/queryBookById(bookid=${books[0].bookid})}" th:utext="|《${books[0].bookname}》|"></a>--></h1>
     </div>
     <div class="main-wrap cf">
     <div class="main-body fl">
-        <ul class="main-nav dib-wrap cf">
-            <li class="fl mr24">
-                <a href="https://forum.qidian.com/index/13062901703661303?type=1" class="nav-tab act" th:text="|全部(${book.size()})|"></a>
-            </li>
-            <!--<li class="fl mr24">
-                    <span class="nav-tab">热帖</span>
-            </li>
-            <li class="fl mr24">
-                    <span class="nav-tab">打赏</span>
-            </li>-->
-            <!--<li class="fl">
-                <a href="https://forum.qidian.com/index/13062901703661303?type=200" class="nav-tab ">
-                    本章说 (72)
-                </a>
-            </li>-->
-            <li class="fr">
-                <a target="_blank" href = "javascript:;" th:onclick="|faties(${books[0].bookid})|" class="sendPost blue">
-                    我要发帖
-                </a>
-            </li>
+        <ul class="all-post" id="showreply">
+
         </ul>
-        
-        <ul class="all-post">
-                <li class="post-wrap" th:each="q : ${queryAll}">
-                <div class="card-wrap fl">
-                    <a target="_blank" th:href="|/jpbook/pc/home?uuid=${q.uuid}|">
-                        <img class="head-img" th:src="|../images/${q.icon}|" alt="无人拾得我">
-                    </a>
+        <div class="lbf-panel-body">
+            <div class="book-popup evaluate-popup" id="evaluatePopup">
+                <div class="eva-star-wrap" id="evaStarWrap">
+                    <div class="eva-box">
+                        <h4>回复</h4>
+                        <input type = "hidden" id="userid" th:value="${session.user.userid}">
+                        <div class="count-text">
+                            <span class="count"><em id="evaCounter">0</em>/350</span>
+                            <textarea class="gray" id="evaMsgText" maxlength="350" placeholder="请输入回复内容:">
+							</textarea>
+                        </div>
+                    </div>
+                    <div class="popup-btn">
+                        <a class="red-btn" id="sendComment" href="javascript:sendComment()">回复</a>
+                    </div>
                 </div>
-                <div class="post">
-                    <p class="post-auther">
-                        <a target="_blank" th:href="|/jpbook/pc/home?uuid=${q.uuid}|" class="blue mr4 b" th:text="${q.uname}">无人拾得我</a>
-                        <span class="gray">发表了帖子</span>
-                    </p>
-                    
-                    <p class="post-body">
-                        <a target="_blank" th:text="${q.revvlue}" th:href="@{/reviewbook/queryById(bookid=${books[0].bookid},revid=${q.revid})}" class="black">看看</a>
-                    </p>
-                    
-                    <p class="post-info dib-wrap" data-id="325314867072598016">
-                        <span class="mr20" th:text="${q.commenttime}">2小时前更新</span>
-                        <a th:href="@{/reviewbook/queryById(bookid=${books[0].bookid},revid=${q.revid})}"
-                           class="info-tab mr20" target="_blank">
-                            <i class="iconfont icon-xiaoxi"></i>
-                            <span th:text="|${q.rqcount}条回复|">0条回复</span>
-                        </a>
-                        <a href="javascript:;" th:class="${q.z} gt -1 ? 'info-tab like-btn act' : 'info-tab like-btn'" th:onclick="'javascript:dianzan(this,'+${q.revid}+')'">
-                            <i class="iconfont icon-dianzan"></i>
-                            <span th:text="|${q.zan}赞|">0赞</span>
-                        </a>
-                    </p>
-                </div>
-            </li>
-        </ul>
-        <th:block th:if="${pagecount} gt 0">
+            </div>
+        </div>
+        <!--<th:block th:if="${pagecount} gt 0">
             <div class="page-container" data-pagemax="7" data-page="1">
                 <div class="lbf-pagination">
                     <ul class="lbf-pagination-item-list">
                         <th:block th:if="${pagecount} gt 1">
-                            <li class="lbf-pagination-item"><!--可用lbf-pagination-prev-->
+                            <li class="lbf-pagination-item">&lt;!&ndash;可用lbf-pagination-prev&ndash;&gt;
                                 <a th:href="${page} ne 1 ? './queryAll?bookid='+${books[0].bookid}+'&page='+${page-1} : 'javascript:;'" th:class="${page} ne 1 ? 'lbf-pagination-prev' : 'lbf-pageination-next lbf-pagination-disabled'">上一页</a>
                             </li>
                             <li class="lbf-pagination-item">
@@ -291,7 +327,7 @@
                     </div>
                 </div>
             </div>
-        </th:block>
+        </th:block>-->
     </div>
     </div>
     <div class="footer">
