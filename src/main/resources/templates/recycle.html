@@ -187,7 +187,7 @@
                                 <div id="portamento_container" style="min-height: 48px; width: 809px;">
                                     <div id="draftBtnBox" class="sectionBtnBox cf" data-slide="1" style="top: 0px;">
                                         <div class="titleBtn fr">
-                                            <a id="deleteDraftBtn" class="button white" href="javascript:" style="display: none;">删除</a>
+                                            <a class="button white" href="javascript:void(0)" onclick="updel()">删除</a>
                                             <a class="button white font" href="javascript:void(0)" onclick="wordcount()">字数统计</a>
                                             <span id="wordnum" name="wordnum" hidden></span>
                                             <a class="button white" href="javascript:void(0)" onclick="save()">保存</a>
@@ -485,6 +485,24 @@
         //new write
         $.getScript("https://tajs.qq.com/stats?sId=51056771");
     });
+    function updel() {
+        $.ajax({
+            url:"chapters/updChapDel",
+            data:{"state":4,"chapterid":$("#zhangjieID").html()},
+            type:"post",
+            success:function (data) {
+                if (data==false){
+                    swal("删除失败!", "此章节已被购买，无法删除", "warning");
+                }else {
+                    swal("删除成功", "请到回收站查看", "success");
+                    $("#chapterContent").val("");
+                    $("#chapid").val("");
+                    window.location.reload();
+                }
+            }
+        })
+    }
+
     function save() {
         var chaptername = $("#chapterTitleInput").val();
         var rollid = $("#rollid").val();
@@ -504,13 +522,12 @@
             {
                 var zhangjieID=$("#zhangjieID").html();
                 if(zhangjieID == ""){
-
                     $.ajax({
                         url: 'chapters/addChapter', //上传文件的路径
                         type: 'post',
-                        data: {"chaptername": chaptername, "wordnum":$("#chapterContentInput").val().length, "rollid": rollid,"txt":txt},
+                        data: {"chaptername": chaptername,"state":1, "wordnum":$("#chapterContentInput").val().length, "rollid": rollid,"txt":txt},
                         success: function (data) {
-                            if (data == false) {
+                            if (data == 40) {
                                 swal("保存失败!", "章节名称已存在，请修改章节名", "warning");
                             } else {
                                 swal("保存成功", "已保存至草稿箱", "success");
@@ -525,10 +542,10 @@
                         type:'post',
                         data:{"chaptername":chaptername,"state":1,"chapterid":zhangjieID,"txt":txt,"wordnum":$("#chapterContentInput").val().length},
                         success: function (data) {
-                            if (data == 00) {
-                                swal("保存失败!", "章节信息错误，请重新修改", "warning");
-                            } else {
+                            if (data == 11) {
                                 swal("保存成功", "已保存至草稿箱", "success");
+                            } else {
+                                swal("保存失败!", "章节信息错误，请重新修改", "warning");
 
                             }
                             window.location.href = "/recycle";
@@ -565,23 +582,45 @@
                 swal("操作失败!", "内容不能为空", "warning");
                 $("#chapterContentInput").focus;
             }else {
-                $.ajax({
-                    url:'chapters/updChapterInfo',
-                    type:'post',
-                    data:{"chaptername":chaptername,"state":0,"chapterid":zhangjieID,"txt":txt,"wordnum":$("#chapterContentInput").val().length},
-                    success: function (data) {
-                        if (data == 1) {
-                            swal("上传失败!", "章节审核不通过，请重新修改", "warning");
-                            window.location.href = "/chapteradd.html";
-                        } else if(data==2){
-                            swal("上传成功!", "章节审核中.....", "warning");
-                            window.location.href = "/shing.html";
-                        } else {
-                            swal("发布成功", "已存至发布章节中", "success");
-                            window.location.href = "/chapterSent.html";
-                        }
-                    }
-                });
+
+               if(zhangjieID==""){
+                   $.ajax({
+                       url: 'chapters/addChapter', //上传文件的路径
+                       type: 'post',
+                       data: {"chaptername": chaptername,"state":0, "wordnum":$("#chapterContentInput").val().length, "rollid": rollid,"txt":txt},
+                       success: function (data) {
+                           if (data == 1) {
+                               swal("上传失败!", "章节审核不通过，请重新修改", "warning");
+                               window.location.href = "/chapteradd.html";
+                           } else if(data==2){
+                               swal("上传成功!", "章节审核中.....", "warning");
+                               window.location.href = "/shing.html";
+                           } else {
+                               swal("发布成功", "已存至发布章节中", "success");
+                               window.location.href = "/chapterSent.html";
+                           }
+
+                       }
+                   });
+               }else {
+                   $.ajax({
+                       url:'chapters/updChapterInfo',
+                       type:'post',
+                       data:{"chaptername":chaptername,"state":0,"chapterid":zhangjieID,"txt":txt,"wordnum":$("#chapterContentInput").val().length},
+                       success: function (data) {
+                           if (data == 1) {
+                               swal("上传失败!", "章节审核不通过，请重新修改", "warning");
+                               window.location.href = "/chapteradd.html";
+                           } else if(data==2){
+                               swal("上传成功!", "章节审核中.....", "warning");
+                               window.location.href = "/shing.html";
+                           } else {
+                               swal("发布成功", "已存至发布章节中", "success");
+                               window.location.href = "/chapterSent.html";
+                           }
+                       }
+                   });
+               }
             }
         }
     }

@@ -266,8 +266,7 @@
                     <thead style="background-color: #3A6590;">
                     <tr>
                         <th>打赏书籍</th>
-                        <th>打赏章节</th>
-                        <th>打赏金额(元)</th>
+                        <th>打赏金额(书币)</th>
                         <th>打赏时间</th>
 
                     </tr>
@@ -350,7 +349,7 @@
                             var rewardsum=0;
                             for(var i=0;i<data01.length;i++){
                                 str+="<tr>\n" +
-                                    "                        <td>"+data01[i].bookname+"</td><td>"+data01[i].chaptername+"</td><td>"+data01[i].sum+"</td><td>"+jsonDateFormat(data01[i].exptime)+"</td>\n" +
+                                    "                        <td>"+data01[i].bookname+"</td><td>"+data01[i].sum+"</td><td>"+jsonDateFormat(data01[i].exptime)+"</td>\n" +
                                     "                    </tr>"
                                 rewardsum+=parseInt(data01[i].sum);
                             }

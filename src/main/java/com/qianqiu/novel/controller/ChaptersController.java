@@ -81,7 +81,7 @@ public class ChaptersController {
 
 	@RequestMapping("addChapter")
 	@ResponseBody
-	public boolean addChapter(Chapters chapters,String txt, HttpSession session){
+	public Integer addChapter(Chapters chapters,Integer state,String txt, HttpSession session){
 		Books books=(Books) session.getAttribute("BOOK");
 		Integer bookid=books.getBookid();
 		String bookname=booksService.querybyId(bookid).getBookname();
@@ -89,16 +89,26 @@ public class ChaptersController {
 		String rollname=rolls.getRollname();
 		Integer num=service.getOrder(bookid);
 		chapters.setChapternum(num+1);
-		chapters.setState(1);
+		chapters.setState(state);
 		String chaptername=chapters.getChaptername();
 		Chapters c=service.findByName(chapters.getChaptername(),bookid);
 		chapters.setUrl(bookname+"\\"+rollname+"\\"+chaptername+".txt");
+
 		if(c==null){
-			service.add(chapters);
-			FileUtil.write(bookname+"\\"+rollname+"\\"+chaptername+".txt",txt);
-			return true;
+			if (state == 0) {
+				int a = AudioUtil.audioTxt(txt);
+				service.add(chapters);
+				FileUtil.write(bookname+"\\"+rollname+"\\"+chaptername+".txt",txt);
+				return a;//发布
+			} else {
+				service.add(chapters);
+				FileUtil.write(bookname+"\\"+rollname+"\\"+chaptername+".txt",txt);
+				return 30;//添加到草稿箱
+			}
+
+
 		}else {
-			return false;
+			return 40;//添加失败（章节名称已存在）
 		}
 
 
@@ -194,13 +204,13 @@ public class ChaptersController {
 		if (state == 0) {
 			int a = AudioUtil.audioTxt(txt);
 			Integer ii = service.updChapterInfo(chaptername, urll, a, chapterid, wordnum);
-			return a;
+			return a;//返回审核结果
 		} else {
 			Integer i = service.updChapterInfo(chaptername, urll, state, chapterid, wordnum);
 			if (i != null) {
-				return 11;
+				return 11;//修改成功
 			} else {
-				return 00;
+				return 20;//修改失败
 			}
 		}
 	}

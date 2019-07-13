@@ -303,14 +303,10 @@ public interface IBooksDAO {
             "</script>")
     List<Map<String,Object>> queryExpmoney(@Param("exptypeid") Integer exptypeid,@Param("userid") Integer userid,@Param("bookname") String bookname);
 
-    @Select("select (select bookname from books where bookid=e.bookid and userid=#{userid}) bookname," +
-            "(select chaptername from chapters s " +
-            "LEFT JOIN rolls r on r.rollid=s.rollid LEFT JOIN books bs on bs.bookid=r.bookid " +
-            "where chapterid=e.chapid and bs.userid=#{userid}) chaptername," +
-            "(select sum(expmoney) from expenses where chapid=e.chapid and exptypeid=#{exptypeid} ) sum," +
-            "exptime" +
-            " from expenses e LEFT JOIN books b on b.bookid=e.bookid " +
-            "where exptypeid=#{exptypeid} and b.userid=#{userid}  GROUP BY chapid")
+    @Select("select e.*,b.bookname from expenses e " +
+            "LEFT JOIN books b on b.bookid=e.bookid " +
+            "where e.exptypeid=#{exptypeid} and e.bookid in " +
+            "(select bookid from books where userid = #{userid})")
     List<Map<String,Object>> queryExpbook02(@Param("exptypeid") Integer exptypeid,@Param("userid") Integer userid);
 
     @Select("select l.labelname from labels l left join book_label b on l.labelid=b.labelid where b.bookid=#{bookid}")
@@ -321,7 +317,7 @@ public interface IBooksDAO {
 
     @Select("\n" +
             "select *,(select bookname from books bs where bs.bookid=b.bookid and userid=#{userid}) bookname" +
-            " from weekpush w LEFT JOIN books b ON b.bookid=w.bookid ")
+            " from weekpush w LEFT JOIN books b ON b.bookid=w.bookid where b.userid=#{userid}")
     List<Map<String,Object>> queryWeek(@Param("userid") Integer userid);
 
     @Select("SELECT b.*,bt.typename,u.username\n" +
