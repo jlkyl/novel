@@ -340,18 +340,21 @@
                                 $.ajax({
                                     url: 'chapters/addChapter', //上传文件的路径
                                     type: 'post',
-                                    data: {"chaptername": $("#chapterTitle").html(), "wordnum": $("#chapterContentInput").val().length, "rollid":rollid,"txt":txt},
+                                    data: {"chaptername": $("#chapterTitle").html(),"state":0, "wordnum": $("#chapterContentInput").val().length, "rollid":rollid,"txt":txt},
                                     success: function (data) {
-                                        if (data == false) {
-                                            swal("保存失败!", "章节名称已存在，请修改章节名", "warning");
-                                        } else {
-                                            swal("保存成功", "已保存至草稿箱", "success");
+                                        if (data == 1) {
+                                            swal("上传失败!", "章节审核不通过，请重新修改", "warning");
                                             window.location.href = "/chapteradd.html";
+                                        } else if(data==2){
+                                            swal("上传成功!", "章节审核中.....", "warning");
+                                            window.location.href = "/shing.html";
+                                        } else {
+                                            swal("发布成功", "已存至发布章节中", "success");
+                                            window.location.href = "/chapterSent.html";
                                         }
                                     }
                                 });
                             }else {
-                                alert("章节名称"+$("#chapterTitleInput").val());
                                 $.ajax({
                                     url:'chapters/updChapterInfo',
                                     type:'post',

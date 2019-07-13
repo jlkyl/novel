@@ -130,6 +130,8 @@ public interface IUsersDAO {
     @Select("select * from users where userid = #{userid}")
     public Users queryAuthorById (Integer userid);
 
-    @Select("select (select COALESCE(sum(expmoney),0)/1000*0.5 from expenses where bookid in (select bookid from books where userid=#{userid})) money,(select COALESCE(sum(expmoney),0) from expenses where userid=#{userid} and exptypeid=4) expmoney")
+    @Select("select (select COALESCE(sum(expmoney),0)/1000*0.5 from expenses where " +
+            "bookid in (select bookid from books where userid=#{userid})) money," +
+            "(select COALESCE(sum(expmoney),0) from expenses where userid=#{userid} and exptypeid=4) expmoney")
     Map<String,Object> queryIncome(Integer userid);
 }
