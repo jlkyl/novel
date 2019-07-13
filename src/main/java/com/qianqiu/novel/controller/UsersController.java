@@ -3,10 +3,7 @@ package com.qianqiu.novel.controller;
 import com.qianqiu.novel.entity.Expnses;
 import com.qianqiu.novel.entity.Pages;
 import com.qianqiu.novel.entity.Users;
-import com.qianqiu.novel.service.AttentionService;
-import com.qianqiu.novel.service.BooktypeService;
-import com.qianqiu.novel.service.ExpnsesService;
-import com.qianqiu.novel.service.UsersService;
+import com.qianqiu.novel.service.*;
 import com.qianqiu.novel.utils.MyUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,13 +30,17 @@ public class UsersController {
     @Resource
     BooktypeService bservice;
 
+    @Resource
+    BookRackService brService;
 
     @RequestMapping(value="queryst")
-    public String queryst(HttpSession session,Model u,Integer attentuser){
-        List<Map<String,Object>> list = aservice.queryst(MyUtil.getuserid(session),attentuser);
-        List<Map<String,Object>> qd = bservice.querybytu();
+    public String queryst(Model u,Integer userid){
+        List<Map<String,Object>> list = aservice.queryst(userid);
+        List<Map<String,Object>> qs = brService.queryBr(userid,null);
+        System.out.println(list);
+        System.out.println(qs);
         u.addAttribute("list",list);
-        u.addAttribute("qd",qd);
+        u.addAttribute("qs",qs);
         return "homepage";
     }
 
@@ -51,10 +52,13 @@ public class UsersController {
 
 
     @RequestMapping(value="querys")
-    public String querys(Model u){
-        List<Map<Users,Object>> list = service.querys();
+    public String querys(Model u,Integer userid){
+        List<Map<Users,Object>> list = service.querys(userid);
         System.out.println(list);
+        List<Map<String,Object>> qd = bservice.querybytu(userid);
+        System.out.println(qd);
         u.addAttribute("list",list);
+        u.addAttribute("qd",qd);
         return "author_details";
     }
 
