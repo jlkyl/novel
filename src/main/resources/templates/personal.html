@@ -46,10 +46,10 @@
 				</li>-->
 
 			</ul>
-			<a href="login/emptySession" id="elLoginOut" class="header-log" style="color: white">退出</a>
+			<a href="javascript:removeu()" id="elLoginOut" class="header-log" style="color: white">退出</a>
 			<a href="personal.html" id="headerLog" class="header-log"  style="color: white"><span th:text="${session.user.getUsername()}"></span></a>
 			<div class="header-goHome">
-				<a href="booktype/queryAll" target="_blank" style="color: white">千秋小说网首页</a>
+				<a href="/index" target="_blank" style="color: white">千秋首页</a>
 			</div>	
 		</div>
 	
@@ -94,12 +94,18 @@
 			<div class="home-user-wrapper qdp-border" data-l2="1">
 				<div class="home-user-avatar" data-l3="1">
 					<a href="javascript:updinfo()" class="user-avatar-a">
-						<img class="user-avatar-img" id="icon" th:src="${session.user.head}" alt="" data-eid="qd_M24">
+						<th:block th:if="${#strings.isEmpty(session.user.getHead())}">
+							<img class="user-avatar-img" id="icon" src="/images/default_user.0.2.png" data-eid="qd_M24">
+						</th:block>
+						<th:block th:unless="${#strings.isEmpty(session.user.getHead())}">
+							<img class="user-avatar-img" id="icon" th:src="${session.user.head}" alt="" data-eid="qd_M24">
+						</th:block>
+
 					</a>
 				</div>
 				<div class="home-user" data-l3="1">
 					<div class="qdp-button">
-						<a href="javascript:;" id="homeurl" class="qdp-button-a mlr4" target="_blank" data-eid="qd_M23">个人主页</a>
+						<a th:href="|/user/queryst?userid=${session.user.userid}|" id="homeurl" class="qdp-button-a mlr4" target="_blank" data-eid="qd_M23">个人主页</a>
 						<a href="javascript:void(0);" onclick="updinfo()" class="qdp-button-a qdp-button-icon ml12" data-eid="qd_M22">
 							<i class="icon icon-shezhi"></i>
 						</a>
@@ -826,11 +832,13 @@
                     for (var i=0; i<data.length; i++){
                         t2+="<tr class='qdp-operate-wrapper'>"+
                             "<td width='300'>"+
-                            "<a href='user/queryst?userid="+data[i].userid+"' class='friend-avatar' target='_blank' data-eid='qd_M162'>"+
-                            "<img src='../images/default_user.0.2.png'>"+
-                            /*"<img src='../images/default_user.0.2.png/"+data[i].head+"'>"+*/
-                        //${list[0].head}==0 ? '/images/default_user.0.2.png' : ${list[0].head}
-                            "</a>"+
+                            "<a href='user/queryst?userid="+data[i].userid+"' class='friend-avatar' target='_blank' data-eid='qd_M162'>";
+						if(data[i].head==null){
+							t2+="<img src='../images/default_user.0.2.png'>";
+						}else{
+							t2+="<img src='"+data[i].head+"'";
+						}
+						t2+="</a>"+
                             "<div class='friend-wrapper'>"+
                             "<div class='friend-name'><a href='user/queryst?userid="+data[i].userid+"' target='_blank'>"+data[i].username+"</a>"+
                             "<i class='icon icon-boy'></i>"+
@@ -906,7 +914,6 @@
             url: "/att/del",
 			data:{"attentuser":attentuser},
             success: function (data) {
-                alert(data);
                 swal("取消关注成功", "", "success");
 
                     qd_M159();
@@ -920,7 +927,6 @@
 			url: "/att/add",
 			data: {"attentuser":attentuser},
 			success: function (data) {
-			    alert("添加："+data);
 				swal("关注成功", "", "success");
                 qd_M158();
 				qd_M159();
@@ -1577,5 +1583,17 @@
         return currentdate;
     }
 
+	function removeu() {
+		jQuery.ajax({
+			url: "Login/logout",
+			success: function (data) {
+				jQuery(".sign-in").addClass("sign-in hidden");
+				jQuery(".sign-out.hidden").addClass("sign-out");
+				jQuery(".sign-in").removeClass("sign-in");
+				jQuery(".sign-out.hidden").removeClass("sign-out hidden");
+				window.location.href = "/index";
+			}
+		});
+	};
 </script>
 </html>

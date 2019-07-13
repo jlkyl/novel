@@ -27,7 +27,7 @@ public interface BookRackDAO {
 
     @Delete("delete from bookrack where rackid=#{rackid}")
     public int delete(Integer rackid);
-    @Insert("INSERT INTO `novel`.`bookrack` (`rackid`, `userid`, `bookid`) VALUES (#{rackid},#{userid},#{bookid})")
+    @Insert("INSERT INTO `novel`.`bookrack` (`rackid`, `userid`, `bookid`, `racktime`) VALUES (#{rackid},#{userid},#{bookid},now())")
     public Integer add(BookRack br);
     @Select("select * from bookrack where userid=#{userid} and bookid=#{bookid}")
     public List<BookRack> queryF(Integer userid,Integer bookid);

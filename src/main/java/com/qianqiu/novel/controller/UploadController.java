@@ -2,6 +2,8 @@ package com.qianqiu.novel.controller;
 
 import com.qianqiu.novel.entity.Users;
 import com.qianqiu.novel.service.UsersService;
+import com.qianqiu.novel.utils.FileUtil;
+import com.qianqiu.novel.utils.MyUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,31 +23,13 @@ public class UploadController {
 
     @RequestMapping("upload")
     @ResponseBody
-    public String upload(MultipartFile head, HttpSession session) throws IOException {
-        System.out.println(head);
-        String originalFilename = head.getOriginalFilename();
+    public String upload(MultipartFile[] head, HttpSession session) throws IOException {
 
-        System.out.println(originalFilename.equals(""));
-        System.out.println(originalFilename != null);
-        // 判断是否有文件
-        if (originalFilename != null) {
-            // 1.保存路径
-            String savePath = "C:/_idea/novel/src/main/resources/static/images";
-
-            // 2.重命名
-            UUID randomUUID = UUID.randomUUID();
-            String newFileName = randomUUID.toString() + "_" + originalFilename;
-            String saveFilePath = savePath + "/" + newFileName;
-            Users user = new Users();
-            user.setUserid(((Users)session.getAttribute("user")).getUserid());
-            /*user.setHead(saveFilePath);*/
-            user.setHead("../images/"+newFileName);
-            us.updhead(user);
-            session.setAttribute("user",us.findByid(user.getUserid()));
-            // 3.保存文件:另存为
-            head.transferTo(new File(saveFilePath));
-
-        }
+        Users user = new Users();
+        user.setUserid(MyUtil.getuserid(session));
+        user.setHead(FileUtil.fileUpload(head));
+        us.updhead(user);
+        session.setAttribute("user",us.findByid(user.getUserid()));
         return "1";
     }
 }

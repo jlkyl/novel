@@ -21,59 +21,59 @@
         <div class="mheader-wrapper">
             <ul class="mheader-nav fl">
                 <li class="mheader-nav-li mheader-logo">
-                    <a class="pin-logo" href="/jpbook/booktype/queryAll" style = "font-size: 18px;font-family: 'Courier New', Courier, monospace">江派中文网</a>
+                    <a class="pin-logo" href="/index" style = "font-size: 18px;font-family: 'Courier New', Courier, monospace">千秋小说网</a>
                 </li>
 
                 <li class="mheader-nav-li">
-                    <a href="/jpbook/showAllBook.html?btid=1" class="mheader-nav-a" target="_blank">玄幻</a>
+                    <a href="/showAllBook.html?btid=1" class="mheader-nav-a" target="_blank">玄幻</a>
                 </li>
                 <li class="mheader-nav-li">
-                    <a href="/jpbook/showAllBook.html?btid=5" class="mheader-nav-a" target="_blank">都市</a>
+                    <a href="/showAllBook.html?btid=5" class="mheader-nav-a" target="_blank">都市</a>
                 </li>
                 <li class="mheader-nav-li">
-                    <a href="/jpbook/showAllBook.html?btid=4" class="mheader-nav-a" target="_blank">仙侠</a>
+                    <a href="/showAllBook.html?btid=4" class="mheader-nav-a" target="_blank">仙侠</a>
                 </li>
                 <li class="mheader-nav-li">
-                    <a href="/jpbook/showAllBook.html?btid=11" class="mheader-nav-a" target="_blank">科幻</a>
+                    <a href="/showAllBook.html?btid=11" class="mheader-nav-a" target="_blank">科幻</a>
                 </li>
                 <li class="mheader-nav-li">
-                    <a href="/jpbook/showAllBook.html?btid=9" class="mheader-nav-a" target="_blank">游戏</a>
+                    <a href="/showAllBook.html?btid=9" class="mheader-nav-a" target="_blank">游戏</a>
                 </li>
                 <li class="mheader-nav-li">
-                    <a href="/jpbook/showAllBook.html?btid=8" class="mheader-nav-a" target="_blank">历史</a>
+                    <a href="/showAllBook.html?btid=8" class="mheader-nav-a" target="_blank">历史</a>
                 </li>
                 <li class="mheader-nav-li">
-                    <a href="/jpbook/books/rank" class="mheader-nav-a" target="_blank">排行</a>
+                    <a href="/books/rank" class="mheader-nav-a" target="_blank">排行</a>
                 </li>
                 <li class="mheader-nav-li mheader-more">
                     <a href="javascript:;" class="mheader-nav-a">更多<span class="mheader-arrow"></span></a>
                     <ul class="mheader-drop">
                         <li>
-                            <a href="/jpbook/showAllBook.html" target="_blank">全部作品</a>
+                            <a href="/showAllBook.html" target="_blank">全部作品</a>
                         </li>
                         <li>
-                            <a href="/jpbook/showAllBook.html?btid=13" target="_blank">二次元</a>
+                            <a href="/showAllBook.html?btid=13" target="_blank">二次元</a>
                         </li>
                         <li>
-                            <a href="/jpbook/showAllBook.html?btid=2" target="_blank">奇幻</a>
+                            <a href="/showAllBook.html?btid=2" target="_blank">奇幻</a>
                         </li>
                         <li>
-                            <a href="/jpbook/showAllBook.html?btid=3" target="_blank">武侠</a>
+                            <a href="/showAllBook.html?btid=3" target="_blank">武侠</a>
                         </li>
                         <li>
-                            <a href="/jpbook/showAllBook.html?btid=12" target="_blank">灵异</a>
+                            <a href="/showAllBook.html?btid=12" target="_blank">灵异</a>
                         </li>
                         <li>
-                            <a href="/jpbook/showAllBook.html?btid=7" target="_blank">军事</a>
+                            <a href="/showAllBook.html?btid=7" target="_blank">军事</a>
                         </li>
                         <li>
-                            <a href="/jpbook/showAllBook.html?btid=6" target="_blank">现实</a>
+                            <a href="/showAllBook.html?btid=6" target="_blank">现实</a>
                         </li>
                         <li>
-                            <a href="/jpbook/showAllBook.html?btid=10" target="_blank">体育</a>
+                            <a href="/showAllBook.html?btid=10" target="_blank">体育</a>
                         </li>
                         <li>
-                            <a href="/jpbook/showAllBook.html?btid=14" target="_blank">短篇</a>
+                            <a href="/showAllBook.html?btid=14" target="_blank">短篇</a>
                         </li>
                     </ul>
                 </li>
@@ -85,13 +85,13 @@
                 <th:block th:if="${session}">
                     <th:block th:if="${session.user}">
                         <li class="mheader-nav-li mheader-login">
-                            <a href="/jpbook/personal" target="_blank" class="mheader-nav-a"><span class="elNickName" th:text="${session.user.getUsername()}">Joselyn</span><span class="mheader-arrow"></span></a>
+                            <a href="/personal" target="_blank" class="mheader-nav-a"><span class="elNickName" th:text="${session.user.getUsername()}">Joselyn</span><span class="mheader-arrow"></span></a>
                             <ul class="mheader-drop">
                                 <li>
-                                    <a href="/jpbook/topup.html" target="_blank" data-guid="854009794986" class="elNewToPay">充值</a>
+                                    <a href="/topup.html" target="_blank" data-guid="854009794986" class="elNewToPay">充值</a>
                                 </li>
                                 <li>
-                                    <a href="/jpbook/personal">个人中心</a>
+                                    <a href="/personal">个人中心</a>
                                 </li>
                                 <li>
                                     <a href="javascript:;" id="elLogOut">退出</a>
@@ -105,8 +105,8 @@
                 <th:block th:if="${session.user} eq null">
                     <li class="mheader-nav-li" style="">
                         <div class="mheader-logout">
-                            <a href="/jpbook/register" target="_blank" class="mr8">注册</a>
-                            <a href="/jpbook/login" class="btnLogin">登录</a>
+                            <a href="/register" target="_blank" class="mr8">注册</a>
+                            <a href="/login" class="btnLogin">登录</a>
                         </div>
                     </li>
                 </th:block>
@@ -154,13 +154,16 @@
                    <!-- <input type="hidden" th:value="${h.uuid}" id="buuid">
                     <input type="hidden" th:value="${fansState}" id="fansState">
                     <input type="hidden" th:value="${session.users==null}?'-1':${session.users.get(0).getUuid()}" id="uuid">-->
-
-                    <!--<th:block th:if="${list[0].states} eq 0">
+                <th:block th:if="${session.user}">
+                    <th:block th:if="${session.user.getUserid()!=list[0].userid}">
+                    <th:block th:if="${list[0].states} eq 0">
                     <a href="javascript:;" class="ui-button ui-button-small" id="elToFollow">关注</a>
                     </th:block>
                     <th:block th:if="${list[0].states} eq 1">
                     <a href="javascript:;" class="ui-button ui-button-small" id="elFollowing">已关注</a>
-                    </th:block>-->
+                    </th:block>
+                    </th:block>
+                </th:block>
                     <!--<a href="javascript:;" class="qdp-button-a mlr4" id="elSendMsg" data-image="//facepic.qidian.com" data-name="唐家三少" data-id="265554" data-guid="119090278789" data-eid="qd_M246">私信</a>-->
 
                     <th:block th:if="${list[0].author} ne 0">
@@ -200,7 +203,7 @@
                     <div class="author-item-time">
 
                     </div>
-                    <!--th:href="'/jpbook/books/queryBookById?bookid='+${q.bookid}"-->
+                    <!--th:href="'/books/queryBookById?bookid='+${q.bookid}"-->
                     <a  target="_blank" class='author-item-book' data-eid="qd_M268">
                         <img th:src="${l.cover}" class='author-item-img'>
                     </a>
@@ -209,7 +212,7 @@
                             <a  target="_blank" data-eid="qd_M269" data-bid="1013406185" th:text="${l.bookname}">书名</a>
                         </div>
                         <div class="author-item-exp">
-                            <!--th:href="'/jpbook/showAllBook.html?btid='+${q.bid}"-->
+                            <!--th:href="'/showAllBook.html?btid='+${q.bid}"-->
                             <a  target="_blank">
                                 <span th:text="${l.typename}">类型</span>
                             </a>
@@ -222,7 +225,7 @@
                         </div>
                         <div class="author-item-content" th:text="${l.details}">简介</div>
                         <div class="author-item-update">
-                            <!--th:href="'/jpbook/chapter/getInformationByChapid?chapid='+${q.chapid}"-->
+                            <!--th:href="'/chapter/getInformationByChapid?chapid='+${q.chapid}"-->
                             <a  class="blue" target="_blank" th:title="${l.chaptername}">最近更新&nbsp;
                                 <b th:text="${l.chaptername}"></b>
                             </a>
@@ -279,24 +282,6 @@
     </body>
 
     <script th:inline="javascript" type="text/javascript">
-       $(function () {
-            var state = $("#fansState").val();
-            if (state == 0){
-                $("#elToFollow").show();
-                $("#elFollowing").hide();
-            }else {
-                $("#elFollowing").show();
-                $("#elToFollow").hide();
-            }
-
-            /* var uuid = $("#uuid").val();
-            var buuid = $("#buuid").val();
-            if (uuid == buuid) {
-                $("#elToFollow").hide();
-                $("#elFollowing").hide();
-            }*/
-
-        })
 
         $("#elFollowing").hover(function () {
             $("#elFollowing").text("取消关注");
@@ -308,7 +293,7 @@
         //关注
         $("#elToFollow").click(function () {
             $.ajax({
-                url: "att/add",
+                url: "/att/add",
                 data: {"attentuser":[[${list[0].userid}]]},
                 success: function (data) {
                     if(data == -1){

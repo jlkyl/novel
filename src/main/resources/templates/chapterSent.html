@@ -291,6 +291,24 @@
                     function wordcount() {
                         swal("", "字数统计:"+$("#chapterContentInput").val().length);
                     }
+                    function addroll() {
+                        $("#addroll").toggle();
+                    }
+                    function ajaxaddroll() {
+
+                        $.ajax({
+                            url:"rolls/addRoll",
+                            data:{"rollname":$("#rollname").val(),"isvip":$("input[name='rollmoney']:checked").val()},
+                            success:function (data) {
+                                if (data==false){
+                                    swal("卷名已存在!", "请修改卷名", "warning");
+                                }else{
+                                    swal("创建成功", "新的一卷创建成功，您可以添加章节", "success");
+                                    window.location.reload();
+                                }
+                            }
+                        })
+                    }
                     $(function () {
                         read();
                     })

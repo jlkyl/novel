@@ -64,19 +64,20 @@ public interface IBooksDAO {
             "(select *,(select typename from booktype where typeid = COALESCE((select parentid from booktype where typeid=b.typeid),b.typeid)) typename,\n" +
             "(select typename from booktype where typeid = b.typeid) ztypename,\n" +
             "(select pen from users where userid=b.userid) pen,\n" +
+            "(select head from users where userid=b.userid) head,\n" +
             "(select max(isvip) from rolls where bookid=b.bookid) isvip," +
             "(select count(*) from books where userid=b.userid) booknum,\n" +
             "COALESCE((select sum(wordnum) from chapters where rollid in (select rollid from rolls where bookid in (select bookid from books where userid=b.userid))),0) writenum,\n" +
             "(select datediff(max(updatetime),min(updatetime))+1 from chapters where rollid in (select rollid from rolls where bookid in (select bookid from books where userid=b.userid))) writeday,\n" +
-            "COALESCE((select count(userid) from expenses where exptypeid=3 and bookid=b.bookid GROUP BY userid),0) buynum,\n" +
+            "(select count(*) from (select userid from expenses where exptypeid=3 GROUP BY userid) c where bookid=b.bookid) buynum,\n" +
             "COALESCE((select avg(level*2) from evaluate where bookid=b.bookid),0) score,\n" +
             "COALESCE((select sum(expmoney) from expenses where exptypeid=3 and bookid=b.bookid and exptime BETWEEN getMonday(CURDATE()) and getSunday(CURDATE())),0) buymoney,\n" +
             "COALESCE((select sum(nums) from votes where bookid=b.bookid and votetime BETWEEN getMonday(CURDATE()) and getSunday(CURDATE())),0) votenum,\n" +
             "COALESCE((select sum(nums) from votes where bookid=b.bookid),0) votecount,\n" +
             "(select count(*) from evaluate where bookid=b.bookid) evanum,\n" +
             "COALESCE((select sum(expmoney) from expenses where exptypeid=2 and bookid=b.bookid and exptime BETWEEN getMonday(CURDATE()) and getSunday(CURDATE())),0) givemoney,\n" +
-            "COALESCE((select count(userid) from expenses where exptypeid=2 and bookid=b.bookid and exptime BETWEEN getMonday(CURDATE()) and getSunday(CURDATE()) GROUP BY userid),0) givenum,\n" +
-            "COALESCE((select count(userid) from expenses where exptypeid=2 and bookid=b.bookid GROUP BY userid),0) givecount,\n" +
+            "(select count(*) from expenses where exptypeid=2 and exptime BETWEEN getMonday(CURDATE()) and getSunday(CURDATE()) and bookid=b.bookid) givenum,\n" +
+            "(select count(*) from expenses where exptypeid=2 and bookid=b.bookid) givecount,\n" +
             "COALESCE((select count(*) from chapters where state=0 and rollid in (select rollid from rolls where bookid = b.bookid)),0) chaptnum,\n" +
             "COALESCE((select sum(wordnum) from chapters where state=0 and rollid in (select rollid from rolls where bookid = b.bookid)),0) wordcount,\n" +
             "(select count(*) from bookrack where bookid=b.bookid and racktime BETWEEN getMonday(CURDATE()) and getSunday(CURDATE())) racknum " +
@@ -121,7 +122,7 @@ public interface IBooksDAO {
             "order by potential desc" +
             "</if>" +
             "<if test=\"choose==8\">" +
-            "order by createtime,buynum desc" +
+            "order by createtime desc" +
             "</if>" +
             "<if test=\"choose==9\">" +
             "order by createtime,potential desc" +
@@ -247,7 +248,7 @@ public interface IBooksDAO {
             "(select *,\n" +
             "(select typename from booktype where typeid = COALESCE((select parentid from booktype where typeid=b.typeid),b.typeid)) typename,\n" +
             "(select pen from users where userid=b.userid) pen,\n" +
-            "COALESCE((select count(userid) from expenses where exptypeid=3 and bookid=b.bookid GROUP BY userid),0) buynum,\n" +
+            "(select count(*) from (select userid from expenses where exptypeid=3 GROUP BY userid) c where bookid=b.bookid) buynum,\n" +
             "COALESCE((select avg(level) from evaluate where bookid=b.bookid),0) score,\n" +
             "COALESCE((select sum(expmoney) from expenses where exptypeid=3 and bookid=b.bookid and exptime BETWEEN getMonday(CURDATE()) and getSunday(CURDATE())),0) buymoney,\n" +
             "COALESCE((select sum(nums) from votes where bookid=b.bookid and votetime BETWEEN getMonday(CURDATE()) and getSunday(CURDATE())),0) votenum,\n" +

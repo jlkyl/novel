@@ -185,9 +185,13 @@
                   for (var i = 0; i < data.length; i++) {
                       str += "<li class=\"post-wrap\">\n" +
                           "<div class=\"card-wrap fl\">\n" +
-                          "<a target=\"_blank\" th:href=\"|/jpbook/pc/home?uuid=${q.uuid}|\">\n" +
-                          "<img class=\"head-img\" th:src=\"|"+data[i].head+"|\" alt=\"无人拾得我\">\n" +
-                          "</a>\n" +
+                          "<a target=\"_blank\" th:href=\"|/jpbook/pc/home?uuid=${q.uuid}|\">\n" ;
+                      if(data[i].head!=null){
+                          str += "<img class=\"head-img\" th:src=\"|"+data[i].head+"|\" alt=\""+data[i].username+"\">\n";
+                      }else{
+                          str += "<img class=\"head-img\" src=\"/images/default_user.0.2.png\" alt=\""+data[i].username+"\">\n";
+                      }
+                      str += "</a>\n" +
                           "</div>\n" +
                           "<div class=\"post\">\n" +
                           "<p class=\"post-auther\">\n" +

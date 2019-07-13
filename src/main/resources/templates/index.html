@@ -248,7 +248,7 @@
                 <ul>
                     <li class="" th:each="pr : ${weekpush}">
                         <!--玄幻类型书籍显示-->
-                        <a class="channel" th:href="@{/showAllBook.html(typeid=${pr.typeid})}" style="margin-left: 2px;"
+                        <a class="channel" th:href="@{/showAllBook.html(btid=${pr.typeid})}" style="margin-left: 2px;"
                            href="//www.qidian.com/xuanhuan" target="_blank" th:text="|[${pr.typename}]|"></a>
                         <!--作品详细信息显示-->
                         <strong>
@@ -343,7 +343,7 @@
                     <th:block th:if="${s.index} lt 18">
                     <li class="" data-rid="1">
 
-                        <a class="channel" th:href="@{/showAllBook.html(typeid=${qr.typeid})}" th:text="|「${qr.typename}」|"
+                        <a class="channel" th:href="@{/showAllBook.html(btid=${qr.typeid})}" th:text="|「${qr.typename}」|"
                            target="_blank">
                         </a>
                         <strong>
@@ -391,7 +391,7 @@
                                                        target="_blank" th:text="${qb.typename}">玄幻</a>
                                                     <i>·</i>
                                                     <a class="writer"
-                                                       th:href="|/pc/authorData?bid=${qb.userid}|"
+                                                       th:href="|/user/querys?userid=${qb.userid}|"
                                                        target="_blank" th:text="${qb.pen}">滚开</a>
                                                 </p>
                                             </div>
@@ -445,7 +445,7 @@
                                                        target="_blank" th:text="${qb.typename}">玄幻</a>
                                                     <i>·</i>
                                                     <a class="writer"
-                                                       th:href="|/pc/authorData?bid=${qb.userid}|"
+                                                       th:href="|/user/querys?userid=${qb.userid}|"
                                                        target="_blank" th:text="${qb.pen}">滚开</a>
                                                 </p>
                                             </div>
@@ -499,7 +499,7 @@
                                                        target="_blank" th:text="${qb.typename}">玄幻</a>
                                                     <i>·</i>
                                                     <a class="writer"
-                                                       th:href="|/pc/authorData?bid=${qb.userid}|"
+                                                       th:href="|/user/querys?userid=${qb.userid}|"
                                                        target="_blank" th:text="${qb.pen}">滚开</a>
                                                 </p>
                                             </div>
@@ -554,7 +554,7 @@
                                                     <a class="type" th:href="|/showAllBook.html?btid=${qc.typeid}|"
                                                        target="_blank" th:text="${qc.typename}"></a><i>&#183;</i><a
                                                         class="writer"
-                                                        th:href="|/pc/authorData?bid=${qc.userid}|"
+                                                        th:href="|/user/querys?userid=${qc.userid}|"
                                                         th:text="${qc.pen}" target="_blank"></a>
                                                 </p>
                                             </div>
@@ -606,7 +606,7 @@
                                                        th:text="${wc.typename}">游戏</a>
                                                     <i>·</i>
                                                     <a class="writer"
-                                                       th:href="|/pc/authorData?bid=${wc.userid}|"
+                                                       th:href="|/user/querys?userid=${wc.userid}|"
                                                        target="_blank"
                                                        th:text="${wc.pen}">骷髅精灵</a>
                                                 </p>
@@ -675,7 +675,7 @@
                                     <p th:text="${qn.details}"></p>
                                     <div class="state-box cf">
                                         <span th:text="|${qn.typename}|"></span>
-                                        <a class="author" th:href="|/pc/authorData?bid=${qn.userid}|"
+                                        <a class="author" th:href="|/user/querys?userid=${qn.userid}|"
                                            target="_blank" th:text="${qn.pen}"></a>
                                     </div>
                                 </div>
@@ -710,7 +710,7 @@
                                                    th:text="${cp.typename}">仙侠</a>
                                                 <i>·</i>
                                                 <a class="writer"
-                                                   th:href="|/pc/authorData?bid=${cp.userid}|"
+                                                   th:href="|/user/querys?userid=${cp.userid}|"
                                                    target="_blank"
                                                    th:text="${cp.pen}">打眼</a>
                                             </p>
@@ -778,7 +778,7 @@
                                             <span th:text="|${qw.wordcount}字|"></span>
                                             <i th:text="${qw.typename}"></i>
                                             <a class="author" th:text="${qw.pen}"
-                                               th:href="|/pc/authorData?bid=${qw.userid}|"></a>
+                                               th:href="|/user/querys?userid=${qw.userid}|"></a>
                                         </div>
                                     </div>
                                 </li>
@@ -807,7 +807,7 @@
                                                    th:utext="|${#numbers.formatDecimal(qj.score,1,1)}分<cite>&#183;</cite>${qj.wordcount}字|"></p>
                                                 <p class="author">
                                                     <a th:text="${qj.pen}" class="writer"
-                                                       th:href="|/pc/authorData?bid=${qj.userid}|"
+                                                       th:href="|/user/querys?userid=${qj.userid}|"
                                                        target="_blank"></a>
                                                 </p>
                                             </div>
@@ -856,7 +856,7 @@
                                         </h4>
                                         <p class="author">
                                             <a class="writer"
-                                               th:href="|/pc/authorData?bid=${r.userid}|"
+                                               th:href="|/user/querys?userid=${r.userid}|"
                                                th:text="${r.pen}">废柴老三</a>
                                         </p>
                                     </div>
@@ -883,7 +883,7 @@
                         <tr th:each="r,s : ${recommend12}">
                             <th:block th:if="${s.index} gt 2 and ${s.index} lt 23">
                                 <td>
-                                    <a class="classify" th:href="@{/showAllBook.html(typeid=${r.typeid})}" target="_blank"
+                                    <a class="classify" th:href="@{/showAllBook.html(btid=${r.typeid})}" target="_blank"
                                        th:utext="|<em>「</em>${r.typename}<em>」</em>|"></a>
                                 </td>
                                 <td><a class="name"
@@ -897,7 +897,7 @@
                                     </th:block>
                                 </td>
                                 <td class="respon">
-                                    <a class="author" th:href="|/pc/authorData?bid=${r.userid}|"
+                                    <a class="author" th:href="|/user/querys?userid=${r.userid}|"
                                        th:text="${r.pen}" target="_blank">筑梦无言</a></td>
                                 <td class="respon"><i th:text="${r.updatetime}">02-27 14:33</i></td>
                             </th:block>
@@ -915,11 +915,16 @@
                     <li data-rid="1" th:each="a,s : ${authors}">
                         <div class="god-info">
                             <div class="photo">
-                                <a href="//me.qidian.com/authorIndex.aspx?id=4406509" target="_blank" data-eid="qd_A161">
-                                    <img class="lazy" src="/images/author.png" style="display: inline;">
+                                <a th:href="|/user/querys?userid=${a.userid}|" target="_blank" data-eid="qd_A161">
+                                    <th:block th:if="${#strings.isEmpty(a.get('head'))}">
+                                        <img class="lazy" src="/images/author.png" style="display: inline;">
+                                    </th:block>
+                                    <th:block th:unless="${#strings.isEmpty(a.get('head'))}">
+                                        <img class="lazy" th:src="${a.head}" style="display: inline;">
+                                    </th:block>
                                 </a>
                             </div>
-                            <h3><a href="//me.qidian.com/authorIndex.aspx?id=4406509" target="_blank" data-eid="qd_A160" th:text="${a.pen}">净无痕</a></h3>
+                            <h3><a th:href="|/user/querys?userid=${a.userid}|" target="_blank" data-eid="qd_A160" th:text="${a.pen}">净无痕</a></h3>
                             <h4>代表作</h4>
                             <p class="works cf"><a th:href="@{/books/queryAll(bookid=${a.bookid})}" target="_blank" data-eid="qd_A162" data-bid="3446747" th:text="${a.bookname}" >太古神王</a></p>
                             <p class="intro" th:text="'阅文集团白金作家，作品深受读者喜爱。'"></p>
