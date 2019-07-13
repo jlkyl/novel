@@ -50,16 +50,14 @@ public interface BooktypeDao {
     @Select("select * from booktype where parentid=#{parentid}")
     public List<Map<String,Object>> queryByparentid(@Param("parentid") Integer parentid);
 
-    @Select(value = "SELECT b.bookname,b.cover,bk.typename,b.state,u.pen,u.sign,b.details,(SELECT SUM(wordnum) from chapters)  mo\n" +
-            ",(SELECT TIMESTAMPDIFF(DAY,b.createtime,NOW())) ks,\n" +
-            "(SELECT chapterid from chapters where state =0 AND rollid in (SELECT rollid from roles WHERE b.bookid = b.bookid)order by\n" +
-            "chapternum desc LIMIT 1 ) chapterid,(SELECT chaptername from chapters where state =0 AND rollid in\n" +
-            "(SELECT rollid from roles WHERE b.bookid = b.bookid)order by chapternum desc LIMIT 1 ) from users u\n" +
-            "JOIN bookrack bs\n" +
-            "on bs.userid = u.userid\n" +
-            "JOIN books b\n" +
-            "on b.userid = u.userid\n" +
+    @Select(value = "SELECT b.bookid,b.cover,b.bookname,bk.typename,b.state,b.details,COALESCE((select sum(wordnum) from chapters \n" +
+            "where state=0 and rollid in (select rollid from rolls where bookid = b.bookid)),0) wordcount,\n" +
+            "(SELECT chapterid from chapters where state =0 AND rollid in (SELECT rollid from rolls WHERE bookid = b.bookid)order by chapternum desc LIMIT 1 ) chapterid,\n" +
+            "(SELECT chaptername from chapters where state =0 AND rollid in (SELECT rollid from rolls WHERE bookid = b.bookid)order by chapternum desc LIMIT 1) chaptername,\n" +
+            "(select updatetime from chapters where state=0 and rollid in (select rollid from rolls where bookid = b.bookid) ORDER BY chapternum desc LIMIT 1) updatetime \n" +
+            "FROM books b \n" +
             "JOIN booktype bk\n" +
-            "on b.typeid = bk.typeid")
-    List<Map<String,Object>> querybytu();
+            "on b.typeid = bk.typeid\n" +
+            "WHERE b.userid = #{userid}")
+    List<Map<String,Object>> querybytu(Integer userid);
 }

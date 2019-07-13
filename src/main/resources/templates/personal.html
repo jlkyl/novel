@@ -816,10 +816,12 @@
                         t2+="<tr class='qdp-operate-wrapper'>"+
                             "<td width='300'>"+
                             "<a href='user/queryst?userid="+data[i].userid+"' class='friend-avatar' target='_blank' data-eid='qd_M162'>"+
-                            "<img src='/jpbook/images/"+data[i].icon+"'>"+
+                            "<img src='../images/default_user.0.2.png'>"+
+                            /*"<img src='../images/default_user.0.2.png/"+data[i].head+"'>"+*/
+                        //${list[0].head}==0 ? '/images/default_user.0.2.png' : ${list[0].head}
                             "</a>"+
                             "<div class='friend-wrapper'>"+
-                            "<div class='friend-name'><a href='user/queryst?attentuser="+data[i].attentuser+"' target='_blank'>"+data[i].username+"</a>"+
+                            "<div class='friend-name'><a href='user/queryst?userid="+data[i].userid+"' target='_blank'>"+data[i].username+"</a>"+
                             "<i class='icon icon-boy'></i>"+
                             "</div>"+
                             "</div>"+
@@ -858,7 +860,7 @@
                         t3+="<tr class='qdp-operate-wrapper'>"+
                             "<td width='300'>"+
                             "<a href='user/queryst?userid="+data[i].userid+"' class='friend-avatar' target='_blank' data-eid='qd_M162'>"+
-                            "<img src='/jpbook/images/"+data[i].icon+"'>"+
+                            "<img src='../images/default_user.0.2.png'>"+
                             "</a>"+
                             "<div class='friend-wrapper'>"+
                             "<div class='friend-name'><a href='user/queryst?userid="+data[i].userid+"' target='_blank'>"+data[i].username+"</a>"+

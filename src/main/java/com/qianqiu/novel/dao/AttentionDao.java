@@ -30,12 +30,11 @@ public interface AttentionDao {
             "where a.attentuser = #{userid}")
     List<Map<String,Object>> queryasd(Integer userid);
 
-    @Select(value = "SELECT u.userid,COALESCE(u.head,0) head,u.pen,u.username,u.author,u.sex,(SELECT count(*) from attention where userid=#{userid} and attentuser=a.userid) states,\n" +
-            "(SELECT COUNT(attentid) from attention  where userid=#{userid} ) aten from users u\n" +
-            "join attention a\n" +
-            "ON a.userid = u.userid\n" +
-            "WHERE a.attentuser = #{attentuser}")
-    List<Map<String,Object>> queryst(Integer userid,Integer attentuser);
+    @Select(value = "SELECT u.userid,COALESCE(u.vip,0) vip,u.username,COALESCE(u.head,0) head,u.author,u.sex,\n" +
+            "(SELECT count(*) from attention where attentuser=#{userid}) states,\n" +
+            "(SELECT COUNT(attentid) from attention  where userid=#{useid}) aten from users u\n" +
+            "WHERE u.userid= #{userid}")
+    List<Map<String,Object>> queryst(Integer userid);
     @Insert(value = "INSERT INTO `novel`.`attention` ( `userid`, `attentuser`)"  +
             " VALUES ( #{userid}, #{attentuser})")
     int add(Attention a);

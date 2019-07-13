@@ -25,8 +25,8 @@ public class AttentionService {
     public List<Map<String,Object>> queryasd(Integer userid){
         return  dao.queryasd(userid);
     }
-    public List<Map<String,Object>> queryst(Integer userid,Integer attentuser){
-        return  dao.queryst(userid,attentuser);
+    public List<Map<String,Object>> queryst(Integer userid){
+        return  dao.queryst(userid);
     }
     public int add(Attention a){
         return dao.add(a);

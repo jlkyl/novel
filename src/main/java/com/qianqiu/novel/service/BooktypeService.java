@@ -50,5 +50,5 @@ public class BooktypeService {
 
     public List<Map<String,Object>> queryByparentid(Integer parentid){return btd.queryByparentid(parentid);}
 
-    public List<Map<String,Object>> querybytu(){return btd.querybytu();}
+    public List<Map<String,Object>> querybytu(Integer userid){return btd.querybytu(userid);}
 }

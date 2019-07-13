@@ -127,44 +127,44 @@
 
 <div class="">
     <div class="user-header" data-l1="2">
-        <div class="user-header-wrapper" th:each="l:${list}">
+        <div class="user-header-wrapper">
             <div class="header-avatar">
                <!-- <a th:href="@{/pc/home?uuid={uuid}(uuid=${h.uuid})}"><img class="header-avatar-img" th:src="@{/images/{icon}(icon = ${h.icon})}"  th:alt="|${h.uname}的头像|"></a>-->
 
-                    <img class="header-avatar-img" th:src="${l.head}==0 ? '/images/default_user.0.2.png' : ${l.head}"  th:alt="|${l.pen}的头像|">
+                    <img class="header-avatar-img" th:src="${list[0].head}==0 ? '/images/default_user.0.2.png' : ${list[0].head}"  th:alt="|${list[0].username}的头像|">
 
                     <!--<img class="header-avatar-img" src="/images/default_user.0.2.png"  th:alt="|${l.pen}的头像|">-->
 
             </div>
             <div class="header-msg">
                 <h3 id="elUidWrap" data-id="265554">
-                    <a th:text="${l.username}">昵称</a>
-                    <!--<a class="header-msg-level" target="_blank">Lv<span th:text="${h.grade}"></span></a>-->
+                    <a th:text="${list[0].username}">昵称</a>
+                    <a class="header-msg-level" target="_blank">Lv<span th:text="${list[0].vip}"></span></a>
                 </h3>
                 <div class="header-msg-title"></div>
-                <div class="header-msg-desc" th:text="${l.sex}">男</div>
+                <div class="header-msg-desc" th:text="${list[0].sex}">男</div>
                 <div class="header-msg-title"></div>
 
-                <div class="header-msg-data">
-                    <span class="mr8">关注<strong class="header-msg-strong" th:text="${l.aten}">关注</strong></span>
-                    <span class="ml12 mr8">粉丝<strong class="header-msg-strong" th:text="${l.states}">粉丝</strong></span>
-                </div>
+               <!-- <div class="header-msg-data">
+                    <span class="mr8">关注<strong class="header-msg-strong" th:text="${list[0].aten}">关注</strong></span>
+                    <span class="ml12 mr8">粉丝<strong class="header-msg-strong" th:text="${list[0].states}">粉丝</strong></span>
+                </div>-->
 
                 <div class="qdp-button" data-l2="1">
                    <!-- <input type="hidden" th:value="${h.uuid}" id="buuid">
                     <input type="hidden" th:value="${fansState}" id="fansState">
                     <input type="hidden" th:value="${session.users==null}?'-1':${session.users.get(0).getUuid()}" id="uuid">-->
 
-                    <th:block th:if="${l.states} eq -1">
+                    <!--<th:block th:if="${list[0].states} eq 0">
                     <a href="javascript:;" class="ui-button ui-button-small" id="elToFollow">关注</a>
                     </th:block>
-                    <th:block>
+                    <th:block th:if="${list[0].states} eq 1">
                     <a href="javascript:;" class="ui-button ui-button-small" id="elFollowing">已关注</a>
-                    </th:block>
+                    </th:block>-->
                     <!--<a href="javascript:;" class="qdp-button-a mlr4" id="elSendMsg" data-image="//facepic.qidian.com" data-name="唐家三少" data-id="265554" data-guid="119090278789" data-eid="qd_M246">私信</a>-->
 
-                    <th:block th:if="${l.author} ne 0">
-                        <a th:href="'/user/querys?userid='+${l.userid}" class="qdp-button-a mlr4" target="_blank">作家页</a>
+                    <th:block th:if="${list[0].author} ne 0">
+                        <a th:href="'/user/querys?userid='+${list[0].userid}" class="qdp-button-a mlr4" target="_blank">作家页</a>
                     </th:block>
 
                 </div>
@@ -180,7 +180,7 @@
             <div class="user-sidebar-wrapper">
                 <h3 class="user-sidebar-title">足迹</h3>
                 <ul class="user-sidebar-list ui-loading ui-loading-animation" id="elHistoryWrap" style="height: 150px; transition: height 200ms ease 0s;">
-                    <li class="user-sidebar-item">书架藏书: <span th:text="${qd.size()}"></span>本</li>
+                    <li class="user-sidebar-item">书架藏书: <span th:text="${qs.size()}"></span>本</li>
                     <!--<li class="user-sidebar-item">订阅过作品: <span th:text="${q2}"></span>本</li>-->
                     <!--<li class="user-sidebar-item">打赏作品: <span th:text="${q3}"></span>本</li>-->
                     <!--<li class="user-sidebar-item">投月票: <span th:text="${q1.num2}"></span>张</li>-->
@@ -192,10 +192,14 @@
 
         <div class="author-content" style="margin-top: -5px">
 
-            <h2 class="author-title">书架藏书(<span th:text="${qd.size()}"></span>)</h2>
+            <h2 class="author-title">书架藏书(<span th:text="${qs.size()}"></span>)</h2>
             <ul class="author-work" data-l2="9">
 
-                <li class="author-item" th:each="l:${qd}">
+
+                <li class="author-item" th:each="l:${qs}">
+                    <div class="author-item-time">
+
+                    </div>
                     <!--th:href="'/jpbook/books/queryBookById?bookid='+${q.bookid}"-->
                     <a  target="_blank" class='author-item-book' data-eid="qd_M268">
                         <img th:src="${l.cover}" class='author-item-img'>
@@ -214,11 +218,7 @@
                                 <span th:text="${l.state == 0 ? '连载':'完本'}">状态</span>
                             </a>
                             <i class="author-item-line"></i>
-                            <span th:text="${l.mo}">0</span>万字
-                            <!--<a  target="_blank" >类型</a>
-                            <i class="author-item-line"></i>
-                            <a target="_blank" >状态</a>
-                            <i class="author-item-line"></i><span >0</span>万字-->
+                            <span th:text="${l.wordcount}">0</span>字
                         </div>
                         <div class="author-item-content" th:text="${l.details}">简介</div>
                         <div class="author-item-update">
@@ -227,28 +227,9 @@
                                 <b th:text="${l.chaptername}"></b>
                             </a>
                             <span>&nbsp;&nbsp;·&nbsp;&nbsp;
-                                <i th:text="${#strings.substring(l.chaptername,0,19)}"></i>
+                                <i th:text="${#strings.substring(l.updatetime,0,19)}"></i>
                             </span>
                         </div>
-
-                        <div class="author-item-button">
-                            <a  target="_blank" class="ui-button" data-eid="qd_M270">书籍详情</a>
-                            <th:block >
-                                <a  class="ui-button ui-button-default elAddShelf">加入书架</a>
-                            </th:block>
-                            <th:block >
-                                <span class="ui-button ui-button-default disabled">已在书架</span>
-                            </th:block>
-                        </div>
-                        <!--<div class="author-item-button">
-                            <a th:href="'/jpbook/books/queryBookById?bookid='+${q.bookid}" target="_blank" class="ui-button" data-eid="qd_M270" data-bid="8361">书籍详情</a>
-                            <th:block th:if="${q.sta} eq -1">
-                                <a th:href="|javascript:addBookrack(${q.bookid});|" class="ui-button ui-button-default elAddShelf">加入书架</a>
-                            </th:block>
-                            <th:block th:if="${q.sta} ne -1">
-                                <span class="ui-button ui-button-default disabled">已在书架</span>
-                            </th:block>
-                        </div>-->
                     </div>
                 </li>
 
@@ -297,10 +278,10 @@
 
     </body>
 
-    <script>
-        $(function () {
+    <script th:inline="javascript" type="text/javascript">
+       $(function () {
             var state = $("#fansState").val();
-            if (state == -1){
+            if (state == 0){
                 $("#elToFollow").show();
                 $("#elFollowing").hide();
             }else {
@@ -308,12 +289,12 @@
                 $("#elToFollow").hide();
             }
 
-            var uuid = $("#uuid").val();
+            /* var uuid = $("#uuid").val();
             var buuid = $("#buuid").val();
             if (uuid == buuid) {
                 $("#elToFollow").hide();
                 $("#elFollowing").hide();
-            }
+            }*/
 
         })
 
@@ -328,10 +309,10 @@
         $("#elToFollow").click(function () {
             $.ajax({
                 url: "att/add",
-                data: {"attentuser":$("#attentuser").val()},
+                data: {"attentuser":[[${list[0].userid}]]},
                 success: function (data) {
                     if(data == -1){
-                        window.location.href = "/att/queryst";
+                        window.location.reload();
                     }else {
                         swal("关注成功", "", "success");
                         setTimeout(function(){ window.location.reload();},1000);
@@ -343,10 +324,10 @@
         $("#elFollowing").click(function () {
             $.ajax({
                 url: "/att/del",
-                data: {"attentuser":$("#attentuser").val()},
+                data: {"attentuser":[[${list[0].userid}]]},
                 success: function (data) {
                     if(data == -1){
-                        window.location.href = "/att/queryst";
+                        window.location.reload();
                     }else {
                         swal("取消关注成功", "", "success");
                         setTimeout(function(){ window.location.reload();},1000);
@@ -355,20 +336,7 @@
             });
         });
 
-        function addBookrack(bookid) {
-            $.ajax({
-                url: "/jpbook/pc/add",
-                data: {"bookid": bookid},
-                success: function (data) {
-                    if (data == -1) {
-                        window.location.href = "/jpbook/login";
-                    }else {
-                        swal("已加入书架", "", "success");
-                        setTimeout(function(){ window.location.reload();},1000);
-                    }
-                }
-            })
-        }
+
     </script>
 
 </html>

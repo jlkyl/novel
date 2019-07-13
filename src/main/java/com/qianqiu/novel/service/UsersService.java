@@ -66,8 +66,8 @@ public class UsersService {
         return u.updAuthor(users);
     }
 
-    public List<Map<Users,Object>> querys(){
-        return u.querys();
+    public List<Map<Users,Object>> querys(Integer userid){
+        return u.querys(userid);
     }
     public int update(Integer money,Integer ticket,Integer userid){
         return u.update(money,ticket,userid);
