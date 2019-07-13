@@ -117,8 +117,8 @@
 
 					<div class="home-user-data">
 						<span id="elFriendGuide" style="height:56px;display:inline-block;">
-							<a href="https://my.qidian.com/friend" class="mr12" data-eid="qd_M27">关注<b class="home-user-b" id="eye">0</b></a>
-							<a href="https://my.qidian.com/friend?targetTab=tabTarget3" class="mr12 ml12" data-eid="qd_M28">粉丝<b class="home-user-b" id="fans">0</b></a>
+							<a href="javascript:;" class="mr12" data-eid="qd_M27">关注<b class="home-user-b" id="eye">0</b></a>
+							<a href="javascript:;" class="mr12 ml12" data-eid="qd_M28">粉丝<b class="home-user-b" id="fans">0</b></a>
 						</span>
 					</div>
 				</div>
@@ -442,8 +442,9 @@
 								<table class="ui-table">
 									<thead>
 									<tr>
-										<th scope="col" width="150">充值金额</th>
+										<th scope="col" width="100">充值金额</th>
 										<th scope="col" width="150">充值时间</th>
+										<th scope="col" width="100">获赠票数</th>
 										<th scope="col" width="150">备注</th>
 									</tr>
 									</thead>
@@ -464,7 +465,7 @@
 									<tr>
 										<th scope="col" width="150">打赏书币</th>
 										<th scope="col" width="150">打赏时间</th>
-										<th scope="col" width="150">书名</th>
+										<th scope="col" width="150">打赏作品</th>
 									</tr>
 									</thead>
 									<tbody id="tab2">
@@ -759,19 +760,6 @@
 		}
         $("#s1").show();
 
-        /*$.ajax({
-            url: "per/fansByeye",
-            data: {},
-            success: function (data) {
-                $("#homeurl").prop("href","pc/home?uuid="+data[0].uuid);
-                $("#eye").text(data[0].fans);
-                $("#fans").text(data[0].eye);
-                $("#shelves").text(data[0].shelves);
-                $("#w1").text(data[0].w1);
-                $("#w2").text(data[0].w2);
-            }
-        });*/
-
         $.ajax({
             url: "/books/queryPage?choose=2&page=1&rows=6&putaway=1",
             success: function (data) {
@@ -801,6 +789,8 @@
         h2();
 	}
 
+	qd_M159();
+	qd_M158();
     $("#u2").click(function () {
         for (var i=1; i<=10 ;i++){
             $("#u"+i).prop("class","");
@@ -810,10 +800,7 @@
             $("#s"+i).hide();
         }
         $("#s2").show();
-        qd_M159();
-        qd_M158();
     })
-
 
     function qd_M158() {
         $("#qd_M157").prop("class","");
@@ -828,6 +815,7 @@
             success: function (data) {
                 var t2 = "";
                 if (data.length > 0){
+                	$("#eye").text(data.length);
                     $(".w_following").text(data.length);
                     for (var i=0; i<data.length; i++){
                         t2+="<tr class='qdp-operate-wrapper'>"+
@@ -874,13 +862,18 @@
             success: function (data) {
                 var t3 = "";
                 if (data.length > 0){
+                	$("#fans").text(data.length);
                     $(".w_myfans").text(data.length);
                     for (var i=0; i<data.length; i++){
                         t3+="<tr class='qdp-operate-wrapper'>"+
                             "<td width='300'>"+
-                            "<a href='user/queryst?userid="+data[i].userid+"' class='friend-avatar' target='_blank' data-eid='qd_M162'>"+
-                            "<img src='../images/default_user.0.2.png'>"+
-                            "</a>"+
+                            "<a href='user/queryst?userid="+data[i].userid+"' class='friend-avatar' target='_blank' data-eid='qd_M162'>";
+						if(data[i].head==null){
+							t3+="<img src='../images/default_user.0.2.png'>";
+						}else{
+							t3+="<img src='"+data[i].head+"'";
+						}
+						t3+="</a>"+
                             "<div class='friend-wrapper'>"+
                             "<div class='friend-name'><a href='user/queryst?userid="+data[i].userid+"' target='_blank'>"+data[i].username+"</a>"+
                             "<i class='icon icon-boy'></i>"+
@@ -1070,7 +1063,8 @@
                    for (var i = 0; i<data.length; i++){
                        record1 += "<tr class='qdp-operate-wrapper'><td class='col1'>"+
                            "<span class='shelf-table-author font12'>"+data[i].expmoney+"元</span> </td>"+
-                           "<td class='col1'><span class='shelf-table-author font12'>"+renderTime(data[i].exptime).substring(0,10)+"</span></td>"+
+                           "<td class='col1'><span class='shelf-table-author font12'>"+renderTime(data[i].exptime).substring(0,10)+"</span></td>" +
+						   "<td class='col1'><span class='shelf-table-author font12'>"+Math.floor(data[i].expmoney/10)+"</span></td>"+
                            "<td class='col1'><span class='shelf-table-author font12'>书币充值</span></td></tr>";
 				   }
                   $("#tab1").html(record1);

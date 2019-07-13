@@ -30,19 +30,11 @@
             </a>
             <div class="headUser fr">
                 <ul class="cf">
-                    <li id="msgBox" class="bell">
-                        <a href="https://write.qq.com/authors/authorconsultlist.html">
-              <span class="icon">
-                <cite id="msgCount" class="icon" style="display:none;"></cite>
-              </span></a><a href="https://write.qq.com/authors/authorconsultlist.html">通知</a>
-
-                        <dl id="msgList" class="msgBox" style="display:none;"></dl>
-                    </li>
                     <li class="line"></li>
                     <li id="headPhotoBox" class="headPhoto">
-                        <p><em><img src="./css/photo_default.png" width="36" height="36" alt=""></em>
+                        <p><em><img th:src="${session.user.head}" width="36" height="36" alt=""></em>
                             <a class="userName" href="javascript:">
-                                <span th:text="${session.user.username}"></span>
+                                <span th:text="${session.user.pen}"></span>
                             </a>
                         </p>
                         <dl class="userBox">
@@ -50,7 +42,7 @@
                             <dd class="userInfo hidden">
                                 <!-- 增加身份标识"ico-level",silver为白金作家，dashen为大神作家 -->
                                 <p class="name">
-                                    <span th:text="${session.user.username}"></span>
+                                    <span th:text="${session.user.pen}"></span>
                                 </p>
                                 <p class="level">
 
