@@ -89,7 +89,7 @@ public interface IUsersDAO {
     @Select("select * from users where idcard=#{idcard}")
     public Integer Sureidcard(@Param("idcard")String username);
 
-    @Select("select u.*,(select count(*) from books where userid=u.userid) nums,(select COALESCE(sum(expmoney),0)/100*0.5-COALESCE((select sum(expmoney) from expenses where userid=u.userid and exptypeid=4),0) from expenses where bookid in (select bookid from books where userid=u.userid)) expmoney from users u where author=2 and siteid=#{siteid}")
+    @Select("select u.*,(select count(*) from books where userid=u.userid) nums,(select COALESCE(sum(expmoney),0)/100*0.5 from expenses where bookid in (select bookid from books where userid=u.userid)) expmoney from users u where author=2 and siteid=#{siteid}")
     List<Map<String,Object>> findAuthor(Integer siteid);
 
     @Update("update users set pen=#{pen},email=#{email},realname=#{realname},idcard=#{idcard},phone=#{phone} where userid=#{userid}")

@@ -18,6 +18,9 @@ public interface BooktypeDao {
             "left JOIN\n" +
             "emps e\n" +
             "on b.operateeid = e.empid\n" +
+            "<if test=\"offset==null and pageSize==null\">\n" +
+            "where b.parentid is null or b.parentid=b.typeid " +
+            "</if>" +
             "ORDER BY b.typeid\n" +
             "<if test=\"offset!=null and pageSize!=null\">\n" +
             "   limit #{offset},#{pageSize}\n" +

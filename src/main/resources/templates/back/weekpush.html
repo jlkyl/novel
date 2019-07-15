@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <!-- 避免IE使用兼容模式 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <title>Title</title>
+    <!-- 浏览器标签图片 -->
+    <link rel="shortcut icon" href="../topjui//images/favicon.ico"/>
+    <script type="text/javascript" src="../easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="../easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../easyui/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../easyui/myvalidate.js"></script>
+    <link rel="stylesheet" type="text/css" href="../easyui/themes/material/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../easyui/themes/icon.css">
+    <script type="text/javascript">
+        $(function() {
+            // 初始化datagrid数据表格
+            $("#tb").datagrid({
+                width: "100%",
+                url: "../weekpush/findAll",
+                fitColumns: true, // 列宽自适应
+                singleSelect: true,// 当行选中
+                columns: [
+                    [
+                        {field: 'pushid', title: '编号', width: 50},
+                        {field: 'bookname', title: '作品', width: 100},
+                        {field: 'typename', title: '类型', width: 100},
+                        {field: 'potential', title: '潜力值', width: 50},
+                        {field: 'money', title: '金额', width: 50},
+                        {field: 'pen', title: '作者', width: 100},
+                        {field: 'start', title: '开始时间', width: 100},
+                        {field: 'end', title: '结束时间', width: 100}
+                    ]
+                ]
+            })
+        })
+    </script>
+</head>
+<body>
+<table id="tb"></table>
+</body>
+</html>

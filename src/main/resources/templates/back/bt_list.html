@@ -16,6 +16,40 @@
     <link rel="stylesheet" data-ignore="true" type="text/css" href="../css/Autocomplete.cab82.css">
     <link rel="stylesheet" href="../css/iconfont.css">
     <script type="text/javascript">
+        var comboboxs=[{
+            "id":"&#xe6f5;",
+            "text":"<em class=\"iconfont\">&#xe6f5;</em>"
+        },{
+            "id":"&#xe63d;",
+            "text":"<em class=\"iconfont\">&#xe63d;</em>"
+        },{
+            "id":"&#xe61a;",
+            "text":"<em class=\"iconfont\">&#xe61a;</em>"
+        },{
+            "id":"&#xe6f5;",
+            "text":"<em class=\"iconfont\">&#xe6f5;</em>"
+        },{
+            "id":"&#xe61b;",
+            "text":"<em class=\"iconfont\">&#xe61b;</em>"
+        },{
+            "id":"&#xe6a4;",
+            "text":"<em class=\"iconfont\">&#xe6a4;</em>"
+        },{
+            "id":"&#xe522;",
+            "text":"<em class=\"iconfont\">&#xe522;</em>"
+        },{
+            "id":"&#xe60c;",
+            "text":"<em class=\"iconfont\">&#xe60c;</em>"
+        },{
+            "id":"&#xe60d;",
+            "text":"<em class=\"iconfont\">&#xe60d;</em>"
+        },{
+            "id":"&#xe51e;",
+            "text":"<em class=\"iconfont\">&#xe51e;</em>"
+        },{
+            "id":"&#xe603;",
+            "text":"<em class=\"iconfont\">&#xe603;</em>"
+        }];
         var action = "";
         $(function(){
             $("#dl").dialog("close");
@@ -102,7 +136,7 @@
 </head>
 <body>
     <table class="easyui-datagrid" style="width:100%" id="tb"
-           data-options="url:'/bt/pageList',fitColumns:true,toolbar:'#tools',singleSelect:true,pagination:true,pageList:[15,30,50],pageSize:15">
+           data-options="url:'/bt/pageList',fitColumns:true,toolbar:'#tools',singleSelect:true,pagination:true,pageList:[10,15,30,50],pageSize:10">
         <thead>
             <tr>
                 <th data-options="field:'typeid',width:70">编号</th>
@@ -121,28 +155,30 @@
         <a id="btn3" href="javascript:del()" class="easyui-linkbutton" data-options="iconCls:'icon-remove'">删除</a>
     </div>
 
-    <div class="easyui-dialog" style="width:550px;height:400px;padding:10px 60px;top:50px;" id="dl">
+    <div class="easyui-dialog" style="width:550px;height:300px;padding:10px 60px;top:50px;" id="dl">
         <form id="ff" method="post">
             <div style="margin-bottom:20px" hidden>
-            <input class="easyui-textbox" style="width:100%" data-options="label:'编号:'" id="typeID" name="typeid">
-        </div>
+                <input class="easyui-textbox" style="width:100%" data-options="label:'编号:'" id="typeID" name="typeid">
+            </div>
             <div style="margin-bottom:20px">
                 <input class="easyui-textbox" style="width:100%" data-options="label:'名称:',required:true" name="typename">
 
             </div>
             <div style="margin-bottom:20px">
-                <input class="easyui-textbox" style="width:100%" data-options="label:'图标:',required:true" name="icon">
+                <select class="easyui-combobox" label="图标" style="width:100%"  name="icon"
+                        data-options="data:comboboxs,valueField:'id',textField:'text',required:true">
+                </select>
             </div>
             <div style="margin-bottom:20px">
                 <select class="easyui-combobox" label="上级菜单" style="width:100%"  name="parentid"
-                        data-options="url:'/bt/btqueryAll',valueField:'typeid',textField:'typename'" id="cbb">
+                        data-options="url:'/bt/btqueryAll',valueField:'typeid',textField:'typename',required:true" id="cbb">
                 </select>
             </div>
         </form>
 
         <div style="text-align:center;padding:5px 0">
-            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()" style="width:80px">Submit</a>
-            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()" style="width:80px">Clear</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()" style="width:80px">提交</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()" style="width:80px">重置</a>
         </div>
     </div>
 </body>

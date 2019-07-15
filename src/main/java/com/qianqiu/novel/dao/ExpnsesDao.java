@@ -63,5 +63,7 @@ public interface ExpnsesDao {
     @Select("select COALESCE(sum(expmoney),0) from expenses where exptypeid=1 and userid=#{userid}")
     Integer queryMoney(Integer userid);
 
+    @Select("select COALESCE(sum(expmoney),0)/100*0.5+(select COALESCE(sum(money),0) from weekpush where MONTH(pushtime)=#{month} and YEAR(pushtime)=#{year}) from expenses where (exptypeid=2 or exptypeid=3) and MONTH(exptime)=#{month} and YEAR(exptime)=#{year}")
+    Object queryWeb(@Param("year") Integer year,@Param("month") Integer month);
 }
 

@@ -35,4 +35,8 @@ public class ExpnsesService {
     public Integer queryMoney(Integer userid){
         return dao.queryMoney(userid);
     }
+
+    public Object queryWeb(Integer year,Integer month){
+        return dao.queryWeb(year,month);
+    }
 }

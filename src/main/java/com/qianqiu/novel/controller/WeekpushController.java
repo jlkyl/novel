@@ -24,6 +24,12 @@ public class WeekpushController {
 	public List<Map<String,Object>> queryWeek(HttpSession session){
 		return service.findAll(null,MyUtil.getuserid(session));
 	}
+	@RequestMapping("findAll")
+	@ResponseBody
+	public List<Map<String,Object>> findAll(){
+		return service.findAll(null,null);
+	}
+
 	@RequestMapping("addWeekpush")
 	public String addWeekpush(Integer bookid,Integer potential,Integer money) {
 		//查询已经申请周推的个数

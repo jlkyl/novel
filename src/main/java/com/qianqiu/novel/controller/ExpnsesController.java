@@ -46,4 +46,9 @@ public class ExpnsesController {
     public Integer queryMoney(HttpSession session){
         return service.queryMoney(MyUtil.getuserid(session));
     }
+    @RequestMapping(value="queryWeb")
+    @ResponseBody
+    public Object queryWeb(Integer year,Integer month){
+        return service.queryWeb(year,month);
+    }
 }

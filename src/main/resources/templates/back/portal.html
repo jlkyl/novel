@@ -18,18 +18,20 @@
     <script type="text/javascript" src="../../static/plugins/jquery/jquery.min.js"></script>
 
     <script type="text/javascript">
-        $.ajax({
-            url:"/chapters/cxsy",
-            type:"post",
-            success:function (data) {
-                $("#empnum").html(data[0].empnum);
-                $("#usernum").html(data[0].usernum);
-                $("#comnum").html(data[0].comnum);
-                $("#booknum").html(data[0].booknum);
-                $("#shchap").html(data[0].shchap);
-                $("#authornum").html(data[0].authornum);
-            }
-        });
+        $(function(){
+            $.ajax({
+                url:"/chapters/cxsy",
+                type:"post",
+                success:function (data) {
+                    $("#empnum").html(data[0].empnum);
+                    $("#usernum").html(data[0].usernum);
+                    $("#comnum").html(data[0].comnum);
+                    $("#booknum").html(data[0].booknum);
+                    $("#shchap").html(data[0].shchap);
+                    $("#authornum").html(data[0].authornum);
+                }
+            });
+        })
     </script>
     <script type="text/javascript" src="../../static/plugins/jquery/jquery.cookie.js"></script>
     <!-- TopJUI框架配置 -->
@@ -84,7 +86,7 @@
                 </div>
                 <div class="panel_word newMessage">
                     <span id="empnum"></span>
-                    <cite>员工人数</cite>
+                    <cite>员工总数</cite>
                 </div>
             </a>
         </div>
@@ -151,6 +153,7 @@
         <div class="layui-col-md12">
             <blockquote class="layui-elem-quote explain">
                 <p>
+                <div id="main" style="width: 1050px;height:450px;"></div>
                 </p>
             </blockquote>
         </div>
@@ -158,5 +161,81 @@
 
 </div>
 <script type="text/javascript" src="../../static/plugins/echarts/echarts.min.js"></script>
+<script type="text/javascript">
+    var myDate = new Date();
+    var year = myDate.getFullYear();
+    var month = myDate.getMonth()+1;
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+    // 指定图表的配置项和数据
+    var xAxisData = [];
+    var data1 = [];
+    var data2 = [];
+    for (var i = 1; i <= month; i++) {
+        $.ajax({
+            url:'/expn/queryWeb?year='+year+'&month='+i,
+            type:'post',
+            async:false,
+            success:function(data){
+                data1.push(data);
+            }
+        })
+        xAxisData.push(i+"月份");
+        data2.push(0);
+    }
+
+    option = {
+        title: {
+            text: '平台收入统计'
+        },
+        legend: {
+            data: ['收入', '支出'],
+            align: 'left'
+        },
+        toolbox: {
+            // y: 'bottom',
+            feature: {
+                magicType: {
+                    type: ['stack', 'tiled']
+                },
+                dataView: {},
+                saveAsImage: {
+                    pixelRatio: 2
+                }
+            }
+        },
+        tooltip: {},
+        xAxis: {
+            data: xAxisData,
+            silent: false,
+            splitLine: {
+                show: false
+            }
+        },
+        yAxis: {
+        },
+        series: [{
+            name: '收入',
+            type: 'bar',
+            data: data1,
+            animationDelay: function (idx) {
+                return idx * 10;
+            }
+        }, {
+            name: '支出',
+            type: 'bar',
+            data: data2,
+            animationDelay: function (idx) {
+                return idx * 10 + 100;
+            }
+        }],
+        animationEasing: 'elasticOut',
+        animationDelayUpdate: function (idx) {
+            return idx * 5;
+        }
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+</script>
 </body>
 </html>

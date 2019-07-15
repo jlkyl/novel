@@ -5,7 +5,7 @@
  *
  */
 /* 静态演示中获取contextPath，动态演示非必须 开始 */
-var contextPath = "";
+/*var contextPath = "";
 var remoteHost = "http://localhost:8080";
 if (navigator.onLine) {
     remoteHost = "http://demo.ewsd.cn";
@@ -20,7 +20,7 @@ if (navigator.onLine) {
 var firstPathName = window.location.pathname.split("/")[1];
 if (!(firstPathName == "html" || firstPathName == "json" || firstPathName == "topjui")) {
     contextPath = "/" + firstPathName;
-}
+}*/
 /* 静态演示中获取contextPath，动态演示非必须 结束 */
 
 var myConfig = {

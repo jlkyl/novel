@@ -166,14 +166,7 @@ public interface IBooksDAO {
             " \n")
     List<Map<String,Object>> find(Integer bookid);
 
-    @Select("select *,(clicknum+votenum*5+racknum*2) potential from \n" +
-            "(select *,\n" +
-            "COALESCE((select sum(nums) from votes where bookid=b.bookid and votetime BETWEEN getMonday(CURDATE()) and getSunday(CURDATE())),0) votenum,\n" +
-            "(select count(*) from bookrack where bookid=b.bookid and racktime BETWEEN getMonday(CURDATE()) and getSunday(CURDATE())) racknum\n" +
-            "from books b) a \n" +
-            "where potential>100 " +
-            "order by potential desc " +
-            "limit 5")
+    @Select("select * from (select *,(clicknum+votenum*5+racknum*2) potential from (select *, COALESCE((select sum(nums) from votes where bookid=b.bookid and votetime BETWEEN getMonday(CURDATE()) and getSunday(CURDATE())),0) votenum, (select count(*) from bookrack where bookid=b.bookid and racktime BETWEEN getMonday(CURDATE()) and getSunday(CURDATE())) racknum from books b) a) c where bookid not in (select bookid from coverpush) and potential>20 order by potential desc limit 5")
     List<Books> queryB();
 
     @Update("update books set clicknum=clicknum+1 where bookid=#{bookid}")
@@ -286,7 +279,7 @@ public interface IBooksDAO {
     @Select("select bookname,typename," +
             "(select count(*) from expenses " +
             "where exptypeid=#{exptypeid} and bookid=b.bookid) sum," +
-            "COALESCE((select sum(money) from expenses where exptypeid=#{exptypeid} and bookid=b.bookid),0) money," +
+            "COALESCE((select sum(expmoney) from expenses where exptypeid=#{exptypeid} and bookid=b.bookid),0) money," +
             "createtime from books b LEFT JOIN booktype t on b.typeid=t.typeid where b.putaway=1 and userid=#{userid}")
     List<Map<String,Object>> queryExpbook(@Param("exptypeid") Integer exptypeid,@Param("userid") Integer userid);
 
