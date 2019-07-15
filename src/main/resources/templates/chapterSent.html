@@ -216,8 +216,7 @@
                         <div class="sectionViewWrap section-pre-view">
                             <div id="portamento_container" style="min-height: 48px; width: 809px;"><div id="viewChapterBtnBox" class="sectionBtnBox cf" data-slide="1" style="top: 0px;">
                                 <div class="titleBtn fr">
-                                    <a id="applyChapterBan" class="button white" style="display:none" href="javascript:">申请解禁</a>
-                                    <a class="button white" href="javascript:void(0)" onclick="updel()">删除</a>
+
                                     <a class="button modify" href="javascript:void(0)" onclick="upopen()">修改</a>
                                 </div>
                                 <span id=""></span>
@@ -298,13 +297,24 @@
 
                         $.ajax({
                             url:"rolls/addRoll",
-                            data:{"rollname":$("#rollname").val(),"isvip":$("input[name='rollmoney']:checked").val()},
+                            data:{"rollname":$("#rollname01").val(),"isvip":$("input[name='rollmoney']:checked").val()},
                             success:function (data) {
+                                $("#rollname01").val("");
+                                $("#addroll").toggle();
                                 if (data==false){
-                                    swal("卷名已存在!", "请修改卷名", "warning");
+                                    swal({
+                                        title:"卷名已存在!请修改卷名",
+                                        type:"warning",
+                                        closeOnConfirm:false,
+                                        closeOnCancel:false
+                                    });
                                 }else{
-                                    swal("创建成功", "新的一卷创建成功，您可以添加章节", "success");
-                                    window.location.reload();
+                                    swal({
+                                        title:"新卷创建成功",
+                                        type:"success",
+                                        confirmButtonColor: "#cbddb7",
+                                        confirmButtonText: "确认"
+                                    },function(){window.location.reload();});
                                 }
                             }
                         })
@@ -361,14 +371,41 @@
                                     data: {"chaptername": $("#chapterTitle").html(),"state":0, "wordnum": $("#chapterContentInput").val().length, "rollid":rollid,"txt":txt},
                                     success: function (data) {
                                         if (data == 1) {
-                                            swal("上传失败!", "章节审核不通过，请重新修改", "warning");
-                                            window.location.href = "/chapteradd.html";
+                                            swal({
+                                                title: "上传失败!",
+                                                text:"章节审核不通过，请重新修改",
+                                                type: "warning",
+                                                closeOnConfirm:false,
+                                                closeOnCancel:false
+                                            },function(){window.location.href = "/chapteradd.html";});
+
                                         } else if(data==2){
-                                            swal("上传成功!", "章节审核中.....", "warning");
-                                            window.location.href = "/shing.html";
+                                            swal({
+                                                title:"上传成功",
+                                                text:"章节审核中...",
+                                                type:"success",
+                                                confirmButtonColor: "#cbddb7",
+                                                confirmButtonText: "确认"
+                                            },function(){ window.location.href = "/shing.html";});
+
+                                        } else if(data==40){
+                                            swal({
+                                                title: "上传失败!",
+                                                text:"章节名称已存在，",
+                                                type: "warning",
+                                                closeOnConfirm:false,
+                                                closeOnCancel:false
+                                            });
+
                                         } else {
-                                            swal("发布成功", "已存至发布章节中", "success");
-                                            window.location.href = "/chapterSent.html";
+                                            swal({
+                                                title:"发布成功",
+                                                text:"已存至发布章节中",
+                                                type:"success",
+                                                confirmButtonColor: "#cbddb7",
+                                                confirmButtonText: "确认"
+                                            },function(){window.location.href = "/chapterSent.html";});
+
                                         }
                                     }
                                 });
@@ -379,14 +416,32 @@
                                     data:{"chaptername":$("#chapterTitleInput").val(),"state":0,"chapterid":zhangjieID,"txt":txt,"wordnum":$("#chapterContentInput").val().length},
                                     success: function (data) {
                                         if (data == 1) {
-                                            swal("上传失败!", "章节审核不通过，请重新修改", "warning");
-                                            window.location.href = "/chapteradd.html";
+                                            swal({
+                                                title: "上传失败!",
+                                                text:"章节审核不通过，请重新修改",
+                                                type: "warning",
+                                                closeOnConfirm:false,
+                                                closeOnCancel:false
+                                            },function(){window.location.href = "/chapteradd.html";});
+
                                         } else if(data==2){
-                                            swal("上传成功!", "章节审核中.....", "warning");
-                                            window.location.href = "/shing.html";
+                                            swal({
+                                                title:"上传成功",
+                                                text:"章节审核中...",
+                                                type:"success",
+                                                confirmButtonColor: "#cbddb7",
+                                                confirmButtonText: "确认"
+                                            },function(){window.location.href = "/chapteradd.html";});
+
                                         } else {
-                                            swal("发布成功", "已存至发布章节中", "success");
-                                            window.location.href = "/chapterSent.html";
+                                            swal({
+                                                title:"发布成功",
+                                                text:"已存至发布章节中",
+                                                type:"success",
+                                                confirmButtonColor: "#cbddb7",
+                                                confirmButtonText: "确认"
+                                            },function(){ window.location.href = "/chapterSent.html";});
+
                                         }
                                     }
                                 } );
@@ -407,10 +462,15 @@
                                 if (data==false){
                                     swal("删除失败!", "此章节已被购买，无法删除", "warning");
                                 }else {
-                                    swal("删除成功", "请到回收站查看", "success");
                                     $("#chapterContent").val("");
                                     $("#chapid").val("");
-                                    window.location.reload();
+                                    swal({
+                                        title:"删除成功",
+                                        text:"请到回收站查看",
+                                        type:"success",
+                                        confirmButtonColor: "#cbddb7",
+                                        confirmButtonText: "确认"
+                                    },function(){window.location.reload();});
                                 }
                             }
                         })
@@ -475,21 +535,6 @@
         <!-- end 隐藏的上传图片按钮 -->
         <img id="previewImg" src="https://write.qq.com/booknovels/chaptermanage/CBID/13173713005719804.html" width="0" height="0">
 
-        <div class="popupWrap w450 hidden" id="apply_chapter_box" style="position: fixed;z-index: 10000;left:50%; top:50%; margin: -150px 0 0 -250px"><a class="icon closePopup" href="javascript:"></a>
-            <h3>申诉解禁申请</h3>
-            <div class="popupBody p30">
-                <div class="popupContent text-area">
-                    <p>屏蔽时间：<span id="lockTime"></span></p>
-                    <p>请填写章节申诉内容，我们将会在15个工作日内审核答复</p>
-                    <textarea class="clearText" placeholder="请详细描述你需要申请解禁章节的原因，包括但不限于章节违规内容已修改等事由" def="请详细描述你需要申请解禁章节的原因，包括但不限于作品违规内容已修改等事由" id="clearText"></textarea>
-                    <p class="error-tip"></p>
-                </div>
-                <div class="confirmBtn">
-                    <a class="button ok" href="javascript:">确认</a>
-                    <a class="button white cancal" href="javascript:">取消</a>
-                </div>
-            </div>
-        </div>
 
         <script type="text/javascript">
             var default_photo="https://img1.write.qq.com/writer/p1/contentv2/dafult_photo.png";
@@ -588,7 +633,7 @@
         <h3 data-node="volumeSort">新建分卷</h3>
         <div class="popupBody p30"><div class="popupContent select">
             <p>分卷名称</p>
-            <p class="mb20"><input data-node="volumeTitleInput" class="longInput" type="text" id="rollname"></p>
+            <p class="mb20"><input data-node="volumeTitleInput" class="longInput" type="text" id="rollname01"></p>
         </div>
             <div>
                 <p>是否VIP</p>

@@ -99,4 +99,7 @@ public class ChaptersService {
 		pages.setTotal(dao.getCount(bookid));
 		return pages;
 	}
+	public boolean delChapter(Integer chapterid){
+		return dao.delChapter(chapterid);
+	}
 }

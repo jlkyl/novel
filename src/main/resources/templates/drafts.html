@@ -185,6 +185,7 @@
                                         <div class="titleBtn fr">
                                             <a  class="button white" href="javascript:void(0)" onclick="delChapter()">恢复-->草稿箱</a>
                                             <a class="button white font" href="javascript:void(0)" onclick="wordcount()">字数统计</a>
+                                            <a  class="button red" href="javascript:void(0)" onclick="del()">彻底删除</a>
                                         </div>
                                         <em class="c999">查询卷：</em>
                                         <!-- start 卷 模拟下拉组件-->
@@ -426,10 +427,43 @@
     </div>
 </div>
 <script type="text/javascript">
+    function del(){
+        var chapterid=$("#zhangjieID").html();
+        if(chapterid==""){
+            swal({
+                title: "删除失败",
+                text:"请选中章节",
+                type: "warning",
+                closeOnConfirm:false,
+                closeOnCancel:false
+            });
+        }else{
+            $.ajax({
+                url:"chapters/delChapter",
+                data:{"chapterid":chapterid},
+                type:"post",
+                success:function (data) {
+                    swal({
+                        title:"彻底删除成功",
+                        type:"success",
+                        confirmButtonColor: "#cbddb7",
+                        confirmButtonText: "确认"
+                    },function(){window.location.reload();});
+                }
+            });
+        }
+    }
     function delChapter(){
         var chapterid= $("#zhangjieID").html();
         if(chapterid==""){
-            swal("恢复失败","请选中章节", "warning");
+
+            swal({
+                title: "恢复失败",
+                text:"请选中章节",
+                type: "warning",
+                closeOnConfirm:false,
+                closeOnCancel:false
+            });
         }else{
             $.ajax({
                 url:'chapters/updChapDel',
@@ -437,8 +471,13 @@
                 type:'post',
                 success:function(data){
                     if(data==true){
-                        swal("恢复成功", "请到草稿箱查看", "success");
-                        window.location.href="/recycle.html";
+                        swal({
+                            title:"恢复成功",
+                            text:"请到草稿箱查看",
+                            type:"success",
+                            confirmButtonColor: "#cbddb7",
+                            confirmButtonText: "确认"
+                        },function(){window.location.href="/recycle.html";});
                     }
                 }
             });

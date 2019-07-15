@@ -277,7 +277,7 @@ public class BooksController {
 	@RequestMapping("queryExpbook02")
 	@ResponseBody
 	public List<Map<String,Object>> queryExpbook02(Integer exptypeid,HttpSession session){
-
+		System.out.println(service.queryExpbook02(exptypeid,MyUtil.getuserid(session)));
 		return service.queryExpbook02(exptypeid,MyUtil.getuserid(session));
 	}
 
@@ -296,10 +296,5 @@ public class BooksController {
 		Integer typeid=books.getTypeid();
 		return service.queryTypename(typeid);
 
-	}
-	@RequestMapping("queryWeek")
-	@ResponseBody
-	public List<Map<String,Object>> queryWeek(HttpSession session){
-		return service.queryWeek(MyUtil.getuserid(session));
 	}
 }

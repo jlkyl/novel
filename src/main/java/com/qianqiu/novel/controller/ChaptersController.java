@@ -215,6 +215,12 @@ public class ChaptersController {
 		}
 	}
 
+	@RequestMapping("delChapter")
+	@ResponseBody
+	public boolean delChapter(Integer chapterid){
+		return service.delChapter(chapterid);
+	}
+
 	@RequestMapping("updChapDel")
 	@ResponseBody
 	public boolean  updChapDel(Integer state,Integer chapterid){

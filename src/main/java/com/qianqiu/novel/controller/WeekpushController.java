@@ -2,11 +2,15 @@ package com.qianqiu.novel.controller;
 
 import com.qianqiu.novel.entity.Weekpush;
 import com.qianqiu.novel.service.WeekpushService;
+import com.qianqiu.novel.utils.MyUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("weekpush")
@@ -15,6 +19,11 @@ public class WeekpushController {
 	@Resource
 	WeekpushService service;
 
+	@RequestMapping("queryWeek")
+	@ResponseBody
+	public List<Map<String,Object>> queryWeek(HttpSession session){
+		return service.findAll(null,MyUtil.getuserid(session));
+	}
 	@RequestMapping("addWeekpush")
 	public String addWeekpush(Integer bookid,Integer potential,Integer money) {
 		//查询已经申请周推的个数

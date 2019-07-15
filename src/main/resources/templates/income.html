@@ -260,7 +260,7 @@
                     <colgroup>
                         <col width="33%">
                         <col width="33%">
-                        <col width="13%">
+
                         <col width="33%">
                     </colgroup>
                     <thead style="background-color: #3A6590;">
@@ -296,7 +296,7 @@
                // $("#bookTitle2").html($("#year").val()+"年"+$("#month").val()+"月版权收入");
 
                 $.ajax({
-                    url:"books/queryWeek",
+                    url:"weekpush/queryWeek",
                     type:"post",
                     success:function (data) {
                         if(data==""){
@@ -312,6 +312,7 @@
                                 "                                    <td>潜力值</td>\n" +
                                 "                                    <td>支付金额</td>\n" +
                                 "                                    <td>周推时间</td>\n" +
+                                "                                    <td>周推结束时间</td>\n" +
                                 "                                    </tr>\n" +
                                 "                                    </thead><tbody>";
 
@@ -320,7 +321,8 @@
                                     "                                        <td>"+data[i].bookname+"</td>\n" +
                                     "                                        <td>"+data[i].potential+"</td>\n" +
                                     "                                        <td>"+data[i].money+"</td>\n" +
-                                    "                                        <td>"+data[i].pushtime+"</td>\n" +
+                                    "                                        <td>"+data[i].start+"</td>\n" +
+                                    "                                        <td>"+data[i].end+"</td>\n" +
                                     "                                        </tr>"
                                 copyrightsum+=data[i].remuneration;
                             }
@@ -349,9 +351,9 @@
                             var rewardsum=0;
                             for(var i=0;i<data01.length;i++){
                                 str+="<tr>\n" +
-                                    "                        <td>"+data01[i].bookname+"</td><td>"+data01[i].sum+"</td><td>"+jsonDateFormat(data01[i].exptime)+"</td>\n" +
+                                    "                        <td>"+data01[i].bookname+"</td><td>"+data01[i].expmoney+"</td><td>"+jsonDateFormat(data01[i].exptime)+"</td>\n" +
                                     "                    </tr>"
-                                rewardsum+=parseInt(data01[i].sum);
+                                rewardsum+=parseInt(data01[i].expmoney);
                             }
                             $("#rewardCount").html(rewardsum+"书币");
                             $("#incomeList").html(str);

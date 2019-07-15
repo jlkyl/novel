@@ -184,4 +184,7 @@ public interface IChaptersDAO {
             "on r.bookid = b.bookid\n" +
             "where b.bookid = #{bookid}")
     Integer getCount(@Param("bookid") Integer bookid);
+
+    @Delete("delete from chapters where chapterid=#{chapterid}")
+    boolean delChapter(@Param("chapterid") Integer chapterid);
 }

@@ -136,10 +136,6 @@ public class BooksService {
 	public List<Booktype> queryTypename(Integer typeid){
 		return dao.queryTypename(typeid);
 	}
-	//根据作家查询周推
-	public List<Map<String,Object>> queryWeek(Integer userid){
-		return dao.queryWeek(userid);
-	}
 
 	public Integer addClick(Integer bookid){
     	return dao.addClick(bookid);
