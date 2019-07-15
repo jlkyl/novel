@@ -152,7 +152,7 @@
     <div id="tools">
         <a id="btn1" href="javascript:showDialog('add')" class="easyui-linkbutton" data-options="iconCls:'icon-add'">添加</a>
         <a id="btn2" href="javascript:showDialog('edit')" class="easyui-linkbutton" data-options="iconCls:'icon-edit'">修改</a>
-        <a id="btn3" href="javascript:del()" class="easyui-linkbutton" data-options="iconCls:'icon-remove'">删除</a>
+        <!--<a id="btn3" href="javascript:del()" class="easyui-linkbutton" data-options="iconCls:'icon-remove'">删除</a>-->
     </div>
 
     <div class="easyui-dialog" style="width:550px;height:300px;padding:10px 60px;top:50px;" id="dl">
@@ -171,7 +171,7 @@
             </div>
             <div style="margin-bottom:20px">
                 <select class="easyui-combobox" label="上级菜单" style="width:100%"  name="parentid"
-                        data-options="url:'/bt/btqueryAll',valueField:'typeid',textField:'typename',required:true" id="cbb">
+                        data-options="url:'/bt/btqueryAll',valueField:'typeid',textField:'typename'" id="cbb">
                 </select>
             </div>
         </form>

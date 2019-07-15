@@ -156,10 +156,10 @@
                     <input type="hidden" th:value="${session.users==null}?'-1':${session.users.get(0).getUuid()}" id="uuid">-->
                 <th:block th:if="${session.user}">
                     <th:block th:if="${session.user.getUserid()!=list[0].userid}">
-                    <th:block th:if="${list[0].states} eq 0">
+                    <th:block th:if="${list[0].state} eq 0">
                     <a href="javascript:;" class="ui-button ui-button-small" id="elToFollow">关注</a>
                     </th:block>
-                    <th:block th:if="${list[0].states} eq 1">
+                    <th:block th:if="${list[0].state} eq 1">
                     <a href="javascript:;" class="ui-button ui-button-small" id="elFollowing">已关注</a>
                     </th:block>
                     </th:block>

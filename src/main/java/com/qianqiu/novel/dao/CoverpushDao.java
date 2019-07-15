@@ -4,6 +4,8 @@ import com.qianqiu.novel.entity.Coverpush;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
+import java.util.Map;
+
 @Mapper
 public interface CoverpushDao {
     @Select(value = "select *  from coverpush c join books b on b.bookid = c.bookid")
@@ -18,8 +20,8 @@ public interface CoverpushDao {
     int del(Integer pushid);
     @Select(value="select * from coverpush where  pushid =#{pushid}")
     Coverpush queryById(Integer pushid);
-    @Select(" select *,getEmp(operateeid) empname from coverpush  c join books b on b.bookid = c.bookid limit #{offset},#{pageSize}")
-    List<Coverpush> queryPage(@Param("offset") Integer offset ,@Param("pageSize") Integer pageSize);
+    @Select(" select *,getEmp(operateeid) empname from coverpush  c left join books b on b.bookid = c.bookid limit #{offset},#{pageSize}")
+    List<Map<String,Object>> queryPage(@Param("offset") Integer offset , @Param("pageSize") Integer pageSize);
     @Select(value = "select count(pushid) from coverpush ")
     Integer getCounts();
     @Select("select c.*, b.bookname  from coverpush c join books b on b.bookid = c.bookid")

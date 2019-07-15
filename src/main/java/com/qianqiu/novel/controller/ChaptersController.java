@@ -27,9 +27,6 @@ public class ChaptersController {
 	@Resource
 	ChaptersService service;
 
-	@Resource
-	BooksService book;
-
 	@RequestMapping("queryAll")
 	public String queryAll(Model m,Integer bookid) {
 		m.addAttribute("list", service.queryAll(bookid));

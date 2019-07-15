@@ -1,10 +1,7 @@
 package com.qianqiu.novel.dao;
 
 import com.qianqiu.novel.entity.Attention;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 import java.util.Map;
@@ -30,11 +27,17 @@ public interface AttentionDao {
             "where a.attentuser = #{userid}")
     List<Map<String,Object>> queryasd(Integer userid);
 
-    @Select(value = "SELECT u.userid,COALESCE(u.vip,0) vip,u.username,COALESCE(u.head,0) head,u.author,u.sex,\n" +
+    @Select("<script>" +
+            "SELECT u.userid,COALESCE(u.vip,0) vip,u.username,COALESCE(u.head,0) head,u.author,u.sex,\n" +
             "(SELECT count(*) from attention where attentuser=#{userid}) states,\n" +
-            "(SELECT COUNT(attentid) from attention  where userid=#{useid}) aten from users u\n" +
-            "WHERE u.userid= #{userid}")
-    List<Map<String,Object>> queryst(Integer userid);
+            "(SELECT COUNT(attentid) from attention  where userid=#{userid}) aten " +
+            "<if test=\"loginid!=null\">" +
+            ",(select count(*) from attention where userid=#{loginid} and attentuser=#{userid}) state " +
+            "</if>" +
+            "from users u\n" +
+            "WHERE u.userid= #{userid}" +
+            "</script>")
+    List<Map<String,Object>> queryst(@Param("userid") Integer userid,@Param("loginid") Integer loginid);
     @Insert(value = "INSERT INTO `novel`.`attention` ( `userid`, `attentuser`)"  +
             " VALUES ( #{userid}, #{attentuser})")
     int add(Attention a);

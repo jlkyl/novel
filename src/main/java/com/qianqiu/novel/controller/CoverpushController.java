@@ -29,9 +29,7 @@ public class CoverpushController {
     @RequestMapping("queryFT")
 
     public String queryFT(Model m) {
-        System.out.println("sssssssssssssssssssssssss");
         m.addAttribute("ps",service.queryFT());
-        System.out.println("fffffffffffffffffff");
         return "coverpush";
     }
     @RequestMapping("queryAll")

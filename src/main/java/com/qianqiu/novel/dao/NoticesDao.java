@@ -4,6 +4,8 @@ import com.qianqiu.novel.entity.Notices;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
+import java.util.Map;
+
 @Mapper
 public interface NoticesDao {
 
@@ -19,8 +21,8 @@ public interface NoticesDao {
     int del(Integer noticeid);
     @Select(value="select * from notices where noticeid =#{noticeid}")
     Notices queryByIds(Integer noticeid);
-    @Select(" select * from notices limit #{offset},#{pageSize}")
-    List<Notices> queryPage(@Param("offset") Integer offset ,@Param("pageSize") Integer pageSize);
+    @Select(" select *,getEmp(operateeid) empname from notices limit #{offset},#{pageSize}")
+    List<Map<String,Object>> queryPage(@Param("offset") Integer offset , @Param("pageSize") Integer pageSize);
     @Select(value = "select count(noticeid) from notices ")
     Integer getCounts();
 }

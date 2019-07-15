@@ -34,11 +34,9 @@ public class UsersController {
     BookRackService brService;
 
     @RequestMapping(value="queryst")
-    public String queryst(Model u,Integer userid){
-        List<Map<String,Object>> list = aservice.queryst(userid);
+    public String queryst(Model u,Integer userid,HttpSession session){
+        List<Map<String,Object>> list = aservice.queryst(userid,MyUtil.getuserid(session));
         List<Map<String,Object>> qs = brService.queryBr(userid,null);
-        System.out.println(list);
-        System.out.println(qs);
         u.addAttribute("list",list);
         u.addAttribute("qs",qs);
         return "homepage";
@@ -54,9 +52,7 @@ public class UsersController {
     @RequestMapping(value="querys")
     public String querys(Model u,Integer userid){
         List<Map<Users,Object>> list = service.querys(userid);
-        System.out.println(list);
         List<Map<String,Object>> qd = bservice.querybytu(userid);
-        System.out.println(qd);
         u.addAttribute("list",list);
         u.addAttribute("qd",qd);
         return "author_details";

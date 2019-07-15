@@ -26,14 +26,14 @@
                 fitColumns:true, // 列宽自适应
                 singleSelect:true,// 当行选中
                 pagination:true,
-                pageList:[2,5,10,15,20,30],
-                pageSize:2,
+                pageList:[5,10,15,20,30],
+                pageSize:5,
                 columns:[
                     [
                     {field: 'noticeid', title: '编号', width: 220},
                     {field: 'title', title: '标题', width: 220},
                     {field: 'content', title: '内容', width: 220},
-                    {field: 'operateeid', title: '操作人', width: 220},
+                    {field: 'empname', title: '操作人', width: 220},
                     {field: 'opeartedate', title: '操作时间', width: 220}
                     ]
                 ],
@@ -124,7 +124,7 @@
             <input class="easyui-textbox" style="width:100%" data-options="label:'标题:',required:true"  name="title">
         </div>
         <div style="margin-bottom:20px">
-            <input class="easyui-textbox" style="width:100%" data-options="label:'内容:',required:true,multiline:true"  name="content">
+            <input class="easyui-textbox" style="width:100%" data-options="label:'内容:',required:true,multiline:true,height:50"  name="content">
         </div>
 
     </form>

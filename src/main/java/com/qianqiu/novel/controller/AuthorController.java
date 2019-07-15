@@ -64,7 +64,7 @@ public class AuthorController {
     public Boolean add(Users users,HttpSession session) {
         users.setAuthor(2);
         us.addlogin(users);
-        return getBooks(users.getUserid(),users.getPen(),session);
+        return true;
     }
     @RequestMapping("update")
     public Boolean update(Integer userid,String pen,HttpSession session){
@@ -106,7 +106,6 @@ public class AuthorController {
 
     public void addBooks(CloseableHttpClient client, String url, Integer userid, HttpSession session) {
         String json = getUrl(client,url);
-        System.out.println(json);
         Map<String,Object> bookmap = GsonUtil.GsonToMaps(json);
         if((Boolean) bookmap.get("ok")){
             List<Map<String,Object>> booklist = (List<Map<String,Object>>)bookmap.get("books");
@@ -161,7 +160,6 @@ public class AuthorController {
                             }
                         }
                     }
-                    System.out.println(books);
                     //获取书籍章节信息
                     url = "http://api.zhuishushenqi.com/mix-atoc/"+book.get("_id")+"?view=chapters";
                     json = getUrl(client,url);
@@ -216,7 +214,6 @@ public class AuthorController {
                                 //将章节内容写入文件
                                 FileUtil.write(chapters.getUrl(),context);
                                 cs.add(chapters);
-                                System.out.println(chapters);
                             }
                         }
                     }
