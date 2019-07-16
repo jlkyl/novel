@@ -53,6 +53,11 @@ public class BooksController {
 		mv.setViewName("showAllBook");
 		return mv;
 	}
+	@RequestMapping("likeQuery")
+	@ResponseBody
+	public List<Map<String,Object>> likeQuery(String kw){
+		return service.likeBook(kw);
+	}
 
 	@RequestMapping("typeBooks")
 	@ResponseBody

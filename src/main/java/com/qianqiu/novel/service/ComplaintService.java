@@ -21,8 +21,12 @@ public class ComplaintService {
     }
     public Pages query(Integer state, Integer userid, Integer pageNum, Integer pageSize){
         Pages pages = new Pages();
-        pages.setTotal(dao.getCount(state, userid));
-        pages.setRows(dao.query(state, userid, (pageNum-1)*pageSize, pageSize));
+        if(pageNum == null || pageSize == null) {
+            pages.setRows(dao.query(state, userid, null, null));
+        }else{
+            pages.setTotal(dao.getCount(state, userid));
+            pages.setRows(dao.query(state, userid, (pageNum - 1) * pageSize, pageSize));
+        }
         return pages;
     }
 }

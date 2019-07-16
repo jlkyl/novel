@@ -26,7 +26,7 @@
 </div>
 <div class="wrap">
     <div class="lbf-autocomplete-suggestions"
-         style="position: absolute; max-height: 384px; z-index: 9999; width: 346px; top: 96px; left: 560.6px; display: none;">
+         style="position: absolute; max-height: 384px; z-index: 9999; width: 347px; top: 97px; left: 474.6px; display: none;">
     </div>
     <div class="top-nav" data-l1="1">
         <div class="box-center cf">
@@ -975,52 +975,28 @@
 
 <script type="text/javascript">
     jQuery("#s-box").keyup(function () {
-        jQuery(".lbf-autocomplete-suggestions").attr("style", "position: absolute; max-height: 384px; z-index: 9999; width: 346px; top: 96px; left: 560.6px; display:block");
+        jQuery(".lbf-autocomplete-suggestions").attr("style", "position: absolute; max-height: 384px; z-index: 9999; width: 347px; top: 97px; left: 474.6px; display:block");
         if (jQuery("#s-box").val() != '') {
             jQuery.ajax({
                 url: '/books/likeQuery',
                 data: {"kw": jQuery("#s-box").val()},
                 type: 'post',
-                datatype: "text",
                 success: function (data) {
                     var ra = '';
-                    if (data[0] == null && data[1] != null) {
+                    if(data){
                         ra += "<div class=\"lbf-autocomplete-group lbf-autocomplete-group-a\">" +
-                            "<strong>书名</strong>" +
+                            "<strong>相关书籍</strong>" +
                             "</div>";
-                        for (var i = 1; i < data.length; i++) {
-                            ra += "<div class=\"lbf-autocomplete-suggestion\">" +
-                                "<a target=\"_blank\" href=\"/books/queryBookById?bookid=" + data[i].bookid + "\">" +
-                                "<strong>" + jQuery("#s-box").val() + "</strong>" + data[i].bookname.substr(jQuery("#s-box").val().length, data[i].bookname.length) +
-                                "</a>" +
-                                "</div>";
+                        var len = 0;
+                        if(data.length<=10){
+                            len = data.length;
+                        }else{
+                            len = 10;
                         }
-                    } else if (data[0] != null && data[1] == null) {
-                        /*查询作者创作的所有书籍*/
-                        ra += "<div class=\"lbf-autocomplete-group lbf-autocomplete-group-a\">" +
-                            "<strong>作家</strong>" +
-                            "</div>" +
-                            "<div class=\"lbf-autocomplete-suggestion\">" +
-                            "<a target=\"_blank\" href=\"/books/queryBookByUuid?uuid=" + data[0].uuid + "\">" +
-                            "<strong>" + jQuery("#s-box").val() + "</strong>" + data[0].pen.substr(jQuery("#s-box").val().length, data[0].pen.length) +
-                            "</a>" +
-                            "</div>"
-                    } else if (data[0] != null && data[1] != null) {
-                        ra += "<div class=\"lbf-autocomplete-group lbf-autocomplete-group-a\">" +
-                            "<strong>作家</strong>" +
-                            "</div>" +
-                            "<div class=\"lbf-autocomplete-suggestion\">" +
-                            "<a target=\"_blank\" href=\"/books/queryBookByUuid?uuid=" + data[0].uuid + "\">" +
-                            "<strong>" + jQuery("#s-box").val() + "</strong>" + data[0].pen.substr(jQuery("#s-box").val().length, data[0].pen.length) +
-                            "</a>" +
-                            "</div>" +
-                            "<div class=\"lbf-autocomplete-group lbf-autocomplete-group-a\">" +
-                            "<strong>书名</strong>" +
-                            "</div>";
-                        for (var i = 1; i < data.length; i++) {
+                        for(var i=0 ; i<len ; i++){
                             ra += "<div class=\"lbf-autocomplete-suggestion\">" +
-                                "<a target=\"_blank\" href=\"/books/queryBookById?bookid=" + data[i].bookid + "\">" +
-                                "<strong>" + jQuery("#s-box").val() + "</strong>" + data[i].bookname.substr(jQuery("#s-box").val().length, data[i].bookname.length) +
+                                "<a target=\"_blank\" href=\"/books/queryAll?bookid=" + data[i].bookid + "\">《" +
+                                data[i].bookname + "》"+data[i].pen+
                                 "</a>" +
                                 "</div>";
                         }
@@ -1031,12 +1007,12 @@
                      */
                     jQuery(".lbf-autocomplete-suggestion").click(function () {
                         jQuery("#s-box").val('');
-                        jQuery(".lbf-autocomplete-suggestions").attr("style", "position: absolute; max-height: 384px; z-index: 9999; width: 346px; top: 96px; left: 560.6px; display:none");
+                        jQuery(".lbf-autocomplete-suggestions").attr("style", "position: absolute; max-height: 384px; z-index: 9999; width: 347px; top: 97px; left: 474.6px; display:none");
                     })
                     jQuery("#s-box").blur(function () {
                         setTimeout(function () {  //进行延时处理，时间单位为千分之一秒
                             jQuery("#s-box").val('');
-                            jQuery(".lbf-autocomplete-suggestions").attr("style", "position: absolute; max-height: 384px; z-index: 9999; width: 346px; top: 96px; left: 560.6px; display:none");
+                            jQuery(".lbf-autocomplete-suggestions").attr("style", "position: absolute; max-height: 384px; z-index: 9999; width: 347px; top: 97px; left: 474.6px; display:none");
                         }, 100)
                     });
                 }

@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-    <title>全部作品_起点中文网</title>
+    <title>全部作品_千秋小说网</title>
     <meta name="robots" content="all">
     <meta name="googlebot" content="all">
     <meta name="baiduspider" content="all">
@@ -116,7 +116,7 @@
                 </a>
             </div>
             <div class="logo fl">
-                <a href="/booktype/queryAll" data-eid="qd_A11"></a>
+                <a href="/index" data-eid="qd_A11"></a>
             </div>
             <div class="search-wrap fl">
                 <form id="formUrl" action="" method="get" target="_blank">
@@ -772,69 +772,45 @@
 </body>
 
 <script type="text/javascript" th:inline="javascript">
-    /*jQuery("#s-box").keyup(function () {
-        jQuery(".lbf-autocomplete-suggestions").attr("style", "position: absolute; max-height: 384px; z-index: 9999; width: 346px; top: 96px; left: 560.6px; display:block");
+    jQuery("#s-box").keyup(function () {
+        jQuery(".lbf-autocomplete-suggestions").attr("style", "position: absolute; max-height: 384px; z-index: 9999; width: 347px; top: 97px; left: 474.6px; display:block");
         if (jQuery("#s-box").val() != '') {
             jQuery.ajax({
-                url: '/books/typeBooks',
+                url: '/books/likeQuery',
                 data: {"kw": jQuery("#s-box").val()},
                 type: 'post',
-                datatype: "text",
                 success: function (data) {
                     var ra = '';
-                    if (data[0] == null && data[1] != null) {
+                    if(data){
                         ra += "<div class=\"lbf-autocomplete-group lbf-autocomplete-group-a\">" +
-                            "<strong>书名</strong>" +
+                            "<strong>相关书籍</strong>" +
                             "</div>";
-                        for (var i = 1; i < data.length; i++) {
-                            ra += "<div class=\"lbf-autocomplete-suggestion\">" +
-                                "<a target=\"_blank\" href=\"/books/queryBookById?bookid=" + data[i].bookid + "\">" +
-                                "<strong>" + jQuery("#s-box").val() + "</strong>" + data[i].bookname.substr(jQuery("#s-box").val().length, data[i].bookname.length) +
-                                "</a>" +
-                                "</div>";
+                        var len = 0;
+                        if(data.length<=10){
+                            len = data.length;
+                        }else{
+                            len = 10;
                         }
-                    } else if (data[0] != null && data[1] == null) {
-                        /!*查询作者创作的所有书籍*!/
-                        ra += "<div class=\"lbf-autocomplete-group lbf-autocomplete-group-a\">" +
-                            "<strong>作家</strong>" +
-                            "</div>" +
-                            "<div class=\"lbf-autocomplete-suggestion\">" +
-                            "<a target=\"_blank\" href=\"/books/queryBookByUuid?uuid=" + data[0].uuid + "\">" +
-                            "<strong>" + jQuery("#s-box").val() + "</strong>" + data[0].pen.substr(jQuery("#s-box").val().length, data[0].pen.length) +
-                            "</a>" +
-                            "</div>"
-                    } else if (data[0] != null && data[1] != null) {
-                        ra += "<div class=\"lbf-autocomplete-group lbf-autocomplete-group-a\">" +
-                            "<strong>作家</strong>" +
-                            "</div>" +
-                            "<div class=\"lbf-autocomplete-suggestion\">" +
-                            "<a target=\"_blank\" href=\"/books/queryBookByUuid?uuid=" + data[0].uuid + "\">" +
-                            "<strong>" + jQuery("#s-box").val() + "</strong>" + data[0].pen.substr(jQuery("#s-box").val().length, data[0].pen.length) +
-                            "</a>" +
-                            "</div>" +
-                            "<div class=\"lbf-autocomplete-group lbf-autocomplete-group-a\">" +
-                            "<strong>书名</strong>" +
-                            "</div>";
-                        for (var i = 1; i < data.length; i++) {
+                        for(var i=0 ; i<len ; i++){
                             ra += "<div class=\"lbf-autocomplete-suggestion\">" +
-                                "<a target=\"_blank\" href=\"/books/queryBookById?bookid=" + data[i].bookid + "\">" +
-                                "<strong>" + jQuery("#s-box").val() + "</strong>" + data[i].bookname.substr(jQuery("#s-box").val().length, data[i].bookname.length) +
+                                "<a target=\"_blank\" href=\"/books/queryAll?bookid=" + data[i].bookid + "\">《" +
+                                data[i].bookname + "》"+data[i].pen+
                                 "</a>" +
                                 "</div>";
                         }
                     }
                     jQuery(".lbf-autocomplete-suggestions").html(ra);
-                    /!**
+                    /**
                      * 点击时和#s-box失去焦点是都隐藏
-                     *!/
+                     */
                     jQuery(".lbf-autocomplete-suggestion").click(function () {
                         jQuery("#s-box").val('');
-                        jQuery(".lbf-autocomplete-suggestions").attr("style", "position: absolute; max-height: 384px; z-index: 9999; width: 346px; top: 96px; left: 560.6px; display:none");
-                    });
+                        jQuery(".lbf-autocomplete-suggestions").attr("style", "position: absolute; max-height: 384px; z-index: 9999; width: 347px; top: 97px; left: 474.6px; display:none");
+                    })
                     jQuery("#s-box").blur(function () {
                         setTimeout(function () {  //进行延时处理，时间单位为千分之一秒
                             jQuery("#s-box").val('');
-                            jQuery(".lbf-autocomplete-suggestions").attr("style", "position: absolute; max-height: 384px; z-index: 9999; width: 346px; top: 96px; left: 560.6px; display:none");
+                            jQuery(".lbf-autocomplete-suggestions").attr("style", "position: absolute; max-height: 384px; z-index: 9999; width: 347px; top: 97px; left: 474.6px; display:none");
                         }, 100)
                     });
                 }
@@ -843,7 +819,7 @@
             jQuery(".lbf-autocomplete-suggestions").html('');
             jQuery(".lbf-autocomplete-suggestions").attr("style", "position: absolute; max-height: 384px; z-index: 9999; width: 346px; top: 96px; left: 560.6px; display:none");
         }
-    });*/
+    })
 
     $(function () {
         console.log(JSON.stringify(window.location.search));

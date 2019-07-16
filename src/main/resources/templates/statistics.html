@@ -129,8 +129,22 @@
         <link rel="stylesheet" type="text/css" href="./css/contentv2_income.css"><div class="mainRight pb260 fl">
         <div class="crumbsWrap"><b></b><i class="before"><span><a href="statistics">数据统计</a></span></i><em class="same"></em>
             <i class="current"><span></span></i></div>
-        <div class="tabSwitch cf">
-            <span class="act"><a href="javascript:void(0)">订阅统计</a></span>   </div>
+        <div class="tabSwitch cf" id="toptab">
+            <span class="act"><a href="javascript:void(0)" onclick="toptab(this,'dingyue')">订阅统计</a></span>
+            <span><a href="javascript:void(0)" onclick="toptab(this,'tousu')">投诉记录</a></span>
+        </div>
+        <script type="text/javascript">
+            function toptab(obj,id) {
+                $("#toptab").find("span").prop("class","");
+                $(obj).parent("span").prop("class","act");
+                $(".div").css("display","none");
+                $("#"+id+"div").css("display","block");
+                if(id=="tousu"){
+                    getTousu();
+                }
+            }
+        </script>
+        <div class="div" id="dingyuediv" style="display: block;">
         <div id="sehui">
             <em>选择作品：</em>
 
@@ -245,7 +259,56 @@
                 <!--<div class="pageBox pr0 fr" id="pager"></div>-->
             </div>
         </div>
-        <script type="text/javascript">
+        </div>
+        <div class="div" id="tousudiv" style="display: none;">
+            <h3 class="reserveTitle">
+                <em class="icon reward"></em>投诉记录
+            </h3>
+            <div class="detailWrap mb10">
+                <table class="detailTable" width="100%" border="0" cellspacing="0">
+                    <colgroup>
+                        <col width="33%">
+                        <col width="33%">
+                        <col width="33%">
+                    </colgroup>
+                    <thead style="background-color: #3A6590;">
+                    <tr>
+                        <th>投诉书籍</th>
+                        <th>投诉章节</th>
+                        <th>审核时间</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tousu" incometype="rewards">    
+                    <tr>
+                        <td colspan="3">暂无任何数据</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <script type="text/javascript" th:inline="javascript">
+            function getTousu() {
+                var id = [[${session.user.userid}]]
+                $.ajax({
+                    url: "/complaint/query?userid="+id,
+                    type:"post",
+                    success: function (data) {
+                        if(data.rows.length==0){
+                            $("#tousu").html("<tr>\n" +
+                                "<td colspan=\"3\">暂无任何数据</td>\n" +
+                                "</tr>")
+                        }else{
+                            var str="";
+                            for(var i=0;i<data.rows.length;i++){
+                                str+="<tr>\n" +
+                                    "<td>"+data.rows[i].bookname+"</td><td>"+data.rows[i].chaptername+"</td><td>"+jsonDateFormat(data.rows[i].operatedate)+"</td>\n" +
+                                    "</tr>"
+                            }
+                            $("#tousu").html(str);
+                        }
+                    }
+                })
+            }
             function jsonDateFormat(date) {//json日期格式转换为正常格式
                 var dateee = new Date(date).toJSON();
                 return new Date(+new Date(dateee) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')

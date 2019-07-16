@@ -51,4 +51,9 @@ public class ExpnsesController {
     public Object queryWeb(Integer year,Integer month){
         return service.queryWeb(year,month);
     }
+    @RequestMapping(value="queryTi")
+    @ResponseBody
+    public List<Map<String,Object>> queryTi(HttpSession session){
+        return service.query(4,MyUtil.getuserid(session),null);
+    }
 }

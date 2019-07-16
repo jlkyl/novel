@@ -24,11 +24,13 @@ public interface IComplaintDAO {
             " and a.state!=0" +
             "</if>" +
             "<if test=\"userid!=null\">" +
-            " and b.userid==#{userid}" +
+            " and b.userid=#{userid}" +
             "</if>" +
             "</where>" +
             "order by comtime desc " +
+            "<if test=\"offset!=null\">" +
             "limit #{offset},#{pageSize}" +
+            "</if>" +
             "</script>")
     List<Map<String,Object>> query(@Param("state") Integer state,@Param("userid") Integer userid,@Param("offset") Integer offset,@Param("pageSize") Integer pageSize);
     @Select("<script>" +
@@ -43,7 +45,7 @@ public interface IComplaintDAO {
             " and a.state!=0" +
             "</if>" +
             "<if test=\"userid!=null\">" +
-            " and b.userid==#{userid}" +
+            " and b.userid=#{userid}" +
             "</if>" +
             "</where>" +
             "</script>")

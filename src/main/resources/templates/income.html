@@ -17,20 +17,6 @@
     <link rel="stylesheet" href="./js/bootstrap/css/bootstrap.css">
     <script src="./js/sweet-alert.js"></script>
     <link rel="stylesheet" href="./css/sweet-alert.css">
-    <!--<script type="text/javascript">
-        function load() {
-            $.ajax({
-                url: "/jpbook/users/ckSession",
-                data: {"name": 'users'},
-                type: "post",
-                success: function (data) {
-                    if (data == 0) {
-                        window.location.href = "/jpbook/login";
-                    }
-                }
-            });
-        }
-    </script>-->
 </head>
 
 <body >
@@ -187,6 +173,7 @@
                     <script type="text/javascript">
                         $(function () {
                             getSummoenyAndWithdrawmoney();
+                            getTixian();
                         });
                         function getSummoenyAndWithdrawmoney() {
                             $.ajax({
@@ -200,8 +187,8 @@
                         function withdraw() {
                             var money=$("#incomesum").html();
                             var money2=$("#withdrawmoney").html();
-                            if((parseFloat(money)-parseFloat(money2))<100){
-                                swal("操作失败!", "收入不足100，无法提现！", "warning");
+                            if((parseFloat(money)-parseFloat(money2))<50){
+                                swal("操作失败!", "收入不足50，无法提现！", "warning");
                             }else{
                                 swal({
                                     title: "确定操作吗？",
@@ -231,6 +218,28 @@
             </table>
         </div>
             </div>
+            <h3 class="reserveTitle">
+                <em class="icon reward"></em>提现明细
+            </h3>
+            <div class="detailWrap mb10">
+                <table class="detailTable" width="100%" border="0" cellspacing="0">
+                    <colgroup>
+                        <col width="50%">
+                        <col width="50%">
+                    </colgroup>
+                    <thead style="background-color: #3A6590;">
+                    <tr>
+                        <th>提现金额</th>
+                        <th>提现时间</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tixian" incometype="rewards">
+                    <tr>
+                        <td colspan="2">暂无任何数据</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
             <div class="reserveChart mb30 div" id="copyrightdiv" style="display: none">
                 <h3 class="reserveTitle">
@@ -243,7 +252,7 @@
                     </div>
                     <div id="noDataBox" class="nodataBox" style="">
                         <img src="./css/nodata.png" width="141" height="154">
-                        <p>暂无收入</p>
+                        <p>暂无记录</p>
 
                     </div>
                     <div class="reserveGraph" id="chartBox" style="display: none;"></div>
@@ -252,9 +261,9 @@
 
         <div class="reserveListWrap div" id="rewarddiv" style="display: none;">
             <h3 class="reserveTitle">
-                <em class="icon reward"></em>打赏明细
-                <span class="fr exc-rewards" >合计打赏金额<i id="rewardCount"></i></span>
-            </h3>
+            <em class="icon reward"></em>打赏明细
+            <span class="fr exc-rewards" >合计打赏金额<i id="rewardCount"></i></span>
+        </h3>
             <div class="detailWrap mb10">
                 <table class="detailTable" width="100%" border="0" cellspacing="0">
                     <colgroup>
@@ -361,57 +370,34 @@
                     }
                 })
             }
+            function getTixian() {
+                $.ajax({
+                    url: "expn/queryTi",
+                    type:"post",
+                    success: function (data01) {
+
+                        if(data01==""){
+                            $("#tixian").html("<tr>\n" +
+                                "<td colspan=\"2\">暂无任何数据</td>\n" +
+                                "</tr>")
+
+                        }else{
+                            var str="";
+                            for(var i=0;i<data01.length;i++){
+                                str+="<tr>\n" +
+                                    "<td>"+data01[i].expmoney+"</td><td>"+jsonDateFormat(data01[i].exptime)+"</td>\n" +
+                                    "</tr>"
+                            }
+                            $("#tixian").html(str);
+                        }
+                    }
+                })
+            }
             function jsonDateFormat(date) {//json日期格式转换为正常格式
                 var dateee = new Date(date).toJSON();
                 return new Date(+new Date(dateee) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
             }
         </script>
-            <!--<div class="reserveListWrap">
-                <h3 class="reserveTitle"> <em class="icon reward"></em>收入明细
-                    &lt;!&ndash; <span class="fr">合计总收入（含稿酬及部分福利）<i id="total"></i>元</span> &ndash;&gt;
-                </h3>
-                <div class="detailWrap mb10">
-                    <table class="detailTable f12" width="100%" border="0" cellspacing="0">
-                        <colgroup>
-                            <col width="13%">
-                            <col width="9%">
-                            <col width="10%">
-                            <col width="7%">
-                            <col width="8%">
-                            <col width="8%">
-                            <col width="8%">
-                            <col width="8%">
-                            <col width="9%">
-                            <col width="9%">
-                        </colgroup>
-                        <thead>
-                        <tr>
-                            <th rowspan="2" id="change">作品</th>
-                            <th colspan="3">签约平台</th>
-                            <th rowspan="2">集团渠道</th>
-                            <th colspan="2">第三方渠道</th>
-                            <th rowspan="2">版权收入</th>
-                            <th rowspan="2">支付状态</th>
-                            <th class="nobr" rowspan="2">合计</th>
-                        </tr>
-                        <tr>
-                            <th>单订/买断/单册</th>
-                            <th>包月（上月）</th>
-                            <th>奖励保障</th>
-                            <th>中移动阅读</th>
-                            <th>其他</th>
-                        </tr>
-                        </thead>
-                        <tbody id="incomeList" incometype="month">    <tr>
-                            <td colspan="13">暂无任何数据</td>
-                        </tr>
-                        </tbody>
-
-                    </table>
-                </div>
-                &lt;!&ndash; 翻页容器 &ndash;&gt;
-                <div id="pager" class="pageBox fr cf"></div>
-            </div>-->
             <div class="gTip cfboth">
                 <p>1.签约平台是指作品签约网站所拥有的平台，例如： </p>
                 <p>A.创世/云起：包含创世、云起PC站，QQ阅读安卓端、QQ书城触屏、QQ书城wap版等； </p>

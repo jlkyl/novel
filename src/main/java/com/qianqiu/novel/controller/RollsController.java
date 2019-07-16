@@ -30,10 +30,15 @@ public class RollsController {
 	public String querybookid(String bookname,HttpSession session){
 		Books b=booksService.findByName(bookname);
 		session.setAttribute("BOOK",b);
-		System.out.println("显示书籍信息——b："+b);
 		return "redirect:/chapteradd";
 	}
 
+	@RequestMapping("querybook")
+	public String querybook(String bookname,HttpSession session){
+		Books b=booksService.findByName(bookname);
+		session.setAttribute("BOOK",b);
+		return "redirect:/chapterSent";
+	}
 
 
 
